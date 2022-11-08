@@ -52,3 +52,11 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified'
 ])->get('/patient/store', [PatientController::class, 'store'])->name('patient.store');
+
+
+
+Route::middleware([
+    'auth:sanctum',
+    config('jetstream.auth_session'),
+    'verified'
+])->get('/patients', [PatientController::class, 'index'])->name('patients');
