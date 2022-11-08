@@ -20,6 +20,6 @@ class DashboardController extends Controller
             return view('dashboard_admin');
         else
             // return view('dashboard', ['therapysessions' => $therapysessions, 'user' => $user]);
-            return view('dashboard');
+            return view('dashboard', ['user' => $user, 'patients' => '$patients']);
     }
 }
