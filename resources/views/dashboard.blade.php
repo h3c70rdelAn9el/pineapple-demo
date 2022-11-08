@@ -17,23 +17,23 @@
                 action="{{ route('patient.store') }}">
                 @csrf
                 <div>
-                    <label for="first"></label>
+                    <label for="first">first</label>
                     <input type="text" id="first" name="first">
                 </div>
                 <div>
-                    <label for="last"></label>
+                    <label for="last">last</label>
                     <input type="text" id="last" name="last">
                 </div>
                 <div>
-                    <label for="email"></label>
+                    <label for="email">email</label>
                     <input type="text" id="email" name="email">
                 </div>
                 <div>
-                    <label for="phone"></label>
+                    <label for="phone">phone</label>
                     <input type="text" id="phone" name="phone">
                 </div>
                 <div>
-                    <label for="insurance"></label>
+                    <label for="insurance">insurance</label>
                     <input type="text" id="insurance" name="insurance">
                 </div>
                 <button type="submit">
