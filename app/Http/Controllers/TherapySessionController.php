@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Patient;
 use Illuminate\Http\Request;
 use App\Models\TherapySession;
 use App\Http\Requests\StoreTherapySessionRequest;
@@ -35,11 +36,13 @@ class TherapySessionController extends Controller
      * @param  \App\Http\Requests\StoreTherapySessionRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, Patient $patient)
     // TODO: GET IT TO WORK WITH THE REQEUST FORM
     // public function store(StoreTherapySessionRequest $request)
     {
         $user = $request->user();
+
+
 
         $ts = new TherapySession();
         $ts->patient = $request->patient;
@@ -51,7 +54,7 @@ class TherapySessionController extends Controller
         // FOR REQUEST FORM:
         // $request->validated();
 
-        return redirect('/dashboard');
+        return view('patient')->with(['patient' => $patient]);
     }
 
     /**

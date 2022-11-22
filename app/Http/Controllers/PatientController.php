@@ -16,8 +16,11 @@ class PatientController extends Controller
     public function index()
     {
         $user = auth()->user();
-        $patients = Patient::where('user_id',$user->id)->get();
-        return view('patients', ['patients' => $patients]);
+        // $patients = Patient::where('patient_id',$patient->id)->get();
+        // dd($this->$patients);
+        $patients=Patient::all();
+
+        return view('patients', ['patients'=>$patients]);
     }
 
     /**
@@ -67,11 +70,32 @@ class PatientController extends Controller
      * @param  \App\Models\Patient  $patient
      * @return \Illuminate\Http\Response
      */
-    public function show(Patient $patient)
-    {
-        //
-    }
+    // public function show(Patient $patient)
+    // {
+    //             // $patient = Patient::where('slug', $patient->slug)->where('user_id',$user->id)->first();
+    //             $patient = Patient::where('first', $patient->first)->where('user_id',$patient->first)->first();
 
+    //             return view('patient', ['patient' => $patient]);
+
+    // }
+//     public function show(Patient $patient)
+//     {
+//         // return $patient;
+//                         // $patient = Patient::where('id', $patient->id)->where('id',$patient->id)->first();
+// $patient = Patient::where('id', $patient->id)->first();
+//         // return view('patient', ['patient' => $patient, 'patient_name' => $patient->first]);
+//         return view('patient')->with(['patient' => $patient]);
+//     }
+
+
+
+ public function show(Request $request, $id)
+    {
+        # code...
+        $patient = Patient::find($id);
+        return view('patient')->with(['patient' => $patient]);
+        // dd($id);
+    }
     /**
      * Show the form for editing the specified resource.
      *
