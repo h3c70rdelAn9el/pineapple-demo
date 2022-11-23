@@ -91,10 +91,13 @@ class PatientController extends Controller
 
  public function show(Request $request, $id)
     {
-        # code...
+
+        // $user = auth()->user();
+        // $patient = Patient::where('slug', $patient->slug)->where('patient_id',$patient->id)->first();
+
         $patient = Patient::find($id);
         return view('patient')->with(['patient' => $patient]);
-        // dd($id);
+        // return view('patient');
     }
     /**
      * Show the form for editing the specified resource.

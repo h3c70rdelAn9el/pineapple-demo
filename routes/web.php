@@ -63,12 +63,18 @@ Route::middleware([
     'verified'
 ])->get('/patients', [PatientController::class, 'index'])->name('patients');
 
+Route::middleware([
+    'auth:sanctum',
+    config('jetstream.auth_session'),
+    'verified'
+])->get('/patients/{patient_id}', [PatientController::class, 'show'])->name('patient');
+
 // Route::middleware([
 //     'auth:sanctum',
 //     config('jetstream.auth_session'),
 //     'verified'
 // ])->get('/patient/{id}', [PatientController::class, 'show'])->name('patient.show');
 // Route::get('/patients/show/{first}', [PatientController::class, 'show'])->name('patient');
-Route::get('/patients/{patient_id}', [PatientController::class, 'show'])->name('patient');
+// Route::get('/patients/{patient_id}', [PatientController::class, 'show'])->name('patient');
 
 // Route::post('/patients/{patient_id}/therapy_session/store', 'TherapySessionController@store')->middleware('auth')->name('therapy_session.store');
