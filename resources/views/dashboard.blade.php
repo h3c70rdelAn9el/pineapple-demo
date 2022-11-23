@@ -13,6 +13,21 @@
                 <p>welcome {{ $user->name }}</p>
             </div>
 
+            <div>
+                @foreach ($patients as $patient)
+                <a
+                    {{-- href="{{ route('patient') }}" --}}
+
+                    href="{{ route('patient', ['patient' => $patient, 'patient_id' => $patient->id]) }}"
+
+                    >
+
+
+                    {{ $patient->first }}
+                </a>
+                @endforeach
+            </div>
+
             <form
                 action="{{ route('patient.store') }}">
                 @csrf

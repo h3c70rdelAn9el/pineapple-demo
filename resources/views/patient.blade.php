@@ -5,6 +5,28 @@
     </h2>
 
 
+    <div>
+        <form action="{{ route('session.store') }}">
+            @csrf
+            <div>
+                <label for="total_bill">total bill</label>
+                <input type="text" id="total_bill" name="total_bill">
+            </div>
+            <div>
+                <label for="covered_cost">covered cost</label>
+                <input type="text" id="total_bill" name="covered_cost">
+            </div>
+            <div>
+                <label for="patient_id">id</label>
+                <input type="text" id="patient_id" name="patient_id">
+            </div>
+            <button>
+                Submit
+            </button>
+        </form>
+    </div>
+
+
     {{-- <div class="flex flex-row border border-orange-700"> --}}
     <div class="grid grid-cols-3 gap-4 border border-orange-700 rounded-lg">
 

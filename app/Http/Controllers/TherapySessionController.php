@@ -18,6 +18,12 @@ class TherapySessionController extends Controller
     public function index()
     {
         //
+               $therapySessions = TherapySession::get();
+        $ts = [];
+        foreach($therapySessions as $t){
+                $ts[] = $t;
+        }
+        return view ('patient.show', ['therapySessions' => $ts]);
     }
 
     /**
@@ -45,7 +51,7 @@ class TherapySessionController extends Controller
 
 
         $ts = new TherapySession();
-        $ts->patient = $request->patient;
+        $ts->patient_id = $request->patient_id;
         $ts->total_bill = $request->total_bill;
         $ts->covered_cost = $request->covered_cost;
         $ts->user_id = $user->id;
@@ -54,7 +60,8 @@ class TherapySessionController extends Controller
         // FOR REQUEST FORM:
         // $request->validated();
 
-        return view('patient')->with(['patient' => $patient]);
+        // return view('dashboard')->with(['patient' => $patient, 'user' => $user]);
+        return view('patient')->with(['user' => $user, 'patient_id' => $patient_id]);
     }
 
     /**
@@ -63,8 +70,12 @@ class TherapySessionController extends Controller
      * @param  \App\Models\TherapySession  $therapySession
      * @return \Illuminate\Http\Response
      */
-    public function show(TherapySession $therapySession)
+    public function show($id)
     {
+        // $therapySession = User::find($id);
+        $therapySession = Patient::find($id);
+
+        return view('session.show');
     }
 
     /**

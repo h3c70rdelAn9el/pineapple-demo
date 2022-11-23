@@ -18,9 +18,12 @@ class PatientController extends Controller
         $user = auth()->user();
         // $patients = Patient::where('patient_id',$patient->id)->get();
         // dd($this->$patients);
-        $patients=Patient::all();
+        // $patients=Patient::all();
+        $patient=Patient::all()->where('patient_id', $patient->id)->get();
 
-        return view('patients', ['patients'=>$patients]);
+        // return view('patients', ['patients'=>$patients]);
+        return view('dashboard', ['patients'=>$patients]);
+
     }
 
     /**

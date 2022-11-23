@@ -69,6 +69,20 @@ Route::middleware([
     'verified'
 ])->get('/patients/{patient_id}', [PatientController::class, 'show'])->name('patient');
 
+
+Route::middleware([
+    'auth:sanctum',
+    config('jetstream.auth_session'),
+    'verified'
+])->get('/session/store', [TherapySessionController::class, 'store'])->name('session.store');
+
+
+Route::middleware([
+    'auth:sanctum',
+    config('jetstream.auth_session'),
+    'verified'
+])->get('/session/{id}', [TherapySessionController::class, 'show'])->name('session.show');
+
 // Route::middleware([
 //     'auth:sanctum',
 //     config('jetstream.auth_session'),

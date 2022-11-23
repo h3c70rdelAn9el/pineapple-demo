@@ -3,13 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Patient;
 use Illuminate\Http\Request;
+use App\Models\TherapySession;
+use App\Http\Controllers\Controller;
 
 class DashboardController extends Controller
 {
     //
-    public function index()
+    public function index(User $user)
     {
+        $patients = Patient::all();
         $user = auth()->user();
 
         // $therapysessions = TherapySession::where('user_id', $user->id)->get();
@@ -20,6 +24,6 @@ class DashboardController extends Controller
             return view('dashboard_admin');
         else
             // return view('dashboard', ['therapysessions' => $therapysessions, 'user' => $user]);
-            return view('dashboard', ['user' => $user, 'patients' => '$patients']);
+            return view('dashboard', ['user' => $user, 'patients' => $patients]);
     }
 }
