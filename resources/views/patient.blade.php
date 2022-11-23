@@ -4,15 +4,6 @@
         {{ $patient->first }} {{ $patient->last }}
     </h2>
 
-    <ul>
-        <p>Sessions:</p>
-        @foreach ($patient->therapySessions as $therapySession)
-            <p>
-                {{ $therapySession->id }}
-            </p>
-        @endforeach
-    </ul>
-
 
     {{-- <div class="flex flex-row border border-orange-700"> --}}
     <div class="grid grid-cols-3 gap-4 border border-orange-700 rounded-lg">
