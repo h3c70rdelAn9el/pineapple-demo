@@ -17,11 +17,11 @@ class DashboardController extends Controller
         $user = auth()->user();
 
         // $therapysessions = TherapySession::where('user_id', $user->id)->get();
-        // $therapists = User::where('admin', 0)->get();
+        $therapists = User::where('admin', 0)->get();
 
         if ($user->admin)
             // return view('dashboard_admin', ['therapists' => $therapists, 'user' => $user]);
-            return view('dashboard_admin');
+            return view('dashboard_admin', ['user' => $user, 'therapists' => $therapists]);
         else
             // return view('dashboard', ['therapysessions' => $therapysessions, 'user' => $user]);
             return view('dashboard', ['user' => $user, 'patients' => $patients]);
