@@ -64,6 +64,7 @@
                 </form>
             </div>
 
+            <h3 class="mt-3 text-lg font-bold text-center">Patients:</h3>
             <div class="flex flex-row flex-wrap justify-center">
                 @foreach ($patients as $patient)
                     <a href="{{ route('patient', ['patient' => $patient, 'patient_id' => $patient->id]) }}"
