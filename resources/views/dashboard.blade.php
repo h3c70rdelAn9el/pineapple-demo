@@ -7,7 +7,7 @@
 
     <div class="py-8">
         <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
-            <div class="p-2 capitalize bg-white shadow-xl sm:rounded-lg">
+            <div class="p-2 capitalize bg-white shadow-lg shadow-blue-100 sm:rounded-lg">
                 {{-- <x-jet-welcome /> --}}
                 <p class="text-xl">welcome<span class="font-bold"> {{ $user->name }}</span></p>
             </div>
