@@ -61,7 +61,9 @@ class TherapySessionController extends Controller
         // $request->validated();
 
         // return view('dashboard')->with(['patient' => $patient, 'user' => $user]);
-        return view('patient')->with(['user' => $user, 'patient_id' => $patient_id]);
+        return view('patient')->with(['patient' => $patient]);
+        // return redirect('dashboard');
+        // return view('patient');
     }
 
     /**

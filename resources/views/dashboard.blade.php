@@ -5,28 +5,22 @@
         </h2>
     </x-slot>
 
-    <div class="py-12">
+    <div class="py-8">
         <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
-            <div class="overflow-hidden bg-white shadow-xl sm:rounded-lg">
+            <div class="bg-white shadow-xl sm:rounded-lg">
                 {{-- <x-jet-welcome /> --}}
-                <h1 class="text-6xl">la pina</h1>
-                <p>welcome {{ $user->name }}</p>
+                <p class="text-xl">welcome<span class="font-bold"> {{ $user->name }}</span></p>
             </div>
 
-            <div>
-                @foreach ($patients as $patient)
-                <a
-                    {{-- href="{{ route('patient') }}" --}}
-
-                    href="{{ route('patient', ['patient' => $patient, 'patient_id' => $patient->id]) }}"
-
-                    >
-
-
-                    {{ $patient->first }}
-                </a>
-                @endforeach
-            </div>
+                <div class="flex flex-row">
+                    @foreach ($patients as $patient)
+                    <div class="flex flex-row w-40 p-2 m-2 transition-all duration-200 ease-in rounded-md shadow-md hover:scale-105 hover:shadow-lg">
+                        <a href="{{ route('patient', ['patient' => $patient, 'patient_id' => $patient->id]) }}" class="flex flex-row">
+                            <p class="flex flex-row">{{ $patient->first }} {{ $patient->last }}</p>
+                        </a>
+                    </div>
+                    @endforeach
+                </div>
 
             <form
                 action="{{ route('patient.store') }}">
