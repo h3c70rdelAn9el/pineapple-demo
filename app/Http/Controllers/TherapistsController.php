@@ -21,7 +21,7 @@ class TherapistsController extends Controller
         // $id = user->user_id;
         // $therapist = User::where('id', $user->id)->first();
 
-        $therapist = $user;
+        $therapist = User::where('admin', 0)->get();
         // $therapist = User::get();
         // TODO: fix this route!
         $therapySessions = TherapySession::where('');
