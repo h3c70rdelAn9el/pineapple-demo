@@ -4,6 +4,7 @@ use App\Models\TherapySession;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\TherapistsController;
 use App\Http\Controllers\TherapySessionController;
 
 /*
@@ -92,3 +93,17 @@ Route::middleware([
 // Route::get('/patients/{patient_id}', [PatientController::class, 'show'])->name('patient');
 
 // Route::post('/patients/{patient_id}/therapy_session/store', 'TherapySessionController@store')->middleware('auth')->name('therapy_session.store');
+Route::middleware([
+    'auth:sanctum',
+    config('jetstream.auth_session'),
+    'verified'
+])->get('/therapists', [TherapistsController::class, 'index'])->name('therapists.index');
+
+// Route::middleware([
+//     'auth:sanctum',
+//     config('jetstream.auth_session'),
+//     'verified'
+// ])->get('/therapist/{id}', [TherapistsController::class, 'show'])->name('therapists.show');
+
+
+Route::get('/therapist/{id}', [TherapistsController::class, 'show'])->name('therapists.show');
