@@ -16,10 +16,10 @@
         <!-- Styles -->
         @livewireStyles
     </head>
-    <body class="font-sans antialiased">
+    <body class="font-sans antialiased bg-gray-50">
         <x-jet-banner />
 
-        <div class="bg-gray-100 ">
+        <div class="">
             @livewire('navigation-menu')
 
             <!-- Page Heading -->
@@ -32,7 +32,7 @@
             @endif
 
             <!-- Page Content -->
-            <main>
+            <main class="p-2">
                 {{ $slot }}
             </main>
         </div>

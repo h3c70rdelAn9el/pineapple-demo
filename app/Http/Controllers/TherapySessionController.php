@@ -69,12 +69,17 @@ class TherapySessionController extends Controller
      * @param  \App\Models\TherapySession  $therapySession
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id, Patient $patient)
     {
         // $therapySession = User::find($id);
         $therapySession = TherapySession::find($id);
+        $patient = Patient::find($id);
+        // dd($therapySession);
+        // $ts = $therapySession;
 
-        return view('session.show');
+        //TODO:  NOT RETURNING PROPER PATIENT INFO:
+        // dd($patient);
+        return view('session.show', ['therapySession' => $therapySession, 'patient' => $patient]);
     }
 
     /**
