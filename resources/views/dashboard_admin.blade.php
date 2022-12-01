@@ -16,7 +16,6 @@
             </div>
             <div class="grid grid-cols-4 gap-4 bg-white">
                 @forelse ($therapists as $therapist)
-                    {{-- <a href="{{ 'dashboard' }}" --}}
                     <a href="{{ route('therapist.show', $therapist->id) }}"
                         class="duration-200 hover:scale-105 group">
                         <div
