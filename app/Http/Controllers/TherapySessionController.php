@@ -17,13 +17,12 @@ class TherapySessionController extends Controller
      */
     public function index()
     {
-        //
-               $therapySessions = TherapySession::get();
+        $therapySessions = TherapySession::get();
         $ts = [];
-        foreach($therapySessions as $t){
-                $ts[] = $t;
+        foreach ($therapySessions as $t) {
+            $ts[] = $t;
         }
-        return view ('patient.show', ['therapySessions' => $ts]);
+        return view('patient.show', ['therapySessions' => $ts]);
     }
 
     /**
@@ -43,12 +42,10 @@ class TherapySessionController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request, Patient $patient)
-    // TODO: GET IT TO WORK WITH THE REQEUST FORM
-    // public function store(StoreTherapySessionRequest $request)
     {
+        // TODO: GET IT TO WORK WITH THE REQEUST FORM
+        // public function store(StoreTherapySessionRequest $request)
         $user = $request->user();
-
-
 
         $ts = new TherapySession();
         $ts->patient_id = $request->patient_id;
@@ -75,7 +72,7 @@ class TherapySessionController extends Controller
     public function show($id)
     {
         // $therapySession = User::find($id);
-        $therapySession = Patient::find($id);
+        $therapySession = TherapySession::find($id);
 
         return view('session.show');
     }
