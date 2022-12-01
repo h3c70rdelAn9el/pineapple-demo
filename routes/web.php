@@ -106,4 +106,7 @@ Route::middleware([
 // ])->get('/therapist/{id}', [TherapistsController::class, 'show'])->name('therapists.show');
 
 
-Route::get('/therapist/{id}', [TherapistsController::class, 'show'])->name('therapists.show');
+Route::get('/therapist/{id}', [TherapistsController::class, 'show'])->name('therapist.show');
+// Route::get('/therapist/{id}', function ($id) {
+//     return 'User '.$id;
+// });
