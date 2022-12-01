@@ -58,31 +58,44 @@ Route::middleware([
 
 
 
-Route::middleware([
-    'auth:sanctum',
-    config('jetstream.auth_session'),
-    'verified'
-])->get('/patients', [PatientController::class, 'index'])->name('patients');
+// Route::middleware([
+//     'auth:sanctum',
+//     config('jetstream.auth_session'),
+//     'verified'
+// ])->get('/patients', [PatientController::class, 'index'])->name('patients');
+
+// Route::middleware([
+//     'auth:sanctum',
+//     config('jetstream.auth_session'),
+//     'verified'
+// ])->get('/patients/{patient_id}', [PatientController::class, 'show'])->name('patient');
+
+
+// Route::middleware([
+//     'auth:sanctum',
+//     config('jetstream.auth_session'),
+//     'verified'
+// ])->get('/session/store', [TherapySessionController::class, 'store'])->name('session.store');
+
+
+// Route::middleware([
+//     'auth:sanctum',
+//     config('jetstream.auth_session'),
+//     'verified'
+// ])->get('/session/{id}', [TherapySessionController::class, 'show'])->name('session.show');
+
 
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
     'verified'
-])->get('/patients/{patient_id}', [PatientController::class, 'show'])->name('patient');
+])->group(function () {
+    Route::get('/session/store', [TherapySessionController::class, 'store'])->name('session.store');
+    Route::get('/session/{id}', [TherapySessionController::class, 'show'])->name('session.show');
+    Route::get('/patients/{patient_id}', [PatientController::class, 'show'])->name('patient');
+    Route::get('/patients', [PatientController::class, 'index'])->name('patients');
+});
 
-
-Route::middleware([
-    'auth:sanctum',
-    config('jetstream.auth_session'),
-    'verified'
-])->get('/session/store', [TherapySessionController::class, 'store'])->name('session.store');
-
-
-Route::middleware([
-    'auth:sanctum',
-    config('jetstream.auth_session'),
-    'verified'
-])->get('/session/{id}', [TherapySessionController::class, 'show'])->name('session.show');
 
 // Route::middleware([
 //     'auth:sanctum',
