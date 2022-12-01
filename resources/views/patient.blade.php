@@ -44,7 +44,7 @@
     <div class="container grid w-5/6 grid-cols-3 gap-5 mx-auto rounded-lg lg:w-2/3">
 
         @forelse ($patient->therapySessions as $therapySession)
-            <a href="#"
+            <a href="{{ route('session.show', $therapySession->id) }}"
                 class="relative p-2 duration-200 border border-blue-300 rounded-lg shadow-md bg-blue-50 shadow-blue-100 hover:scale-105">
                 <div class="flex">
                     <p class="text-lg font-bold">{{ $therapySession->created_at->format('M d Y') }}</p>

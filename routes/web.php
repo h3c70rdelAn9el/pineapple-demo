@@ -99,11 +99,8 @@ Route::middleware([
     'verified'
 ])->get('/therapists', [TherapistsController::class, 'index'])->name('therapists.index');
 
-// Route::middleware([
-//     'auth:sanctum',
-//     config('jetstream.auth_session'),
-//     'verified'
-// ])->get('/therapist/{id}', [TherapistsController::class, 'show'])->name('therapists.show');
-
-
-Route::get('/therapist/{id}', [TherapistsController::class, 'show'])->name('therapists.show');
+Route::middleware([
+    'auth:sanctum',
+    config('jetstream.auth_session'),
+    'verified'
+])->get('/therapist/{id}', [TherapistsController::class, 'show'])->name('therapist.show');

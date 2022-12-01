@@ -18,16 +18,9 @@ class TherapistsController extends Controller
     public function show(User $user, TherapySession $therapySession, $id)
     {
         $user = auth()->user();
-        // $id = user->user_id;
-        // $therapist = User::where('id', $user->id)->first();
-
-        $therapist = User::where('admin', 0)->get();
-        // $therapist = User::get();
-        // TODO: fix this route!
+        $therapist = User::find($id);
         $therapySessions = TherapySession::where('');
 
-        // return view('therapist.show')->with(['user' => $user, 'therapist' => $therapist, 'therapySessions' => $therapySessions]);
         return view('therapist.show', ['user' => $user, 'therapist' => $therapist, 'therapySessions' => $therapySessions]);
-
     }
 }
