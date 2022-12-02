@@ -38,14 +38,15 @@ class FileController extends Controller
             'file' => 'required|mimes:pdf,jpg,jpeg,png|max:2048',
         ]);
 
-        $fileName = time().'.'.$request->file->extension();
+        // $fileName = time().'.'.$request->file->extension();
+        $fileName = $request->file->getClientOriginalName();
 
         $request->file->storeAs('uploads', $fileName);
 
         $request->file->move(public_path('uploads'), $fileName);
 
         return back()
-            ->with('success', 'You have uploaded your file.')
+            ->with('success', 'Thank you.  You have uploaded your file.')
             ->with('file', $fileName);
     }
 
