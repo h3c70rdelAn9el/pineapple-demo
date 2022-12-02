@@ -2,6 +2,7 @@
 
 use App\Models\TherapySession;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\FileController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\TherapistsController;
@@ -94,6 +95,8 @@ Route::middleware([
     Route::get('/session/{id}', [TherapySessionController::class, 'show'])->name('session.show');
     Route::get('/patients/{patient_id}', [PatientController::class, 'show'])->name('patient');
     Route::get('/patients', [PatientController::class, 'index'])->name('patients');
+    Route::get('file-upload', [FileController::class, 'index'])->name('fileUpload');
+    Route::post('file-store', [FileController::class, 'store'])->name('fileStore');
 });
 
 
