@@ -1,38 +1,78 @@
 <x-app-layout>
-    <div class="panel-body">
+    <x-slot name="header">
+        {{ __('Document Upload') }}
+    </x-slot>
+    <div x-data="imageViewer()" class="flex w-1/2 mx-auto rounded-md shadow-lg bg-blue-50 shadow-blue-100">
+        <div class="flex mx-auto mt-2 mb-2">
+            <!-- Show the image -->
+            <template x-if="imageUrl">
+                <div class="mr-3">
+                    <img :src="imageUrl"
+                        class="object-cover mr-3 border border-gray-200 rounded-md shadow-md"
+                        style="width: 100px; height: 100px;">
+                </div>
+            </template>
 
-        @if ($message = Session::get('success'))
-            <div class="alert alert-success alert-block">
-                <strong>{{ $message }}</strong>
+            <template x-if="!imageUrl">
+                <div class="mr-3 bg-gray-100 border border-gray-200 rounded-md shadow-md shadow-blue-100"
+                    style="width: 100px; height: 100px;"></div>
+            </template>
+
+            <div>
+                @if ($message = Session::get('success'))
+                    <div class="alert alert-success alert-block">
+                        <strong>{{ $message }}</strong>
+                    </div>
+                @endif
+                <form action="{{ route('fileStore') }}"
+                    method="POST"
+                    enctype="multipart/form-data">
+                    @csrf
+
+                    <div class="flex flex-wrap mb-3">
+                        <input class="mt-2"
+                            type="file"
+                            accept="image/*"
+                            id="inputFile"
+                            name="file"
+                            class="@error('file') is-invalid @enderror"
+                            @change="fileChosen"
+                            placeholder="">
+                        @error('file')
+                            <span class="text-red-900">{{ $message }}</span>
+                        @enderror
+                    </div>
+
+                    <div class="mb-3">
+                        <button type="submit"
+                            class="w-40 p-2 m-2 text-center transition-all duration-200 ease-in bg-blue-200 rounded-md shadow-md shadow-blue-100 hover:bg-blue-400">
+                            Upload
+                        </button>
+                    </div>
+                </form>
             </div>
-        @endif
 
-        <form action="{{ route('fileStore') }}"
-            method="POST"
-            enctype="multipart/form-data">
-            @csrf
-
-            <div class="mb-3">
-                <label class=""
-                    for="inputFile">File:</label>
-                <input type="file"
-                    name="file"
-                    id="inputFile"
-                    class="form-control @error('file') is-invalid @enderror">
-
-                @error('file')
-                    <span class="text-red-900">{{ $message }}</span>
-                @enderror
-            </div>
-
-            <div class="mb-3">
-                <button type="submit"
-                    class="">
-                    Upload
-                </button>
-            </div>
-
-        </form>
-
+        </div>
     </div>
+
+    <script>
+        function imageViewer(src = "") {
+            return {
+                imageUrl: src,
+                fileChosen(event) {
+                    this.fileToDataUrl(event, src => this.imageUrl = src)
+                },
+
+                fileToDataUrl(event, callback) {
+                    if (!event.target.files.length) return
+
+                    let file = event.target.files[0],
+                        reader = new FileReader()
+
+                    reader.readAsDataURL(file)
+                    reader.onload = e => callback(e.target.result)
+                },
+            }
+        }
+    </script>
 </x-app-layout>
