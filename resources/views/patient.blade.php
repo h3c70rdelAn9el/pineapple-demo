@@ -40,35 +40,40 @@
         </form>
     </div>
 
-    {{-- <div class="flex flex-row border border-orange-700"> --}}
-    <div class="container grid w-5/6 grid-cols-3 gap-5 mx-auto rounded-lg lg:w-2/3">
 
-        @forelse ($patient->therapySessions as $therapySession)
-            <a href="{{ route('session.show', $therapySession->id) }}"
-                class="relative p-2 duration-200 border border-blue-300 rounded-lg shadow-md bg-blue-50 shadow-blue-100 hover:scale-105">
-                <div class="flex">
-                    <p class="text-lg font-bold">{{ $therapySession->created_at->format('M d Y') }}</p>
-                </div>
-                <div class="w-full text-xs text-right">
-                    <div class="">
-                        <p><span class="font-bold">Total Bill</span>: {{ $therapySession->total_bill }}</p>
+    <div class="container w-5/6 mx-auto rounded-lg lg:w-2/3">
+        <h2 class="my-2 text-lg font-bold">Patient Sessions:</h2>
+        <div class="container grid grid-cols-3 gap-5 ">
+
+            @forelse ($patient->therapySessions as $therapySession)
+                <a href="{{ route('session.show', $therapySession->id) }}"
+                    class="relative p-2 duration-200 border border-blue-300 rounded-lg shadow-md bg-blue-50 shadow-blue-100 hover:shadow-xl hover:shadow-blue-100">
+                    <div class="flex">
+                        {{-- <p class="text-lg font-bold">{{ $therapySession->created_at->format('M d Y') }}</p> --}}
+                        <p class="text-lg font-bold">{{ $therapySession->created_at->format('M d Y') }}</p>
+
                     </div>
-                    <div class="">
-                        <p><span class="font-bold">Covered Cost</span>: {{ $therapySession->covered_cost }}</p>
+                    <div class="w-full text-xs text-right">
+                        <div class="">
+                            <p><span class="font-bold">Total Bill</span>: {{ $therapySession->total_bill }}</p>
+                        </div>
+                        <div class="">
+                            <p><span class="font-bold">Covered Cost</span>: {{ $therapySession->covered_cost }}</p>
+                        </div>
+                        {{-- <p>
+                            {{ $therapySession->covered_cost }}
+                        </p> --}}
                     </div>
-                    {{-- <p>
-                        {{ $therapySession->covered_cost }}
-                    </p> --}}
-                </div>
-                <div class="text-xs">
-                    <button>
-                        View more
-                    </button>
-                </div>
-            </a>
-        @empty
-            <p>nothing to display</p>
-        @endforelse
+                    <div class="text-xs">
+                        <button>
+                            View more
+                        </button>
+                    </div>
+                </a>
+            @empty
+                <p>nothing to display</p>
+            @endforelse
+        </div>
     </div>
 
 </x-app-layout>

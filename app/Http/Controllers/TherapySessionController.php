@@ -54,13 +54,10 @@ class TherapySessionController extends Controller
         $ts->user_id = $user->id;
         $ts->save();
 
-        // FOR REQUEST FORM:
-        // $request->validated();
+        $id = $request->patient_id;
+        $patient = Patient::find($id);
 
-        // return view('dashboard')->with(['patient' => $patient, 'user' => $user]);
         return view('patient')->with(['patient' => $patient]);
-        // return redirect('dashboard');
-        // return view('patient');
     }
 
     /**
