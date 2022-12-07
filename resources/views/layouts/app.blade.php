@@ -10,6 +10,7 @@
         <!-- Fonts -->
         <link rel="stylesheet" href="https://fonts.bunny.net/css2?family=Nunito:wght@400;600;700&display=swap">
 
+
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
 
@@ -40,5 +41,7 @@
         @stack('modals')
 
         @livewireScripts
+                <script src="https://unpkg.com/@victoryoalli/alpinejs-moment@1.x.x/dist/moment.min.js"></script>
+        <script src="https://unpkg.com/@victoryoalli/alpinejs-timeout@1.x.x/dist/timeout.min.js"></script>
     </body>
 </html>
