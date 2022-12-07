@@ -1,5 +1,4 @@
 <x-app-layout>
-
     <x-slot name="header">
         <h2 class="text-xl font-semibold leading-tight text-gray-800 capitalize">
             {{ __('Patient: ') }}<span class="font-bold">{{ $patient->first }} {{ $patient->last }}</span>
@@ -24,12 +23,15 @@
                     name="covered_cost"
                     class="form-input">
             </div>
-            <div>
+            <div class="hidden">
                 <label for="patient_id">id</label>
                 <input type="text"
                     id="patient_id"
                     name="patient_id"
-                    class="form-input">
+                    class="form-input"
+                    value="{{ $patient->id }}"
+                    readonly
+                    >
             </div>
             <div class="mt-2">
                 <button type="submit"
@@ -60,9 +62,6 @@
                         <div class="">
                             <p><span class="font-bold">Covered Cost</span>: {{ $therapySession->covered_cost }}</p>
                         </div>
-                        {{-- <p>
-                            {{ $therapySession->covered_cost }}
-                        </p> --}}
                     </div>
                     <div class="text-xs">
                         <button>
@@ -75,5 +74,4 @@
             @endforelse
         </div>
     </div>
-
 </x-app-layout>
