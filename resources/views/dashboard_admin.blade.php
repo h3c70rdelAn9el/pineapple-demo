@@ -26,6 +26,16 @@
                 @empty
                 @endforelse
             </div>
+            <div>
+                <p>Patients</p>
+                <p>{{ $patients->count() }}</p>
+                <div class="grid grid-cols-4 gap-4 bg-white">
+                    @forelse ($patients as $patient)
+                        @include('components/patient-card')
+                    @empty
+                    @endforelse
+                </div>
+            </div>
         </div>
  </div>
 </x-app-layout>
