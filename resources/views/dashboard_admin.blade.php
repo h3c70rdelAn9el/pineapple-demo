@@ -28,9 +28,9 @@
             </div>
             <div>
                 <p>Patients</p>
-                <p>{{ $patients->count() }}</p>
+                <p>{{ $allpatients->count() }}</p>
                 <div class="grid grid-cols-4 gap-4 bg-white">
-                    @forelse ($patients as $patient)
+                    @forelse ($allpatients as $patient)
                         @include('components/patient-card')
                     @empty
                     @endforelse
