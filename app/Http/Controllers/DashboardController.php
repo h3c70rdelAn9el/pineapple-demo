@@ -24,9 +24,11 @@ class DashboardController extends Controller
         $therapists = User::where('admin', 0)->get();
 
 
+        $allpatients = Patient::all();
         if ($user->admin)
+
             // return view('dashboard_admin', ['therapists' => $therapists, 'user' => $user]);
-            return view('dashboard_admin', ['user' => $user, 'therapists' => $therapists, 'patients' => $patients]);
+            return view('dashboard_admin', ['user' => $user, 'therapists' => $therapists, 'allpatients' => $allpatients]);
         else
             // return view('dashboard', ['therapysessions' => $therapysessions, 'user' => $user]);
             return view('dashboard', ['user' => $user, 'patients' => $patients]);
