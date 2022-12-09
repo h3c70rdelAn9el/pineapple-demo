@@ -21,6 +21,8 @@ class PatientController extends Controller
         // $patients=Patient::all();
         $patient=Patient::all()->where('patient_id', $patient->id)->get();
 
+
+
         // return view('patients', ['patients'=>$patients]);
         return view('dashboard', ['patients'=>$patients]);
 
