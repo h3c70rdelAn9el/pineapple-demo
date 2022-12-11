@@ -1,47 +1,33 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="csrf-token" content="{{ csrf_token() }}">
+<x-head></x-head>
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
+<body class="font-sans antialiased bg-gray-50">
+    <x-jet-banner />
 
-        <!-- Fonts -->
-        <link rel="stylesheet" href="https://fonts.bunny.net/css2?family=Nunito:wght@400;600;700&display=swap">
+    <div class="">
+        @livewire('navigation-menu')
 
+        <!-- Page Heading -->
+        @if (isset($header))
+            <header class="bg-white shadow">
+                <div class="px-4 py-6 mx-auto max-w-7xl sm:px-6 lg:px-8">
+                    {{ $header }}
+                </div>
+            </header>
+        @endif
 
-        <!-- Scripts -->
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
+        <!-- Page Content -->
+        <main class="p-2">
+            {{ $slot }}
+        </main>
+    </div>
 
-        <!-- Styles -->
-        @livewireStyles
-    </head>
-    <body class="font-sans antialiased bg-gray-50">
-        <x-jet-banner />
+    @stack('modals')
 
-        <div class="">
-            @livewire('navigation-menu')
+    @livewireScripts
+    <script src="https://unpkg.com/@victoryoalli/alpinejs-moment@1.x.x/dist/moment.min.js"></script>
+    <script src="https://unpkg.com/@victoryoalli/alpinejs-timeout@1.x.x/dist/timeout.min.js"></script>
+</body>
 
-            <!-- Page Heading -->
-            @if (isset($header))
-                <header class="bg-white shadow">
-                    <div class="px-4 py-6 mx-auto max-w-7xl sm:px-6 lg:px-8">
-                        {{ $header }}
-                    </div>
-                </header>
-            @endif
-
-            <!-- Page Content -->
-            <main class="p-2">
-                {{ $slot }}
-            </main>
-        </div>
-
-        @stack('modals')
-
-        @livewireScripts
-                <script src="https://unpkg.com/@victoryoalli/alpinejs-moment@1.x.x/dist/moment.min.js"></script>
-        <script src="https://unpkg.com/@victoryoalli/alpinejs-timeout@1.x.x/dist/timeout.min.js"></script>
-    </body>
 </html>
