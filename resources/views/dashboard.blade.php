@@ -38,5 +38,11 @@
             <p class="text-lg font-bold">Add New Patient:</p>
             <x-dashboard-form></x-dashboard-form>
         </div>
+
+        {{-- <div>
+            @foreach ($therapySessions as $therapySession)
+                <p>{{ $therapySession->patient_id }}</p>
+            @endforeach
+        </div> --}}
     </div>
 </x-app-layout>
