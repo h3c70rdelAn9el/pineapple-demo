@@ -41,7 +41,7 @@
         </x-form_label>
     </x-form_input_div>
     <x-form_input_div>
-        <x-form_input id="phone"
+        <x-form_input id="insurance"
             type="text"
             name="insurance"
             placeholder="Insurance" />
