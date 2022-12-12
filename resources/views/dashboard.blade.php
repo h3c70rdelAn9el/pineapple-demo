@@ -1,48 +1,33 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="text-xl font-semibold leading-tight text-gray-800">
-            {{ __('Dashboard') }}
-        </h2>
-    </x-slot>
-
-    <div class="w-11/12 mx-auto border border-blue-500 shadow-lg max-w-7xl rounded-xl shadow-blue-100 sm:px-6 lg:px-8">
-        <section class="flex flex-row items-center justify-around w-full max-w-5xl mx-auto md:flex-row">
-            <div class="p-4 text-center capitalize bg-white shadow-sm sm:rounded-lg">
-                <p class="text-lg md:text-xl">Welcome<span class="font-bold"> {{ $user->name }}</span></p>
+    <div class="w-11/12 pb-4 mx-auto mt-20 bg-gray-100 border border-blue-500 shadow-lg max-w-7xl rounded-xl shadow-blue-100">
+        <section
+            class="flex flex-row items-center justify-around w-full mx-auto text-white bg-blue-500 rounded-t-md md:flex-row">
+            <div class="p-4 text-center capitalize shadow-md sm:rounded-lg">
+                <p class="text-lg md:text-lg">Welcome:<span class="text-xl font-bold"> {{ $user->name }}</span></p>
             </div>
 
-            <div>
-                <x-clock></x-clock>
+            <div class="bg-blue-500">
+                <x-clock class="text-lg text-white bg-blue-500 w-44"></x-clock>
             </div>
-            <div class="hidden p-4 text-center bg-white rounded-lg shadow-sm md:block">
-                Total Patients: {{ $patients->count() }}
-            </div>
-            <div>
         </section>
-        <div class="flex">
-            <div class="p-4 mx-auto text-center bg-white shadow-lg rounded-xl md:hidden md:text-lg">
-                Total Patients: {{ $patients->count() }}
+        <div class="flex flex-col-reverse w-full h-full max-w-6xl p-4 mx-auto mt-3 rounded-md md:flex-row">
+            <div class="p-2 m-2 bg-blue-100 rounded-md shadow-sm md:w-1/2">
+                <div class="flex flex-row flex-wrap justify-between mx-12 mb-2 text-lg border-b border-gray-100">
+                    <p class="font-bold">Patients:</p>
+                    <p class="ml-2">Total: <span class="font-bold">{{ $patients->count() }}</span></p>
+                </div>
+                <div class="flex flex-row flex-wrap justify-center mx-auto overflow-y-scroll">
+                    @forelse ($patients as $patient)
+                        @include('components/patient-card')
+                    @empty
+                    @endforelse
+                </div>
             </div>
+            <div class="p-2 m-2 bg-blue-100 rounded-md shadow-sm md:w-1/2">
+                <div class="flex flex-col mb-2 text-lg border-b border-gray-100 ">
+                    <p class="mx-auto mt-2 text-lg font-bold">Add New Patient:</p>
+                    <x-dashboard-form></x-dashboard-form>
+                </div>
         </div>
-
-
-        <h3 class="mt-3 text-lg font-bold text-center">Patients:</h3>
-        <div class="flex flex-row flex-wrap justify-center">
-            @foreach ($patients as $patient)
-                @include('components.patient-card')
-            @endforeach
-        </div>
-
-
-        <div class="w-5/6 p-2 mx-auto mt-2 mb-4 rounded-md shadow-md bg-blue-50 shadow-blue-100 lg:w-1/2">
-            <p class="text-lg font-bold">Add New Patient:</p>
-            <x-dashboard-form></x-dashboard-form>
-        </div>
-
-        {{-- <div>
-            @foreach ($therapySessions as $therapySession)
-                <p>{{ $therapySession->patient_id }}</p>
-            @endforeach
-        </div> --}}
     </div>
 </x-app-layout>

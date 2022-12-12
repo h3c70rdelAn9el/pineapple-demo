@@ -11,7 +11,7 @@ use App\Http\Controllers\Controller;
 class DashboardController extends Controller
 {
     //
-    public function index(User $user)
+    public function index(User $user, TherapySession $therapySession)
     {
         // $patients = Patient::all();
         $user = auth()->user();
@@ -20,8 +20,15 @@ class DashboardController extends Controller
 
         $patients = User::find($user_id)->patients;
 
-        // $therapysessions = TherapySession::where('user_id', $user->id)->get();
+        $therapySessions = TherapySession::where('user_id', $user->id)->get();
         $therapists = User::where('admin', 0)->get();
+
+
+
+// TODO: FIX THIS : MAKE SURE TO RETURN PROPER SESSIONS TO PATIENTS
+        $id = $therapySession->patient_id;
+        $patient = Patient::find($id);
+
 
 
         $allpatients = Patient::all();
@@ -31,6 +38,6 @@ class DashboardController extends Controller
             return view('dashboard_admin', ['user' => $user, 'therapists' => $therapists, 'allpatients' => $allpatients]);
         else
             // return view('dashboard', ['therapysessions' => $therapysessions, 'user' => $user]);
-            return view('dashboard', ['user' => $user, 'patients' => $patients]);
+            return view('dashboard', ['user' => $user, 'patients' => $patients, 'therapySessions' => $therapySessions]);
     }
 }
