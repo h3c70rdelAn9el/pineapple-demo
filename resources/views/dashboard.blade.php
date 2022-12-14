@@ -1,5 +1,6 @@
 <x-app-layout>
-    <div class="w-11/12 pb-4 mx-auto mt-20 bg-gray-100 border border-blue-500 shadow-lg max-w-7xl rounded-xl shadow-blue-100">
+    <div
+        class="w-11/12 pb-4 mx-auto mt-20 bg-gray-100 border border-blue-500 shadow-lg max-w-7xl rounded-xl shadow-blue-100">
         <section
             class="flex flex-row items-center justify-around w-full mx-auto text-white bg-blue-500 rounded-t-md md:flex-row">
             <div class="p-4 text-center capitalize shadow-md sm:rounded-lg">
@@ -24,10 +25,10 @@
                 </div>
             </div>
             <div class="p-2 m-2 bg-blue-100 rounded-md shadow-sm md:w-1/2">
-                <div class="flex flex-col mb-2 text-lg border-b border-gray-100 ">
+                <div class="flex flex-col mb-2 text-lg border-b border-gray-100">
                     <p class="mx-auto mt-2 text-lg font-bold">Add New Patient:</p>
                     <x-dashboard-form></x-dashboard-form>
                 </div>
+            </div>
         </div>
-    </div>
 </x-app-layout>
