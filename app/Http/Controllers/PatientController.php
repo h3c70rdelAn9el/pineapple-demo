@@ -46,9 +46,9 @@ class PatientController extends Controller
      */
     public function store(Request $request)
     {
-        // $user = auth()->user();
+        $user = auth()->user();
 
-        $user = $request->user();
+        // $user = $request->user();
         // $newPatient = Patient::create([
         //     'first' => $request->first,
         //     'last' => $request->last,
@@ -63,10 +63,17 @@ class PatientController extends Controller
         $p->email = $request->email;
         $p->phone = $request->phone;
         $p->insurance = $request->insurance;
-        $p->user_id = $user->id;
+        // $p->user_id = $user->id;
+        $p->user_id = $request->user_id;
+
         $p->save();
 
-        return redirect('/dashboard');
+
+        if ($user->admin) {
+            return redirect('/dashboard');
+        } else {
+            return 404;
+        }
     }
 
     /**
@@ -75,24 +82,6 @@ class PatientController extends Controller
      * @param  \App\Models\Patient  $patient
      * @return \Illuminate\Http\Response
      */
-    // public function show(Patient $patient)
-    // {
-    //             // $patient = Patient::where('slug', $patient->slug)->where('user_id',$user->id)->first();
-    //             $patient = Patient::where('first', $patient->first)->where('user_id',$patient->first)->first();
-
-    //             return view('patient', ['patient' => $patient]);
-
-    // }
-//     public function show(Patient $patient)
-//     {
-//         // return $patient;
-//                         // $patient = Patient::where('id', $patient->id)->where('id',$patient->id)->first();
-// $patient = Patient::where('id', $patient->id)->first();
-//         // return view('patient', ['patient' => $patient, 'patient_name' => $patient->first]);
-//         return view('patient')->with(['patient' => $patient]);
-//     }
-
-
 
  public function show(Request $request, $id)
     {
