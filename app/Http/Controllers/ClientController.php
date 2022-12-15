@@ -14,7 +14,14 @@ class ClientController extends Controller
      */
     public function index()
     {
-        //
+        $user = auth()->user();
+        $client=Client::all()->where('client_id', $client->id)->get();
+
+
+
+        // return view('patients', ['patients'=>$patients]);
+        return view('dashboard', ['client'=>$clients]);
+
     }
 
     /**
