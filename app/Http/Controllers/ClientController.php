@@ -15,13 +15,12 @@ class ClientController extends Controller
     public function index()
     {
         $user = auth()->user();
-        $client=Client::all()->where('client_id', $client->id)->get();
-
-
+        $client = Client::all()
+            ->where('client_id', $client->id)
+            ->get();
 
         // return view('dashboard', ['client'=>$clients]);
         // return view('therapist.show', ['client' => $clients()]);
-
     }
 
     /**
@@ -54,7 +53,6 @@ class ClientController extends Controller
         $c->user_id = $request->user_id;
         $c->save();
 
-
         if ($user->admin) {
             return redirect('/dashboard');
         } else {
@@ -68,9 +66,10 @@ class ClientController extends Controller
      * @param  \App\Models\Client  $client
      * @return \Illuminate\Http\Response
      */
-    public function show(Client $client)
+    public function show(Request $request, $id)
     {
-        //
+        $client = Client::find($id);
+        return view('clients.show')->with(['client' => $client]);
     }
 
     /**

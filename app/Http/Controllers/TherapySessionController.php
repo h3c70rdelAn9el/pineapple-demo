@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Client;
 use App\Models\Patient;
 use Illuminate\Http\Request;
 use App\Models\TherapySession;
@@ -41,23 +42,37 @@ class TherapySessionController extends Controller
      * @param  \App\Http\Requests\StoreTherapySessionRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, Patient $patient)
+    public function store(Request $request, Client $client)
     {
         // TODO: GET IT TO WORK WITH THE REQEUST FORM
         // public function store(StoreTherapySessionRequest $request)
-        $user = $request->user();
+        // $user = $request->user();
+
+        // $ts = new TherapySession();
+        // $ts->patient_id = $request->patient_id;
+        // $ts->total_bill = $request->total_bill;
+        // $ts->covered_cost = $request->covered_cost;
+        // $ts->user_id = $user->id;
+        // $ts->save();
+
+        // $id = $request->patient_id;
+        // $patient = Patient::find($id);
+
+        // return view('patient')->with(['patient' => $patient]);
+
+                $user = $request->user();
 
         $ts = new TherapySession();
-        $ts->patient_id = $request->patient_id;
+        $ts->client_id = $request->client_id;
         $ts->total_bill = $request->total_bill;
         $ts->covered_cost = $request->covered_cost;
         $ts->user_id = $user->id;
         $ts->save();
 
-        $id = $request->patient_id;
-        $patient = Patient::find($id);
+        $id = $request->client_id;
+        $client = Client::find($id);
 
-        return view('patient')->with(['patient' => $patient]);
+        return view('clients.show')->with(['client' => $client]);
     }
 
     /**
