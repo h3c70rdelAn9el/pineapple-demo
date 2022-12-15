@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Client;
 use App\Models\Patient;
 use Illuminate\Http\Request;
 use App\Models\TherapySession;
@@ -32,10 +33,13 @@ class DashboardController extends Controller
 
 
         $allpatients = Patient::all();
+        $allClients = Client::all();
+
+
         if ($user->admin)
 
             // return view('dashboard_admin', ['therapists' => $therapists, 'user' => $user]);
-            return view('dashboard_admin', ['user' => $user, 'therapists' => $therapists, 'allpatients' => $allpatients]);
+            return view('dashboard_admin', ['user' => $user, 'therapists' => $therapists, 'allClients' => $allClients]);
         else
             // return view('dashboard', ['therapysessions' => $therapysessions, 'user' => $user]);
             return view('dashboard', ['user' => $user, 'patients' => $patients, 'therapySessions' => $therapySessions]);

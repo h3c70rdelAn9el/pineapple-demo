@@ -12,7 +12,7 @@
 
         <div class="flex flex-col w-full h-full max-w-6xl p-4 mx-auto mt-3 rounded-md md:flex-row">
             {{-- <x-dashboard-form></x-dashboard-form> --}}
-            {{-- <x-client-form></x-client-form> --}}
+            <x-client-form></x-client-form>
             <div class="p-2 m-2 bg-blue-100 rounded-md shadow-sm md:w-1/2">
                 <div class="flex flex-row flex-wrap justify-between mx-12 mb-2 text-lg border-b border-gray-100">
                     <p class="font-bold ">Therpists:</p>
@@ -29,13 +29,14 @@
 
             <div class="p-2 m-2 bg-blue-100 rounded-md shadow-sm md:w-1/2">
                 <div class="flex flex-wrap justify-between mx-12 mb-2 text-lg">
-                    <p class="font-bold">Patients:</p>
-                    <p class="ml-2">Total: <span class="font-bold">{{ $allpatients->count() }}</span></p>
+                    <p class="font-bold">Clients:</p>
+                    <p class="ml-2">Total: <span class="font-bold">{{ $allClients->count() }}</span></p>
                 </div>
                 <div class="flex">
                     <div class="flex flex-row flex-wrap justify-center mx-auto overflow-hidden">
-                        @forelse ($allpatients as $patient)
-                            @include('components/patient-card')
+                        @forelse ($allClients as $client)
+                            {{-- @include('components/patient-card') --}}
+                            @include('components/client-card')
                         @empty
                         @endforelse
                     </div>
@@ -43,5 +44,4 @@
             </div>
         </div>
     </div>
-    <x-client-form></x-client-form>
 </x-app-layout>
