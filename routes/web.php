@@ -3,6 +3,7 @@
 use App\Models\TherapySession;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FileController;
+use App\Http\Controllers\ClientController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\TherapistsController;
@@ -56,6 +57,13 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified'
 ])->get('/patient/store', [PatientController::class, 'store'])->name('patient.store');
+
+
+Route::middleware([
+    'auth:sanctum',
+    config('jetstream.auth_session'),
+    'verified'
+])->get('/client/store', [ClientController::class, 'store'])->name('client.store');
 
 
 
