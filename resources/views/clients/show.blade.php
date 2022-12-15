@@ -10,42 +10,49 @@
             </div>
         </section>
         <div class="container w-5/6 mx-auto rounded-lg lg:w-2/3">
-              <div class="w-5/6 p-2 mx-auto mt-2 mb-2 rounded-md shadow-md bg-blue-50 shadow-blue-100 lg:w-1/2">
-        <form action="{{ route('session.store') }}"
-            class="capitalize">
-            @csrf
-            <div>
-                <label for="total_bill">total bill</label>
-                <input type="text"
-                    id="total_bill"
-                    name="total_bill"
-                    class="form-input">
+            <div class="w-5/6 p-2 mx-auto mt-2 mb-2 rounded-md shadow-md bg-blue-50 shadow-blue-100 lg:w-1/2">
+                <p class="text-lg text-center">Add Session</p>
+                <form action="{{ route('session.store') }}"
+                    class="capitalize">
+                    @csrf
+                    <div>
+                        <label for="total_bill">total bill</label>
+                        <input type="text"
+                            id="total_bill"
+                            name="total_bill"
+                            class="form-input">
+                    </div>
+                    <div>
+                        <label for="covered_cost">covered cost</label>
+                        <input type="text"
+                            id="covered_cost"
+                            name="covered_cost"
+                            class="form-input">
+                    </div>
+                    <div>
+                        <label for="created_at">Session Date</label>
+                        <input type="datetime-local"
+                            id="created_at"
+                            name="created_at"
+                            class="form-input">
+                    </div>
+                    <div class="hidden">
+                        <label for="client_id">id</label>
+                        <input type="text"
+                            id="client_id"
+                            name="client_id"
+                            class="form-input"
+                            value="{{ $client->id }}"
+                            readonly>
+                    </div>
+                    <div class="mt-2">
+                        <button type="submit"
+                            class="px-2 py-1 duration-200 bg-blue-300 rounded-md hover:scale-110">
+                            Submit
+                        </button>
+                    </div>
+                </form>
             </div>
-            <div>
-                <label for="covered_cost">covered cost</label>
-                <input type="text"
-                    id="total_bill"
-                    name="covered_cost"
-                    class="form-input">
-            </div>
-            <div class="hidden">
-                <label for="client_id">id</label>
-                <input type="text"
-                    id="client_id"
-                    name="client_id"
-                    class="form-input"
-                    value="{{ $client->id }}"
-                    readonly
-                    >
-            </div>
-            <div class="mt-2">
-                <button type="submit"
-                    class="px-2 py-1 duration-200 bg-blue-300 rounded-md hover:scale-110">
-                    Submit
-                </button>
-            </div>
-        </form>
-    </div>
             <h2 class="my-2 text-lg font-bold">Client Sessions:</h2>
             <div class="container grid grid-cols-3 gap-5">
 
