@@ -14,21 +14,24 @@
         <div class="flex flex-col-reverse w-full h-full max-w-6xl p-4 mx-auto mt-3 rounded-md md:flex-row">
             <div class="p-2 m-2 bg-blue-100 rounded-md shadow-sm md:w-1/2">
                 <div class="flex flex-row flex-wrap justify-between mx-12 mb-2 text-lg border-b border-gray-100">
-                    <p class="font-bold">Patients:</p>
-                    <p class="ml-2">Total: <span class="font-bold">{{ $patients->count() }}</span></p>
+                    <p class="font-bold">Clients:</p>
+                    <p class="ml-2">Total: <span class="font-bold">{{ $clients->count() }}</span></p>
                 </div>
                 <div class="flex flex-row flex-wrap justify-center mx-auto overflow-y-scroll">
-                    @forelse ($patients as $patient)
-                        @include('components/patient-card')
+                    @forelse ($clients as $client)
+                        @include('components/client-card')
                     @empty
                     @endforelse
                 </div>
             </div>
-            <div class="p-2 m-2 bg-blue-100 rounded-md shadow-sm md:w-1/2">
+            {{-- <div class="p-2 m-2 bg-blue-100 rounded-md shadow-sm md:w-1/2">
                 <div class="flex flex-col mb-2 text-lg border-b border-gray-100">
                     <p class="mx-auto mt-2 text-lg font-bold">Add New Patient:</p>
                     <x-dashboard-form></x-dashboard-form>
                 </div>
+            </div> --}}
+            <div>
+                {{ $therapySessions->count() }}
             </div>
         </div>
 </x-app-layout>
