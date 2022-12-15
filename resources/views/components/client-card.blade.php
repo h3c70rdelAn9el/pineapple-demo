@@ -1,5 +1,5 @@
-{{-- <a href="{{ route('client', $client->id) }}" --}}
-<a href="#"
+<a href="{{ route('clients.show', $client->id) }}"
+{{-- <a href="#" --}}
 
     class="flex flex-row">
     <div

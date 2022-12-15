@@ -105,6 +105,7 @@ Route::middleware([
     Route::get('/patients', [PatientController::class, 'index'])->name('patients');
     Route::get('file-upload', [FileController::class, 'index'])->name('fileUpload');
     Route::post('file-store', [FileController::class, 'store'])->name('fileStore');
+    Route::get('/clients/{client_id}', [ClientController::class, 'show'])->name('clients.show');
 });
 
 
