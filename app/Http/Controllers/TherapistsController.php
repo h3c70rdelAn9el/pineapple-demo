@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Client;
 use App\Models\Patient;
 use Illuminate\Http\Request;
 use App\Models\TherapySession;
@@ -16,14 +17,30 @@ class TherapistsController extends Controller
         return view('therapist.index')->with(['therapists' => $therapists]);
     }
 
-    public function show(User $user, TherapySession $therapySession, $id)
+    // public function show(User $user, TherapySession $therapySession, $id, Client $client)
+    public function show($id)
     {
-        $user = auth()->user();
+        // $user = auth()->user($id);
         $therapist = User::find($id);
+
+        // $user_id = User::find($id);
         // TODO:  RETURN PROPER PATIENTS FOR THERAPIST
-        $patients = Patient::all();
+        // $clients = Client::all();
+
+        // client_id ->user->user_id
+        // $clients = Client::where('user_id');
+        $clients = $therapist->clients()->get();
+
+        // $clients = Client::where('user_id')->get();
+
+        //   foreach ($clients as $client) {
+        //     $clients[] = ['id' => $client->id, 'chosen_name' => $client->chosen_name];
+        // }
         $therapySessions = TherapySession::where('');
 
-        return view('therapist.show', ['user' => $user, 'therapist' => $therapist, 'therapySessions' => $therapySessions, 'patients' => $patients]);
+
+        // dd($clients);
+
+        return view('therapist.show', ['therapist' => $therapist, 'therapySessions' => $therapySessions, 'clients' => $clients]);
     }
 }

@@ -19,8 +19,8 @@ class ClientController extends Controller
 
 
 
-        // return view('patients', ['patients'=>$patients]);
-        return view('dashboard', ['client'=>$clients]);
+        // return view('dashboard', ['client'=>$clients]);
+        // return view('therapist.show', ['client' => $clients()]);
 
     }
 
