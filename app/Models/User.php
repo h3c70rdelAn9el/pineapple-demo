@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Client;
 use App\Models\Patient;
 use Laravel\Sanctum\HasApiTokens;
 use Laravel\Jetstream\HasProfilePhoto;
@@ -63,8 +64,8 @@ class User extends Authenticatable
         'profile_photo_url',
     ];
 
-    public function patients()
+    public function clients()
     {
-        return $this->hasMany(Patient::class);
+        return $this->hasMany(Client::class);
     }
 }
