@@ -44,9 +44,8 @@ class TherapySessionController extends Controller
      */
     public function store(Request $request)
     {
-        // TODO: GET IT TO WORK WITH THE REQEUST FORM
+        // TODO: MAKE A THE REQEUST FORM
 
-                // $user = $request->user();
         $user = auth()->user();
 
         $ts = new TherapySession();
@@ -56,7 +55,6 @@ class TherapySessionController extends Controller
         $ts->created_at = $request->created_at;
         $ts->user_id = $user->id;
         $ts->save();
-
 
         // $client = Client::find($request->client_id);
         $client_id = $request->client_id;
@@ -73,7 +71,6 @@ class TherapySessionController extends Controller
         //   return response()->json([
         //     'id' => $ts->id
         // ]);
-
     }
 
     /**
@@ -84,21 +81,11 @@ class TherapySessionController extends Controller
      */
     // public function show($id, Client $client)
     public function show(TherapySession $therapySession, Client $client, $id)
-
     {
         $therapySession = TherapySession::find($id);
-        // $therapySession = TherapySession::find($id);
-        // $client_id = $therapySession->client_id;
-        $client = Client::find($id);
-        // dd($therapySession);
-        // $ts = $therapySession;
+        $client_id = $therapySession->client_id;
+        $client = Client::find($client_id);
 
-
-        // dd($therapySession);
-
-        //TODO:  NOT RETURNING PROPER PATIENT INFO:
-        // dd($);
-        // return true;
         return view('session.show', ['therapySession' => $therapySession, 'client' => $client]);
     }
 
