@@ -13,7 +13,8 @@
             <div class="w-5/6 p-2 mx-auto mt-2 mb-2 rounded-md shadow-md bg-blue-50 shadow-blue-100 lg:w-1/2">
                 <p class="text-lg text-center">Add Session</p>
                 <form action="{{ route('session.store') }}"
-                    class="capitalize">
+                    class="capitalize"
+                    method="POST">
                     @csrf
                     <div>
                         <label for="total_bill">total bill</label>
@@ -42,7 +43,9 @@
                             id="client_id"
                             name="client_id"
                             class="form-input"
+                            {{-- value="{{ $client->id }}" --}}
                             value="{{ $client->id }}"
+
                             readonly>
                     </div>
                     <div class="mt-2">
@@ -59,9 +62,14 @@
                 @forelse ($client->therapySessions as $therapySession)
                     <a href="{{ route('session.show', $therapySession->id) }}"
                         class="relative p-2 duration-200 border border-blue-300 rounded-lg shadow-md bg-blue-50 shadow-blue-100 hover:shadow-xl hover:shadow-blue-100">
-                        <div class="flex">
+                        <div class="flex justify-between p-1 mx-2">
                             {{-- <p class="text-lg font-bold">{{ $therapySession->created_at->format('M d Y') }}</p> --}}
-                            <p class="text-lg font-bold">{{ $therapySession->created_at->format('M d Y') }}</p>
+                            <p class="text-lg">{{ $therapySession->created_at->format('M d Y') }}</p>
+                            <p class="text-lg">{{ $therapySession->created_at->format('h:m') }}</p>
+
+
+
+
 
                         </div>
                         <div class="w-full text-xs text-right">

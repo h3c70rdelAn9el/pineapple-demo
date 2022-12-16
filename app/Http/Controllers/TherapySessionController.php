@@ -42,37 +42,38 @@ class TherapySessionController extends Controller
      * @param  \App\Http\Requests\StoreTherapySessionRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, Client $client)
+    public function store(Request $request)
     {
         // TODO: GET IT TO WORK WITH THE REQEUST FORM
-        // public function store(StoreTherapySessionRequest $request)
-        // $user = $request->user();
 
-        // $ts = new TherapySession();
-        // $ts->patient_id = $request->patient_id;
-        // $ts->total_bill = $request->total_bill;
-        // $ts->covered_cost = $request->covered_cost;
-        // $ts->user_id = $user->id;
-        // $ts->save();
-
-        // $id = $request->patient_id;
-        // $patient = Patient::find($id);
-
-        // return view('patient')->with(['patient' => $patient]);
-
-                $user = $request->user();
+                // $user = $request->user();
+        $user = auth()->user();
 
         $ts = new TherapySession();
         $ts->client_id = $request->client_id;
         $ts->total_bill = $request->total_bill;
         $ts->covered_cost = $request->covered_cost;
+        $ts->created_at = $request->created_at;
         $ts->user_id = $user->id;
         $ts->save();
 
-        $id = $request->client_id;
-        $client = Client::find($id);
 
-        return view('clients.show')->with(['client' => $client]);
+        // $client = Client::find($request->client_id);
+        $client_id = $request->client_id;
+        $client = Client::find($client_id);
+
+        // dd($ts);
+        // return view('clients.show')->with(['client' => $client]);
+        // return redirect()->route('clients.show', [$client => 'client', $ts => 'therapySession'])->with('success');
+        return view('session.show', ['therapySession' => $ts, 'client' => $client]);
+
+        // dd($ts);
+        // return response()->json(['client_id' => $ts->client_id]);
+        // return redirect()->route('session.show');
+        //   return response()->json([
+        //     'id' => $ts->id
+        // ]);
+
     }
 
     /**
@@ -81,17 +82,24 @@ class TherapySessionController extends Controller
      * @param  \App\Models\TherapySession  $therapySession
      * @return \Illuminate\Http\Response
      */
-    public function show($id, Patient $patient)
+    // public function show($id, Client $client)
+    public function show(TherapySession $therapySession, Client $client, $id)
+
     {
-        // $therapySession = User::find($id);
         $therapySession = TherapySession::find($id);
-        $patient = Patient::find($id);
+        // $therapySession = TherapySession::find($id);
+        // $client_id = $therapySession->client_id;
+        $client = Client::find($id);
         // dd($therapySession);
         // $ts = $therapySession;
 
+
+        // dd($therapySession);
+
         //TODO:  NOT RETURNING PROPER PATIENT INFO:
-        // dd($patient);
-        return view('session.show', ['therapySession' => $therapySession, 'patient' => $patient]);
+        // dd($);
+        // return true;
+        return view('session.show', ['therapySession' => $therapySession, 'client' => $client]);
     }
 
     /**
