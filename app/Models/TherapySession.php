@@ -13,11 +13,6 @@ class TherapySession extends Model
 
     protected $fillable = ['client_id', 'total_bill', 'covered_cost', 'created_at'];
 
-    // public function patient()
-    // {
-    //     return $this->belongsTo(Patient::class);
-    // }
-
     public function client()
     {
         return $this->belongsTo(Client::class);
