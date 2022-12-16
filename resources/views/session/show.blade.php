@@ -7,7 +7,7 @@
     <section
         class="w-5/6 h-full mx-auto text-gray-800 bg-gray-100 border border-black rounded-lg shadow-md shadow-blue-100 lg:w-1/2">
         <div class="flex flex-row">
-            <div class="w-1/2 p-2 border-b border-r border-gray-700">client Name:</div>
+            <div class="w-1/2 p-2 border-b border-r border-gray-700">Client Name:</div>
             <div class="flex justify-between w-1/2 p-2 capitalize border-b border-gray-700">{{ $therapySession->client->first }}
                 <p>{{ $client->chosen_name }} </p>
                 <p class="mt-1 mr-2 text-xs">{{ $client->pronouns }}</p>
@@ -19,7 +19,7 @@
         </div>
         <div class="flex flex-row">
             <div class="w-1/2 p-2 border-b border-r border-gray-700">Session Date:</div>
-            <div class="w-1/2 p-2 border-b border-gray-700">{{ date('M d, Y', strtotime($therapySession->created_at)) }}
+            <div class="w-1/2 p-2 border-b border-gray-700">{{ date('M d, Y, h:m', strtotime($therapySession->created_at)) }}
             </div>
         </div>
         <div class="flex flex-row">
