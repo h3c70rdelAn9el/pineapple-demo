@@ -1,10 +1,8 @@
 <a href="{{ route('clients.show', $client->id) }}"
-{{-- <a href="#" --}}
-
-    class="flex flex-row">
+    class="flex flex-row justify-between w-full p-2 m-2 text-center transition-all duration-200 ease-in bg-blue-200 border border-transparent rounded-md shadow-md hover:border hover:border-blue-500 lg:w-40 shadow-blue-100 hover:shadow-lg">
     <div
-        class="flex flex-row justify-between w-40 p-2 m-2 text-center transition-all duration-200 ease-in bg-blue-200 rounded-md shadow-md shadow-blue-100 hover:scale-105 hover:shadow-lg">
-        <p class="text-center capitalize">{{ $client->chosen_name }}</p>
-        <p class="text-sm">{{ $client->pronouns }}</p>
+        class="flex flex-row justify-between w-full p-1">
+        <p class="capitalize ">{{ $client->chosen_name }}</p>
+        <p class="text-sm text-right">{{ $client->pronouns }}</p>
     </div>
 </a>

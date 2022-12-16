@@ -85,8 +85,9 @@ class TherapySessionController extends Controller
         $therapySession = TherapySession::find($id);
         $client_id = $therapySession->client_id;
         $client = Client::find($client_id);
+        $status = 3;
 
-        return view('session.show', ['therapySession' => $therapySession, 'client' => $client]);
+        return view('session.show', ['therapySession' => $therapySession, 'client' => $client, 'status' => $status]);
     }
 
     /**

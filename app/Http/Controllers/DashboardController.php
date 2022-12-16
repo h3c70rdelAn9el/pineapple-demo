@@ -42,6 +42,7 @@ class DashboardController extends Controller
             return view('dashboard_admin', ['user' => $user, 'therapists' => $therapists, 'allClients' => $allClients]);
         else
             // return view('dashboard', ['therapysessions' => $therapysessions, 'user' => $user]);
-            return view('dashboard', ['user' => $user, 'clients' => $clients, 'therapySessions' => $therapySessions]);
+            $status = 1;
+            return view('dashboard', ['user' => $user, 'clients' => $clients, 'therapySessions' => $therapySessions, 'status' => $status]);
     }
 }
