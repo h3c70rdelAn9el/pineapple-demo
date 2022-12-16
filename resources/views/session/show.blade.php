@@ -7,8 +7,8 @@
     <section
         class="w-5/6 h-full mx-auto text-gray-800 bg-gray-100 border border-black rounded-lg shadow-md shadow-blue-100 lg:w-1/2">
         <div class="flex flex-row">
-            <div class="w-1/2 p-2 border-b border-r border-gray-700">Client Name:</div>
-            <div class="flex justify-between w-1/2 p-2 capitalize border-b border-gray-700">{{ $therapySession->client->first }}
+            <div class="w-1/2 p-2 border-b border-r border-gray-700">Chosen Name:</div>
+            <div class="flex justify-between w-1/2 p-2 capitalize border-b border-gray-700">
                 <p>{{ $client->chosen_name }} </p>
                 <p class="mt-1 mr-2 text-xs">{{ $client->pronouns }}</p>
             </div>
