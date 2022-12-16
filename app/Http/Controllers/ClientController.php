@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Client;
 use Illuminate\Http\Request;
+use App\Models\TherapySession;
 
 class ClientController extends Controller
 {
@@ -69,7 +70,8 @@ class ClientController extends Controller
     public function show(Request $request, $id)
     {
         $client = Client::find($id);
-        return view('clients.show')->with(['client' => $client]);
+        $therapySessions = TherapySession::all();
+        return view('clients.show')->with(['client' => $client,  'therapySessions' => $therapySessions]);
     }
 
     /**

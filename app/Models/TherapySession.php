@@ -11,12 +11,12 @@ class TherapySession extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['patient_id', 'total_bill', 'covered_cost'];
+    protected $fillable = ['client_id', 'total_bill', 'covered_cost', 'created_at'];
 
-    public function patient()
-    {
-        return $this->belongsTo(Patient::class);
-    }
+    // public function patient()
+    // {
+    //     return $this->belongsTo(Patient::class);
+    // }
 
     public function client()
     {
