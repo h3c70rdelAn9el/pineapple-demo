@@ -22,8 +22,7 @@ class TherapistsController extends Controller
         $user = auth()->user();
         $therapist = User::find($id);
         $clients = $therapist->clients()->get();
-
-        $therapySessions = TherapySession::where('');
+        $therapySessions = TherapySession::where("client_id", "=", $therapist->id)->get();
 
         return view('therapist.show', ['therapist' => $therapist, 'therapySessions' => $therapySessions, 'clients' => $clients, 'user' => $user]);
     }
