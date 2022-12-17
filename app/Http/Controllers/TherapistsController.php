@@ -19,12 +19,12 @@ class TherapistsController extends Controller
 
     public function show($id)
     {
-        // $user = auth()->user($id);
+        $user = auth()->user();
         $therapist = User::find($id);
         $clients = $therapist->clients()->get();
 
         $therapySessions = TherapySession::where('');
 
-        return view('therapist.show', ['therapist' => $therapist, 'therapySessions' => $therapySessions, 'clients' => $clients]);
+        return view('therapist.show', ['therapist' => $therapist, 'therapySessions' => $therapySessions, 'clients' => $clients, 'user' => $user]);
     }
 }
