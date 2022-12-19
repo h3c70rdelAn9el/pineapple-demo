@@ -64,9 +64,6 @@ class TherapySessionController extends Controller
         $user_id = $ts->user_id;
         $therapist = User::find($user_id);
 
-        // dd($ts);
-        // return view('clients.show')->with(['client' => $client]);
-        // return redirect()->route('clients.show', [$client => 'client', $ts => 'therapySession'])->with('success');
         return view('session.show', ['therapySession' => $ts, 'client' => $client, 'therapist' => $therapist]);
     }
 
@@ -76,7 +73,6 @@ class TherapySessionController extends Controller
      * @param  \App\Models\TherapySession  $therapySession
      * @return \Illuminate\Http\Response
      */
-    // public function show($id, Client $client)
     public function show(TherapySession $therapySession, Client $client, $id)
     {
         $user = auth()->user();
@@ -87,7 +83,6 @@ class TherapySessionController extends Controller
 
         $user_id = $therapySession->user_id;
         $therapist = User::find($user_id);
-        // dd($therapist);
 
         return view('session.show', ['therapySession' => $therapySession, 'client' => $client, 'therapist' => $therapist]);
     }
