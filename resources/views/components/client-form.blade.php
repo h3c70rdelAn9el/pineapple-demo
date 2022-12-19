@@ -86,7 +86,6 @@
         </select>
     </x-form_input_div>
 
-    {{-- TODO:  RETURNS AN ERROR OF: USER_ID CANNOT BE NULL --}}
     <x-form_input_div>
         <x-form_label for="therapist">
             Therapist

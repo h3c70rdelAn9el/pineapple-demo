@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-main-container>
-        <x-container-header-secondary :user='$therapist'>
-            {{ $therapist->name }}
+        <x-container-header-secondary :user='$user'>
+            {{ $user->name }}
         </x-container-header-secondary>
 
 
@@ -17,6 +17,12 @@
                 <div class="flex justify-between w-1/2 p-2 capitalize border-b border-gray-400">
                     <p>{{ $client->chosen_name }} </p>
                     <p class="mt-1 mr-2 text-xs">{{ $client->pronouns }}</p>
+                </div>
+            </div>
+              <div class="flex flex-row">
+                <div class="w-1/2 p-2 border-b border-r border-gray-400">Therapist:</div>
+                <div class="flex justify-between w-1/2 p-2 capitalize border-b border-gray-400">
+                    <p>{{ $therapist->name }} </p>
                 </div>
             </div>
             <div class="flex flex-row">
