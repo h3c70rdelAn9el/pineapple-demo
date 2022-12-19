@@ -7,6 +7,7 @@
         </x-form_label>
         <x-form_input id="client_code"
             type="text"
+            required
             name="client_code"
             placeholder="Client code" />
     </x-form_input_div>
@@ -18,6 +19,7 @@
         <x-form_input id="chosen_name"
             type="text"
             name="chosen_name"
+            required
             placeholder="Chosen name" />
     </x-form_input_div>
 
@@ -27,6 +29,7 @@
         </x-form_label>
         <select x-model="pronouns"
             id="pronouns"
+            required
             name="pronouns"
             class="w-full p-3 mt-2 border-b-2 border-blue-200 rounded-md peer ring-0"
             placeholder="Pronouns">
@@ -49,6 +52,7 @@
         <x-form_input id="email"
             type="text"
             name="email"
+            required
             placeholder="email@example.com" />
     </x-form_input_div>
 
@@ -59,7 +63,8 @@
         <x-form_input id="phone"
             type="text"
             name="phone"
-            placeholder="(xxx)xxx-xxxx" />
+            placeholder="(xxx)xxx-xxxx"
+            required />
     </x-form_input_div>
 
     <x-form_input_div>
@@ -69,7 +74,8 @@
         <select id="contact_method"
             type="text"
             name="contact_method"
-            class="w-full p-3 mt-2 border-b-2 border-blue-200 rounded-md peer ring-0">
+            class="w-full p-3 mt-2 border-b-2 border-blue-200 rounded-md peer ring-0"
+            required>
             <option value=""
                 disabled
                 selected
@@ -80,13 +86,15 @@
         </select>
     </x-form_input_div>
 
+    {{-- TODO:  RETURNS AN ERROR OF: USER_ID CANNOT BE NULL --}}
     <x-form_input_div>
         <x-form_label for="therapist">
             Therapist
         </x-form_label>
         <select id="therapist"
             name="therapist"
-            class="w-full p-3 mt-2 border-b-2 border-blue-200 rounded-md peer ring-0">
+            class="w-full p-3 mt-2 border-b-2 border-blue-200 rounded-md peer ring-0"
+            required>
             <option value=""
                 disabled
                 selected
