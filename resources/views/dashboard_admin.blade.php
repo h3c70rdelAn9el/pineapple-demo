@@ -35,7 +35,7 @@
             </div>
         </div>
         <div class="w-2/3 mx-auto">
-            <x-client-form></x-client-form>
+            <x-client-form :therapists="$therapists"></x-client-form>
         </div>
     </x-main-container>
 </x-app-layout>
