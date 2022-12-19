@@ -10,10 +10,16 @@
             </div>
         </section>
         <div class="container w-5/6 mx-auto rounded-lg lg:w-2/3">
+            @if (Auth::user()->admin)
+                <a href="{{ route('fileUpload') }}" class="text-blue-600 hover:text-blue-800">
+                        Upload Insurance Form
+                </a>
+            @endif
             <div class="w-5/6 p-2 mx-auto mt-2 mb-2 rounded-md shadow-md bg-blue-50 shadow-blue-100 lg:w-1/2">
                 <p class="text-lg text-center">Add Session</p>
                 @include('components/session-form')
             </div>
+
             <h2 class="my-2 text-lg font-bold">Client Sessions:</h2>
             <div class="container grid grid-cols-3 gap-5">
 
