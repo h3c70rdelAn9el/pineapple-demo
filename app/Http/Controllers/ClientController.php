@@ -42,7 +42,8 @@ class ClientController extends Controller
      */
     public function store(Request $request)
     {
-        $user = auth()->user();
+        // $user = auth()->user();
+        $user = $request->user();
 
         $c = new Client();
         $c->client_code = $request->client_code;
@@ -51,7 +52,8 @@ class ClientController extends Controller
         $c->email = $request->email;
         $c->phone = $request->phone;
         $c->contact_method = $request->contact_method;
-        $c->user_id = $request->user_id;
+        // $c->user_id = $request->user_id;
+        $c->user_id = $user->id;
         $c->save();
 
         if ($user->admin) {

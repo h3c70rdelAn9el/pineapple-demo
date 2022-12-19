@@ -14,7 +14,6 @@ class DashboardController extends Controller
     //
     public function index(User $user, TherapySession $therapySession)
     {
-        // $patients = Patient::all();
         $user = auth()->user();
 
         $user_id = $user->id;
@@ -26,23 +25,13 @@ class DashboardController extends Controller
 
 
 
-// TODO: FIX THIS : MAKE SURE TO RETURN PROPER SESSIONS TO PATIENTS
-        $id = $therapySession->patient_id;
-        $patient = Patient::find($id);
-
-
-
-        $allpatients = Patient::all();
         $allClients = Client::all();
 
 
         if ($user->admin)
 
-            // return view('dashboard_admin', ['therapists' => $therapists, 'user' => $user]);
             return view('dashboard_admin', ['user' => $user, 'therapists' => $therapists, 'allClients' => $allClients]);
         else
-            // return view('dashboard', ['therapysessions' => $therapysessions, 'user' => $user]);
-            $status = 1;
             return view('dashboard', ['user' => $user, 'clients' => $clients, 'therapySessions' => $therapySessions, 'status' => $status]);
     }
 }
