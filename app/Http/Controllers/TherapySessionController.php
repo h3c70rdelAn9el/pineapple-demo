@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Client;
 use App\Models\Patient;
 use Illuminate\Http\Request;
@@ -60,17 +61,13 @@ class TherapySessionController extends Controller
         $client_id = $request->client_id;
         $client = Client::find($client_id);
 
+        $user_id = $ts->user_id;
+        $therapist = User::find($user_id);
+
         // dd($ts);
         // return view('clients.show')->with(['client' => $client]);
         // return redirect()->route('clients.show', [$client => 'client', $ts => 'therapySession'])->with('success');
-        return view('session.show', ['therapySession' => $ts, 'client' => $client]);
-
-        // dd($ts);
-        // return response()->json(['client_id' => $ts->client_id]);
-        // return redirect()->route('session.show');
-        //   return response()->json([
-        //     'id' => $ts->id
-        // ]);
+        return view('session.show', ['therapySession' => $ts, 'client' => $client, 'therapist' => $therapist]);
     }
 
     /**
@@ -82,12 +79,17 @@ class TherapySessionController extends Controller
     // public function show($id, Client $client)
     public function show(TherapySession $therapySession, Client $client, $id)
     {
+        $user = auth()->user();
+
         $therapySession = TherapySession::find($id);
         $client_id = $therapySession->client_id;
         $client = Client::find($client_id);
-        $status = 3;
 
-        return view('session.show', ['therapySession' => $therapySession, 'client' => $client, 'status' => $status]);
+        $user_id = $therapySession->user_id;
+        $therapist = User::find($user_id);
+        // dd($therapist);
+
+        return view('session.show', ['therapySession' => $therapySession, 'client' => $client, 'therapist' => $therapist]);
     }
 
     /**
