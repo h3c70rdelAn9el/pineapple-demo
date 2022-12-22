@@ -6,7 +6,9 @@
         <p class="text-sm text-right">{{ $client->pronouns }}</p>
     </div>
     <div class="flex flex-col text-xs text-left">
-        <p>Therapist:</p>
-        <p>{{ $therapist->name }}</p>
+        {{-- TODO:  ADD THERAPIST --}}
+        {{-- <p>Therapist:</p> --}}
+        {{-- <p>{{ $therapist }}</p> --}}
+        {{-- {{ $therapist->name }} --}}
     </div>
 </a>

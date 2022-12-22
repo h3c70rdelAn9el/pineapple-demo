@@ -22,6 +22,7 @@ class DashboardController extends Controller
 
         $therapySessions = TherapySession::where('user_id', $user->id)->get();
         $therapists = User::where('admin', 0)->get();
+        $therapist = TherapySession::where("user_id", "=", $user->id)->get();
 
 
 
@@ -32,6 +33,6 @@ class DashboardController extends Controller
 
             return view('dashboard_admin', ['user' => $user, 'therapists' => $therapists, 'allClients' => $allClients]);
         else
-            return view('dashboard', ['user' => $user, 'clients' => $clients, 'therapySessions' => $therapySessions, 'status' => $status]);
+            return view('dashboard', ['user' => $user, 'clients' => $clients, 'therapySessions' => $therapySessions, 'therapist' => $therapist]);
     }
 }
