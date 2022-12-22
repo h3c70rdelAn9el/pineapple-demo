@@ -10,10 +10,12 @@
                     <p class="ml-2">Total: <span class="font-bold">{{ $clients->count() }}</span></p>
                 </div>
                 <div class="flex flex-row flex-wrap justify-center mx-auto overflow-y-scroll">
-                    @forelse ($clients as $client)
-                        @include('components/client-card')
-                    @empty
-                    @endforelse
+
+
+                    @foreach ($clients as $client)
+                        <x-client-card :client="$client" :therapist="$therapist" ></x-client-card>
+
+                    @endforeach
                 </div>
             </div>
             <div class="p-2 m-2 bg-blue-100 rounded-md shadow-sm md:w-1/2">

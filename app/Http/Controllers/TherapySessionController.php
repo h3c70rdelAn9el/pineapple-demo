@@ -64,7 +64,12 @@ class TherapySessionController extends Controller
         $user_id = $ts->user_id;
         $therapist = User::find($user_id);
 
-        return view('session.show', ['therapySession' => $ts, 'client' => $client, 'therapist' => $therapist]);
+        if ($client->ts->count() >= 5) {
+            return view('session.show', ['therapySession' => $ts, 'client' => $client, 'therapist' => $therapist]);
+
+        } else {
+            return 404;
+        }
     }
 
     /**
