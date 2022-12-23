@@ -5,9 +5,14 @@
         <p class="capitalize ">{{ $client->chosen_name }}</p>
         <p class="text-sm text-right">{{ $client->pronouns }}</p>
     </div>
-    <div class="flex flex-col w-full p-1 text-xs text-left">
-        {{-- TODO:  ADD THERAPIST --}}
-        <p>Therapist:</p>
-        {{ $therapist->name }}
+
+
+
+@if ($user->admin)
+    <div class="ml-1 text-left">
+        <p class="text-sm">Therapist: {{ $therapist->name }}</p>
     </div>
+@endif
+
+
 </a>

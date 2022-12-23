@@ -13,7 +13,7 @@
 
 
                     @foreach ($clients as $client)
-                        <x-client-card :client="$client" :therapist="$therapist" ></x-client-card>
+                        <x-client-card :client="$client" :therapist="$therapist" :user="$user" ></x-client-card>
 
                     @endforeach
                 </div>
@@ -25,7 +25,7 @@
                 </div>
                 <div class="flex flex-row flex-wrap justify-center mx-auto overflow-y-scroll">
                     @forelse ($therapySessions as $therapySession)
-                        <x-session-card :therapySession='$therapySession'></x-session-card>
+                        <x-session-card :therapySession='$therapySession' :therapist='$therapist'></x-session-card>
                     @empty
                         <p>There are no sessions to display</p>
                     @endforelse
