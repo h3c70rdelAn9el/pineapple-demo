@@ -5,10 +5,9 @@
         <p class="capitalize ">{{ $client->chosen_name }}</p>
         <p class="text-sm text-right">{{ $client->pronouns }}</p>
     </div>
-    <div class="flex flex-col text-xs text-left">
+    <div class="flex flex-col w-full p-1 text-xs text-left">
         {{-- TODO:  ADD THERAPIST --}}
-        {{-- <p>Therapist:</p> --}}
-        {{-- <p>{{ $therapist }}</p> --}}
-        {{-- {{ $therapist->name }} --}}
+        <p>Therapist:</p>
+        {{ $therapist->name }}
     </div>
 </a>
