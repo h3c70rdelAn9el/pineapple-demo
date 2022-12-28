@@ -75,10 +75,11 @@ class ClientController extends Controller
         $therapySessions = TherapySession::all();
         // $therapist = Client::find($user_id);
 
-                // $user_id = $user->id;
+        $therapist = Client::find($client->user_id);
+        // $user_id = $user->id;
 
 
-        return view('clients.show')->with(['client' => $client,  'therapySessions' => $therapySessions]);
+        return view('clients.show')->with(['client' => $client,  'therapySessions' => $therapySessions, 'therapist' => $therapist]);
     }
 
     /**

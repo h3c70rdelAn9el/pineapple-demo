@@ -7,10 +7,12 @@
         {{-- <p class="text">{{ $therapySession->created_at->format('h:m') }}</p> --}}
     </div>
     <div class="flex justify-between w-full ml-1 text-xs">
-       <div>
+        {{-- TODO: add therapist name!!! --}}
+       {{-- <div>
             <p>Therapist:</p>
             <p class="text">{{ $therapist->name }}</p>
-       </div>
+
+       </div> --}}
         <div class="mr-1 text-right">
             <div class="">
                 <p><span class="font-bold">Total Bill</span>: {{ $therapySession->total_bill }}</p>
