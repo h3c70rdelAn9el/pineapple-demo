@@ -2,10 +2,16 @@
     class="relative w-full p-2 m-2 transition-all duration-200 ease-in border border-blue-200 rounded-lg shadow-md bg-blue-50 shadow-blue-100 hover:border hover:border-blue-400 hover:shadow-lg">
 
     <div class="flex justify-between p-1">
-        <p class="text">{{ $therapySession->created_at->format('M d Y') }}</p>
-        {{-- TODO: ADD PROPER TIME --}}
-        {{-- <p class="text">{{ $therapySession->created_at->format('h:m') }}</p> --}}
+        @if (route('clients.show', $therapySession->client->id) == url()->current())
+            <div>
+            </div>
+        @else
+            {{-- TODO: ADD PROPER TIME --}}
+            <p class="">{{ $therapySession->created_at->format('M d Y') }}</p>
+            <p class="capitalize">{{ $therapySession->client->chosen_name }}</p>
+        @endif
     </div>
+
     <div class="flex justify-between w-full ml-1 text-xs">
         <div>
             <p>Therapist:</p>
