@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Client;
 use Illuminate\Http\Request;
 use App\Models\TherapySession;
@@ -75,10 +76,11 @@ class ClientController extends Controller
         $therapySessions = TherapySession::all();
         // $therapist = Client::find($user_id);
 
-        $therapist = Client::find($client->user_id);
+        $user_id = Client::find($client->user_id);
         // $user_id = $user->id;
-
-
+// pull in the therapist from user table
+$therapist = User::find($user_id);
+// dd($therapist);
         return view('clients.show')->with(['client' => $client,  'therapySessions' => $therapySessions, 'therapist' => $therapist]);
     }
 

@@ -24,7 +24,9 @@
             <div class="container grid grid-cols-3 gap-5">
 
                 @forelse ($client->therapySessions as $therapySession)
-                    @include('components/session-card')
+
+                    {{-- @include('components/session-card') --}}
+                    <x-session-card :therapySession='$therapySession' :user='$therapist' />
                 @empty
                     <p>No sessions to display</p>
                 @endforelse
@@ -32,3 +34,8 @@
         </div>
     </x-main-container>
 </x-app-layout>
+
+
+{{-- @foreach ($collection as $object)
+    {{ $object->title }}
+@endforeach --}}
