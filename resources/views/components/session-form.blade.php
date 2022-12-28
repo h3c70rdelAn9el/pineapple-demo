@@ -35,7 +35,7 @@
     </div>
     <div class="mt-2">
         <button type="submit"
-            class="px-2 py-1 duration-200 bg-blue-300 rounded-md hover:scale-110">
+            class="px-2 py-1 duration-200 bg-blue-300 rounded-md hover:scale-110"  e.preventDefault();>
             Submit
         </button>
     </div>
