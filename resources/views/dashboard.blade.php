@@ -25,7 +25,7 @@
                 </div>
                 <div class="flex flex-row flex-wrap justify-center mx-auto overflow-y-scroll">
                     @forelse ($therapySessions as $therapySession)
-                        <x-session-card :therapySession='$therapySession' :therapist='$therapist'></x-session-card>
+                        <x-session-card :therapySession='$therapySession' :therapist='$therapist' :client='$client'></x-session-card>
                     @empty
                         <p>There are no sessions to display</p>
                     @endforelse
