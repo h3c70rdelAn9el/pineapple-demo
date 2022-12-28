@@ -135,14 +135,26 @@
                     class="mt-2" />
             </div>
 
-            {{-- File Upload --}}
-            <div class="mt-3">
-                <a href="{{ route('fileUpload') }}">
-                    <button type="button"
-                        class="text-sm text-gray-600 underline hover:text-gray-900">
-                        {{ __('Click here to upload your certification document.') }}
-                    </button>
-                </a>
+            {{-- Certificate File Upload --}}
+            <div class="flex flex-col w-2/3 mt-3">
+                <p>Upload your documents:</p>
+                <div class="mt-3 ml-1">
+                    <a href="{{ route('fileUpload') }}">
+                        <button type="button"
+                            class="px-2 py-1 text-sm transition-all duration-200 bg-blue-800 rounded-md text-gray-50 hover:bg-blue-500">
+                            {{ __('Certification') }}
+                        </button>
+                    </a>
+                </div>
+                {{-- W9 - File Upload --}}
+                <div class="mt-3 ml-1">
+                    <a href="{{ route('fileUpload') }}">
+                        <button type="button"
+                            class="px-2 py-1 mx-auto text-sm transition-all duration-200 bg-blue-800 rounded-md text-gray-50 hover:bg-blue-500">
+                            {{ __('W9') }}
+                        </button>
+                    </a>
+                </div>
             </div>
         </div>
     </x-slot>
