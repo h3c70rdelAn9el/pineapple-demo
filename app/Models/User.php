@@ -31,7 +31,9 @@ class User extends Authenticatable
         'password',
         'license',
         'certificate',
-        'expires_at'
+        'expires_at',
+        'bank_name',
+        'account_number',
     ];
 
     /**
