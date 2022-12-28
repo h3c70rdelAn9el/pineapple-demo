@@ -7,21 +7,24 @@
         <input type="text"
             id="total_bill"
             name="total_bill"
-            class="form-input">
+            class="form-input"
+            required>
     </div>
     <div>
         <label for="covered_cost">covered cost</label>
         <input type="text"
             id="covered_cost"
             name="covered_cost"
-            class="form-input">
+            class="form-input"
+            required>
     </div>
     <div>
         <label for="created_at">Session Date</label>
         <input type="datetime-local"
             id="created_at"
             name="created_at"
-            class="form-input">
+            class="form-input"
+            required>
     </div>
     <div class="hidden">
         <label for="client_id">id</label>
