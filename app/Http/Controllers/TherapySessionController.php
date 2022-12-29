@@ -49,22 +49,31 @@ class TherapySessionController extends Controller
 
         $user = auth()->user();
 
-        $ts = new TherapySession();
-        $ts->client_id = $request->client_id;
-        $ts->total_bill = $request->total_bill;
-        $ts->covered_cost = $request->covered_cost;
-        $ts->created_at = $request->created_at;
-        $ts->user_id = $user->id;
-        $ts->save();
-
         // $client = Client::find($request->client_id);
         $client_id = $request->client_id;
         $client = Client::find($client_id);
 
-        $user_id = $ts->user_id;
-        $therapist = User::find($user_id);
+        if ($client->therapySessions()->count() < $client->max_sessions) {
+            $ts = new TherapySession();
+            $ts->client_id = $request->client_id;
+            $ts->total_bill = $request->total_bill;
+            $ts->covered_cost = $request->covered_cost;
+            $ts->created_at = $request->created_at;
+            $ts->user_id = $user->id;
+            $ts->save();
 
-        return redirect()->back();
+            // ]);
+            $user_id = $ts->user_id;
+            $therapist = User::find($user_id);
+            return redirect()
+                ->back()
+                ->with('success', 'Session added successfully.');
+        } else {
+            return redirect()
+                ->back()
+                ->with('error', 'You have reached the maximum number of sessions for this client.');
+        }
+
     }
 
     /**
