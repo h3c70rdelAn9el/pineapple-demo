@@ -7,6 +7,7 @@ use App\Models\Client;
 use App\Models\Patient;
 use Illuminate\Http\Request;
 use App\Models\TherapySession;
+use Illuminate\Support\Facades\Session;
 use App\Http\Requests\StoreTherapySessionRequest;
 use App\Http\Requests\UpdateTherapySessionRequest;
 
@@ -69,9 +70,9 @@ class TherapySessionController extends Controller
                 ->back()
                 ->with('success', 'Session added successfully.');
         } else {
+            Session::flash('error', 'You have reached the maximum number of sessions for this client.');
             return redirect()
-                ->back()
-                ->with('error', 'You have reached the maximum number of sessions for this client.');
+                ->back();
         }
 
     }
