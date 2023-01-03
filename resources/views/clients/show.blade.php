@@ -1,4 +1,11 @@
 <x-app-layout>
+    @if (Session::has('error'))
+        <div class="relative z-10 grid h-12 mx-auto place-items-center">
+            <div class="absolute px-4 py-2 text-white bg-blue-800 rounded-md alert alert-danger">
+                {{ Session::get('error') }}
+            </div>
+        </div>
+    @endif
     <x-main-container>
         <section
             class="flex flex-row items-center justify-around w-full mx-auto text-white bg-blue-500 rounded-t-md md:flex-row">
@@ -11,22 +18,20 @@
         </section>
         <div class="container w-5/6 mx-auto rounded-lg lg:w-2/3">
             @if (Auth::user()->admin)
-                <a href="{{ route('fileUpload') }}" class="text-blue-600 hover:text-blue-800">
-                        Upload Insurance Form
+                <a href="{{ route('fileUpload') }}"
+                    class="text-blue-600 hover:text-blue-800">
+                    Upload Insurance Form
                 </a>
             @endif
             <div class="w-5/6 p-2 mx-auto mt-2 mb-2 rounded-md shadow-md bg-blue-50 shadow-blue-100 lg:w-1/2">
                 <p class="text-lg text-center">Add Session</p>
                 @include('components/session-form')
             </div>
-
             <h2 class="my-2 text-lg font-bold">Client Sessions:</h2>
             <div class="container grid grid-cols-3 gap-5">
-
                 @forelse ($client->therapySessions as $therapySession)
-
-                    {{-- @include('components/session-card') --}}
-                    <x-session-card :therapySession='$therapySession' :user='$therapist' />
+                    <x-session-card :therapySession='$therapySession'
+                        :user='$therapist' />
                 @empty
                     <p>No sessions to display</p>
                 @endforelse
@@ -34,8 +39,3 @@
         </div>
     </x-main-container>
 </x-app-layout>
-
-
-{{-- @foreach ($collection as $object)
-    {{ $object->title }}
-@endforeach --}}
