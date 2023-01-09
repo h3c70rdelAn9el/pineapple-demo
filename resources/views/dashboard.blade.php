@@ -9,7 +9,7 @@
                     <p class="font-bold">Clients:</p>
                     <p class="ml-2">Total: <span class="font-bold">{{ $clients->count() }}</span></p>
                 </div>
-                <div class="flex flex-row flex-wrap justify-center mx-auto overflow-y-scroll">
+                <div class="flex flex-row flex-wrap p-2 m-2 mx-auto overflow-y-scroll h-96">
 
                     @foreach ($clients as $client)
                         <x-client-card :client="$client"
@@ -19,11 +19,11 @@
                 </div>
             </div>
             <div class="p-2 m-2 bg-blue-100 rounded-md shadow-sm md:w-1/2">
-                <div class="flex flex-row flex-wrap justify-between mx-12 mb-2 text-lg border-b border-gray-100">
+                <div class="flex flex-row flex-wrap justify-between mx-12 mb-2 overflow-y-scroll text-lg border-b border-gray-100">
                     <p class="font-bold">Sessions:</p>
                     <p class="ml-2">Total: <span class="font-bold">{{ $therapySessions->count() }}</span></p>
                 </div>
-                <div class="flex flex-row flex-wrap justify-center mx-auto overflow-y-scroll">
+                <div class="flex flex-row flex-wrap justify-center mx-auto overflow-y-scroll h-96">
                     @forelse ($therapySessions as $therapySession)
                         <x-session-card
                             :therapySession='$therapySession'
