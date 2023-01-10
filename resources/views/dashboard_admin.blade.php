@@ -11,11 +11,12 @@
                     <p class="ml-2">Total: <span class="font-bold">{{ $therapists->count() }}</span></p>
                 </div>
 
-                <div class="w-full overflow-y-scroll h-96">
+                <div class="w-full h-56 overflow-y-scroll lg:h-96">
                     <div class="w-full px-2 mx-auto -mt-4">
                         @forelse ($therapists as $therapist)
                             {{-- @include('components/therapists-card') --}}
-                            <x-therapists-card :therapist="$therapist" :therapySessions="$therapySessions"></x-therapists-card>
+                            <x-therapists-card :therapist="$therapist"
+                                :therapySessions="$therapySessions"></x-therapists-card>
                         @empty
                         @endforelse
                     </div>
@@ -27,7 +28,7 @@
                     <p class="font-bold">All Clients:</p>
                     <p class="ml-2">Total: <span class="font-bold">{{ $allClients->count() }}</span></p>
                 </div>
-                <div class="flex overflow-y-scroll h-96">
+                <div class="flex h-56 overflow-y-scroll lg:h-96">
                     <div class="flex flex-row flex-wrap justify-center mx-auto">
                         @forelse ($allClients as $client)
                             @include('components/client-card')
@@ -37,9 +38,25 @@
                 </div>
             </div>
         </div>
-        <div class="w-10/12 max-w-3xl mx-auto">
+        {{-- <div class="w-10/12 max-w-3xl mx-auto">
             <h3 class="text-lg text-center">Add Client</h3>
             <x-client-form :therapists="$therapists"></x-client-form>
+        </div> --}}
+
+        <div x-data="{ open: false }"
+            class="w-10/12 max-w-3xl mx-auto">
+            <button x-on:click="open = ! open"
+                class="text-lg text-center text-blue-400 hover:text-blue-600">Add Client</button>
+            <div x-show="open" x-transition.duration.300ms>
+                <div class="relative">
+                    <div class="absolute z-20 w-full h-screen bg-blue-200 border border-blue-600 rounded-md lg:-top-80 -top-20 -mt-96"
+                        style="z-index: 99999;"
+                        @click.away="open = false"
+                        >
+                        <x-client-form :therapists="$therapists"></x-client-form>
+                    </div>
+                </div>
+            </div>
         </div>
     </x-main-container>
 </x-app-layout>
