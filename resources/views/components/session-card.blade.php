@@ -12,17 +12,18 @@
         @endif
     </div>
 
-    <div class="flex justify-between w-full ml-1 text-xs">
-
-        @if (route('dashboard') !== url()->current())
+    <div class="flex flex-row justify-between w-full ml-1 text-xs">
+        <div class="flex items-center">
+            @if (Auth::user()->admin)
+                <div class="flex flex-row">
+                    <p class="mr-1">Therapist:</p>
+                    <p class="capitalize">{{ $therapySession->client->user->name }}</p>
+                </div>
+            @endif
             <div>
-            <p>Therapist:</p>
-            <p class="capitalize">{{ $therapySession->client->user->name }}</p>
-        </div>
-        @else
-            <div>
+                <p class="">{{ $therapySession->created_at->format('M d Y') }}</p>
             </div>
-        @endif
+        </div>
         <div class="mr-1 text-right">
             <div class="">
                 <p><span class="font-bold">Total Bill</span>: {{ $therapySession->total_bill }}</p>
