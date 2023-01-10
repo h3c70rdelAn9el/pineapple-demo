@@ -16,13 +16,13 @@
                 <x-clock class="pr-2 font-bold text-right text-white bg-blue-500 lg:text-xl"></x-clock>
             </div>
         </section>
+        @if (Auth::user()->admin)
+            <a href="{{ route('fileUpload') }}"
+                class="h-6 ml-10 text-sm text-blue-600 hover:text-blue-800">
+                Upload Insurance Form
+            </a>
+        @endif
         <div class="container flex flex-col w-5/6 max-w-5xl mx-auto rounded-lg lg:flex-row">
-            @if (Auth::user()->admin)
-                <a href="{{ route('fileUpload') }}"
-                    class="text-blue-600 hover:text-blue-800">
-                    Upload Insurance Form
-                </a>
-            @endif
             {{-- left side --}}
             <div class="p-2 mx-auto mt-2 mb-2 rounded-md shadow-md bg-blue-50 shadow-blue-100 lg:w-1/2">
                 <p class="text-lg text-center">Add Session</p>
