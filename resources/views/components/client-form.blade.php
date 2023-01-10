@@ -1,5 +1,5 @@
 <form action="{{ route('client.store') }}"
-    class="p-4 mt-2">
+    class="p-2 mt-2 rounded-md shadow-lg">
     @csrf
     <x-form_input_div>
         <x-form_label for="client_code">
