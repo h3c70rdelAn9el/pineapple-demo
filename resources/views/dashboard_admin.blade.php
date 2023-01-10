@@ -11,10 +11,11 @@
                     <p class="ml-2">Total: <span class="font-bold">{{ $therapists->count() }}</span></p>
                 </div>
 
-                <div class="overflow-y-scroll h-96">
-                    <div class="flex flex-col flex-wrap mx-auto">
+                <div class="w-full overflow-y-scroll h-96">
+                    <div class="w-full px-2 mx-auto -mt-4">
                         @forelse ($therapists as $therapist)
-                            @include('components/therapists-card')
+                            {{-- @include('components/therapists-card') --}}
+                            <x-therapists-card :therapist="$therapist" :therapySessions="$therapySessions"></x-therapists-card>
                         @empty
                         @endforelse
                     </div>
@@ -23,7 +24,7 @@
 
             <div class="p-2 m-2 bg-blue-100 rounded-md shadow-sm md:w-1/2">
                 <div class="flex flex-wrap justify-between mx-12 mb-2 text-lg">
-                    <p class="font-bold">Clients:</p>
+                    <p class="font-bold">All Clients:</p>
                     <p class="ml-2">Total: <span class="font-bold">{{ $allClients->count() }}</span></p>
                 </div>
                 <div class="flex overflow-y-scroll h-96">
