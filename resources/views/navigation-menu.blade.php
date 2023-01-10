@@ -6,9 +6,8 @@
                 <!-- Logo -->
                 <div class="flex items-center">
                     <a href="{{ route('dashboard') }}">
-                        {{-- <x-jet-application-mark class="block w-auto h-9" /> --}}
-                        {{-- <img src="/pineapple-logo-pineapple.png" alt="logo" class="h-20 pt-3"> --}}
-                        <img src="/pineapple-logo-horizontal-300x120.png" alt="logo" class="h-20 pt-3">
+                        <img src="/pineapple-logo-horizontal-300x120.png" alt="logo" class="hidden h-20 pt-3 lg:block">
+                        <img src="/pineapple-logo-vertical-2.png" alt="logo" class="pt-1 lg:hidden" style="height: 50px;">
 
                     </a>
                 </div>

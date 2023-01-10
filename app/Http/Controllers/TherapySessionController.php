@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
+use App\Models\Client;
 use App\Models\Patient;
 use Illuminate\Http\Request;
 use App\Models\TherapySession;
+use Illuminate\Support\Facades\Session;
 use App\Http\Requests\StoreTherapySessionRequest;
 use App\Http\Requests\UpdateTherapySessionRequest;
 
@@ -41,23 +44,37 @@ class TherapySessionController extends Controller
      * @param  \App\Http\Requests\StoreTherapySessionRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, Patient $patient)
+    public function store(Request $request)
     {
-        // TODO: GET IT TO WORK WITH THE REQEUST FORM
-        // public function store(StoreTherapySessionRequest $request)
-        $user = $request->user();
+        // TODO: MAKE A THE REQEUST FORM
 
-        $ts = new TherapySession();
-        $ts->patient_id = $request->patient_id;
-        $ts->total_bill = $request->total_bill;
-        $ts->covered_cost = $request->covered_cost;
-        $ts->user_id = $user->id;
-        $ts->save();
+        $user = auth()->user();
 
-        $id = $request->patient_id;
-        $patient = Patient::find($id);
+        // $client = Client::find($request->client_id);
+        $client_id = $request->client_id;
+        $client = Client::find($client_id);
 
-        return view('patient')->with(['patient' => $patient]);
+        if ($client->therapySessions()->count() < $client->max_sessions) {
+            $ts = new TherapySession();
+            $ts->client_id = $request->client_id;
+            $ts->total_bill = $request->total_bill;
+            $ts->covered_cost = $request->covered_cost;
+            $ts->created_at = $request->created_at;
+            $ts->user_id = $user->id;
+            $ts->save();
+
+            // ]);
+            $user_id = $ts->user_id;
+            $therapist = User::find($user_id);
+            return redirect()
+                ->back()
+                ->with('success', 'Session added successfully.');
+        } else {
+            Session::flash('error', 'You have reached the maximum number of sessions for this client.');
+            return redirect()
+                ->back();
+        }
+
     }
 
     /**
@@ -66,17 +83,18 @@ class TherapySessionController extends Controller
      * @param  \App\Models\TherapySession  $therapySession
      * @return \Illuminate\Http\Response
      */
-    public function show($id, Patient $patient)
+    public function show(TherapySession $therapySession, Client $client, $id)
     {
-        // $therapySession = User::find($id);
-        $therapySession = TherapySession::find($id);
-        $patient = Patient::find($id);
-        // dd($therapySession);
-        // $ts = $therapySession;
+        $user = auth()->user();
 
-        //TODO:  NOT RETURNING PROPER PATIENT INFO:
-        // dd($patient);
-        return view('session.show', ['therapySession' => $therapySession, 'patient' => $patient]);
+        $therapySession = TherapySession::find($id);
+        $client_id = $therapySession->client_id;
+        $client = Client::find($client_id);
+
+        $user_id = $therapySession->user_id;
+        $therapist = User::find($user_id);
+
+        return view('session.show', ['therapySession' => $therapySession, 'client' => $client, 'therapist' => $therapist, 'user' => $user]);
     }
 
     /**

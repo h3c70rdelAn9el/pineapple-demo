@@ -135,14 +135,54 @@
                     class="mt-2" />
             </div>
 
-            {{-- File Upload --}}
-            <div class="mt-3">
-                <a href="{{ route('fileUpload') }}">
-                    <button type="button"
-                        class="text-sm text-gray-600 underline hover:text-gray-900">
-                        {{ __('Click here to upload your certification document.') }}
-                    </button>
-                </a>
+
+            {{-- Bank Information --}}
+            {{-- Bank Name --}}
+            <div class="col-span-6 mt-4 sm:col-span-4">
+                <x-jet-label for="bank_name"
+                    value="{{ __('Bank Name') }}" />
+                <x-jet-input id="bank_name"
+                    type="text"
+                    class="block w-full mt-1"
+                    wire:model.defer="state.bank_name"
+                    autocomplete="bank_anme" />
+                <x-jet-input-error for="bank_name"
+                    class="mt-2" />
+            </div>
+
+            {{-- Account Number --}}
+            <div class="col-span-6 mt-4 sm:col-span-4">
+                <x-jet-label for="account_number"
+                    value="{{ __('Account Number') }}" />
+                <x-jet-input id="account_number"
+                    type="text"
+                    class="block w-full mt-1"
+                    wire:model.defer="state.account_number"
+                    autocomplete="account_number" />
+                <x-jet-input-error for="account_number"
+                    class="mt-2" />
+            </div>
+
+            {{-- Certificate File Upload --}}
+            <div class="flex flex-col w-2/3 mt-3">
+                <p>Upload your documents:</p>
+                <div class="mt-3 ml-1">
+                    <a href="{{ route('fileUpload') }}">
+                        <button type="button"
+                            class="px-2 py-1 text-sm transition-all duration-200 bg-blue-800 rounded-md text-gray-50 hover:bg-blue-500">
+                            {{ __('Certification') }}
+                        </button>
+                    </a>
+                </div>
+                {{-- W9 - File Upload --}}
+                <div class="mt-3 ml-1">
+                    <a href="{{ route('fileUpload') }}">
+                        <button type="button"
+                            class="px-2 py-1 mx-auto text-sm transition-all duration-200 bg-blue-800 rounded-md text-gray-50 hover:bg-blue-500">
+                            {{ __('W9') }}
+                        </button>
+                    </a>
+                </div>
             </div>
         </div>
     </x-slot>

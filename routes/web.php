@@ -3,6 +3,7 @@
 use App\Models\TherapySession;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FileController;
+use App\Http\Controllers\ClientController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\TherapistsController;
@@ -58,6 +59,13 @@ Route::middleware([
 ])->get('/patient/store', [PatientController::class, 'store'])->name('patient.store');
 
 
+Route::middleware([
+    'auth:sanctum',
+    config('jetstream.auth_session'),
+    'verified'
+])->get('/client/store', [ClientController::class, 'store'])->name('client.store');
+
+
 
 // Route::middleware([
 //     'auth:sanctum',
@@ -72,11 +80,11 @@ Route::middleware([
 // ])->get('/patients/{patient_id}', [PatientController::class, 'show'])->name('patient');
 
 
-// Route::middleware([
-//     'auth:sanctum',
-//     config('jetstream.auth_session'),
-//     'verified'
-// ])->get('/session/store', [TherapySessionController::class, 'store'])->name('session.store');
+Route::middleware([
+    'auth:sanctum',
+    config('jetstream.auth_session'),
+    'verified'
+])->post('/session/store', [TherapySessionController::class, 'store'])->name('session.store');
 
 
 // Route::middleware([
@@ -91,12 +99,13 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified'
 ])->group(function () {
-    Route::get('/session/store', [TherapySessionController::class, 'store'])->name('session.store');
+    // Route::post('/session/store', [TherapySessionController::class, 'store'])->name('session.store');
     Route::get('/session/{id}', [TherapySessionController::class, 'show'])->name('session.show');
     Route::get('/patients/{patient_id}', [PatientController::class, 'show'])->name('patient');
     Route::get('/patients', [PatientController::class, 'index'])->name('patients');
     Route::get('file-upload', [FileController::class, 'index'])->name('fileUpload');
     Route::post('file-store', [FileController::class, 'store'])->name('fileStore');
+    Route::get('/clients/{client_id}', [ClientController::class, 'show'])->name('clients.show');
 });
 
 
