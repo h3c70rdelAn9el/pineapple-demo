@@ -21,12 +21,12 @@ class DashboardController extends Controller
         $client = Client::find($user_id);
         $allClients = Client::all();
 
-        $therapySessions = TherapySession::where('user_id', $user->id)->get();
+        $therapySessions = TherapySession::where('user_id', $user->id)->orderBy('id', 'DESC')->get();
         $therapists = User::where('admin', 0)->get();
         $therapist = User::find($user_id);
 
         if ($user->admin)
-            return view('dashboard_admin', ['user' => $user, 'therapists' => $therapists, 'allClients' => $allClients, 'therapist' => $therapist]);
+            return view('dashboard_admin', ['user' => $user, 'therapists' => $therapists, 'allClients' => $allClients, 'therapist' => $therapist, 'therapySessions' => '$therapySessions']);
         else
             return view('dashboard', ['user' => $user, 'clients' => $clients, 'client' => $client, 'therapySessions' => $therapySessions, 'therapist' => $therapist]);
     }
