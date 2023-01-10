@@ -37,7 +37,8 @@
                 </div>
             </div>
         </div>
-        <div class="w-2/3 mx-auto">
+        <div class="w-10/12 max-w-3xl mx-auto">
+            <h3 class="text-lg text-center">Add Client</h3>
             <x-client-form :therapists="$therapists"></x-client-form>
         </div>
     </x-main-container>
