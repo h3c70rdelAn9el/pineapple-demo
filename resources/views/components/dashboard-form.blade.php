@@ -49,6 +49,15 @@
             Insurance
         </x-form_label>
     </x-form_input_div>
+    <x-form_input_div>
+        <x-form_input id="user_id"
+            type="text"
+            name="user_id"
+            placeholder="Therapist" />
+        <x-form_label for="user">
+            Therapist
+        </x-form_label>
+    </x-form_input_div>
     <div class="mt-2">
         <button type="submit"
             class="px-2 py-1 duration-200 bg-blue-300 rounded-md hover:scale-110">
