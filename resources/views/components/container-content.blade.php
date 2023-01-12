@@ -9,7 +9,7 @@
             </span>
         </p>
     </div>
-    <div class="flex flex-row flex-wrap p-2 m-2 mx-auto overflow-y-scroll h-96">
+    <div class="flex flex-col w-full p-2 m-2 mx-auto overflow-x-hidden overflow-y-scroll h-96">
         {{ $content }}
     </div>
 </div>

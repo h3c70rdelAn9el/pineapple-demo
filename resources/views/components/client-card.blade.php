@@ -1,6 +1,6 @@
 <a href="{{ route('clients.show', $client->id) }}"
     {{-- class="flex flex-col justify-between w-full h-20 p-2 m-2 text-center transition-all duration-200 ease-in bg-blue-200 border border-transparent rounded-md shadow-md group shadow-blue-100 hover:border hover:border-blue-500 hover:shadow-lg"> --}}
-    class="relative flex flex-col justify-between w-full h-20 p-2 m-2 transition-all duration-200 ease-in bg-blue-200 border border-blue-200 rounded-lg shadow-md shadow-blue-100 hover:border hover:border-blue-500 hover:shadow-lg">
+    class="relative flex flex-col justify-between h-20 p-2 m-2 transition-all duration-200 ease-in bg-blue-200 border border-blue-200 rounded-lg shadow-md shadow-blue-100 hover:border hover:border-blue-500 hover:shadow-lg">
 
     <div class="-mt-1.5 flex w-full flex-row justify-between p-1">
         <p class="capitalize">{{ $client->chosen_name }}</p>
