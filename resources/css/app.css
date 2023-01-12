@@ -9,3 +9,7 @@
         @apply w-full rounded-md shadow-md;
     }
 }
+
+[x-cloak] {
+    display: none !important;
+}

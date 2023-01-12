@@ -5,38 +5,36 @@
         </x-container-header>
 
         <div class="flex flex-col w-full h-full max-w-6xl p-4 mx-auto mt-3 rounded-md md:flex-row">
-            <div class="p-2 m-2 bg-blue-100 rounded-md shadow-sm md:w-1/2">
-                <div class="flex flex-row flex-wrap justify-between mx-12 mb-2 text-lg border-b border-gray-100">
-                    <p class="font-bold">Therpists:</p>
-                    <p class="ml-2">Total: <span class="font-bold">{{ $therapists->count() }}</span></p>
-                </div>
+            <x-container-content>
+                <x-slot name="title">
+                    Therapists:
+                </x-slot>
+                <x-slot name="count">
+                    {{ $therapists->count() }}
+                </x-slot>
+                <x-slot name="content">
+                    @foreach ($therapists as $therapist)
+                        <x-therapists-card :therapist="$therapist"></x-therapists-card>
+                    @endforeach
+                </x-slot>
+            </x-container-content>
 
-                <div class="w-full h-56 overflow-y-scroll lg:h-96">
-                    <div class="w-full px-2 mx-auto -mt-4">
-                        @forelse ($therapists as $therapist)
-                            {{-- @include('components/therapists-card') --}}
-                            <x-therapists-card :therapist="$therapist"
-                                :therapySessions="$therapySessions"></x-therapists-card>
-                        @empty
-                        @endforelse
-                    </div>
-                </div>
-            </div>
+            <x-container-content>
+                <x-slot name="title">
+                    Clients:
+                </x-slot>
+                <x-slot name="count">
+                    {{ $allClients->count() }}
+                </x-slot>
+                <x-slot name="content">
+                    @foreach ($allClients as $client)
+                        <x-client-card :client="$client"
+                            :therapist="$therapist"
+                            :user="$user"></x-client-card>
+                    @endforeach
+                </x-slot>
+            </x-container-content>
 
-            <div class="p-2 m-2 bg-blue-100 rounded-md shadow-sm md:w-1/2">
-                <div class="flex flex-wrap justify-between mx-12 mb-2 text-lg">
-                    <p class="font-bold">All Clients:</p>
-                    <p class="ml-2">Total: <span class="font-bold">{{ $allClients->count() }}</span></p>
-                </div>
-                <div class="flex h-56 overflow-y-scroll lg:h-96">
-                    <div class="flex flex-row flex-wrap justify-center mx-auto">
-                        @forelse ($allClients as $client)
-                            @include('components/client-card')
-                        @empty
-                        @endforelse
-                    </div>
-                </div>
-            </div>
         </div>
         {{-- <div class="w-10/12 max-w-3xl mx-auto">
             <h3 class="text-lg text-center">Add Client</h3>
@@ -44,15 +42,18 @@
         </div> --}}
 
         <div x-data="{ open: false }"
+            x-cloak
             class="w-10/12 max-w-3xl mx-auto">
             <button x-on:click="open = ! open"
                 class="text-lg text-center text-blue-400 hover:text-blue-600">Add Client</button>
-            <div x-show="open" x-transition.duration.300ms>
+            <div x-show="open"
+                x-transition.duration.300ms
+                x-cloak>
                 <div class="relative">
-                    <div class="absolute z-20 w-full h-screen bg-blue-200 border border-blue-600 rounded-md lg:-top-80 -top-20 -mt-96"
+                    <div class="absolute z-20 w-full h-screen bg-blue-200 border border-blue-600 rounded-md -top-20 -mt-96 lg:-top-80"
                         style="z-index: 99999;"
                         @click.away="open = false"
-                        >
+                        x-cloak>
                         <x-client-form :therapists="$therapists"></x-client-form>
                     </div>
                 </div>
