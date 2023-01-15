@@ -1,5 +1,5 @@
 <form action="{{ route('client.store') }}"
-    class="p-2 mt-2 rounded-md shadow-lg">
+    class="z-50 p-4 mt-2 bg-blue-200 border border-blue-600 rounded-md shadow-lg">
     @csrf
     <x-form_input_div>
         <x-form_label for="client_code">
@@ -60,9 +60,12 @@
         <x-form_label for="phone">
             Phone
         </x-form_label>
-        <x-form_input id="phone"
+        <x-form_input
+            x-data
+            id="phone"
             type="text"
             name="phone"
+            x-mask="(999)999-9999"
             placeholder="(xxx)xxx-xxxx"
             required />
     </x-form_input_div>
