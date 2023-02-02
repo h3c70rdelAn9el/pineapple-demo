@@ -13,35 +13,37 @@
     </x-form_input_div>
 
     <x-form_input_div>
-        <x-form_label for="chosen_name">
-            Chosen Name
+        <x-form_label for="preferred_name">
+            Preferred Name
         </x-form_label>
-        <x-form_input id="chosen_name"
+        <x-form_input id="preferred_name"
             type="text"
-            name="chosen_name"
+            name="preferred_name"
             required
-            placeholder="Chosen name" />
+            placeholder="Preferred name" />
     </x-form_input_div>
 
     <x-form_input_div>
         <x-form_label for="pronouns">
             Pronouns
         </x-form_label>
-        <select x-model="pronouns"
+        <select type="text"
             id="pronouns"
             required
             name="pronouns"
-            class="w-full p-3 mt-2 border-b-2 border-blue-200 rounded-md peer ring-0"
-            placeholder="Pronouns">
+            class="w-full p-3 mt-2 border-b-2 border-blue-200 rounded-md peer ring-0">
             <option value=""
                 disabled
                 selected
-                hidden>Pronouns:</option>
-            <option>He/Him</option>
-            <option>She/Her</option>
-            <option>They/Them</option>
-            <option>Ze</option>
-            <option>Chosen Name</option>
+                hidden>Pronouns</option>
+            <option>they/them/theirs</option>
+            <option>she/her/hers</option>
+            <option>he/him/his</option>
+            <option>per/per/pers</option>
+            <option>ze/hir/hirs</option>
+            <option>prefer not to say</option>
+            <option>Other</option>
+
         </select>
     </x-form_input_div>
 
@@ -60,8 +62,7 @@
         <x-form_label for="phone">
             Phone
         </x-form_label>
-        <x-form_input
-            x-data
+        <x-form_input x-data
             id="phone"
             type="text"
             name="phone"
@@ -83,8 +84,8 @@
                 disabled
                 selected
                 hidden>Preferred Contact Method</option>
-            <option>Phone</option>
-            <option>Text</option>
+            <option>Telephone Call</option>
+            <option>Text Message</option>
             <option>Email</option>
         </select>
     </x-form_input_div>
