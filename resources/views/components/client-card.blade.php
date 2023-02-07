@@ -7,11 +7,8 @@
         <p class="text-sm text-right">{{ $client->pronouns }}</p>
     </div>
     @if ($user->admin)
-        {{-- <div class="ml-1 text-left">
-            <p class="text-sm">Therapist: {{ $therapist->name }}</p>
-        </div> --}}
         <div class="flex flex-row justify-between p-1">
-            <p class="text-sm text-left">Therapist: {{ $client->therapist }}</p>
+            <p class="text-sm text-left">Therapist: {{ $client->user->name }}</p>
         </div>
     @endif
     <div class="p-1 pb-2">
