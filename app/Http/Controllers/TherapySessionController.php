@@ -57,8 +57,8 @@ class TherapySessionController extends Controller
         if ($client->therapySessions()->count() < $client->max_sessions) {
             $ts = new TherapySession();
             $ts->client_id = $request->client_id;
-            $ts->total_bill = $request->total_bill;
-            $ts->covered_cost = $request->covered_cost;
+            $ts->session_cost = $request->session_cost;
+            $ts->client_contribution = $request->client_contribution;
             $ts->created_at = $request->created_at;
             $ts->user_id = $user->id;
             $ts->save();
