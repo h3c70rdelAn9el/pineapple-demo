@@ -436,12 +436,13 @@
         </select>
     </x-form_input_div>
 
+    {{-- TODO: ASSIGN TO PROPER THERAPIST --}}
     <x-form_input_div>
         <x-form_label for="therapist">
             Therapist
         </x-form_label>
-        <select id="therapist"
-            name="therapist"
+        <select id="user_id"
+            name="user_id"
             class="w-full p-3 mt-2 border-b-2 border-blue-200 rounded-md peer ring-0"
             required>
             <option value=""
