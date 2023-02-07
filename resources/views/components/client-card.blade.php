@@ -3,12 +3,15 @@
     class="relative flex flex-col justify-between h-20 p-2 m-2 transition-all duration-200 ease-in bg-blue-200 border border-blue-200 rounded-lg shadow-md shadow-blue-100 hover:border hover:border-blue-500 hover:shadow-lg">
 
     <div class="-mt-1.5 flex w-full flex-row justify-between p-1">
-        <p class="capitalize">{{ $client->chosen_name }}</p>
+        <p class="capitalize">{{ $client->preferred_name }}</p>
         <p class="text-sm text-right">{{ $client->pronouns }}</p>
     </div>
     @if ($user->admin)
-        <div class="ml-1 text-left">
+        {{-- <div class="ml-1 text-left">
             <p class="text-sm">Therapist: {{ $therapist->name }}</p>
+        </div> --}}
+        <div class="flex flex-row justify-between p-1">
+            <p class="text-sm text-left">Therapist: {{ $client->therapist }}</p>
         </div>
     @endif
     <div class="p-1 pb-2">
