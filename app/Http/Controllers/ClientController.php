@@ -71,7 +71,7 @@ class ClientController extends Controller
         $c->contact_method = $request->contact_method;
         // $c->user_id = $request->user_id;
         // $c->user_id = $user->id;
-
+        // todo: assign a user id to the client
         $c->user_id = request()->user()->id;
         $c->save();
 

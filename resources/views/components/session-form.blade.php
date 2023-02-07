@@ -3,22 +3,22 @@
     method="POST">
     @csrf
     <div>
-        <label for="total_bill">total bill</label>
+        <label for="session_cost">Session Cost</label>
         <input type="text"
             x-data
-            id="total_bill"
-            name="total_bill"
+            id="session_cost"
+            name="session_cost"
             class="form-input"
             required
             x-mask:dynamic="$money($input)"
             placeholder="0.00">
     </div>
     <div>
-        <label for="covered_cost">covered cost</label>
+        <label for="client_contribution">Client Contribution</label>
         <input type="text"
             x-data
-            id="covered_cost"
-            name="covered_cost"
+            id="client_contribution"
+            name="client_contribution"
             class="form-input"
             required
             x-mask:dynamic="$money($input)"
