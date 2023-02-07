@@ -21,13 +21,32 @@ class DashboardController extends Controller
         $client = Client::find($user_id);
         $allClients = Client::all();
 
-        $therapySessions = TherapySession::where('user_id', $user->id)->orderBy('id', 'DESC')->get();
-        $therapists = User::where('admin', 0)->get();
-        $therapist = User::find($user_id);
 
-        if ($user->admin)
-            return view('dashboard_admin', ['user' => $user, 'therapists' => $therapists, 'allClients' => $allClients, 'therapist' => $therapist, 'therapySessions' => '$therapySessions']);
-        else
-            return view('dashboard', ['user' => $user, 'clients' => $clients, 'client' => $client, 'therapySessions' => $therapySessions, 'therapist' => $therapist]);
+        $therapySessions = TherapySession::where('user_id', $user->id)
+            ->orderBy('id', 'DESC')
+            ->get();
+        $therapists = User::where('admin', 0)->get();
+        // $therapist = User::find($user_id);
+        $therapist = Client::find($user_id)->therapist;
+
+        // add the client's therapist
+
+
+        // TODO: FIX THIS RETRIVAL OF STATES
+        // add states from states.json file
+        // $states = file_get_contents(storage_path('states.json'));
+        // $states = $states;
+        // dd($states);
+            $file = file_get_contents(storage_path('states.json'));
+    $states = json_decode($file, true);
+
+
+
+
+        if ($user->admin) {
+            return view('dashboard_admin', ['user' => $user, 'therapists' => $therapists, 'allClients' => $allClients, 'therapist' => $therapist, 'therapySessions' => '$therapySessions', 'states' => $states]);
+        } else {
+            return view('dashboard', ['user' => $user, 'clients' => $clients, 'client' => $client, 'therapySessions' => $therapySessions, 'therapist' => $therapist, 'states' => $states]);
+        }
     }
 }
