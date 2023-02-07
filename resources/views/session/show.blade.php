@@ -22,7 +22,7 @@
               <div class="flex flex-row">
                 <div class="w-1/2 p-2 border-b border-r border-gray-400">Therapist:</div>
                 <div class="flex justify-between w-1/2 p-2 capitalize border-b border-gray-400">
-                    <p>{{ $therapist->name }} </p>
+                    <p>{{ $client->user->name }} </p>
                 </div>
             </div>
             <div class="flex flex-row">
