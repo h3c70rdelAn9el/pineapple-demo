@@ -5,9 +5,7 @@
             @if (Auth::user()->admin)
                 <div class="flex flex-row">
                     <p class="mr-1">Therapist:</p>
-                    {{-- display the client's therapist/user name --}}
-                    {{-- TODO: DISPLAY PROPER THERAPIST/USER NAME --}}
-                    {{-- <p class="font-bold">{{ $therapist->id }}</p> --}}
+                    <p>{{ $therapySession->client->user->name }}</p>
                 </div>
             @endif
             <div>
