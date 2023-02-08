@@ -22,10 +22,11 @@ class TherapySessionController extends Controller
     {
         $therapySessions = TherapySession::get();
         $ts = [];
+        $therapist = User::find($user_id);
         foreach ($therapySessions as $t) {
             $ts[] = $t;
         }
-        return view('patient.show', ['therapySessions' => $ts]);
+        return view('client.show', ['therapySessions' => $ts, 'therapist' => $therapist]);
     }
 
     /**

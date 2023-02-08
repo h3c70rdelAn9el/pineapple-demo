@@ -40,7 +40,7 @@
                 <div class="flex flex-row flex-wrap p-2 mx-auto overflow-y-scroll h-96">
                     @forelse ($client->therapySessions as $therapySession)
                         <x-session-card :therapySession='$therapySession'
-                            :user='$therapist' />
+                            :therapist='$therapist' />
                     @empty
                         <p>Client does not have any sessions</p>
                     @endforelse
