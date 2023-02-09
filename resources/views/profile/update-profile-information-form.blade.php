@@ -90,7 +90,7 @@
                 class="mt-2" />
 
             @if (Laravel\Fortify\Features::enabled(Laravel\Fortify\Features::emailVerification()) &&
-                !$this->user->hasVerifiedEmail())
+                    !$this->user->hasVerifiedEmail())
                 <p class="mt-2 text-sm">
                     {{ __('Your email address is unverified.') }}
 
@@ -135,7 +135,6 @@
                     class="mt-2" />
             </div>
 
-
             {{-- Bank Information --}}
             {{-- Bank Name --}}
             <div class="col-span-6 mt-4 sm:col-span-4">
@@ -145,7 +144,7 @@
                     type="text"
                     class="block w-full mt-1"
                     wire:model.defer="state.bank_name"
-                    autocomplete="bank_anme" />
+                    autocomplete="bank_name" />
                 <x-jet-input-error for="bank_name"
                     class="mt-2" />
             </div>
@@ -182,6 +181,24 @@
                             {{ __('W9') }}
                         </button>
                     </a>
+                </div>
+
+                {{-- TODO:  add vacation button --}}
+
+                {{-- TODO: ADD TOGGLE OR CHECKBOX FOR VACATION TIME --}}
+                {{-- TODO:  NOT HITTING DATABASE! --}}
+
+                {{-- FIRST TRY --}}
+                <div class="pt-1">
+                    <label for="on_vacation" value="{{ __('') }}">On Vacation:</label>
+                    <input type="checkbox"
+                        class="rounded-md"
+                        name="on_vacation"
+                        id="on_vacation"
+                    wire:model.defer="state.on_vacation"
+                        value=""
+                        {{ old('on_vacation', $this->user->on_vacation) ? 'checked' : '' }}
+                        >
                 </div>
             </div>
         </div>
