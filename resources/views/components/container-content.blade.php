@@ -3,7 +3,7 @@
         <p class="font-bold">
             {{ $title }}
         </p>
-        <p class="ml-2">Total:
+        <p class="ml-2">
             <span class="font-bold">
                 {{ $count }}
             </span>
