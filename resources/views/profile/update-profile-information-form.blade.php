@@ -183,12 +183,7 @@
                     </a>
                 </div>
 
-                {{-- TODO:  add vacation button --}}
-
-                {{-- TODO: ADD TOGGLE OR CHECKBOX FOR VACATION TIME --}}
-                {{-- TODO:  NOT HITTING DATABASE! --}}
-
-                {{-- FIRST TRY --}}
+                {{-- on_vacation --}}
                 <div class="pt-1">
                     <label for="on_vacation" value="{{ __('') }}">On Vacation:</label>
                     <input type="checkbox"
