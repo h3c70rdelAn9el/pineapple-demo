@@ -62,6 +62,7 @@ class TherapySessionController extends Controller
             $ts->client_contribution = $request->client_contribution;
             $ts->created_at = $request->created_at;
             $ts->user_id = $user->id;
+            $ts->attendance = $request->attendance;
             $ts->save();
 
             // ]);

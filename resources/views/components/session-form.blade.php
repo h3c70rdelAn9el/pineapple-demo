@@ -32,6 +32,24 @@
             class="form-input"
             required>
     </div>
+
+    <div>
+        <label for="attendance">Attendance</label>
+        <select name="attendance"
+            id="attendance"
+            class="w-full rounded-md"
+            required>
+
+                    <option value=""
+                disabled
+                selected
+                hidden>Please Select:</option>
+            <option value="attended">Attended</option>
+            <option value="canceled">Canceled</option>
+            <option value="no-show">No Show</option>
+        </select>
+    </div>
+
     <div class="hidden">
         <label for="client_id">id</label>
         <input type="text"
