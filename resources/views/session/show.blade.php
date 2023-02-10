@@ -4,14 +4,13 @@
             {{ $user->name }}
         </x-container-header-secondary>
 
-
         <section
             class="w-5/6 h-full p-2 mx-auto mt-3 text-gray-800 bg-gray-100 border border-black rounded-lg shadow-md shadow-blue-100 lg:w-1/2">
-               <div>
-            <p class="text-lg">Client: <span class="font-bold capitalize">
-                {{ $therapySession->client->preferred_name }}
-            <p class="text-lg text-center">Session Details</p>
-        </div>
+            <div>
+                <p class="text-lg">Client: <span class="font-bold capitalize">
+                        {{ $therapySession->client->preferred_name }}
+                        <p class="text-lg text-center">Session Details</p>
+            </div>
             <div class="flex flex-row">
                 <div class="w-1/2 p-2 border-b border-r border-gray-400">Preferred Name:</div>
                 <div class="flex justify-between w-1/2 p-2 capitalize border-b border-gray-400">
@@ -19,7 +18,7 @@
                     <p class="mt-1 mr-2 text-xs">{{ $client->pronouns }}</p>
                 </div>
             </div>
-              <div class="flex flex-row">
+            <div class="flex flex-row">
                 <div class="w-1/2 p-2 border-b border-r border-gray-400">Therapist:</div>
                 <div class="flex justify-between w-1/2 p-2 capitalize border-b border-gray-400">
                     <p>{{ $client->user->name }} </p>
@@ -37,11 +36,16 @@
             </div>
             <div class="flex flex-row">
                 <div class="w-1/2 p-2 border-b border-r border-gray-400">Session Cost:</div>
-                <div class="w-1/2 p-2 border-b border-y-gray-400">{{ $therapySession->session_cost }}</div>
+                <div class="w-1/2 p-2 border-b border-gray-400">{{ $therapySession->session_cost }}</div>
             </div>
             <div class="flex flex-row">
-                <div class="w-1/2 p-2 border-r border-gray-400">Client Contribution:</div>
-                <div class="w-1/2 p-2">{{ $therapySession->client_contribution }}</div>
+                <div class="w-1/2 p-2 border-b border-r border-gray-400">Client Contribution:</div>
+                <div class="w-1/2 p-2 border-b border-gray-400">{{ $therapySession->client_contribution }}</div>
+            </div>
+            {{-- display session attendance  string --}}
+            <div class="flex flex-row">
+                <div class="w-1/2 p-2 border-r border-gray-400">Session Attendance:</div>
+                <div class="w-1/2 p-2 capitalize">{{ $therapySession->attendance }}</div>
             </div>
         </section>
         <div class="flex mt-2">

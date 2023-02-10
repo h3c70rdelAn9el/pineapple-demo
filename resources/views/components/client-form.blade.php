@@ -144,18 +144,6 @@
     </x-form_input_div>
 
     {{-- home_address_state --}}
-    {{-- <x-form_input_div>
-        <x-form_label for="home_address_state">
-            State
-        </x-form_label>
-        <x-form_input id="home_address_state"
-            type="text"
-            name="home_address_state"
-            required
-            placeholder="State" />
-    </x-form_input_div> --}}
-
-    {{-- write a loop for options from state.json file --}}
     <x-form_input_div>
         <x-form_label for="home_address_state">
             State
@@ -170,11 +158,6 @@
                 selected
                 hidden>Select State</option>
             {{-- TODO: RETRIEVE FROM JSON FILE SUCCESSFULLY --}}
-            {{-- retrive states abbrevation from json file  and append a key--}}
-            {{-- @foreach ($states as $key => $state)
-                <option>{{ $state[1]->abbreviation }}</option>
-            @endforeach --}}
-
 
 
             <option>Alabama</option>
