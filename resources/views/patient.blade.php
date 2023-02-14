@@ -10,17 +10,17 @@
             class="capitalize">
             @csrf
             <div>
-                <label for="total_bill">total bill</label>
+                <label for="session_cost">session cost</label>
                 <input type="text"
-                    id="total_bill"
-                    name="total_bill"
+                    id="session_cost"
+                    name="session_cost"
                     class="form-input">
             </div>
             <div>
-                <label for="covered_cost">covered cost</label>
+                <label for="client_contribution">client contribution</label>
                 <input type="text"
-                    id="total_bill"
-                    name="covered_cost"
+                    id="client_contribution"
+                    name="client_contribution"
                     class="form-input">
             </div>
             <div class="hidden">
@@ -57,10 +57,10 @@
                     </div>
                     <div class="w-full text-xs text-right">
                         <div class="">
-                            <p><span class="font-bold">Total Bill</span>: {{ $therapySession->total_bill }}</p>
+                            <p><span class="font-bold">Session Cost</span>: {{ $therapySession->session_cost }}</p>
                         </div>
                         <div class="">
-                            <p><span class="font-bold">Covered Cost</span>: {{ $therapySession->covered_cost }}</p>
+                            <p><span class="font-bold">Client Contribution</span>: {{ $therapySession->client_contribution }}</p>
                         </div>
                     </div>
                     <div class="text-xs">

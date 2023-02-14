@@ -34,14 +34,13 @@
                     @endforeach
                 </x-slot>
             </x-container-content>
-
         </div>
         <div x-data="{ open:  false }">
             <button @click="open = !open"
                 class="text-lg text-center text-blue-400 hover:text-blue-600">Add Client</button>
             <div x-show="open" x-cloak @click.away="open = false">
-                <div class="absolute inset-0 w-2/3 mx-auto top-2 ">
-                    <x-client-form :therapists="$therapists"></x-client-form>
+                <div class="absolute inset-0 w-2/3 mx-auto top-6 ">
+                    <x-client-form :therapists="$therapists" :states="$states"></x-client-form>
                 </div>
             </div>
         </div>

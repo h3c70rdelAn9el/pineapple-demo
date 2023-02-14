@@ -10,7 +10,7 @@
         <section
             class="flex flex-row items-center justify-around w-full mx-auto text-white bg-blue-500 rounded-t-md md:flex-row">
             <div class="p-4 text-center capitalize shadow-md sm:rounded-lg">
-                <p class="text-md md:text-xl">Client: <span class="font-bold">{{ $client->chosen_name }}</span></p>
+                <p class="text-md md:text-xl">Client: <span class="font-bold">{{ $client->preferred_name }}</span></p>
             </div>
             <div class="bg-blue-500 w-44">
                 <x-clock class="pr-2 font-bold text-right text-white bg-blue-500 lg:text-xl"></x-clock>
@@ -40,7 +40,7 @@
                 <div class="flex flex-row flex-wrap p-2 mx-auto overflow-y-scroll h-96">
                     @forelse ($client->therapySessions as $therapySession)
                         <x-session-card :therapySession='$therapySession'
-                            :user='$therapist' />
+                            :therapist='$therapist' />
                     @empty
                         <p>Client does not have any sessions</p>
                     @endforelse

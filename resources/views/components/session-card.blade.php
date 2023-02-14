@@ -5,7 +5,7 @@
             @if (Auth::user()->admin)
                 <div class="flex flex-row">
                     <p class="mr-1">Therapist:</p>
-                    <p class="capitalize">{{ $therapySession->client->user->name }}</p>
+                    <p>{{ $therapySession->client->user->name }}</p>
                 </div>
             @endif
             <div>
@@ -14,10 +14,10 @@
         </div>
         <div class="mr-1 text-right">
             <div class="">
-                <p><span class="font-bold">Total Bill</span>: {{ $therapySession->total_bill }}</p>
+                <p><span class="font-bold">Session Cost</span>: {{ $therapySession->session_cost }}</p>
             </div>
             <div class="">
-                <p><span class="font-bold">Covered Cost</span>: {{ $therapySession->covered_cost }}</p>
+                <p><span class="font-bold">Client Contribution</span>: {{ $therapySession->client_contribution }}</p>
             </div>
         </div>
     </div>

@@ -23,7 +23,8 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
             'email' => ['required', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
             'photo' => ['nullable', 'mimes:jpg,jpeg,png', 'max:1024'],
             'license' => ['required', 'string', 'max:255'],
-            'expires_at' => ['required', 'date' ]
+            'expires_at' => ['required', 'date' ],
+            'on_vacation' => ['required', 'boolean'],
         ])->validateWithBag('updateProfileInformation');
 
         if (isset($input['photo'])) {
@@ -38,7 +39,8 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
                 'name' => $input['name'],
                 'email' => $input['email'],
                 'license' => $input['license'],
-                'expires_at' => $input['expires_at']
+                'expires_at' => $input['expires_at'],
+                'on_vacation' => $input['on_vacation'],
             ])->save();
         }
     }
