@@ -3,22 +3,22 @@
     method="POST">
     @csrf
     <div>
-        <label for="total_bill">total bill</label>
+        <label for="session_cost">Session Cost</label>
         <input type="text"
             x-data
-            id="total_bill"
-            name="total_bill"
+            id="session_cost"
+            name="session_cost"
             class="form-input"
             required
             x-mask:dynamic="$money($input)"
             placeholder="0.00">
     </div>
     <div>
-        <label for="covered_cost">covered cost</label>
+        <label for="client_contribution">Client Contribution</label>
         <input type="text"
             x-data
-            id="covered_cost"
-            name="covered_cost"
+            id="client_contribution"
+            name="client_contribution"
             class="form-input"
             required
             x-mask:dynamic="$money($input)"
@@ -32,6 +32,24 @@
             class="form-input"
             required>
     </div>
+
+    <div>
+        <label for="attendance">Attendance</label>
+        <select name="attendance"
+            id="attendance"
+            class="w-full rounded-md"
+            required>
+
+                    <option value=""
+                disabled
+                selected
+                hidden>Please Select:</option>
+            <option value="attended">Attended</option>
+            <option value="canceled">Canceled</option>
+            <option value="no-show">No Show</option>
+        </select>
+    </div>
+
     <div class="hidden">
         <label for="client_id">id</label>
         <input type="text"

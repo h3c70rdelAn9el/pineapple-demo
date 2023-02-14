@@ -22,10 +22,11 @@ class TherapySessionController extends Controller
     {
         $therapySessions = TherapySession::get();
         $ts = [];
+        $therapist = User::find($user_id);
         foreach ($therapySessions as $t) {
             $ts[] = $t;
         }
-        return view('patient.show', ['therapySessions' => $ts]);
+        return view('client.show', ['therapySessions' => $ts, 'therapist' => $therapist]);
     }
 
     /**
@@ -57,10 +58,11 @@ class TherapySessionController extends Controller
         if ($client->therapySessions()->count() < $client->max_sessions) {
             $ts = new TherapySession();
             $ts->client_id = $request->client_id;
-            $ts->total_bill = $request->total_bill;
-            $ts->covered_cost = $request->covered_cost;
+            $ts->session_cost = $request->session_cost;
+            $ts->client_contribution = $request->client_contribution;
             $ts->created_at = $request->created_at;
             $ts->user_id = $user->id;
+            $ts->attendance = $request->attendance;
             $ts->save();
 
             // ]);
