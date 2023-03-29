@@ -4,11 +4,11 @@
             {{ $user->name }}
         </x-container-header>
         <div class="flex flex-row pt-2 ml-7">
-            <p>
+            {{-- <p>
                 On Vacation:
-            </p>
+            </p> --}}
             <p class="ml-2">
-                {{ $user->on_vacation ? 'Yes' : 'No' }}
+                {{ $user->on_vacation ? 'On Vacation' : 'Available' }}
             </p>
         </div>
         <div class="flex flex-col-reverse w-full h-full max-w-6xl p-4 mx-auto mt-3 rounded-md md:flex-row">

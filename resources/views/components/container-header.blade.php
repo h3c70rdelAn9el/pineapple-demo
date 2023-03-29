@@ -7,4 +7,12 @@
     <div class="bg-blue-500 md:w-44 min-w-min">
         <x-clock class="text-base font-bold text-white bg-blue-500"></x-clock>
     </div>
+       <div class="flex flex-row ">
+           <button class="button">
+                <a href="/chatify">
+                    Messenger
+                </a>
+           </button >
+           {{-- TODO: add unseen message count --}}
+        </div>
 </section>
