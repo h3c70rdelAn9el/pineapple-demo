@@ -11,14 +11,6 @@
                 {{ $user->on_vacation ? 'On Vacation' : 'Available' }}
             </p>
         </div>
-         <div class="flex flex-row pt-2 ml-8">
-           <button class="button">
-                <a href="/chatify">
-                    Messenger
-                </a>
-           </button >
-           {{-- TODO: add unseen message count --}}
-        </div>
         <div class="flex flex-col-reverse w-full h-full max-w-6xl p-4 mx-auto mt-3 rounded-md md:flex-row">
             <x-container-content>
                 <x-slot name="title">

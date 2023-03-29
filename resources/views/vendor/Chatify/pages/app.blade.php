@@ -64,15 +64,15 @@
                     {{-- header buttons --}}
                     <nav class="m-header-right">
                         <a href="#" class="add-to-favorite"><i class="fas fa-star"></i></a>
-                        <a href="/"><i class="fas fa-home"></i></a>
+                        {{-- <a href="/"><i class="fas fa-home"></i></a> --}}
                         <a href="#" class="show-infoSide"><i class="fas fa-info-circle"></i></a>
                     </nav>
                 </nav>
                 {{-- Internet connection --}}
                 <div class="internet-connection">
-                    <span class="ic-connected">Connected</span>
+                    <span class="ic-connected">Connected!</span>
                     <span class="ic-connecting">Connecting...</span>
-                    <span class="ic-noInternet">No internet access</span>
+                    <span class="ic-noInternet">Sorry, there is no internet access</span>
                 </div>
             </div>
 
@@ -99,9 +99,9 @@
             @include('Chatify::layouts.sendForm')
         </div>
         {{-- ---------------------- Info side ---------------------- --}}
-        <div class="messenger-infoView app-scroll">
+        <div class="mt-[68px] messenger-infoView app-scroll lg:mt-0">
             {{-- nav actions --}}
-            <nav>
+            <nav class="">
                 <p>User Details</p>
                 <a href="#"><i class="fas fa-times"></i></a>
             </nav>
