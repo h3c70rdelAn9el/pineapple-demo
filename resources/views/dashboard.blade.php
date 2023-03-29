@@ -17,12 +17,7 @@
                     Messenger
                 </a>
            </button >
-            <p class="ml-2">
-                {{-- how do i render if there are unread messages --}}
-
-
-
-            </p>
+           {{-- TODO: add unseen message count --}}
         </div>
         <div class="flex flex-col-reverse w-full h-full max-w-6xl p-4 mx-auto mt-3 rounded-md md:flex-row">
             <x-container-content>
