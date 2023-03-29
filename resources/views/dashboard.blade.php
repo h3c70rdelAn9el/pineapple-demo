@@ -4,22 +4,21 @@
             {{ $user->name }}
         </x-container-header>
         <div class="flex flex-row pt-2 ml-7">
-            <p>
+            {{-- <p>
                 On Vacation:
-            </p>
+            </p> --}}
             <p class="ml-2">
-                {{ $user->on_vacation ? 'Yes' : 'No' }}
+                {{ $user->on_vacation ? 'On Vacation' : 'Available' }}
             </p>
         </div>
-         <div class="flex flex-row pt-2 ml-7">
-            <a href="/chat">
-                Chat
-            </a>
+         <div class="flex flex-row pt-2 ml-8">
+           <button class="button">
+                <a href="/chatify">
+                    Messenger
+                </a>
+           </button >
             <p class="ml-2">
-                            {{-- {!! $user->unseenCounter > 0 ? "<b>".$user->unseenCounter."</b>" : '' !!} --}}
-                            {{-- how to render if unseen messages count --}}
-
-                            {{ $user->unseenCounter }}
+                {{-- how do i render if there are unread messages --}}
 
 
 
