@@ -1,4 +1,4 @@
-<title>{{ config('chatify.name') }}</title>
+<title>{{ __('Pineapple') }}</title>
 
 {{-- Meta tags --}}
 <meta name="viewport" content="width=device-width, initial-scale=1">
