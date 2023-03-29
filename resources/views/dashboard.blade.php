@@ -11,6 +11,20 @@
                 {{ $user->on_vacation ? 'Yes' : 'No' }}
             </p>
         </div>
+         <div class="flex flex-row pt-2 ml-7">
+            <a href="/chat">
+                Chat
+            </a>
+            <p class="ml-2">
+                            {{-- {!! $user->unseenCounter > 0 ? "<b>".$user->unseenCounter."</b>" : '' !!} --}}
+                            {{-- how to render if unseen messages count --}}
+
+                            {{ $user->unseenCounter }}
+
+
+
+            </p>
+        </div>
         <div class="flex flex-col-reverse w-full h-full max-w-6xl p-4 mx-auto mt-3 rounded-md md:flex-row">
             <x-container-content>
                 <x-slot name="title">
