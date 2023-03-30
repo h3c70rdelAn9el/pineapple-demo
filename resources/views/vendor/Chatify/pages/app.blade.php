@@ -2,9 +2,9 @@
 <x-app-layout>
     <div class="messenger">
         {{-- ----------------------Users/Groups lists side---------------------- --}}
-        <div class="messenger-listView {{ !!$id ? 'conversation-active' : '' }}">
+        <div class="messenger-listView {{ !!$id ? 'conversation-active' : '' }} mt-[68px] lg:mt-0">
             {{-- Header and search bar --}}
-            <div class="m-header">
+            <div class="m-header ">
                 <nav>
                     <a href="#"><i class="fas fa-inbox"></i> <span class="messenger-headTitle">MESSAGES</span> </a>
                     {{-- header buttons --}}
@@ -99,7 +99,7 @@
             @include('Chatify::layouts.sendForm')
         </div>
         {{-- ---------------------- Info side ---------------------- --}}
-        <div class="mt-[68px] messenger-infoView app-scroll lg:mt-0">
+        <div class="mt-[68px] lg:mt-0 messenger-infoView app-scroll">
             {{-- nav actions --}}
             <nav class="">
                 <p>User Details</p>
