@@ -5,6 +5,9 @@
         <div class="w-2/3 p-2 m-2 mx-auto text-center bg-blue-100 rounded-lg lg:w-1/3">
             <h1 class="capitalize">Therapist: <span class="text-lg lg:font-bold">{{ $therapist->name }}</span></h1>
             {{-- TODO:  add credentials --}}
+            <p class="ml-2 text-sm text-gray-700">
+                {{ $user->on_vacation ? 'On Vacation' : 'Available' }}
+            </p>
         </div>
         <div class="flex flex-col w-full h-full max-w-6xl p-4 mx-auto mt-3 rounded-md md:flex-row">
             {{-- left/top --}}
@@ -29,13 +32,17 @@
                     Sessions
                 </x-slot>
                 <x-slot name="count">
-                    {{ $therapySessions->count() }}
+                    {{ $clients->sum(function ($client) {
+                        return $client->therapySessions->count();
+                    }) }}
                 </x-slot>
                 <x-slot name="content">
-                    @forelse ($therapySessions as $therapySession)
-                        <x-session-card :therapySession='$therapySession'
-                            :therapist='$therapist'
-                            :client='$client'></x-session-card>
+                    @forelse ($clients as $client)
+                        @foreach ($client->therapySessions as $therapySession)
+                            <x-session-card :therapySession='$therapySession'
+                                :therapist='$therapist'
+                                :client='$client'></x-session-card>
+                        @endforeach
                     @empty
                         <p>There are no sessions to display</p>
                     @endforelse
