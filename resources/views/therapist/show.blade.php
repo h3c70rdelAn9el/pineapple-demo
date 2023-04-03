@@ -29,13 +29,17 @@
                     Sessions
                 </x-slot>
                 <x-slot name="count">
-                    {{ $therapySessions->count() }}
+                    {{ $clients->sum(function ($client) {
+                        return $client->therapySessions->count();
+                    }) }}
                 </x-slot>
                 <x-slot name="content">
-                    @forelse ($therapySessions as $therapySession)
-                        <x-session-card :therapySession='$therapySession'
-                            :therapist='$therapist'
-                            :client='$client'></x-session-card>
+                    @forelse ($clients as $client)
+                        @foreach ($client->therapySessions as $therapySession)
+                            <x-session-card :therapySession='$therapySession'
+                                :therapist='$therapist'
+                                :client='$client'></x-session-card>
+                        @endforeach
                     @empty
                         <p>There are no sessions to display</p>
                     @endforelse
