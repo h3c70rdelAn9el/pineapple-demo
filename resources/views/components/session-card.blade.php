@@ -8,6 +8,10 @@
                     <p>{{ $therapySession->client->user->name }}</p>
                 </div>
             @endif
+            <div class="flex flex-row">
+                <p class="mr-1">Client:</p>
+                <p>{{ $therapySession->client->preferred_name }}</p>
+            </div>
             <div>
                 <p class="">{{ $therapySession->created_at->format('M d Y') }}</p>
             </div>
