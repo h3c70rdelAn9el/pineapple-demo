@@ -10,6 +10,10 @@ class SearchController extends Controller
 {
     public function __invoke(Request $request)
     {
+        // add the user
+        $user = auth()->user();
+
+
         $results = null;
 
 
@@ -32,6 +36,7 @@ class SearchController extends Controller
         return view('search', [
             'results' => $results,
             'query' => $query,
+            'user' => $user
         ]);
     }
 }
