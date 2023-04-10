@@ -29,12 +29,12 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        // 'license',
-        // 'certificate',
-        // 'expires_at',
-        // 'bank_name',
-        // 'account_number',
-        // 'on_vacation',
+        'license',
+        'certificate',
+        'expires_at',
+        'bank_name',
+        'account_number',
+        'on_vacation',
     ];
 
     /**
@@ -65,6 +65,10 @@ class User extends Authenticatable
      */
     protected $appends = [
         'profile_photo_url',
+    ];
+
+    protected $attributes = [
+        'expires_at' => 0,
     ];
 
     public function clients()
