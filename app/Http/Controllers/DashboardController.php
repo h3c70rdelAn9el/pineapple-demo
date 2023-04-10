@@ -27,7 +27,7 @@ class DashboardController extends Controller
             ->get();
         $therapists = User::where('admin', 0)->get();
         // $therapist = User::find($user_id);
-        $therapist = Client::find($user_id)->therapist;
+        $therapist = Client::find($user_id)?->therapist;
 
         // add the client's therapist
 
@@ -37,8 +37,8 @@ class DashboardController extends Controller
         // $states = file_get_contents(storage_path('states.json'));
         // $states = $states;
         // dd($states);
-            $file = file_get_contents(storage_path('states.json'));
-    $states = json_decode($file, true);
+        $file = file_get_contents(storage_path('states.json'));
+        $states = json_decode($file, true);
 
 
 
