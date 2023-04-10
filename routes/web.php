@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\SearchController;
 use App\Models\TherapySession;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FileController;
@@ -106,6 +107,7 @@ Route::middleware([
     Route::get('file-upload', [FileController::class, 'index'])->name('fileUpload');
     Route::post('file-store', [FileController::class, 'store'])->name('fileStore');
     Route::get('/clients/{client_id}', [ClientController::class, 'show'])->name('clients.show');
+    Route::get('/search', SearchController::class)->name('search');
 });
 
 
