@@ -11,6 +11,24 @@
                 {{ $user->on_vacation ? 'On Vacation' : 'Available' }}
             </p>
         </div>
+        {{-- search form --}}
+        <div class="w-1/2 mx-auto mt-2">
+            <form action="/search"
+                method="get">
+                @csrf
+                <div class="flex flex-row">
+                    <input type="text"
+                        placeholder="Search for..."
+                        id="query"
+                        name="query"
+                        class="block w-full rounded-md"
+                        livekeyup="search"
+                        {{-- value={{ request()->get('query') }} --}}>
+                    <button type="submit"
+                        class="px-4 py-2 font-bold text-white bg-blue-500 rounded-md hover:bg-blue-700">Search</button>
+                </div>
+            </form>
+        </div>
         <div class="flex flex-col-reverse w-full h-full max-w-6xl p-4 mx-auto mt-3 rounded-md md:flex-row">
             <x-container-content>
                 <x-slot name="title">
