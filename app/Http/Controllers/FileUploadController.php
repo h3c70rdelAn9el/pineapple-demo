@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
+use App\Models\FileUpload;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Contracts\View\View;
+use App\Http\Controllers\TherapistsController;
 
 
 class FileUploadController extends Controller
@@ -24,7 +28,7 @@ class FileUploadController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(): View
     {
         return view('file-upload');
     }
@@ -35,27 +39,10 @@ class FileUploadController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    // public function store(Request $request)
-    // {
-    //     $request->validate([
-    //         'file' => 'required|mimes:pdf,jpg,jpeg,png|max:2048',
-    //     ]);
 
-    //     // $fileName = time().'.'.$request->file->extension();
-    //     $fileName = $request->file->getClientOriginalName();
 
-    //     $request->file->storeAs('uploads', $fileName);
 
-    //     $request->file->move(public_path('uploads'), $fileName);
-
-    //     return back()
-    //         ->with('success', 'Thank you.  You have uploaded your file.')
-    //         ->with('file', $fileName);
-    // }
-
-    // use Illuminate\Http\Response;
-
-    public function store(Request $request): Response
+    public function store(Request $request)
     {
         $user = $request->user();
         $request->validate([
@@ -64,32 +51,54 @@ class FileUploadController extends Controller
 
         $fileName = $request->file->getClientOriginalName();
 
-        $request->file->storeAs('uploads', $fileName);
+        $request->file->storeAs('uploads/forms/therapist', $fileName);
 
         $request->file->move(public_path('uploads/forms/therapist'), $fileName);
-
-        $response = new Response();
-        $response->setContent('File uploaded successfully');
-        $response->setStatusCode(Response::HTTP_CREATED);
 
         $user->fileUploads()->create([
             'file_path' => $fileName,
             'file_name' => $fileName,
         ]);
-        return $response;
+
+        return redirect('user/profile')
+            ->with('alert', 'success')
+            ->with('message', 'Thank you. You have uploaded your file.')
+            ->with('file_name', $fileName);
+
     }
 
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    * Display the specified resource.
+    * @param  int  $id
+    * @return \Illuminate\Http\Response
+    //  */
+    // public function show($id)
+    // {
+    //     // $name = $file_name;
+    //     // return view('therapist-forms', ['id' => $id, 'name' => $name]);
+    //     return response(view('therapist-forms', ['id' => $id,]));
+    // }
+    // show the function with a view including the file_name
+    // public function show($id): View
+    // {
+    //     return view('therapist-forms', ['id' => $id,]);
+    // }
+
+    public function show($id): View
     {
-        //
+        // Retrieve the file name based on the ID
+        // $therapistForm = TherapistsController::findOrFail($id);
+        $therapistForm = FileUpload::findOrFail($id);
+        $file_name = $therapistForm->file_name;
+
+        // dd($file_name);
+
+        // Pass the ID and file name to the view
+        return view('therapist-forms', ['id' => $id, 'file_name' => $file_name]);
     }
+
+
 
     /**
      * Show the form for editing the specified resource.
