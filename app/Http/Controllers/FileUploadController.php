@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
-class FileController extends Controller
+
+class FileUploadController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -13,7 +15,8 @@ class FileController extends Controller
      */
     public function index()
     {
-        return view('file-upload');
+        // return view('file-upload');
+        return response(view('file-upload'));
     }
 
     /**
@@ -23,7 +26,7 @@ class FileController extends Controller
      */
     public function create()
     {
-        //
+        return view('file-upload');
     }
 
     /**
@@ -32,23 +35,50 @@ class FileController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    // public function store(Request $request)
+    // {
+    //     $request->validate([
+    //         'file' => 'required|mimes:pdf,jpg,jpeg,png|max:2048',
+    //     ]);
+
+    //     // $fileName = time().'.'.$request->file->extension();
+    //     $fileName = $request->file->getClientOriginalName();
+
+    //     $request->file->storeAs('uploads', $fileName);
+
+    //     $request->file->move(public_path('uploads'), $fileName);
+
+    //     return back()
+    //         ->with('success', 'Thank you.  You have uploaded your file.')
+    //         ->with('file', $fileName);
+    // }
+
+    // use Illuminate\Http\Response;
+
+    public function store(Request $request): Response
     {
+        $user = $request->user();
         $request->validate([
             'file' => 'required|mimes:pdf,jpg,jpeg,png|max:2048',
         ]);
 
-        // $fileName = time().'.'.$request->file->extension();
         $fileName = $request->file->getClientOriginalName();
 
         $request->file->storeAs('uploads', $fileName);
 
-        $request->file->move(public_path('uploads'), $fileName);
+        $request->file->move(public_path('uploads/forms/therapist'), $fileName);
 
-        return back()
-            ->with('success', 'Thank you.  You have uploaded your file.')
-            ->with('file', $fileName);
+        $response = new Response();
+        $response->setContent('File uploaded successfully');
+        $response->setStatusCode(Response::HTTP_CREATED);
+
+        $user->fileUploads()->create([
+            'file_path' => $fileName,
+            'file_name' => $fileName,
+        ]);
+        return $response;
     }
+
 
     /**
      * Display the specified resource.
