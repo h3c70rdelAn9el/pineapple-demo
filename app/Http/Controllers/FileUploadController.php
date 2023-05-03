@@ -17,10 +17,16 @@ class FileUploadController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($id)
     {
-        // return view('file-upload');
-        return response(view('file-upload'));
+
+        $user = auth()->user();
+        $therapist = User::find($id);
+        $id = $user->id;
+        $file_name = FileUpload::where('user_id', $user->id)
+            ->get();
+
+        return view('therapist-forms', ['file_name' => $file_name, 'user' => $user, 'therapist' => $therapist, 'id' => $id]);
     }
 
     /**
@@ -84,7 +90,7 @@ class FileUploadController extends Controller
         // dd($file_name);
 
         // Pass the ID and file name to the view
-        return view('therapist-forms', ['id' => $id, 'file_name' => $file_name]);
+        // return view('therapist-forms', ['id' => $id, 'file_name' => $file_name]);
     }
 
 
