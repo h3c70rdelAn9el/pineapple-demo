@@ -73,17 +73,6 @@ class FileUploadController extends Controller
     * @param  int  $id
     * @return \Illuminate\Http\Response
     //  */
-    // public function show($id)
-    // {
-    //     // $name = $file_name;
-    //     // return view('therapist-forms', ['id' => $id, 'name' => $name]);
-    //     return response(view('therapist-forms', ['id' => $id,]));
-    // }
-    // show the function with a view including the file_name
-    // public function show($id): View
-    // {
-    //     return view('therapist-forms', ['id' => $id,]);
-    // }
 
     public function show($id): View
     {
