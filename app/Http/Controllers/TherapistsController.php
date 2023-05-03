@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Client;
 use App\Models\Patient;
+use App\Models\FileUpload;
 use Illuminate\Http\Request;
 use App\Models\TherapySession;
 
@@ -24,6 +25,10 @@ class TherapistsController extends Controller
         $clients = $therapist->clients()->get();
         $therapySessions = TherapySession::where("client_id", "=", $therapist->id)->get();
 
-        return view('therapist.show', ['therapist' => $therapist, 'therapySessions' => $therapySessions, 'clients' => $clients, 'user' => $user]);
+        // show the uploaded forms from fileuploadcontroller
+        $file_name = FileUpload::find($id);
+
+
+        return view('therapist.show', ['therapist' => $therapist, 'therapySessions' => $therapySessions, 'clients' => $clients, 'user' => $user, 'file_name' => $file_name]);
     }
 }

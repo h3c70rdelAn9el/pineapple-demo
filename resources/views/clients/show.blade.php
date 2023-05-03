@@ -1,11 +1,4 @@
 <x-app-layout>
-    @if (Session::has('error'))
-        <div class="relative z-10 grid h-12 mx-auto place-items-center">
-            <div class="absolute px-4 py-2 text-white bg-blue-800 rounded-md alert alert-danger">
-                {{ Session::get('error') }}
-            </div>
-        </div>
-    @endif
     <x-main-container>
         <section
             class="flex flex-row items-center justify-around w-full mx-auto text-white bg-blue-500 rounded-t-md md:flex-row">

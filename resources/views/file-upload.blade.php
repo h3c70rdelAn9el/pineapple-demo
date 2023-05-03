@@ -32,8 +32,8 @@
                     <div class="flex flex-wrap mb-3">
                         <input class="mt-2"
                             type="file"
-                            accept="image/*"
-                            id="inputFile"
+                            accept="image/*, application/pdf"
+                            id="file_name"
                             name="file"
                             class="@error('file') is-invalid @enderror"
                             @change="fileChosen"

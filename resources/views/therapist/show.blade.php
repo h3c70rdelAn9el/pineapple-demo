@@ -8,6 +8,11 @@
             <p class="ml-2 text-sm text-gray-700">
                 {{ $user->on_vacation ? 'On Vacation' : 'Available' }}
             </p>
+            <p class="font-light">view Therapist documents</p>
+            {{-- show the route for the therapist docs --}}
+            <a href="{{ route('therapist.forms', $therapist, $file_name) }}" class="text-blue-500 underline">Therapist Forms</a>
+
+
         </div>
         <div class="flex flex-col w-full h-full max-w-6xl p-4 mx-auto mt-3 rounded-md md:flex-row">
             {{-- left/top --}}
