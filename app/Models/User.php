@@ -4,6 +4,8 @@ namespace App\Models;
 
 use App\Models\Client;
 use App\Models\Patient;
+use App\Models\FileUpload;
+use Laravel\Scout\Searchable;
 use Laravel\Sanctum\HasApiTokens;
 use Laravel\Jetstream\HasProfilePhoto;
 use Illuminate\Notifications\Notifiable;
@@ -11,7 +13,6 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Laravel\Scout\Searchable;
 
 class User extends Authenticatable
 {
@@ -76,5 +77,10 @@ class User extends Authenticatable
     public function clients()
     {
         return $this->hasMany(Client::class);
+    }
+
+    public function fileUploads()
+    {
+        return $this->hasMany(FileUpload::class);
     }
 }
