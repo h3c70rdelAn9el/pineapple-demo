@@ -94,9 +94,10 @@ class importtherapists_us extends Command
     [48] => COVID FUNDRAISER
     */
                 //create new user from $data
-                $user = \App\Models\User::firstOrNew(['email' => $data[5]]);
+                $email = explode(" ", $data[5]);
+                $user = \App\Models\User::firstOrNew(['email' => $email[0]]);
                 $user->name = $data[0];
-                $user->email = $data[5];
+                $user->email = $email[0];
                 //$user->password = \Hash::make('password');
                 $user->country = 'US';
                 $user->state = $data[2];
