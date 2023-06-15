@@ -4,7 +4,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 
-class importtherapists_us extends Command
+class importtherapists_uk extends Command
 {
     /**
      * The name and signature of the console command.
