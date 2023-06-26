@@ -58,6 +58,7 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
             'name' => $input['name'],
             'email' => $input['email'],
             'email_verified_at' => null,
+            'on_vacation' => $input['on_vacation'],
         ])->save();
 
         $user->sendEmailVerificationNotification();

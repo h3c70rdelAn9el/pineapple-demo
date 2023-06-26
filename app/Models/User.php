@@ -68,6 +68,7 @@ class User extends Authenticatable
      */
     protected $appends = [
         'profile_photo_url',
+        //'on_vacation',
     ];
 
     protected $attributes = [
@@ -83,4 +84,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(FileUpload::class);
     }
+    /*
+    public function getOnVacationAttribute()
+    {
+        return $this->attributes['on_vacation'] = $this->expires_at > now();
+    }
+    public function setOnVacationAttribute($value)
+    {
+        $this->attributes['on_vacation'] = $value;
+    }
+    */
 }

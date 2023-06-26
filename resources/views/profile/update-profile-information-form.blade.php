@@ -191,9 +191,10 @@
                         name="on_vacation"
                         id="on_vacation"
                     wire:model.defer="state.on_vacation"
-                        value=""
+                        value="1"
                         {{ old('on_vacation', $this->user->on_vacation) ? 'checked' : '' }}
                         >
+                       
                 </div>
             </div>
         </div>
