@@ -22,17 +22,23 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
             'photo' => ['nullable', 'mimes:jpg,jpeg,png', 'max:1024'],
-            'license' => ['required', 'string', 'max:255'],
-            'expires_at' => ['required', 'date' ],
+            'license' => ['nullable', 'string', 'max:255'],
+            'expires_at' => ['nullable', 'date'],
+            'bank_name' => ['nullable', 'string', 'max:255'],
+            'account_number' => ['nullable', 'string', 'max:255'],
             'on_vacation' => ['required', 'boolean'],
+            'certificate' => ['nullable', 'mimes:pdf,jpg,jpeg,png', 'max:1024'],
+            'w9' => ['nullable', 'mimes:pdf,jpg,jpeg,png', 'max:1024'],
         ])->validateWithBag('updateProfileInformation');
 
         if (isset($input['photo'])) {
             $user->updateProfilePhoto($input['photo']);
         }
 
-        if ($input['email'] !== $user->email &&
-            $user instanceof MustVerifyEmail) {
+        if (
+            $input['email'] !== $user->email &&
+            $user instanceof MustVerifyEmail
+        ) {
             $this->updateVerifiedUser($user, $input);
         } else {
             $user->forceFill([
@@ -40,7 +46,11 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
                 'email' => $input['email'],
                 'license' => $input['license'],
                 'expires_at' => $input['expires_at'],
+                'bank_name' => $input['bank_name'],
+                'account_number' => $input['account_number'],
                 'on_vacation' => $input['on_vacation'],
+                'certificate' => $input['certificate'],
+                'w9' => $input['w9'],
             ])->save();
         }
     }
@@ -59,6 +69,13 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
             'email' => $input['email'],
             'email_verified_at' => null,
             'on_vacation' => $input['on_vacation'],
+            'license' => $input['license'],
+            'expires_at' => $input['expires_at'],
+            'bank_name' => $input['bank_name'],
+            'account_number' => $input['account_number'],
+            'certificate' => $input['certificate'],
+            'w9' => $input['w9'],
+
         ])->save();
 
         $user->sendEmailVerificationNotification();
