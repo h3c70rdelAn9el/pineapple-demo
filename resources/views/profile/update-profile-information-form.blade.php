@@ -194,7 +194,7 @@
                         value="1"
                         {{ old('on_vacation', $this->user->on_vacation) ? 'checked' : '' }}
                         >
-                       
+
                 </div>
             </div>
         </div>
