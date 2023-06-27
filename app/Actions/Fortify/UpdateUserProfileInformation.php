@@ -35,6 +35,16 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
             $user->updateProfilePhoto($input['photo']);
         }
 
+        if (isset($input['certificate'])) {
+            $certificatePath = $input['certificate']->store('certificates', 'public');
+            $user->update(['certificate' => $certificatePath]);
+        }
+
+        if (isset($input['w9'])) {
+            $w9Path = $input['w9']->store('w9s', 'public');
+            $user->update(['w9' => $w9Path]);
+        }
+
         if (
             $input['email'] !== $user->email &&
             $user instanceof MustVerifyEmail
@@ -78,6 +88,7 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
 
         ])->save();
 
+        dd($user);
         $user->sendEmailVerificationNotification();
     }
 }
