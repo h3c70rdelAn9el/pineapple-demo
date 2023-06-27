@@ -107,31 +107,7 @@
                 <x-jet-input-error for="account_number" class="mt-2" />
             </div>
 
-            {{-- Certificate File Upload --}}
-            <div class="flex flex-col w-2/3 mt-3">
-                <p>Upload your documents:</p>
 
-                {{-- Certificate File Upload --}}
-                <div class="col-span-6 mt-4 sm:col-span-4">
-                    <x-jet-label for="certificate" value="{{ __('Certification') }}" />
-                    <x-jet-input id="certificate" type="file" class="block w-full mt-1" wire:model="state.certificate" accept=".pdf,.jpg,.jpeg,.png" />
-                    <x-jet-input-error for="certificate" class="mt-2" />
-                </div>
-
-                {{-- W9 - File Upload --}}
-                <div class="col-span-6 mt-4 sm:col-span-4">
-                    <x-jet-label for="w9" value="{{ __('W9') }}" />
-                    <x-jet-input id="w9" type="file" class="block w-full mt-1" wire:model.defer="state.w9" accept=".pdf,.jpg,.jpeg,.png" />
-                    <x-jet-input-error for="w9" class="mt-2" />
-                </div>
-
-                {{-- on_vacation --}}
-                <div class="pt-1">
-                    <label for="on_vacation" value="{{ __('') }}">On Vacation:</label>
-                    <input type="checkbox" class="rounded-md" name="on_vacation" id="on_vacation" wire:model.defer="state.on_vacation" value="1" {{ old('on_vacation', $this->user->on_vacation) ? 'checked' : '' }}>
-
-                </div>
-            </div>
         </div>
     </x-slot>
 
