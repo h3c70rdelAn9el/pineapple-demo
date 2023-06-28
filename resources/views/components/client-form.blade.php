@@ -1,3 +1,55 @@
+<script>
+    @php
+        $categories = [
+            'ADHD',
+            'Adjustment Issues',
+            'Adoption',
+            'Anger',
+            'Anxiety',
+            'Autism Spectrum',
+            'Bipolar Disorder',
+            'Chronic Illness',
+            'Chronic Pain',
+            'Codependency',
+            'Depression',
+            'Divorce',
+            'Domestic Violence',
+            'Eating Disorders',
+            'Family Conflict',
+            'Family of Origin Issues',
+            'Gambling',
+            'Grief and Loss',
+            'HIV/AIDS',
+            'Hoarding',
+            'Impuslivity',
+            'Intellectual and Developmental Disabilities',
+            'LGBTQ',
+            'Life Coaching',
+            'Life Transitions',
+            'Obesity',
+            'Obsessive Compulsive Disorder',
+            'Parenting',
+            'Personality Disorders',
+            'Psychosis',
+            'Racial Identity',
+            'Relationship Issues',
+            'Self-Esteem',
+            'Self Harm',
+            'Sex Addiction',
+            'Sexual Assault',
+            'Sleep Issues',
+            'Spirituality',
+            'Stress',
+            'Substance Use - Sober Only - ',
+            'Substance Use - Harm Reduction',
+            'Trauma/Post-Traumatic Stress Disorder',
+            'Weight Loss',
+            'Women\'s Issues',
+            'Other'
+        ];
+    @endphp
+</script>
+
 <form action="{{ route('client.store') }}"
     class="z-50 p-4 mt-2 overflow-scroll bg-blue-200 border border-blue-600 rounded-md shadow-lg h-[700px]">
     @csrf
@@ -109,7 +161,7 @@
     </x-form_input_div>
 
     {{-- home_address_line_1 --}}
-    <x-form_input_div>
+    {{-- <x-form_input_div>
         <x-form_label for="home_address_line_1">
             Address Line 1
         </x-form_label>
@@ -118,10 +170,10 @@
             name="home_address_line_1"
             required
             placeholder="Home Address Line 1" />
-    </x-form_input_div>
+    </x-form_input_div> --}}
 
     {{-- home_address_line_2 --}}
-    <x-form_input_div>
+    {{-- <x-form_input_div>
         <x-form_label for="home_address_line_2">
             Address Line 2
         </x-form_label>
@@ -129,10 +181,10 @@
             type="text"
             name="home_address_line_2"
             placeholder="Home Address Line 2" />
-    </x-form_input_div>
+    </x-form_input_div> --}}
 
     {{-- home_address_city --}}
-    <x-form_input_div>
+    {{-- <x-form_input_div>
         <x-form_label for="home_address_city">
             City
         </x-form_label>
@@ -141,16 +193,15 @@
             name="home_address_city"
             required
             placeholder="City" />
-    </x-form_input_div>
+    </x-form_input_div> --}}
 
     {{-- home_address_state --}}
     <x-form_input_div>
         <x-form_label for="home_address_state">
-            State
+            State (optional)
         </x-form_label>
         <select type="text"
             id="home_address_state"
-            required
             name="home_address_state"
             class="w-full p-3 mt-2 border-b-2 border-blue-200 rounded-md peer ring-0">
             <option value=""
@@ -214,7 +265,7 @@
     </x-form_input_div>
 
     {{-- home_address_zip --}}
-    <x-form_input_div>
+    {{-- <x-form_input_div>
         <x-form_label for="home_address_zip">
             Zip Code
         </x-form_label>
@@ -223,7 +274,7 @@
             name="home_address_zip"
             required
             placeholder="Zip Code" />
-    </x-form_input_div>
+    </x-form_input_div> --}}
 
     {{-- home_address_country --}}
     <x-form_input_div>
@@ -280,7 +331,7 @@
         </select>
     </x-form_input_div>
 
-    <x-form_input_div>
+    {{-- <x-form_input_div>
         <x-form_label for="health_coverage_provider">
             Health Coverage Provider
         </x-form_label>
@@ -310,7 +361,7 @@
             required
             id="health_cover_expiration"
             name="health_coverage_expiration">
-    </x-form_input_div>
+    </x-form_input_div> --}}
 
     {{-- Previous therapy --}}
     <x-form_input_div>
@@ -329,67 +380,31 @@
         <label for="no">No</label><br>
     </x-form_input_div>
 
-    {{-- TODO: PUT THE OPTIONS IN A JSON FILE --}}
     {{-- possible_support_needed --}}
     <x-form_input_div>
         <x-form_label for="possible_support_needed">
             Possible Support Needed
         </x-form_label>
-        <select id="possible_support_needed"
-            type="text"
-            name="possible_support_needed"
-            class="w-full p-3 mt-2 border-b-2 border-blue-200 rounded-md peer ring-0"
-            required>
-            <option value=""
-                disabled
-                selected
-                hidden>Please Select:</option>
-            <option>ADHD</option>
-            <option>Adjustment Issues</option>
-            <option>Adoption</option>
-            <option>Anger</option>
-            <option>Anxiety</option>
-            <option>Autism Spectrum</option>
-            <option>Bipolar Disorder</option>
-            <option>Chronic Illness</option>
-            <option>Chronic Pain</option>
-            <option>Codependency</option>
-            <option>Depression</option>
-            <option>Divorce</option>
-            <option>Domestic Violence</option>
-            <option>Eating Disorders</option>
-            <option>Family Conflict</option>
-            <option>Family of Origin Issues</option>
-            <option>Gambling</option>
-            <option>Grief and Loss</option>
-            <option>HIV/AIDS</option>
-            <option>Hoarding</option>
-            <option>Impuslivity</option>
-            <option>Intellectual and Developmental Disabilities</option>
-            <option>LGBTQ</option>
-            <option>Life Coaching</option>
-            <option>Life Transitions</option>
-            <option>Obesity</option>
-            <option>Obsessive Compulsive Disorder</option>
-            <option>Parenting</option>
-            <option>Personality Disorders</option>
-            <option>Psychosis</option>
-            <option>Racial Identity</option>
-            <option>Relationship Issues</option>
-            <option>Self-Esteem</option>
-            <option>Self-Harm</option>
-            <option>Sex Addiction/Issues</option>
-            <option>Sexual Assault</option>
-            <option>Sleep Issues</option>
-            <option>Spirituality</option>
-            <option>Stress</option>
-            <option>Substance Use - Sober Only - </option>
-            <option>Substance Use - Harm Reduction</option>
-            <option>Trauma/Post-Traumatic Stress Disorder</option>
-            <option>Weight Loss</option>
-            <option>Women's Issues</option>
-            <option>Other</option>
-        </select>
+        {{-- @foreach ($categories as $category)
+            <input type="checkbox"
+                id="possible_support_needed[]"
+                name="possible_support_needed[]"
+                value="{{ $category }}">
+            <label for="possible_support_needed[]">{{ $category }}</label><br>
+        @endforeach --}}
+        @foreach ($categories as $category)
+        {{-- <input type="checkbox" id="possible_support_needed[]" name="possible_support_needed[]" value="{{ implode(',', $category) }}">
+        <label for="possible_support_needed[]">{{ $category }}</label><br> --}}
+        <input type="checkbox"
+            id="possible_support_needed[]"
+            name="possible_support_needed[]"
+            value="{{ $category }}">
+        <label for="possible_support_needed[]">{{ $category }}</label><br>
+
+
+
+        @endforeach
+
     </x-form_input_div>
 
     {{-- preferred_language --}}

@@ -40,11 +40,14 @@ class DashboardController extends Controller
         $file = file_get_contents(storage_path('states.json'));
         $states = json_decode($file, true);
 
+        $jsonFile = file_get_contents(resource_path('json/categories.json'));
+        $categories = json_decode($jsonFile, true);
 
+        // dd($data);
 
 
         if ($user->admin) {
-            return view('dashboard_admin', ['user' => $user, 'therapists' => $therapists, 'allClients' => $allClients, 'therapist' => $therapist, 'therapySessions' => '$therapySessions', 'states' => $states]);
+            return view('dashboard_admin', ['user' => $user, 'therapists' => $therapists, 'allClients' => $allClients, 'therapist' => $therapist, 'therapySessions' => '$therapySessions', 'states' => $states, 'categories' => $categories]);
         } else {
             return view('dashboard', ['user' => $user, 'clients' => $clients, 'client' => $client, 'therapySessions' => $therapySessions, 'therapist' => $therapist, 'states' => $states]);
         }
