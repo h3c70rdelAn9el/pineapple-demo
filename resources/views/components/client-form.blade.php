@@ -385,26 +385,13 @@
         <x-form_label for="possible_support_needed">
             Possible Support Needed
         </x-form_label>
-        {{-- @foreach ($categories as $category)
+        @foreach ($categories as $category)
             <input type="checkbox"
                 id="possible_support_needed[]"
                 name="possible_support_needed[]"
                 value="{{ $category }}">
             <label for="possible_support_needed[]">{{ $category }}</label><br>
-        @endforeach --}}
-        @foreach ($categories as $category)
-        {{-- <input type="checkbox" id="possible_support_needed[]" name="possible_support_needed[]" value="{{ implode(',', $category) }}">
-        <label for="possible_support_needed[]">{{ $category }}</label><br> --}}
-        <input type="checkbox"
-            id="possible_support_needed[]"
-            name="possible_support_needed[]"
-            value="{{ $category }}">
-        <label for="possible_support_needed[]">{{ $category }}</label><br>
-
-
-
         @endforeach
-
     </x-form_input_div>
 
     {{-- preferred_language --}}
