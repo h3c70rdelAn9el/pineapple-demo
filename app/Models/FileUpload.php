@@ -14,6 +14,7 @@ class FileUpload extends Model
         'user_id',
         'file_path',
         'file_name',
+        'document_type'
     ];
 
     public function user()
