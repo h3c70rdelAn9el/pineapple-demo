@@ -41,6 +41,8 @@
                                     <option value="">Select Document Type</option>
                                     <option value="W9">W9</option>
                                     <option value="Certificate">Certificate</option>
+                                    <option value="License">License</option>
+                                    <option value="Other">Other</option>
                                 </select>
                             </div>
                         </div>
