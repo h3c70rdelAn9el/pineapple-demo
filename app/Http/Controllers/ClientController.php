@@ -46,6 +46,9 @@ class ClientController extends Controller
         // $user = auth()->user();
         $user = $request->user();
 
+        $jsonFile = file_get_contents(resource_path('json/categories.json'));
+        $categories = json_decode($jsonFile, true);
+
         $c = new Client();
         $c->client_code = $request->client_code;
         $c->legal_name = $request->legal_name;
@@ -62,7 +65,7 @@ class ClientController extends Controller
         $c->health_coverage_number = $request->health_coverage_number;
         $c->health_coverage_expiration = $request->health_coverage_expiration;
         $c->previous_therapy = $request->previous_therapy;
-        $c->possible_support_needed = $request->possible_support_needed;
+        $c->possible_support_needed = implode(",", (array) $request->possible_support_needed);
         $c->preferred_language = $request->preferred_language;
         $c->additional_notes = $request->additional_notes;
         $c->pronouns = $request->pronouns;
@@ -70,7 +73,6 @@ class ClientController extends Controller
         $c->phone = $request->phone;
         $c->contact_method = $request->contact_method;
         $c->user_id = $request->user_id;
-
 
         $c->save();
         return redirect()->route('dashboard');
@@ -91,9 +93,9 @@ class ClientController extends Controller
         $user_id = Client::find($client->user_id);
         // $user_id = $user->id;
 // pull in the therapist from user table
-$therapist = User::find($user_id);
-// dd($therapist);
-        return view('clients.show')->with(['client' => $client,  'therapySessions' => $therapySessions, 'therapist' => $therapist]);
+        $therapist = User::find($user_id);
+        // dd($therapist);
+        return view('clients.show')->with(['client' => $client, 'therapySessions' => $therapySessions, 'therapist' => $therapist]);
     }
 
     /**

@@ -59,7 +59,7 @@
                 </x-slot>
             </x-container-content>
         </div>
-        <div x-data="{ open: false }">
+        <div x-data="{ open: true }">
             <button @click="open = !open"
                 class="text-lg text-center text-blue-400 hover:text-blue-600">Add Client</button>
             <div x-show="open"
@@ -67,7 +67,7 @@
                 @click.away="open = false">
                 <div class="absolute inset-0 w-2/3 mx-auto top-6">
                     <x-client-form :therapists="$therapists"
-                        :states="$states"></x-client-form>
+                        :states="$states" :categories="$categories"></x-client-form>
                 </div>
             </div>
         </div>
