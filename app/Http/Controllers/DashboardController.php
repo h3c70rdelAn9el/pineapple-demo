@@ -25,7 +25,7 @@ class DashboardController extends Controller
         $therapySessions = TherapySession::where('user_id', $user->id)
             ->orderBy('id', 'DESC')
             ->get();
-        $therapists = User::where('admin', 0)->get();
+        $therapists = User::where('admin', 0)->get()->sortBy('name');
         // $therapist = User::find($user_id);
         $therapist = Client::find($user_id)?->therapist;
 
