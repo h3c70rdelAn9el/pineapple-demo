@@ -65,6 +65,8 @@ class FileUploadController extends Controller
             'file_path' => $fileName,
             'file_name' => $fileName,
             'document_type' => $request->document_type,
+            'date' => $request->date,
+            'note' => $request->note,
         ]);
 
         return redirect('user/profile')
