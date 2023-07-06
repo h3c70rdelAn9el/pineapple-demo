@@ -31,7 +31,7 @@
             <div class="flex flex-row">
                 <div class="w-1/2 p-2 border-b border-r border-gray-400">Session Date:</div>
                 <div class="w-1/2 p-2 border-b border-gray-400">
-                    {{ date('M d, Y, h:m', strtotime($therapySession->created_at)) }}
+                    {{ date('F d, Y', strtotime($therapySession->created_at)) }}
                 </div>
             </div>
             <div class="flex flex-row">
