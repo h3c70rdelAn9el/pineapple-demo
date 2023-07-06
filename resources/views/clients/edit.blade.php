@@ -1,5 +1,9 @@
 <x-app-layout>
     <x-main-container>
+        <h2 class="mt-2 text-lg font-normal text-center">Edit client: {{ $client->preferred_name }}</h2>
+        <div class="w-1/2 mx-auto bg-gray-400 border-b border-gray-400">
+
+        </div>
         <form class="w-1/2 mx-auto" action="{{ route('clients.update', $client->id) }}" method="POST">
             @csrf
             @method('PUT')
