@@ -13,7 +13,20 @@ class Client extends Model
     use Searchable;
     use HasFactory;
     protected $fillable = [
-
+        'client_code',
+        'preferred_name',
+        'legal_name',
+        'sexual_orientation',
+        'ethnic_group',
+        'home_address_state',
+        'health_coverage_provider',
+        'health_coverage_number',
+        'health_coverage_expiration',
+        'previous_therapy',
+        'possible_support_needed',
+        'preferred_language',
+        'additional_notes',
+        'pronouns',
     ];
 
     public function user()
