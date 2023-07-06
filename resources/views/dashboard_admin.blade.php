@@ -59,9 +59,8 @@
                 </x-slot>
             </x-container-content>
         </div>
-        {{-- TODO:  make div false before pushing!!! --}}
-        {{-- * this section here needs to updating before pushing! --}}
-        <div x-data="{ open: true }">
+
+        <div x-data="{ open: false }">
             <button @click="open = !open"
                 class="text-lg text-center text-blue-400 hover:text-blue-600">Add Client</button>
             <div x-show="open"
