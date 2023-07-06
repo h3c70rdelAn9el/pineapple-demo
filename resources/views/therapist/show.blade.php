@@ -8,9 +8,13 @@
             <p class="ml-2 text-sm text-gray-700">
                 {{ $user->on_vacation ? 'On Vacation' : 'Available' }}
             </p>
-            <p class="font-light">view Therapist documents</p>
             {{-- show the route for the therapist docs --}}
             <a href="{{ route('therapist.forms', $therapist, $file_name) }}" class="text-blue-500 underline">Therapist Forms</a>
+
+            <div class="font-[400]">
+                <p><span>{{ $space_for_new_clients}} </span> of {{ $therapist->number_of_potential_clients }} openings remaining</p>
+            </div>
+
 
 
         </div>
@@ -25,9 +29,7 @@
                 </x-slot>
                 <x-slot name="content">
                     @foreach ($clients as $client)
-                        <x-client-card :client="$client"
-                            :therapist="$therapist"
-                            :user="$user"></x-client-card>
+                    <x-client-card :client="$client" :therapist="$therapist" :user="$user"></x-client-card>
                     @endforeach
                 </x-slot>
             </x-container-content>
@@ -43,13 +45,11 @@
                 </x-slot>
                 <x-slot name="content">
                     @forelse ($clients as $client)
-                        @foreach ($client->therapySessions as $therapySession)
-                            <x-session-card :therapySession='$therapySession'
-                                :therapist='$therapist'
-                                :client='$client'></x-session-card>
-                        @endforeach
+                    @foreach ($client->therapySessions as $therapySession)
+                    <x-session-card :therapySession='$therapySession' :therapist='$therapist' :client='$client'></x-session-card>
+                    @endforeach
                     @empty
-                        <p>There are no sessions to display</p>
+                    <p>There are no sessions to display</p>
                     @endforelse
                 </x-slot>
             </x-container-content>
