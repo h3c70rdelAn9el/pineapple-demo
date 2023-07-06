@@ -214,7 +214,7 @@
     </x-form_input_div>
 
     {{-- home_address_zip --}}
-    <x-form_input_div>
+    {{-- <x-form_input_div>
         <x-form_label for="home_address_zip">
             Zip Code
         </x-form_label>
@@ -223,7 +223,7 @@
             name="home_address_zip"
             required
             placeholder="Zip Code" />
-    </x-form_input_div>
+    </x-form_input_div> --}}
 
     {{-- home_address_country --}}
     <x-form_input_div>
