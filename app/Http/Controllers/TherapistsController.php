@@ -18,17 +18,41 @@ class TherapistsController extends Controller
         return view('therapist.index')->with(['therapists' => $therapists]);
     }
 
+    // public function show($id)
+    // {
+    //     $user = auth()->user();
+    //     $therapist = User::find($id);
+    //     $clients = $therapist->clients()->get();
+    //     $therapySessions = TherapySession::where("client_id", "=", $therapist->id)->get();
+
+    //     // show the uploaded forms from fileuploadcontroller
+    //     $file_name = FileUpload::find($id);
+
+
+    //     return view('therapist.show', ['therapist' => $therapist, 'therapySessions' => $therapySessions, 'clients' => $clients, 'user' => $user, 'file_name' => $file_name]);
+    // }
+
+
     public function show($id)
     {
         $user = auth()->user();
         $therapist = User::find($id);
         $clients = $therapist->clients()->get();
         $therapySessions = TherapySession::where("client_id", "=", $therapist->id)->get();
-
-        // show the uploaded forms from fileuploadcontroller
         $file_name = FileUpload::find($id);
 
+        $totalClients = $clients->count();
 
-        return view('therapist.show', ['therapist' => $therapist, 'therapySessions' => $therapySessions, 'clients' => $clients, 'user' => $user, 'file_name' => $file_name]);
+        $space_for_new_clients = $therapist->number_of_potential_clients - $totalClients;
+
+        return view('therapist.show', [
+            'therapist' => $therapist,
+            'therapySessions' => $therapySessions,
+            'clients' => $clients,
+            'user' => $user,
+            'file_name' => $file_name,
+            'space_for_new_clients' => $space_for_new_clients,
+        ]);
     }
+
 }
