@@ -14,6 +14,11 @@
                 class="h-6 ml-10 text-sm text-blue-600 hover:text-blue-800">
                 Upload Insurance Form
             </a>
+            {{-- add the edit route link --}}
+            <a href="{{ route('clients.edit', $client->id) }}"
+                class="h-6 ml-10 text-sm text-blue-600 hover:text-blue-800">
+                Edit Client
+            </a>
         @endif
         <div class="container flex flex-col w-5/6 max-w-5xl mx-auto rounded-lg lg:flex-row">
             {{-- left side --}}
