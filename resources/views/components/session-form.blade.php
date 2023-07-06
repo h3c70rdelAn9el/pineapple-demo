@@ -26,7 +26,7 @@
     </div>
     <div>
         <label for="created_at">Session Date</label>
-        <input type="datetime-local"
+        <input type="date"
             id="created_at"
             name="created_at"
             class="form-input"
