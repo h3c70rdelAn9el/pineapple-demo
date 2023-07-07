@@ -3,13 +3,13 @@
         <p class="font-bold">
             {{ $title }}
         </p>
-        <p class="ml-2">
+        <p class="">
             <span class="font-bold">
                 {{ $count }}
             </span>
         </p>
     </div>
-    <div class="flex flex-col w-full p-2 m-2 mx-auto overflow-x-hidden overflow-y-scroll h-96">
+    <div class="flex flex-col w-full p-2 m-2 mx-auto overflow-x-hidden overflow-y-scroll font-normal h-[500px]">
         {{ $content }}
     </div>
 </div>
