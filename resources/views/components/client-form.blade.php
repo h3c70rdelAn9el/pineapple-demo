@@ -366,7 +366,7 @@
     {{-- Previous therapy --}}
     <x-form_input_div>
         <x-form_label for="previous_therapy">
-            Previous therapy
+            Previous therapy from Pineapple
         </x-form_label>
         <input type="radio"
             id="yes"
@@ -395,7 +395,7 @@
     </x-form_input_div>
 
     {{-- preferred_language --}}
-    <x-form_input_div>
+    {{-- <x-form_input_div>
         <x-form_label for="preferred_language">
             Preferred Language
         </x-form_label>
@@ -419,7 +419,7 @@
             <option>Arabic</option>
             <option>Other</option>
         </select>
-    </x-form_input_div>
+    </x-form_input_div> --}}
 
     {{-- TODO: ASSIGN TO PROPER THERAPIST --}}
     <x-form_input_div>
