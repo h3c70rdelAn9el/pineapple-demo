@@ -1,0 +1,6 @@
+<x-app-layout>
+    <x-main-container>
+        <h1 class="p-2 text-2xl text-center">Add Client</h1>
+        <x-client-form :action="route('clients.store')" :method="'POST'" :therapists="$therapists" />
+    </x-main-container>
+</x-app-layout>

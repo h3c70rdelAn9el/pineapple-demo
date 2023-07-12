@@ -40,21 +40,11 @@
                     Clients: {{ $allClients->count() }}
                 </x-slot>
                 <x-slot name="count">
-                    <div x-data="{ open: false }">
-                        <button @click="open = !open" class="text-lg text-center text-blue-400 hover:text-blue-600">Add Client</button>
-                        <div x-show="open" x-cloak @click.away="open = false">
-                            <div class="absolute inset-0 w-2/3 mx-auto top-6">
-                                <x-client-form :therapists="$therapists" :states="$states" :categories="$categories"></x-client-form>
-                            </div>
-                        </div>
-                    </div>
-
-                    {{-- TODO:  this link gives a 'user_id cannot be null' error --}}
-                       {{-- <a href="{{ route('clients.create') }}"
-                       class="h-6 ml-10 text-sm text-blue-600 hover:text-blue-800">
-                       Add Client
-                       </a> --}}
-
+                    <button class="button-secondary">
+                        <a href="{{ route('clients.create') }}" class="text-sm ">
+                            Add Client
+                        </a>
+                    </button>
                 </x-slot>
 
                 <x-slot name="content">
