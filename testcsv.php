@@ -1,6 +1,6 @@
 <?php
 $row = 1;
-if (($handle = fopen("therapists-us.csv", "r")) !== FALSE) {
+if (($handle = fopen("therapists-uk.csv", "r")) !== FALSE) {
     while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
 	    print_r($data);
         $num = count($data);
@@ -8,12 +8,12 @@ if (($handle = fopen("therapists-us.csv", "r")) !== FALSE) {
         for ($c=0; $c < $num; $c++) {
         //    echo $data[$c] . "<br />\n";
         }
-	if($row > 3)
+	if($row > 1)
 		exit;
     }
     fclose($handle);
 }
-
+/*
     [0] => Nicole Jasmine Johnson
     [1] => 12/17/18
     [2] => Florida
@@ -26,3 +26,4 @@ if (($handle = fopen("therapists-us.csv", "r")) !== FALSE) {
     [9] => 3/31/23
     [10] => https://mqa-internet.doh.state.fl.us/MQASearchServices/HealthCareProviders/LicenseVerification?LicInd=12388&ProCde=5201&org=%20
     [11] => 7/4/21
+    */
