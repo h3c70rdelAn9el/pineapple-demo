@@ -43,42 +43,11 @@ Route::middleware([
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 });
 
-// Route::middleware([
-//     'auth:sanctum',
-//     config('jetstream.auth_session'),
-//     'verified'
-// ])->group(function () {
-//     Route::post('/patient/store', [PatientController::class, 'store']);
-// });
-
-
-
-// Route::middleware([
-//     'auth:sanctum',
-//     config('jetstream.auth_session'),
-//     'verified'
-// ])->get('/patient/store', [PatientController::class, 'store'])->name('patient.store');
-
-
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
     'verified'
 ])->post('/client/store', [ClientController::class, 'store'])->name('client.store');
-
-
-
-// Route::middleware([
-//     'auth:sanctum',
-//     config('jetstream.auth_session'),
-//     'verified'
-// ])->get('/patients', [PatientController::class, 'index'])->name('patients');
-
-// Route::middleware([
-//     'auth:sanctum',
-//     config('jetstream.auth_session'),
-//     'verified'
-// ])->get('/patients/{patient_id}', [PatientController::class, 'show'])->name('patient');
 
 
 Route::middleware([
@@ -109,10 +78,18 @@ Route::middleware([
     Route::get('/therapist/{id}/forms/', [FileUploadController::class, 'index'])->name('therapist.forms');
     Route::get('/clients/{client_id}', [ClientController::class, 'show'])->name('clients.show');
     // Route::post('/clients/store', [ClientController::class, 'store'])->name('clients.store');
-    Route::get('/clients/add', [ClientController::class, 'create'])->name('clients.create');
+    Route::get('/clients/create', [ClientController::class, 'create'])->name('clients.create');
     Route::get('/clients/{client_id}/edit', [ClientController::class, 'edit'])->name('clients.edit');
     Route::put('/clients/{client_id}', [ClientController::class, 'update'])->name('clients.update');
     Route::get('/search', SearchController::class)->name('search');
+});
+
+Route::middleware([
+    'auth:sanctum',
+    config('jetstream.auth_session'),
+    'verified'
+])->group(function () {
+    Route::get('/clients/create', [ClientController::class, 'create'])->name('clients.create');
 });
 
 

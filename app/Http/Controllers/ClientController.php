@@ -32,10 +32,22 @@ class ClientController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    // public function create()
+    // {
+    //     return view('clients.create');
+    // }
+    public function create(Request $request)
     {
-        return view('clients.create');
+        $user_id = $request->user()->id;
+        $therapist = User::find($user_id);
+
+        $therapists = User::where('admin', 0)->get();
+
+
+        // return view('clients.create')->with(['therapists' => $therapists]);
+        return view('clients.create')->with(['therapists' => $therapists, 'therapist' => $therapist]);
     }
+
 
     /**
      * Store a newly created resource in storage.
@@ -110,7 +122,8 @@ class ClientController extends Controller
         // $client->user_id = $request->user_id;
         $client->save();
 
-        return redirect()->route('clients.show', $client->id)->with('success', 'Client updated successfully');
+        // return redirect()->route('clients.show', $client->id)->with('success', 'Client updated successfully');
+        return redirect()->route('dashboard');
     }
 
 
@@ -120,19 +133,56 @@ class ClientController extends Controller
      * @param  \App\Models\Client  $client
      * @return \Illuminate\Http\Response
      */
+    // public function show(Request $request, $id)
+    // {
+    //     $client = Client::find($id);
+    //     $therapySessions = TherapySession::all();
+    //     // $therapist = Client::find($user_id);
+
+    //     $user_id = Client::find($client->user_id);
+    //     // $user_id = $user->id;
+    //     $therapist = User::find($user_id);
+    //     // dd($therapist);
+    //     return view('clients.show')->with(['client' => $client, 'therapySessions' => $therapySessions, 'therapist' => $therapist]);
+    // }
     public function show(Request $request, $id)
     {
         $client = Client::find($id);
         $therapySessions = TherapySession::all();
         // $therapist = Client::find($user_id);
 
-        $user_id = Client::find($client->user_id);
-        // $user_id = $user->id;
-// pull in the therapist from user table
-        $therapist = User::find($user_id);
-        // dd($therapist);
+
+
+        $user_id = $client->user_id;
+        // $therapist = User::find($user_id);
+        $therapist = User::where('id', $user_id)->first();
+
         return view('clients.show')->with(['client' => $client, 'therapySessions' => $therapySessions, 'therapist' => $therapist]);
     }
+
+    // public function show(Request $request, $id)
+    // {
+    //     $client = Client::find($id);
+    //     if (!$client) {
+    //         // Handle the case where the client doesn't exist
+    //         // For example, return an error message or redirect to a different page
+    //         dd('client not found');
+    //     }
+
+    //     $therapySessions = TherapySession::all();
+
+    //     $user_id = $client->user_id;
+    //     $therapist = User::find($user_id);
+    //     if (!$therapist) {
+    //         // Handle the case where the therapist doesn't exist
+    //         // For example, return an error message or redirect to a different page
+    //         dd('therapist not found');
+    //     }
+
+    //     return view('clients.show')->with(['client' => $client, 'therapySessions' => $therapySessions, 'therapist' => $therapist, 'user_id' => $user_id]);
+    // }
+
+
 
     /**
      * Show the form for editing the specified resource.
