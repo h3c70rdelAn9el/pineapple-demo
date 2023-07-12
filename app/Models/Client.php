@@ -27,6 +27,7 @@ class Client extends Model
         'preferred_language',
         'additional_notes',
         'pronouns',
+        'client_contribution',
     ];
 
     public function user()

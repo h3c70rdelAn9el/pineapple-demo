@@ -53,18 +53,18 @@ Route::middleware([
 
 
 
-Route::middleware([
-    'auth:sanctum',
-    config('jetstream.auth_session'),
-    'verified'
-])->get('/patient/store', [PatientController::class, 'store'])->name('patient.store');
+// Route::middleware([
+//     'auth:sanctum',
+//     config('jetstream.auth_session'),
+//     'verified'
+// ])->get('/patient/store', [PatientController::class, 'store'])->name('patient.store');
 
 
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
     'verified'
-])->get('/client/store', [ClientController::class, 'store'])->name('client.store');
+])->post('/client/store', [ClientController::class, 'store'])->name('client.store');
 
 
 
@@ -108,6 +108,8 @@ Route::middleware([
     Route::post('file-store', [FileUploadController::class, 'store'])->name('fileStore');
     Route::get('/therapist/{id}/forms/', [FileUploadController::class, 'index'])->name('therapist.forms');
     Route::get('/clients/{client_id}', [ClientController::class, 'show'])->name('clients.show');
+    // Route::post('/clients/store', [ClientController::class, 'store'])->name('clients.store');
+    Route::get('/clients/add', [ClientController::class, 'create'])->name('clients.create');
     Route::get('/clients/{client_id}/edit', [ClientController::class, 'edit'])->name('clients.edit');
     Route::put('/clients/{client_id}', [ClientController::class, 'update'])->name('clients.update');
     Route::get('/search', SearchController::class)->name('search');
