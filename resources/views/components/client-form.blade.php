@@ -8,7 +8,7 @@
 
 </script>
 
-<form class="fixed z-50 mx-auto -mt-44 h-[700px] w-2/3 overflow-scroll rounded-md border border-blue-600 bg-blue-200 p-4 shadow-lg" style="z-index: 99999;" action="{{ route('client.store') }}" method="POST">
+<form class="z-50 w-5/6 h-full p-4 mx-auto mt-2 mb-4 bg-blue-200 border border-blue-600 rounded-md shadow-lg md:w-2/3" style="z-index: 99999;" action="{{ route('client.store') }}" method="POST">
     @csrf
     <x-form_input_div>
         <x-form_label for="client_code">
@@ -301,9 +301,10 @@
         </select>
     </x-form_input_div>
 
-    <div class="mt-2">
-        <button class="px-2 py-1 duration-200 bg-blue-300 rounded-md hover:scale-110" type="submit">
+    <div class="flex mt-2">
+        {{-- <button class="px-2 py-1 duration-200 bg-blue-300 rounded-md hover:scale-110" type="submit">
             Add
-        </button>
+        </button> --}}
+        <button class="mx-auto button-secondary">Add</button>
     </div>
 </form>
