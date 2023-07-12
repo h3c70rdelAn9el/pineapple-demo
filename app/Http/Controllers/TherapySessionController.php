@@ -64,10 +64,9 @@ class TherapySessionController extends Controller
             $ts->user_id = $user->id;
             $ts->attendance = $request->attendance;
             $ts->save();
-
-            // ]);
             $user_id = $ts->user_id;
             $therapist = User::find($user_id);
+
             return redirect()
                 ->back()
                 ->with('success', 'Session added successfully.');
@@ -98,6 +97,9 @@ class TherapySessionController extends Controller
 
         return view('session.show', ['therapySession' => $therapySession, 'client' => $client, 'therapist' => $therapist, 'user' => $user]);
     }
+
+
+
 
     /**
      * Show the form for editing the specified resource.

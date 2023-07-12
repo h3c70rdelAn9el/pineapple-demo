@@ -25,15 +25,29 @@ class ClientController extends Controller
         // return view('therapist.show', ['client' => $clients()]);
     }
 
+
+
     /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    // public function create()
+    // {
+    //     return view('clients.create');
+    // }
+    public function create(Request $request)
     {
-        //
+        $user_id = $request->user()->id;
+        $therapist = User::find($user_id);
+
+        $therapists = User::where('admin', 0)->get();
+
+
+        // return view('clients.create')->with(['therapists' => $therapists]);
+        return view('clients.create')->with(['therapists' => $therapists, 'therapist' => $therapist]);
     }
+
 
     /**
      * Store a newly created resource in storage.
@@ -41,40 +55,42 @@ class ClientController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    // public function store(Request $request)
-    // {
-    //     // $user = auth()->user();
-    //     $user = $request->user();
+    public function store(Request $request)
+    {
+        // $user = auth()->user();
+        $user = $request->user();
 
-    //     $c = new Client();
-    //     $c->client_code = $request->client_code;
-    //     $c->legal_name = $request->legal_name;
-    //     $c->preferred_name = $request->preferred_name;
-    //     $c->sexual_orientation = $request->sexual_orientation;
-    //     $c->ethnic_group = $request->ethnic_group;
-    //     $c->home_address_line_1 = $request->home_address_line_1;
-    //     $c->home_address_line_2 = $request->home_address_line_2;
-    //     $c->home_address_city = $request->home_address_city;
-    //     $c->home_address_state = $request->home_address_state;
-    //     $c->home_address_zip = $request->home_address_zip;
-    //     $c->home_address_country = $request->home_address_country;
-    //     $c->health_coverage_provider = $request->health_coverage_provider;
-    //     $c->health_coverage_number = $request->health_coverage_number;
-    //     $c->health_coverage_expiration = $request->health_coverage_expiration;
-    //     $c->previous_therapy = $request->previous_therapy;
-    //     $c->possible_support_needed = $request->possible_support_needed;
-    //     $c->preferred_language = $request->preferred_language;
-    //     $c->additional_notes = $request->additional_notes;
-    //     $c->pronouns = $request->pronouns;
-    //     $c->email = $request->email;
-    //     $c->phone = $request->phone;
-    //     $c->contact_method = $request->contact_method;
-    //     $c->user_id = $request->user_id;
+        $c = new Client();
+        $c->client_code = $request->client_code;
+        $c->legal_name = $request->legal_name;
+        $c->preferred_name = $request->preferred_name;
+        $c->sexual_orientation = $request->sexual_orientation;
+        $c->ethnic_group = $request->ethnic_group;
+        $c->home_address_line_1 = $request->home_address_line_1;
+        $c->home_address_line_2 = $request->home_address_line_2;
+        $c->home_address_city = $request->home_address_city;
+        $c->home_address_state = $request->home_address_state;
+        $c->home_address_zip = $request->home_address_zip;
+        $c->home_address_country = $request->home_address_country;
+        $c->health_coverage_provider = $request->health_coverage_provider;
+        $c->health_coverage_number = $request->health_coverage_number;
+        $c->health_coverage_expiration = $request->health_coverage_expiration;
+        $c->previous_therapy = $request->previous_therapy;
+        $c->possible_support_needed = implode(', ', $request->possible_support_needed);
+        $c->preferred_language = $request->preferred_language;
+        $c->additional_notes = $request->additional_notes;
+        $c->pronouns = $request->pronouns;
+        $c->email = $request->email;
+        $c->phone = $request->phone;
+        $c->contact_method = $request->contact_method;
+        $c->user_id = $request->user_id;
+        $c->client_contribution = $request->client_contribution;
+        // $c->user_id = $user->id;
 
+        $c->save();
 
-    //     $c->save();
-    //     return redirect()->route('dashboard');
-    // }
+        return redirect()->route('dashboard');
+    }
 
     public function update(Request $request, $id)
     {
@@ -85,28 +101,29 @@ class ClientController extends Controller
         $client->preferred_name = $request->preferred_name;
         $client->sexual_orientation = $request->sexual_orientation;
         $client->ethnic_group = $request->ethnic_group;
-        $client->home_address_line_1 = $request->home_address_line_1;
-        $client->home_address_line_2 = $request->home_address_line_2;
-        $client->home_address_city = $request->home_address_city;
+        // $client->home_address_line_1 = $request->home_address_line_1;
+        // $client->home_address_line_2 = $request->home_address_line_2;
+        // $client->home_address_city = $request->home_address_city;
         $client->home_address_state = $request->home_address_state;
-        $client->home_address_zip = $request->home_address_zip;
+        // $client->home_address_zip = $request->home_address_zip;
         $client->home_address_country = $request->home_address_country;
-        $client->health_coverage_provider = $request->health_coverage_provider;
-        $client->health_coverage_number = $request->health_coverage_number;
-        $client->health_coverage_expiration = $request->health_coverage_expiration;
+        // $client->health_coverage_provider = $request->health_coverage_provider;
+        // $client->health_coverage_number = $request->health_coverage_number;
+        // $client->health_coverage_expiration = $request->health_coverage_expiration;
         $client->previous_therapy = $request->previous_therapy;
         $client->possible_support_needed = $request->possible_support_needed;
-        $client->preferred_language = $request->preferred_language;
+        // $client->preferred_language = $request->preferred_language;
         $client->additional_notes = $request->additional_notes;
         $client->pronouns = $request->pronouns;
         $client->email = $request->email;
         $client->phone = $request->phone;
         $client->contact_method = $request->contact_method;
+        $client->client_contribution = $request->client_contribution;
         // $client->user_id = $request->user_id;
-
         $client->save();
 
-        return redirect()->route('clients.show', $client->id)->with('success', 'Client updated successfully');
+        // return redirect()->route('clients.show', $client->id)->with('success', 'Client updated successfully');
+        return redirect()->route('dashboard');
     }
 
 
@@ -116,19 +133,56 @@ class ClientController extends Controller
      * @param  \App\Models\Client  $client
      * @return \Illuminate\Http\Response
      */
+    // public function show(Request $request, $id)
+    // {
+    //     $client = Client::find($id);
+    //     $therapySessions = TherapySession::all();
+    //     // $therapist = Client::find($user_id);
+
+    //     $user_id = Client::find($client->user_id);
+    //     // $user_id = $user->id;
+    //     $therapist = User::find($user_id);
+    //     // dd($therapist);
+    //     return view('clients.show')->with(['client' => $client, 'therapySessions' => $therapySessions, 'therapist' => $therapist]);
+    // }
     public function show(Request $request, $id)
     {
         $client = Client::find($id);
         $therapySessions = TherapySession::all();
         // $therapist = Client::find($user_id);
 
-        $user_id = Client::find($client->user_id);
-        // $user_id = $user->id;
-// pull in the therapist from user table
-        $therapist = User::find($user_id);
-        // dd($therapist);
+
+
+        $user_id = $client->user_id;
+        // $therapist = User::find($user_id);
+        $therapist = User::where('id', $user_id)->first();
+
         return view('clients.show')->with(['client' => $client, 'therapySessions' => $therapySessions, 'therapist' => $therapist]);
     }
+
+    // public function show(Request $request, $id)
+    // {
+    //     $client = Client::find($id);
+    //     if (!$client) {
+    //         // Handle the case where the client doesn't exist
+    //         // For example, return an error message or redirect to a different page
+    //         dd('client not found');
+    //     }
+
+    //     $therapySessions = TherapySession::all();
+
+    //     $user_id = $client->user_id;
+    //     $therapist = User::find($user_id);
+    //     if (!$therapist) {
+    //         // Handle the case where the therapist doesn't exist
+    //         // For example, return an error message or redirect to a different page
+    //         dd('therapist not found');
+    //     }
+
+    //     return view('clients.show')->with(['client' => $client, 'therapySessions' => $therapySessions, 'therapist' => $therapist, 'user_id' => $user_id]);
+    // }
+
+
 
     /**
      * Show the form for editing the specified resource.
