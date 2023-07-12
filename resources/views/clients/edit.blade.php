@@ -230,23 +230,16 @@
                 <x-form_label for="preferred_language">Preferred Language</x-form_label>
                 <select id="preferred_language" type="text" name="preferred_language" class="w-full p-3 text-gray-600 border-b-2 border-blue-200 rounded-md peer ring-0">
                     <option value="" disabled selected hidden>{{ old('preferred_language') }}</option>
-                    <option {{ old('preferred_language', $client->preferred_language) == 'English' ? 'selected' : '' }}>English</option>
-                    <option {{ old('preferred_language', $client->preferred_language) == 'Spanish' ? 'selected' : '' }}>Spanish</option>
-                    <option {{ old('preferred_language', $client->preferred_language) == 'French' ? 'selected' : '' }}>French</option>
-                    <option {{ old('preferred_language', $client->preferred_language) == 'German' ? 'selected' : '' }}>German</option>
-                    <option {{ old('preferred_language', $client->preferred_language) == 'Chinese' ? 'selected' : '' }}>Chinese</option>
-                    <option {{ old('preferred_language', $client->preferred_language) == 'Japanese' ? 'selected' : '' }}>Japanese</option>
-                    <option {{ old('preferred_language', $client->preferred_language) == 'prefer not to say' ? 'selected' : '' }}>prefer not to say</option>
-                    <option {{ old('preferred_language', $client->preferred_language) == 'Other' ? 'selected' : '' }}>Other</option>
-                </select>
+            <option {{ old('preferred_language', $client->preferred_language) == 'English' ? 'selected' : '' }}>English</option>
+            <option {{ old('preferred_language', $client->preferred_language) == 'Spanish' ? 'selected' : '' }}>Spanish</option>
+            <option {{ old('preferred_language', $client->preferred_language) == 'French' ? 'selected' : '' }}>French</option>
+            <option {{ old('preferred_language', $client->preferred_language) == 'German' ? 'selected' : '' }}>German</option>
+            <option {{ old('preferred_language', $client->preferred_language) == 'Chinese' ? 'selected' : '' }}>Chinese</option>
+            <option {{ old('preferred_language', $client->preferred_language) == 'Japanese' ? 'selected' : '' }}>Japanese</option>
+            <option {{ old('preferred_language', $client->preferred_language) == 'prefer not to say' ? 'selected' : '' }}>prefer not to say</option>
+            <option {{ old('preferred_language', $client->preferred_language) == 'Other' ? 'selected' : '' }}>Other</option>
+            </select>
             </x-form_input_div> --}}
-
-            <x-form_input_div>
-                <x-form_label for="additional_notes">Additional Notes</x-form_label>
-                <textarea class="w-full border-blue-300 rounded-md focus:ring-blue-300" id="additional_notes" name="additional_notes" type="text" value="{{ old('additional_notes', $client->additional_notes) }}"></textarea>
-            </x-form_input_div>
-
-
 
             <x-form_input_div>
                 <x-form_label for="email" class="-mt-2">Email</x-form_label>
@@ -272,6 +265,18 @@
                     </option>
                 </select>
             </x-form_input_div>
+
+            <x-form_input_div>
+                <x-form_label for="client_contribution">Client Contribution</x-form_label>
+                <x-edit-form-input id="client_contribution" name="client_contribution" type="text" value="{{ old('client_contribution', $client->client_contribution) }}" />
+            </x-form_input_div>
+
+            <x-form_input_div>
+                <x-form_label for="additional_notes">Additional Notes</x-form_label>
+                <textarea class="w-full border-blue-300 rounded-md focus:ring-blue-300" id="additional_notes" name="additional_notes" type="text" value="{{ old('additional_notes', $client->additional_notes) }}"></textarea>
+            </x-form_input_div>
+
+
 
             <x-jet-button class="ml-4" type="submit">
                 {{ __('Update') }}

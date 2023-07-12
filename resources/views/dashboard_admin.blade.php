@@ -51,6 +51,21 @@
                     {{ $allClients->count() }}
                 </x-slot>
                 <x-slot name="content">
+                <div x-data="{ open: false }">
+                    <button @click="open = !open" class="text-lg text-center text-blue-400 hover:text-blue-600">Add Client</button>
+                    <div x-show="open" x-cloak @click.away="open = false">
+                        <div class="absolute inset-0 w-2/3 mx-auto top-6">
+                            <x-client-form :therapists="$therapists" :states="$states" :categories="$categories"></x-client-form>
+                        </div>
+                    </div>
+                </div>
+                {{-- add theroute for add client --}}
+                <a href="{{ route('clients.create') }}"
+                    class="h-6 ml-10 text-sm text-blue-600 hover:text-blue-800">
+                    Add Client
+                </a>
+
+
                     @foreach ($allClients as $client)
                         <x-client-card :client="$client"
                             :therapist="$therapist"
@@ -60,7 +75,7 @@
             </x-container-content>
         </div>
 
-        <div x-data="{ open: false }">
+        {{-- <div x-data="{ open: false }">
             <button @click="open = !open"
                 class="text-lg text-center text-blue-400 hover:text-blue-600">Add Client</button>
             <div x-show="open"
@@ -71,7 +86,7 @@
                         :states="$states" :categories="$categories"></x-client-form>
                 </div>
             </div>
-        </div>
+        </div> --}}
 
     </x-main-container>
 </x-app-layout>
