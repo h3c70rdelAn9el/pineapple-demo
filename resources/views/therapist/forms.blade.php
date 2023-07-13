@@ -3,12 +3,12 @@
         <x-container-header :user="$user">
         </x-container-header>
         <div class="h-full overflow-scroll">
-            <div class="flex flex-row flex-wrap w-full gap-2">
+            <div class="flex flex-row flex-wrap w-full">
                 <div class="flex flex-col w-full">
                     <div class="p-2 mt-2 mb-2 text-center">
                         <h2>{{ $therapist->name }} Forms</h2>
                     </div>
-       <div class="flex flex-col">
+                    {{-- <div class="flex flex-col px-4">
                         <p class="font-light">
                             <span class="pl-2 text-sm">Total:</span> {{ $file_name->count() }}
                         </p>
@@ -20,12 +20,25 @@
                                 </div>
                             </div>
                         </div>
-       </div>
-                    <div>
-
-                    </div>
+                    </div> --}}
 
                 </div>
+            </div>
+            <div class="w-5/6 px-4 mx-auto md:w-full">
+                        <div class="flex flex-col px-2">
+                            <p class="font-light">
+                                <span class="pl-2 text-sm">Total:</span> {{ $file_name->count() }}
+                            </p>
+                            <div>
+                                <div class="flex flex-row justify-between w-full">
+                                    <div class="flex flex-row font-light">
+                                        <p class="pl-2 text-sm">Verified:</p>
+                                        <p class="pl-2 text-sm">{{ $file_name->where('verified', 1)->count() }} of {{ $file_name->count() }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
             </div>
             <section class="grid w-5/6 grid-cols-1 gap-5 p-2 px-4 mx-auto md:grid-cols-2 lg:grid-cols-3 md:w-full">
                 @foreach ($file_name as $form)
