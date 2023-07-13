@@ -17,6 +17,7 @@ class FileUpload extends Model
         'document_type',
         'date',
         'note',
+        'verified',
     ];
 
     public function user()

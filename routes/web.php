@@ -75,7 +75,9 @@ Route::middleware([
     // Route::get('/patients', [PatientController::class, 'index'])->name('patients');
     Route::get('file-upload', [FileUploadController::class, 'index'])->name('fileUpload');
     Route::post('file-store', [FileUploadController::class, 'store'])->name('fileStore');
-    Route::get('/therapist/{id}/forms/', [FileUploadController::class, 'index'])->name('therapist.forms');
+    // Route::get('/therapist/{id}/forms/', [FileUploadController::class, 'index'])->name('therapist.forms');
+    Route::get('/therapist/forms/{therapist}', [FileUploadController::class, 'index'])->name('therapist.forms');
+
     Route::get('/clients/create', [ClientController::class, 'create'])->name('clients.create');
     Route::get('/clients/{client_id}', [ClientController::class, 'show'])->name('clients.show');
     Route::post('/clients/store', [ClientController::class, 'store'])->name('clients.store');

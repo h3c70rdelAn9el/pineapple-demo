@@ -79,8 +79,13 @@
                            <x-jet-button type="submit" class="absolute right-0 mt-3 mb-3 mr-6">
                                Save
                            </x-jet-button>
-
                     </form>
+                    {{-- display a link to the documents --}}
+                    <div class="flex flex-wrap mt-5">
+                        <div class="relative">
+                            <a href="{{ route('fileUpload') }}" class="text-blue-500 hover:text-blue-800">View Documents</a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
