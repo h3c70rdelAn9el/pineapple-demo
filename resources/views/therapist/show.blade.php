@@ -187,6 +187,21 @@
                             <p>Covid Fundraise n/a</p>
                             @endif
                         </div>
+                        {{-- display a link to therapists' forms --}}
+                        <div class="flex flex-wrap mt-5">
+                            {{-- <div class="relative">
+                                <a href="{{ route('therapist.forms', $therapist->id) }}" class="text-blue-500 hover:text-blue-800">View Forms</a>
+                            </div> --}}
+                            {{-- <div class="relative">
+                                <a href="{{ route('therapist.forms') }}" class="text-blue-500 hover:text-blue-800">View Forms</a>
+                            </div> --}}
+
+                            <div class="relative">
+                                <a href="{{ route('therapist.forms', $therapist) }}" class="text-blue-500 hover:text-blue-800">View Forms</a>
+                            </div>
+
+
+                        </div>
                     </div>
                 </x-slot>
             </x-container-content>

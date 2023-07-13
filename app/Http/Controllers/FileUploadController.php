@@ -17,17 +17,24 @@ class FileUploadController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($id)
+    public function index($therapist): View
     {
-
+        $therapist = User::find($therapist);
+        // show the logged in user
         $user = auth()->user();
-        $therapist = User::find($id);
-        $id = $user->id;
-        $file_name = FileUpload::where('user_id', $user->id)
-            ->get();
 
-        return view('therapist-forms', ['file_name' => $file_name, 'user' => $user, 'therapist' => $therapist, 'id' => $id]);
+        $file_name = FileUpload::where('user_id', $therapist->id)->get();
+
+        return view('therapist.forms', [
+            'file_name' => $file_name,
+            'therapist' => $therapist,
+            'user' => $user,
+        ]);
     }
+
+
+
+
 
     /**
      * Show the form for creating a new resource.
@@ -67,6 +74,7 @@ class FileUploadController extends Controller
             'document_type' => $request->document_type,
             'date' => $request->date,
             'note' => $request->note,
+            'verified' => $request->verified,
         ]);
 
         return redirect('user/profile')
@@ -90,10 +98,17 @@ class FileUploadController extends Controller
         $therapistForm = FileUpload::findOrFail($id);
         $file_name = $therapistForm->file_name;
 
+        // gett the user id of who made the form
+        $user = auth()->user();
+        $therapist = User::find($user->id);
+        $id = $user->id;
+
+
+
         // dd($file_name);
 
         // Pass the ID and file name to the view
-        // return view('therapist-forms', ['id' => $id, 'file_name' => $file_name]);
+        return view('therapist-forms', ['id' => $id, 'file_name' => $file_name, 'user' => $user, 'therapist' => $therapist]);
     }
 
 
