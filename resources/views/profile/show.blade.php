@@ -25,10 +25,9 @@
             <x-jet-section-border />
             @endif
 
-            <x-file-upload />
+            <x-file-upload :user="$user" />
 
             <x-jet-section-border />
-
 
             @if (Laravel\Fortify\Features::enabled(Laravel\Fortify\Features::updatePasswords()))
             <div class="mt-10 sm:mt-0">
