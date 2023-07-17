@@ -66,6 +66,7 @@ class FileUploadController extends Controller
             'date' => $request->date,
             'note' => $request->note,
             'verified' => $verified,
+            'file_title' => $request->file_title,
         ]);
 
         return redirect('user/profile')
