@@ -90,8 +90,15 @@
                     </form>
                     <div class="flex flex-wrap mt-5">
                         <div class="relative">
-                            <a href="{{ route('fileUpload') }}" class="text-blue-500 hover:text-blue-800">View Documents</a>
+                                                             <a href="{{ route('therapist.forms', $user) }}" class="text-blue-500 hover:text-blue-800">View Forms</a>
+
+
                         </div>
+{{--
+                             <div class="relative">
+                                 <a href="{{ route('therapist.forms', $therapist) }}" class="text-blue-500 hover:text-blue-800">View Forms</a>
+                             </div> --}}
+
                     </div>
                 </div>
             </div>
