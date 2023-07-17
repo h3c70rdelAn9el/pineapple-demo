@@ -33,7 +33,7 @@
                         <p>
                             {{ $therapist->clients->count() }} clients
                         </p>
-                        <p><span>{{ $space_for_new_clients}} </span> of {{ $therapist->number_of_potential_clients }} openings remaining</p>
+                        <p><span>{{ $therapist->space_for_new_clients}} </span> of {{ $therapist->number_of_potential_clients }} openings remaining</p>
                         <div class="flex flex-row">
                             @if ($therapist->home_address_state)
                             <p>{{ $therapist->home_address_state }},</p>
@@ -216,10 +216,10 @@
                     Clients
                 </x-slot>
                 <x-slot name="count">
-                    {{ $clients->count() }}
+                    {{ $therapist->clients->count() }}
                 </x-slot>
                 <x-slot name="content">
-                    @foreach ($clients as $client)
+                    @foreach ($therapist->clients as $client)
                     <x-client-card :client="$client" :therapist="$therapist" :user="$user"></x-client-card>
                     @endforeach
                 </x-slot>
