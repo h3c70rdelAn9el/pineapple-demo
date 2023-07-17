@@ -23,6 +23,8 @@
                             <div class="flex flex-row font-light">
                                 <p class="pl-2 text-sm">Verified:</p>
                                 <p class="pl-2 text-sm">{{ $file_name->where('verified', 1)->count() }} of {{ $file_name->count() }}</p>
+
+
                             </div>
                         </div>
                     </div>
@@ -32,7 +34,17 @@
                 @foreach ($file_name as $form)
                 <div class="p-4 rounded-md shadow-xl">
                     <div>
-                        <p class="mb-2 overflow-hidden text-sm text-ellipsis">{{ $form->file_name }}</p>
+                        {{-- <p class="mb-2 overflow-hidden text-sm text-ellipsis">{{ $form->file_name }}</p> --}}
+                        @if ($form->file_title)
+                        <div>
+                            <p class="mb-2 overflow-hidden text-sm text-ellipsis">{{ $form->file_title }}</p>
+                        </div>
+                        @else
+                        <div>
+                            <p class="mb-2 overflow-hidden text-sm text-ellipsis">{{ $form->file_name }}</p>
+                        </div>
+                        @endif
+
                     </div>
                     <div class="flex flex-row">
                         <p class="text-xs font-light">Document Type:</p>
