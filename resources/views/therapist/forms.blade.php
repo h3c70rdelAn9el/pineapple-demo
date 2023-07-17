@@ -12,9 +12,25 @@
             </div>
             <div class="w-5/6 px-4 mx-auto md:w-full">
                 <div class="flex flex-col px-2">
+                    {{-- <button class="w-32 button-secondary">
+                        <a href="{{ route('therapist.show', $therapist) }}">{{ $therapist->name }}</a>
+                    </button> --}}
+                    @if ($user->admin == '1')
                     <button class="w-32 button-secondary">
                         <a href="{{ route('therapist.show', $therapist) }}">{{ $therapist->name }}</a>
                     </button>
+                    @else
+                    {{-- route to the dashboard --}}
+                    <div class="flex flex-row gap-2">
+                        <button class="w-32 button-secondary">
+                            <a href="{{ route('dashboard') }}">Dashboard</a>
+                        </button>
+                        {{-- add a button to the profile --}}
+                        <button class="w-32 button-secondary">
+                            <a href="{{ route('profile.show') }}">Profile</a>
+                        </button>
+                    </div>
+                    @endif
                     <p class="font-light">
                         <span class="pl-2 text-sm">Total:</span> {{ $file_name->count() }}
                     </p>
