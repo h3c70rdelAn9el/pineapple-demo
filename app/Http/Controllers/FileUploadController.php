@@ -17,16 +17,17 @@ class FileUploadController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($id)
+    public function index($therapist): View
     {
-
+        $therapist = User::find($therapist);
         $user = auth()->user();
-        $therapist = User::find($id);
-        $id = $user->id;
-        $file_name = FileUpload::where('user_id', $user->id)
-            ->get();
+        $file_name = FileUpload::where('user_id', $therapist->id)->get();
 
-        return view('therapist-forms', ['file_name' => $file_name, 'user' => $user, 'therapist' => $therapist, 'id' => $id]);
+        return view('therapist.forms', [
+            'file_name' => $file_name,
+            'therapist' => $therapist,
+            'user' => $user,
+        ]);
     }
 
     /**
@@ -52,28 +53,26 @@ class FileUploadController extends Controller
     {
         $user = $request->user();
         $request->validate([
-            'file' => 'required|mimes:pdf,jpg,jpeg,png|max:2048',
+            'file' => 'required|mimes:pdf,jpg,jpeg,png|max:10240',
         ]);
-
         $fileName = $request->file->getClientOriginalName();
-
+        $verified = $user->admin ? 1 : 0;
         $request->file->storeAs('uploads/forms/therapist', $fileName);
-
         $request->file->move(public_path('uploads/forms/therapist'), $fileName);
-
         $user->fileUploads()->create([
             'file_path' => $fileName,
             'file_name' => $fileName,
             'document_type' => $request->document_type,
             'date' => $request->date,
             'note' => $request->note,
+            'verified' => $verified,
+            'file_title' => $request->file_title,
         ]);
 
         return redirect('user/profile')
             ->with('alert', 'success')
             ->with('message', 'Thank you. You have uploaded your file.')
             ->with('file_name', $fileName);
-
     }
 
 
@@ -85,17 +84,14 @@ class FileUploadController extends Controller
 
     public function show($id): View
     {
-        // Retrieve the file name based on the ID
-        // $therapistForm = TherapistsController::findOrFail($id);
         $therapistForm = FileUpload::findOrFail($id);
         $file_name = $therapistForm->file_name;
+        $user = auth()->user();
+        $therapist = User::find($user->id);
+        $id = $user->id;
 
-        // dd($file_name);
-
-        // Pass the ID and file name to the view
-        // return view('therapist-forms', ['id' => $id, 'file_name' => $file_name]);
+        return view('therapist-forms', ['id' => $id, 'file_name' => $file_name, 'user' => $user, 'therapist' => $therapist]);
     }
-
 
 
     /**
@@ -103,10 +99,17 @@ class FileUploadController extends Controller
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
-     */
+    //  */
     public function edit($id)
     {
-        //
+        $form = FileUpload::findOrFail($id);
+
+        $user = auth()->user();
+        if (!$user->admin && $form->user_id !== $user->id) {
+            return redirect()->back()->with('error', 'You are not authorized to edit this form.');
+        }
+
+        return view('therapist.forms-edit', compact('form', 'user'));
     }
 
     /**
@@ -118,7 +121,39 @@ class FileUploadController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $user = auth()->user();
+
+        if (!$user->admin) {
+            return redirect('therapist.forms');
+        }
+
+        $request->validate([
+            'form_id' => 'required',
+            'verified' => 'required',
+        ]);
+        $form = FileUpload::findOrFail($id);
+        $verified = $request->input('verified') === 'on' ? true : false;
+        $form->fill([
+            'verified' => $verified,
+        ]);
+        $therapist = User::find($form->user_id);
+        $file_name = FileUpload::where('user_id', $therapist->id)->get();
+
+        try {
+            $form->save();
+        } catch (\Exception $e) {
+            return redirect()->back();
+        }
+
+        // return view('therapist.forms', ['id' => $id, 'user' => $user, 'therapist' => $therapist, 'file_name' => $file_name, 'form' => $form]);
+        // return the view of the therpasit page NOT forms
+
+        //return this view!!! <a href="{{ route('therapist.show', $therapist->id) }}"
+
+        return view('therapist.show', ['id' => $id, 'user' => $user, 'therapist' => $therapist, 'file_name' => $file_name, 'form' => $form]);
+
+
+
     }
 
     /**
