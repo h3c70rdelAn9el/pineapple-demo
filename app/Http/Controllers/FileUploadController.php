@@ -145,7 +145,15 @@ class FileUploadController extends Controller
             return redirect()->back();
         }
 
-        return view('therapist.forms', ['id' => $id, 'user' => $user, 'therapist' => $therapist, 'file_name' => $file_name, 'form' => $form]);
+        // return view('therapist.forms', ['id' => $id, 'user' => $user, 'therapist' => $therapist, 'file_name' => $file_name, 'form' => $form]);
+        // return the view of the therpasit page NOT forms
+
+        //return this view!!! <a href="{{ route('therapist.show', $therapist->id) }}"
+
+        return view('therapist.show', ['id' => $id, 'user' => $user, 'therapist' => $therapist, 'file_name' => $file_name, 'form' => $form]);
+
+
+
     }
 
     /**
