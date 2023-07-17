@@ -7,7 +7,6 @@
 
         <div x-data="imageViewer()" class="relative flex p-3 pl-5 -mb-5">
             <div class="flex mt-2 mb-2">
-                <!-- Show the image -->
                 <div class="mt-2">
                     <template x-if="imageUrl">
                         <div class="mr-3">
@@ -80,7 +79,6 @@
                                Save
                            </x-jet-button>
                     </form>
-                    {{-- display a link to the documents --}}
                     <div class="flex flex-wrap mt-5">
                         <div class="relative">
                             <a href="{{ route('fileUpload') }}" class="text-blue-500 hover:text-blue-800">View Documents</a>

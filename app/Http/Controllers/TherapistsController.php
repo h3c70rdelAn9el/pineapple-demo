@@ -40,4 +40,14 @@ class TherapistsController extends Controller
         ]);
     }
 
+    public function edit($id)
+    {
+        $user = auth()->user();
+        $therapist = User::find($id);
+        return view('therapist.edit', [
+            'therapist' => $therapist,
+            'user' => $user,
+        ]);
+    }
+
 }
