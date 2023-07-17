@@ -7,9 +7,21 @@
             {{-- left/top --}}
             <x-container-content :user="$user">
                 <x-slot name="title">
-                    <div class="flex items-center justify-between w-full">
-                        <p>{{ $therapist->name }}</p><span class="text-sm">{{ $therapist->gender }}</span>
-                    </div>
+               <div class="flex flex-row items-center justify-between w-full">
+                        <div class="flex flex-col text-left">
+                            <p>{{ $therapist->name }}</p>
+                            <p class="text-sm">{{ $therapist->gender }}</p>
+                        </div>
+
+                        @if ($user->admin == '1')
+                        <div class="relative">
+                            <a href="{{ route('therapist.edit', $therapist) }}" class="text-blue-500 hover:text-blue-800">Edit</a>
+                        </div>
+                        @endif
+
+
+
+               </div>
                 </x-slot>
                 <x-slot name="count">
                 </x-slot>
@@ -187,21 +199,13 @@
                             <p>Covid Fundraise n/a</p>
                             @endif
                         </div>
-                        {{-- display a link to therapists' forms --}}
-                        <div class="flex flex-wrap mt-5">
-                            {{-- <div class="relative">
-                                <a href="{{ route('therapist.forms', $therapist->id) }}" class="text-blue-500 hover:text-blue-800">View Forms</a>
-                            </div> --}}
-                            {{-- <div class="relative">
-                                <a href="{{ route('therapist.forms') }}" class="text-blue-500 hover:text-blue-800">View Forms</a>
-                            </div> --}}
 
+                        <div class="flex flex-wrap mt-5">
                             <div class="relative">
                                 <a href="{{ route('therapist.forms', $therapist) }}" class="text-blue-500 hover:text-blue-800">View Forms</a>
                             </div>
-
-
                         </div>
+
                     </div>
                 </x-slot>
             </x-container-content>

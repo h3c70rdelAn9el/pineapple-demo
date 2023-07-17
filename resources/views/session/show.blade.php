@@ -42,7 +42,6 @@
                 <div class="w-1/2 p-2 border-b border-r border-gray-400">Client Contribution:</div>
                 <div class="w-1/2 p-2 border-b border-gray-400">{{ $therapySession->client_contribution }}</div>
             </div>
-            {{-- display session attendance  string --}}
             <div class="flex flex-row">
                 <div class="w-1/2 p-2 border-r border-gray-400">Session Attendance:</div>
                 <div class="w-1/2 p-2 capitalize">{{ $therapySession->attendance }}</div>
