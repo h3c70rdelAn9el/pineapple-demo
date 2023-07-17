@@ -70,7 +70,7 @@
                     @forelse ($therapySessions as $therapySession)
                         <x-session-card :therapySession='$therapySession'
                             :therapist='$therapist'
-                            :client='$client'></x-session-card>
+                            :client='$therapySession->client'></x-session-card>
                     @empty
                         <p>There are no sessions to display</p>
                     @endforelse
