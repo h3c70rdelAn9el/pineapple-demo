@@ -276,8 +276,6 @@
                 <textarea class="w-full border-blue-300 rounded-md focus:ring-blue-300" id="additional_notes" name="additional_notes" type="text" value="{{ old('additional_notes', $client->additional_notes) }}"></textarea>
             </x-form_input_div>
 
-
-
             <x-jet-button class="ml-4" type="submit">
                 {{ __('Update') }}
             </x-jet-button>

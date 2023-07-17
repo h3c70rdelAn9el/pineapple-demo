@@ -71,11 +71,17 @@ Route::middleware([
 ])->group(function () {
     // Route::post('/session/store', [TherapySessionController::class, 'store'])->name('session.store');
     Route::get('/session/{id}', [TherapySessionController::class, 'show'])->name('session.show');
-    // Route::get('/patients/{patient_id}', [PatientController::class, 'show'])->name('patient');
-    // Route::get('/patients', [PatientController::class, 'index'])->name('patients');
     Route::get('file-upload', [FileUploadController::class, 'index'])->name('fileUpload');
     Route::post('file-store', [FileUploadController::class, 'store'])->name('fileStore');
+    // Route::put('file-update/{id}', [FileUploadController::class, 'update'])->name('fileUpdate');
+    // Route::put('file-update/{id}', 'App\Http\Controllers\FileUploadController@update')->name('fileUpdate');
+    // Route::get('file-edit/{id}', [FileUploadController::class, 'edit'])->name('fileEdit');
+
+
     Route::get('/therapist/{id}/forms/', [FileUploadController::class, 'index'])->name('therapist.forms');
+    Route::get('/therapist/forms/{therapist}', [FileUploadController::class, 'index'])->name('therapist.forms');
+
+    Route::get('/therapist/{id}/edit', [TherapistsController::class, 'edit'])->name('therapist.edit');
     Route::get('/clients/create', [ClientController::class, 'create'])->name('clients.create');
     Route::get('/clients/{client_id}', [ClientController::class, 'show'])->name('clients.show');
     Route::post('/clients/store', [ClientController::class, 'store'])->name('clients.store');
@@ -92,6 +98,22 @@ Route::middleware([
     Route::get('/clients/create', [ClientController::class, 'create'])->name('clients.create');
 });
 
+
+Route::middleware([
+    'auth:sanctum',
+    config('jetstream.auth_session'),
+    'verified'
+])->put('/therapist/forms/{id}/update', [FileUploadController::class, 'update'])->name('fileUpdate');
+
+Route::middleware([
+    'auth:sanctum',
+    config('jetstream.auth_session'),
+    'verified'
+])->get('/therapist/forms/{id}/edit', [FileUploadController::class, 'edit'])->name('fileEdit');
+
+
+// Route::get('/therapist/forms/{therapist}/edit', [FileUploadController::class, 'edit'])->name('therapist.forms.edit');
+// Route::put('/therapist/forms/{therapist}/update', [FileUploadController::class, 'update'])->name('therapist.forms.update');
 
 // Route::middleware([
 //     'auth:sanctum',

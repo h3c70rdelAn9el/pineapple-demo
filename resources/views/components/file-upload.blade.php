@@ -3,11 +3,10 @@
         <h3 class="text-lg">Upload Documents</h3>
         <p class="text-sm text-gray-600">Upload your documents here</p>
     </div>
-    <div class="overflow-hidden bg-white border-b border-gray-300 rounded-md shadow-md h-96 md:ml-3 md:col-span-4">
+    <div class="h-full overflow-hidden bg-white border-b border-gray-300 rounded-md shadow-md md:ml-3 md:col-span-4">
 
         <div x-data="imageViewer()" class="relative flex p-3 pl-5 -mb-5">
             <div class="flex mt-2 mb-2">
-                <!-- Show the image -->
                 <div class="mt-2">
                     <template x-if="imageUrl">
                         <div class="mr-3">
@@ -44,13 +43,22 @@
                                     <option value="">Select Document Type</option>
                                     <option value="W9">W9</option>
                                     <option value="Certificate">Certificate</option>
-                                    <option value="License">License</option>
+                                    <option value="clinical_license">Clinical License</option>
+                                    <option value="Insurance">Insurance</option>
+                                    <option value="Voided Check">Voided Check</option>
                                     <option value="Other">Other</option>
                                 </select>
                             </div>
                         </div>
 
                         <div class="flex flex-col mb-5">
+                            <div class="relative mb-5">
+                                <x-jet-label for="file_title" value="File Title" />
+                                <div class="relative">
+                                    <x-jet-input id="file_title" class="block w-[100%] mt-1" type="text" name="file_title" :value="old('file_title')" placeholder="File Title" />
+                                </div>
+                            </div>
+
                             {{-- date --}}
                             <div class="relative mb-5">
                                 <x-jet-label for="date" value="{{ __('Date (optional)') }}" />
@@ -75,22 +83,31 @@
                                 </x-jet-button>
                             </div>
                         </div> --}}
-                           {{-- button --}}
-                           <x-jet-button type="submit" class="absolute right-0 mt-3 mb-3 mr-6">
-                               Save
-                           </x-jet-button>
-
+                        {{-- button --}}
+                        <x-jet-button type="submit" class="absolute right-0 mb-3 mr-6 mt-9">
+                            Save
+                        </x-jet-button>
                     </form>
+                    <div class="flex flex-wrap mt-5">
+                        <div class="relative">
+                                                             <a href="{{ route('therapist.forms', $user) }}" class="text-blue-500 hover:text-blue-800">View Forms</a>
+
+
+                        </div>
+{{--
+                             <div class="relative">
+                                 <a href="{{ route('therapist.forms', $therapist) }}" class="text-blue-500 hover:text-blue-800">View Forms</a>
+                             </div> --}}
+
+                    </div>
                 </div>
             </div>
         </div>
-                    <div class="w-full h-20 bg-gray-50 rounded-b-md">
+        <div class="w-full h-16 bg-gray-50 rounded-b-md">
 
-                    </div>
+        </div>
     </div>
 </div>
-
-
 
 <script>
     function imageViewer(src = "") {
