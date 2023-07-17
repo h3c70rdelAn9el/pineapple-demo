@@ -52,12 +52,12 @@
                         </div>
 
                         <div class="flex flex-col mb-5">
-                        <div class="relative mb-5">
-                            <x-jet-label for="file_title" value="File Title" />
-                            <div class="relative">
-                                <x-jet-input id="file_title" class="block w-[100%] mt-1" type="text" name="file_title" :value="old('file_title')" placeholder="File Title" />
+                            <div class="relative mb-5">
+                                <x-jet-label for="file_title" value="File Title" />
+                                <div class="relative">
+                                    <x-jet-input id="file_title" class="block w-[100%] mt-1" type="text" name="file_title" :value="old('file_title')" placeholder="File Title" />
+                                </div>
                             </div>
-                        </div>
 
                             {{-- date --}}
                             <div class="relative mb-5">
@@ -83,10 +83,10 @@
                                 </x-jet-button>
                             </div>
                         </div> --}}
-                           {{-- button --}}
-                           <x-jet-button type="submit" class="absolute right-0 mt-3 mb-3 mr-6">
-                               Save
-                           </x-jet-button>
+                        {{-- button --}}
+                        <x-jet-button type="submit" class="absolute right-0 mb-3 mr-6 mt-9">
+                            Save
+                        </x-jet-button>
                     </form>
                     <div class="flex flex-wrap mt-5">
                         <div class="relative">
@@ -96,13 +96,11 @@
                 </div>
             </div>
         </div>
-                    <div class="w-full h-20 bg-gray-50 rounded-b-md">
+        <div class="w-full h-16 bg-gray-50 rounded-b-md">
 
-                    </div>
+        </div>
     </div>
 </div>
-
-
 
 <script>
     function imageViewer(src = "") {
