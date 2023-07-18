@@ -44,9 +44,12 @@ class TherapistsController extends Controller
     {
         $user = auth()->user();
         $therapist = User::find($id);
+        $form = $therapist->therapist;
+
         return view('therapist.edit', [
             'therapist' => $therapist,
             'user' => $user,
+            'form' => $form,
         ]);
     }
 
