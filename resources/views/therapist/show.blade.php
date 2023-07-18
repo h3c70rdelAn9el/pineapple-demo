@@ -12,12 +12,12 @@
                             <p>{{ $therapist->name }}</p>
                             <p class="text-sm">{{ $therapist->gender }}</p>
                         </div>
-
+{{--
                         @if ($user->admin == '1')
                         <div class="relative">
                             <a href="{{ route('therapist.edit', $therapist) }}" class="text-blue-500 hover:text-blue-800">Edit</a>
                         </div>
-                        @endif
+                        @endif --}}
 
 
 
