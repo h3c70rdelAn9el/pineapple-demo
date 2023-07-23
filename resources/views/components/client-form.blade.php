@@ -199,7 +199,7 @@
         <x-form_label for="phone">
             Phone
         </x-form_label>
-        <x-form_input id="phone" name="phone" type="text" x-data x-mask="(999)999-9999" placeholder="(xxx)xxx-xxxx" required />
+        <x-form_input id="phone" name="phone" type="tel" required />
     </x-form_input_div>
 
     <x-form_input_div>
@@ -308,3 +308,19 @@
         <button class="mx-auto button-secondary">Add</button>
     </div>
 </form>
+
+
+<script src="{{ asset('js/intlTelInput.js') }}"></script>
+<script src="{{ asset('js/utils.js') }}"></script>
+
+
+
+<script>
+    var input = document.querySelector("#phone");
+    window.intlTelInput(input, {
+        initialCountry: "us",
+        separateDialCode: true,
+        utilsScript: "{{ asset('js/utils.js') }}"
+    , });
+
+</script>
