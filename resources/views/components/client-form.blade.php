@@ -118,7 +118,7 @@
         <select class="w-full p-3 mt-2 border-b-2 border-blue-200 rounded-md peer ring-0" id="home_address_state" name="home_address_state" type="text">
             <option value="" disabled selected hidden>Select State</option>
             {{-- TODO: RETRIEVE FROM JSON FILE SUCCESSFULLY --}}
-
+            <option>N/A</option>
             <option>Alabama</option>
             <option>Alaska</option>
             <option>Arizona</option>
@@ -187,6 +187,20 @@
         </x-form_label>
         <x-form_input id="home_address_country" name="home_address_country" type="text" required placeholder="Country" />
     </x-form_input_div>
+
+{{-- TODO:  FIX THIS ERROR! AND DISPLAY COUNTRIES PROPERLY --}}
+{{-- ERROR: give undefined error for countries --}}
+    {{-- <x-form_input_div>
+        <x-form_label for="country">
+            Country
+        </x-form_label>
+        <select class="w-full p-3 mt-2 border-b-2 border-blue-200 rounded-md peer ring-0" id="home_address_country" name="home_address_country" type="text" required>
+            <option value="" disabled selected hidden>Select Country</option>
+            @foreach ($countries as $country)
+            <option>{{ $country->name }}</option>
+            @endforeach
+        </select>
+    </x-form_input_div> --}}
 
     <x-form_input_div>
         <x-form_label for="email">
@@ -318,9 +332,9 @@
 <script>
     var input = document.querySelector("#phone");
     window.intlTelInput(input, {
-        initialCountry: "us",
-        separateDialCode: true,
-        utilsScript: "{{ asset('js/utils.js') }}"
+        initialCountry: "us"
+        , separateDialCode: true
+        , utilsScript: "{{ asset('js/utils.js') }}"
     , });
 
 </script>

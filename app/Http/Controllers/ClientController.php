@@ -6,6 +6,8 @@ use App\Models\User;
 use App\Models\Client;
 use Illuminate\Http\Request;
 use App\Models\TherapySession;
+use Illuminate\Support\Facades\File;
+
 
 class ClientController extends Controller
 {
@@ -43,9 +45,22 @@ class ClientController extends Controller
 
         $therapists = User::where('admin', 0)->get();
 
+        $countries = $this->getCountries();
 
         // return view('clients.create')->with(['therapists' => $therapists]);
-        return view('clients.create')->with(['therapists' => $therapists, 'therapist' => $therapist]);
+        return view('clients.create')->with(['therapists' => $therapists, 'therapist' => $therapist, 'countries' => $countries]);
+    }
+
+    private function getCountries()
+    {
+        // $path = resource_path('json/countries.json');
+        // load the path from the asswets folder
+        $path = public_path('/json/countries.json');
+        // $path = json_path('countries.json');
+        $jsonContents = File::get($path);
+        $countries = json_decode($jsonContents, true)['countries'];
+
+        return $countries;
     }
 
 
@@ -59,6 +74,8 @@ class ClientController extends Controller
     {
         // $user = auth()->user();
         $user = $request->user();
+
+        $countries = $this->getCountries();
 
         $c = new Client();
         $c->client_code = $request->client_code;
