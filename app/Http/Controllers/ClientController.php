@@ -6,6 +6,8 @@ use App\Models\User;
 use App\Models\Client;
 use Illuminate\Http\Request;
 use App\Models\TherapySession;
+use Illuminate\Support\Facades\File;
+
 
 class ClientController extends Controller
 {
@@ -43,9 +45,19 @@ class ClientController extends Controller
 
         $therapists = User::where('admin', 0)->get();
 
+        $countries = $this->getCountries();
 
         // return view('clients.create')->with(['therapists' => $therapists]);
-        return view('clients.create')->with(['therapists' => $therapists, 'therapist' => $therapist]);
+        return view('clients.create')->with(['therapists' => $therapists, 'therapist' => $therapist, 'countries' => $countries]);
+    }
+
+    private function getCountries()
+    {
+        $path = public_path('/json/countries.json');
+        $jsonContents = File::get($path);
+        $countries = json_decode($jsonContents, true)['countries'];
+
+        return $countries;
     }
 
 
@@ -59,6 +71,8 @@ class ClientController extends Controller
     {
         // $user = auth()->user();
         $user = $request->user();
+
+        $countries = $this->getCountries();
 
         $c = new Client();
         $c->client_code = $request->client_code;
@@ -95,6 +109,9 @@ class ClientController extends Controller
     public function update(Request $request, $id)
     {
         $client = Client::find($id);
+
+        // ad the coutnries
+        $countries = $this->getCountries();
 
         $client->client_code = $request->client_code;
         $client->legal_name = $request->legal_name;
@@ -197,8 +214,10 @@ class ClientController extends Controller
     // write the edit function
     public function edit(Request $request, $id)
     {
+        $countries = $this->getCountries();
+
         $client = Client::find($id);
-        return view('clients.edit')->with(['client' => $client]);
+        return view('clients.edit')->with(['client' => $client, 'countries' => $countries]);
     }
 
     /**
