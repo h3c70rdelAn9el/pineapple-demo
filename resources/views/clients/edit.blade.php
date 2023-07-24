@@ -246,14 +246,33 @@
                 <x-edit-form-input id="email" name="email" type="text" value="{{ old('email', $client->email) }}" placeholder="email@example.com" />
             </x-form_input_div>
 
-            <x-form_input_div>
+            {{-- <x-form_input_div>
                 <x-form_label for="phone">Phone</x-form_label>
                 <x-edit-form-input id="phone" name="phone" type="text" value="{{ old('phone', $client->phone) }}" x-data x-mask="(999)999-9999" placeholder="(xxx)xxx-xxxx" />
+            </x-form_input_div> --}}
+
+            <x-form_input_div>
+                <x-form_label for="country">
+                    Country
+                </x-form_label>
+                <select class="w-full p-2 mt-2 border-b-2 border-blue-200 rounded-md peer ring-0" id="home_address_country" name="home_address_country" type="text" required>
+                    <option value="" disabled selected hidden>{{ old('home_address_country') }}</option>
+                    @foreach ($countries as $country)
+                    <option value="{{$country['code']}}">{{ $country['name'] }}</option>
+                    @endforeach
+                </select>
+            </x-form_input_div>
+
+            <x-form_input_div>
+                <x-form_label for="phone">
+                    Phone
+                </x-form_label>
+                <x-edit-form-input id="phone" value="{{ old('phone') }}" name="phone" type="tel" required />
             </x-form_input_div>
 
             <x-form_input_div>
                 <x-form_label for="contact_method">Contact Method</x-form_label>
-                <select class="form-select" id="contact_method" name="contact_method" type="text">
+                <select class="p-2 form-select" id="contact_method" name="contact_method" type="text">
                     <option value="" disabled selected hidden>
                         {{ old('contact_method') }}</option>
                     </option>
@@ -282,3 +301,18 @@
         </form>
     </x-main-container>
 </x-app-layout>
+
+<script src="{{ asset('js/intlTelInput.js') }}"></script>
+<script src="{{ asset('js/utils.js') }}"></script>
+
+
+
+<script>
+    var input = document.querySelector("#phone");
+    window.intlTelInput(input, {
+        initialCountry: "us"
+        , separateDialCode: true
+        , utilsScript: "{{ asset('js/utils.js') }}"
+    , });
+
+</script>

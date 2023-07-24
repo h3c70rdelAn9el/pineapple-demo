@@ -180,16 +180,6 @@
         <x-form_input id="home_address_zip" type="text" name="home_address_zip" required placeholder="Zip Code" />
     </x-form_input_div> --}}
 
-    {{-- home_address_country --}}
-    <x-form_input_div>
-        <x-form_label for="home_address_country">
-            Country
-        </x-form_label>
-        <x-form_input id="home_address_country" name="home_address_country" type="text" required placeholder="Country" />
-    </x-form_input_div>
-
-{{-- TODO:  FIX THIS ERROR! AND DISPLAY COUNTRIES PROPERLY --}}
-{{-- ERROR: give undefined error for countries --}}
      <x-form_input_div>
         <x-form_label for="country">
             Country
@@ -200,7 +190,7 @@
             <option value="{{$country['code']}}">{{ $country['name'] }}</option>
             @endforeach
         </select>
-    </x-form_input_div> 
+    </x-form_input_div>
 
     <x-form_input_div>
         <x-form_label for="email">
