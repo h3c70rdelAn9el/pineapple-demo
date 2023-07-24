@@ -1234,7 +1234,7 @@
     height: 15px;
     box-shadow: 0px 0px 1px 0px #888;
     /* TODO: FIX THIS! */
-    background-image: url("/resources/img/flags.png/100x100");
+    background-image: url("/img/flags.png/100x100");
     background-repeat: no-repeat;
     background-color: #dbdbdb;
     sbackground-position: 20px 0;
@@ -1243,7 +1243,8 @@
 
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
     .iti__flag {
-        background-image: url("{{ asset('/img/flags@2x.png') }}");
+        /*background-image: url("{{ asset('/img/flags@2x.png') }}");*/
+        background-image: url("/img/flags@2x.png");
         /* background-image: url("../resources/img/flags@2x.png"); */
     }
 }
