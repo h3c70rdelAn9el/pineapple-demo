@@ -53,10 +53,7 @@ class ClientController extends Controller
 
     private function getCountries()
     {
-        // $path = resource_path('json/countries.json');
-        // load the path from the asswets folder
         $path = public_path('/json/countries.json');
-        // $path = json_path('countries.json');
         $jsonContents = File::get($path);
         $countries = json_decode($jsonContents, true)['countries'];
 
@@ -112,6 +109,9 @@ class ClientController extends Controller
     public function update(Request $request, $id)
     {
         $client = Client::find($id);
+
+        // ad the coutnries
+        $countries = $this->getCountries();
 
         $client->client_code = $request->client_code;
         $client->legal_name = $request->legal_name;
@@ -214,8 +214,10 @@ class ClientController extends Controller
     // write the edit function
     public function edit(Request $request, $id)
     {
+        $countries = $this->getCountries();
+
         $client = Client::find($id);
-        return view('clients.edit')->with(['client' => $client]);
+        return view('clients.edit')->with(['client' => $client, 'countries' => $countries]);
     }
 
     /**
