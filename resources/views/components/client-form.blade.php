@@ -190,17 +190,17 @@
 
 {{-- TODO:  FIX THIS ERROR! AND DISPLAY COUNTRIES PROPERLY --}}
 {{-- ERROR: give undefined error for countries --}}
-    {{-- <x-form_input_div>
+     <x-form_input_div>
         <x-form_label for="country">
             Country
         </x-form_label>
         <select class="w-full p-3 mt-2 border-b-2 border-blue-200 rounded-md peer ring-0" id="home_address_country" name="home_address_country" type="text" required>
             <option value="" disabled selected hidden>Select Country</option>
             @foreach ($countries as $country)
-            <option>{{ $country->name }}</option>
+            <option value="{{$country['code']}}">{{ $country['name'] }}</option>
             @endforeach
         </select>
-    </x-form_input_div> --}}
+    </x-form_input_div> 
 
     <x-form_input_div>
         <x-form_label for="email">
