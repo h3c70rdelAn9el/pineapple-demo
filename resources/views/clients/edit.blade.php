@@ -169,8 +169,15 @@
 
             <x-form_input_div>
                 <x-form_label for="previous_therapy">Previous Therapy from Pineapple</x-form_label>
-                <x-edit-form-input id="previous_therapy" name="previous_therapy" type="text" value="{{ old('previous_therapy', $client->previous_therapy == 1 ? 'Yes' : 'No') }}" />
+                <select class="form-select" id="previous_therapy" name="previous_therapy" type="text">
+                    <option value="" disabled selected hidden>{{ old('previous_therapy') }}</option>
+                    <option {{ old('previous_therapy', $client->previous_therapy) == 'Yes' ? 'selected' : '' }}>Yes
+                    </option>
+                    <option {{ old('previous_therapy', $client->previous_therapy) == 'No' ? 'selected' : '' }}>No
+                    </option>
+                </select>
             </x-form_input_div>
+
 
             <x-form_input_div>
                 <x-form_label for="possible_support_needed">Possible Support Needed</x-form_label>
