@@ -8,6 +8,7 @@ use App\Models\Patient;
 use Illuminate\Http\Request;
 use App\Models\TherapySession;
 use Illuminate\Support\Facades\Session;
+use App\Notifications\SessionLimitNotification;
 use App\Http\Requests\StoreTherapySessionRequest;
 use App\Http\Requests\UpdateTherapySessionRequest;
 
@@ -66,6 +67,10 @@ class TherapySessionController extends Controller
             $ts->save();
             $user_id = $ts->user_id;
             $therapist = User::find($user_id);
+
+            if ($client->therapySessions()->count() === 14) {
+                $client->notify(new SessionLimitNotification());
+            }
 
             return redirect()
                 ->back()
