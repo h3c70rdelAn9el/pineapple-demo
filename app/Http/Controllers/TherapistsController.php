@@ -8,6 +8,7 @@ use App\Models\Patient;
 use App\Models\FileUpload;
 use Illuminate\Http\Request;
 use App\Models\TherapySession;
+use App\Notifications\TherapistFileUploaded;
 
 class TherapistsController extends Controller
 {
@@ -29,6 +30,11 @@ class TherapistsController extends Controller
         $totalClients = $clients->count();
 
         $space_for_new_clients = $therapist->number_of_potential_clients - $totalClients;
+
+        if ($file_name) {
+            $adminUsers = User::where('admin', 1)->get();
+            Notification::send($adminUsers, new TherapistFileUploaded());
+        }
 
         return view('therapist.show', [
             'therapist' => $therapist,
