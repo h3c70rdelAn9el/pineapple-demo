@@ -1,5 +1,5 @@
 <a href="{{ route('session.show', $therapySession->id) }}"
-    class="relative w-full p-2 m-2 transition-all duration-200 ease-in border border-blue-200 rounded-lg shadow-md bg-blue-50 shadow-blue-100 hover:border hover:border-blue-400 hover:shadow-lg">
+    class="relative w-full h-20 p-2 m-2 transition-all duration-200 ease-in border border-blue-200 rounded-lg shadow-md bg-blue-50 shadow-blue-100 hover:border hover:border-blue-400 hover:shadow-lg">
     <div class="flex flex-row justify-between w-full ml-1 text-xs">
         <div class="flex flex-col">
             @if (Auth::user()->admin)
