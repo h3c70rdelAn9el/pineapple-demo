@@ -6,12 +6,14 @@ use App\Models\User;
 use App\Models\TherapySession;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Notifications\Notifiable;
 use Laravel\Scout\Searchable;
 
 class Client extends Model
 {
     use Searchable;
     use HasFactory;
+    use Notifiable;
     protected $fillable = [
         'client_code',
         'preferred_name',

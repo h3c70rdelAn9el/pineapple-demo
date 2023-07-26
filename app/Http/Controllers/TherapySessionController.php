@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Models\TherapySession;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
+use App\Notifications\SessionLimitNotification;
 use App\Http\Requests\StoreTherapySessionRequest;
 use App\Http\Requests\UpdateTherapySessionRequest;
 
@@ -65,8 +66,6 @@ class TherapySessionController extends Controller
                 ->where('id', $request->client_id)
                 ->value('client_contribution');
 
-
-            // Set client_contribution and calculate remaining_client_contribution
             $ts->client_contribution = $request->client_contribution;
             $ts->remaining_client_contribution = $request->session_cost - $clientContribution;
             // $ts->remaining_client_contribution = $request->session_cost - $clientContribution;
@@ -78,6 +77,10 @@ class TherapySessionController extends Controller
             $user_id = $ts->user_id;
             $therapist = User::find($user_id);
 
+            if ($client->therapySessions()->count() === 14) {
+                $client->notify(new SessionLimitNotification());
+            }
+
             return redirect()
                 ->back()
                 ->with('success', 'Session added successfully.');
@@ -86,7 +89,6 @@ class TherapySessionController extends Controller
             return redirect()
                 ->back();
         }
-
     }
 
     /**
