@@ -7,6 +7,8 @@ use App\Models\FileUpload;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Contracts\View\View;
+use App\Notifications\TherapistFileUploaded;
+use Illuminate\Support\Facades\Notification;
 use App\Http\Controllers\TherapistsController;
 
 
@@ -68,6 +70,11 @@ class FileUploadController extends Controller
             'verified' => $verified,
             'file_title' => $request->file_title,
         ]);
+
+        if ($fileName) {
+            $adminUsers = User::where('admin', 1)->get();
+            Notification::send($adminUsers, new TherapistFileUploaded());
+        }
 
         return redirect('user/profile')
             ->with('alert', 'success')
@@ -145,15 +152,7 @@ class FileUploadController extends Controller
             return redirect()->back();
         }
 
-        // return view('therapist.forms', ['id' => $id, 'user' => $user, 'therapist' => $therapist, 'file_name' => $file_name, 'form' => $form]);
-        // return the view of the therpasit page NOT forms
-
-        //return this view!!! <a href="{{ route('therapist.show', $therapist->id) }}"
-
         return view('therapist.show', ['id' => $id, 'user' => $user, 'therapist' => $therapist, 'file_name' => $file_name, 'form' => $form]);
-
-
-
     }
 
     /**
