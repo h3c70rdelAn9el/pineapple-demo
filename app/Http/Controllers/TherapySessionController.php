@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Client;
 use App\Models\Patient;
+use App\Notifications\MissedTherapySessions;
 use Illuminate\Http\Request;
 use App\Models\TherapySession;
 use Illuminate\Support\Facades\DB;
@@ -80,6 +81,21 @@ class TherapySessionController extends Controller
             if ($client->therapySessions()->count() === 14) {
                 $client->notify(new SessionLimitNotification());
             }
+
+            // Check if the client has missed 3 consecutive sessions
+            $consecutiveNoShows = 0;
+            foreach ($client->therapySessions()->latest()->take(5)->get() as $session) {
+                if ($session->attendance === 'no-show') {
+                    $consecutiveNoShows++;
+                } else {
+                    break; // Reset the counter if attendance is not 'no-show'
+                }
+            }
+
+            if ($consecutiveNoShows >= 3) {
+                $client->notify(new MissedTherapySessions());
+            }
+
 
             return redirect()
                 ->back()
