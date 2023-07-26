@@ -33,7 +33,10 @@
                         <p>
                             {{ $therapist->clients->count() }} clients
                         </p>
-                        <p><span>{{ $therapist->space_for_new_clients}} </span> of {{ $therapist->number_of_potential_clients }} openings remaining</p>
+                        {{-- <p><span>{{ $therapist->space_for_new_clients}} </span> of {{ $therapist->number_of_potential_clients }} openings remaining</p> --}}
+                        {{-- space for clients aren't displaying --}}
+                        <p>
+                            {{ $space_for_new_clients }} spaces remaining for clients.
                         <div class="flex flex-row">
                             @if ($therapist->home_address_state)
                             <p>{{ $therapist->home_address_state }},</p>

@@ -13,7 +13,7 @@
             x-mask:dynamic="$money($input)"
             placeholder="0.00">
     </div>
-    <div>
+    {{-- <div>
         <label for="client_contribution">Client Contribution</label>
         <input type="text"
             x-data
@@ -23,7 +23,7 @@
             required
             x-mask:dynamic="$money($input)"
             placeholder="0.00">
-    </div>
+    </div> --}}
     <div>
         <label for="created_at">Session Date</label>
         <input type="date"
