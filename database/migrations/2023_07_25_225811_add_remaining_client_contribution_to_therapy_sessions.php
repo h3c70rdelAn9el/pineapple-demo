@@ -13,7 +13,7 @@ return new class extends Migration {
     public function up()
     {
         Schema::table('therapy_sessions', function (Blueprint $table) {
-            $table->renameColumn('covered_cost', 'client_contribution')->nullable()->default(0.00);
+            $table->decimal('remaining_client_contribution', 8, 2)->after('client_contribution')->default(0.00);
         });
     }
 
@@ -25,7 +25,7 @@ return new class extends Migration {
     public function down()
     {
         Schema::table('therapy_sessions', function (Blueprint $table) {
-            $table->renameColumn('client_contribution', 'covered_cost');
+            $table->dropColumn('remaining_client_contribution');
         });
     }
 };

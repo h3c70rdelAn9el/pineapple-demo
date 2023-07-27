@@ -5,9 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Client;
 use App\Models\Patient;
+use App\Notifications\MissedTherapySessions;
 use Illuminate\Http\Request;
 use App\Models\TherapySession;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
+use App\Notifications\SessionLimitNotification;
 use App\Http\Requests\StoreTherapySessionRequest;
 use App\Http\Requests\UpdateTherapySessionRequest;
 
@@ -59,6 +62,14 @@ class TherapySessionController extends Controller
             $ts = new TherapySession();
             $ts->client_id = $request->client_id;
             $ts->session_cost = $request->session_cost;
+
+            $clientContribution = DB::table('clients')
+                ->where('id', $request->client_id)
+                ->value('client_contribution');
+
+            $ts->client_contribution = $request->client_contribution;
+            $ts->remaining_client_contribution = $request->session_cost - $clientContribution;
+            // $ts->remaining_client_contribution = $request->session_cost - $clientContribution;
             $ts->client_contribution = $request->client_contribution;
             $ts->created_at = $request->created_at;
             $ts->user_id = $user->id;
@@ -66,6 +77,25 @@ class TherapySessionController extends Controller
             $ts->save();
             $user_id = $ts->user_id;
             $therapist = User::find($user_id);
+
+            if ($client->therapySessions()->count() === 14) {
+                $client->notify(new SessionLimitNotification());
+            }
+
+            // Check if the client has missed 3 consecutive sessions
+            $consecutiveNoShows = 0;
+            foreach ($client->therapySessions()->latest()->take(5)->get() as $session) {
+                if ($session->attendance === 'no-show') {
+                    $consecutiveNoShows++;
+                } else {
+                    break; // Reset the counter if attendance is not 'no-show'
+                }
+            }
+
+            if ($consecutiveNoShows >= 3) {
+                $client->notify(new MissedTherapySessions());
+            }
+
 
             return redirect()
                 ->back()
@@ -75,7 +105,6 @@ class TherapySessionController extends Controller
             return redirect()
                 ->back();
         }
-
     }
 
     /**
