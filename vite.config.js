@@ -7,7 +7,7 @@ export default defineConfig({
             input: [
                 "resources/css/app.css",
                 "resources/js/app.js",
-                "resources/img/**",
+                /*"resources/img/**",*/
                 "resources/css/intlTelInput.css",
                 "resources/js/intlTelInput.js",
             ],
