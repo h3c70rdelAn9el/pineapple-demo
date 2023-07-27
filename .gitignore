@@ -21,3 +21,4 @@ data.ms/
 .DS_Store
 /data.ms/*
 
+data.ms/tasks/lock.mdb
