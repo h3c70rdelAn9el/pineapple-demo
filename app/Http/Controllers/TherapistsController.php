@@ -8,6 +8,9 @@ use App\Models\Patient;
 use App\Models\FileUpload;
 use Illuminate\Http\Request;
 use App\Models\TherapySession;
+// use Illuminate\Notifications\Notification;
+use App\Notifications\TherapistFileUploaded;
+use Illuminate\Support\Facades\Notification;
 
 class TherapistsController extends Controller
 {

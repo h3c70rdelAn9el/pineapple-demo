@@ -5,6 +5,8 @@
     <meta name="csrf-token"
         content="{{ csrf_token() }}">
 
+    <link rel="stylesheet" href="../../css/intlTelInput.css">
+
     {{-- <title>{{ config('app.name', 'Laravel') }}</title> --}}
     <title>{{ __('Pineapple') }}</title>
 

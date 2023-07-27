@@ -118,7 +118,7 @@
         <select class="w-full p-3 mt-2 border-b-2 border-blue-200 rounded-md peer ring-0" id="home_address_state" name="home_address_state" type="text">
             <option value="" disabled selected hidden>Select State</option>
             {{-- TODO: RETRIEVE FROM JSON FILE SUCCESSFULLY --}}
-
+            <option>N/A</option>
             <option>Alabama</option>
             <option>Alaska</option>
             <option>Arizona</option>
@@ -180,12 +180,16 @@
         <x-form_input id="home_address_zip" type="text" name="home_address_zip" required placeholder="Zip Code" />
     </x-form_input_div> --}}
 
-    {{-- home_address_country --}}
     <x-form_input_div>
-        <x-form_label for="home_address_country">
+        <x-form_label for="country">
             Country
         </x-form_label>
-        <x-form_input id="home_address_country" name="home_address_country" type="text" required placeholder="Country" />
+        <select class="w-full p-3 mt-2 border-b-2 border-blue-200 rounded-md peer ring-0" id="home_address_country" name="home_address_country" type="text" required>
+            <option value="" disabled selected hidden>Select Country</option>
+            @foreach ($countries as $country)
+            <option value="{{$country['code']}}">{{ $country['name'] }}</option>
+            @endforeach
+        </select>
     </x-form_input_div>
 
     <x-form_input_div>
@@ -199,7 +203,7 @@
         <x-form_label for="phone">
             Phone
         </x-form_label>
-        <x-form_input id="phone" name="phone" type="text" x-data x-mask="(999)999-9999" placeholder="(xxx)xxx-xxxx" required />
+        <x-form_input id="phone" name="phone" type="tel" required />
     </x-form_input_div>
 
     <x-form_input_div>
@@ -207,7 +211,7 @@
             Contact Method
         </x-form_label>
         <select class="w-full p-3 mt-2 border-b-2 border-blue-200 rounded-md peer ring-0" id="contact_method" name="contact_method" type="text" required>
-            <option value="" disabled selected hidden>Preferred Contact Method</option>
+            <option value="" disabled selected hidden>Select Contact Method</option>
             <option>Telephone Call</option>
             <option>Text Message</option>
             <option>Email</option>
@@ -238,7 +242,7 @@
     </x-form_input_div> --}}
 
     {{-- Previous therapy --}}
-    <x-form_input_div>
+    {{-- <x-form_input_div>
         <x-form_label for="previous_therapy">
             Previous therapy from Pineapple
         </x-form_label>
@@ -246,7 +250,17 @@
         <label for="yes">Yes</label><br>
         <input id="no" name="previous_therapy" type="radio" value="0">
         <label for="no">No</label><br>
+    </x-form_input_div> --}}
+
+    <x-form_input_div>
+        <x-form_label for="previous_therapy">Previous Therapy from Pineapple</x-form_label>
+        <select class="form-select" id="previous_therapy" name="previous_therapy" type="text">
+            <option value="" disabled selected hidden>Select One</option>
+            <option>Yes</option>
+            <option>No</option>
+        </select>
     </x-form_input_div>
+
 
     {{-- possible_support_needed --}}
     <x-form_input_div>
@@ -308,3 +322,19 @@
         <button class="mx-auto button-secondary">Add</button>
     </div>
 </form>
+
+
+<script src="{{ asset('js/intlTelInput.js') }}"></script>
+<script src="{{ asset('js/utils.js') }}"></script>
+
+
+
+<script>
+    var input = document.querySelector("#phone");
+    window.intlTelInput(input, {
+        initialCountry: "us"
+        , separateDialCode: true
+        , utilsScript: "{{ asset('js/utils.js') }}"
+    , });
+
+</script>
