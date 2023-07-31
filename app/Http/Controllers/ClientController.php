@@ -90,7 +90,7 @@ class ClientController extends Controller
         $c->health_coverage_number = $request->health_coverage_number;
         $c->health_coverage_expiration = $request->health_coverage_expiration;
         $c->previous_therapy = $request->previous_therapy;
-        $c->possible_support_needed = implode(', ', $request->possible_support_needed);
+        // $c->possible_support_needed = implode(', ', $request->possible_support_needed);
         $c->preferred_language = $request->preferred_language;
         $c->additional_notes = $request->additional_notes;
         $c->pronouns = $request->pronouns;
