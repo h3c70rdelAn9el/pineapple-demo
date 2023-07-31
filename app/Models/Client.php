@@ -25,7 +25,7 @@ class Client extends Model
         'health_coverage_number',
         'health_coverage_expiration',
         'previous_therapy',
-        'possible_support_needed',
+        // 'possible_support_needed',
         'preferred_language',
         'additional_notes',
         'pronouns',
