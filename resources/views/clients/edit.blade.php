@@ -179,7 +179,7 @@
             </x-form_input_div>
 
 
-            <x-form_input_div>
+            {{-- <x-form_input_div>
                 <x-form_label for="possible_support_needed">Possible Support Needed</x-form_label>
 
 
@@ -231,7 +231,7 @@
                     <option {{ old('possible_support_needed', $client->possible_support_needed) == "Women's Issues" ? 'selected' : '' }}>Women's Issues</option>
                     <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Other' ? 'selected' : '' }}>Other</option>
                 </select>
-            </x-form_input_div>
+            </x-form_input_div> --}}
 
             {{-- <x-form_input_div>
                 <x-form_label for="preferred_language">Preferred Language</x-form_label>
