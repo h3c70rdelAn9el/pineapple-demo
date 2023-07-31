@@ -1,4 +1,10 @@
 <x-app-layout>
+    {{-- add the error --}}
+    @if (session('error'))
+        <div class="w-1/2 p-4 m-4 mx-auto text-center text-white bg-red-500 rounded-md shadow-sm">
+            {{ session('error') }}
+        </div>
+    @endif
     <x-main-container>
         <x-container-header :user="$user">
             {{ $user->name }}
