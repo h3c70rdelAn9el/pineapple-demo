@@ -40,15 +40,16 @@ class ClientController extends Controller
     // }
     public function create(Request $request)
     {
-        $user_id = $request->user()->id;
-        $therapist = User::find($user_id);
+        if (auth()->user() && auth()->user()->admin === 1) {
+            $user_id = $request->user()->id;
+            $therapist = User::find($user_id);
+            $therapists = User::where('admin', 0)->get();
+            $countries = $this->getCountries();
 
-        $therapists = User::where('admin', 0)->get();
-
-        $countries = $this->getCountries();
-
-        // return view('clients.create')->with(['therapists' => $therapists]);
-        return view('clients.create')->with(['therapists' => $therapists, 'therapist' => $therapist, 'countries' => $countries]);
+            return view('clients.create')->with(['therapists' => $therapists, 'therapist' => $therapist, 'countries' => $countries]);
+        } else {
+            return redirect()->route('dashboard')->with('error', '**You do not have permission to access that page**');
+        }
     }
 
     private function getCountries()
@@ -59,7 +60,6 @@ class ClientController extends Controller
 
         return $countries;
     }
-
 
     /**
      * Store a newly created resource in storage.
@@ -110,7 +110,6 @@ class ClientController extends Controller
     {
         $client = Client::find($id);
 
-        // ad the coutnries
         $countries = $this->getCountries();
 
         $client->client_code = $request->client_code;
@@ -150,18 +149,6 @@ class ClientController extends Controller
      * @param  \App\Models\Client  $client
      * @return \Illuminate\Http\Response
      */
-    // public function show(Request $request, $id)
-    // {
-    //     $client = Client::find($id);
-    //     $therapySessions = TherapySession::all();
-    //     // $therapist = Client::find($user_id);
-
-    //     $user_id = Client::find($client->user_id);
-    //     // $user_id = $user->id;
-    //     $therapist = User::find($user_id);
-    //     // dd($therapist);
-    //     return view('clients.show')->with(['client' => $client, 'therapySessions' => $therapySessions, 'therapist' => $therapist]);
-    // }
     public function show(Request $request, $id)
     {
         $client = Client::find($id);
@@ -177,30 +164,6 @@ class ClientController extends Controller
         return view('clients.show')->with(['client' => $client, 'therapySessions' => $therapySessions, 'therapist' => $therapist]);
     }
 
-    // public function show(Request $request, $id)
-    // {
-    //     $client = Client::find($id);
-    //     if (!$client) {
-    //         // Handle the case where the client doesn't exist
-    //         // For example, return an error message or redirect to a different page
-    //         dd('client not found');
-    //     }
-
-    //     $therapySessions = TherapySession::all();
-
-    //     $user_id = $client->user_id;
-    //     $therapist = User::find($user_id);
-    //     if (!$therapist) {
-    //         // Handle the case where the therapist doesn't exist
-    //         // For example, return an error message or redirect to a different page
-    //         dd('therapist not found');
-    //     }
-
-    //     return view('clients.show')->with(['client' => $client, 'therapySessions' => $therapySessions, 'therapist' => $therapist, 'user_id' => $user_id]);
-    // }
-
-
-
     /**
      * Show the form for editing the specified resource.
      *
@@ -214,10 +177,14 @@ class ClientController extends Controller
     // write the edit function
     public function edit(Request $request, $id)
     {
-        $countries = $this->getCountries();
+        if (auth()->user() && auth()->user()->admin === 1) {
+            $client = Client::find($id);
+            $countries = $this->getCountries();
 
-        $client = Client::find($id);
-        return view('clients.edit')->with(['client' => $client, 'countries' => $countries]);
+            return view('clients.edit')->with(['client' => $client, 'countries' => $countries]);
+        } else {
+            return redirect()->route('dashboard')->with('error', '**You do not have permission to access that page**');
+        }
     }
 
     /**
