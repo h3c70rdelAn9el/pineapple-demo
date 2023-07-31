@@ -170,7 +170,13 @@
             <x-form_input_div>
                 <x-form_label for="previous_therapy">Previous Therapy from Pineapple</x-form_label>
                 <select class="form-select" id="previous_therapy" name="previous_therapy" type="text">
-                    <option value="" disabled selected hidden>{{ old('previous_therapy') }}</option>
+                    <option value="" disabled selected hidden>
+                        @php
+                        $previousTherapy = old('previous_therapy', $client->previous_therapy);
+                        $displayText = $previousTherapy ? 'Yes' : 'No';
+                        @endphp
+                        {{ $displayText }}
+                    </option>
                     <option {{ old('previous_therapy', $client->previous_therapy) == 'Yes' ? 'selected' : '' }}>Yes
                     </option>
                     <option {{ old('previous_therapy', $client->previous_therapy) == 'No' ? 'selected' : '' }}>No
@@ -179,59 +185,59 @@
             </x-form_input_div>
 
 
-            <x-form_input_div>
+            {{-- <x-form_input_div>
                 <x-form_label for="possible_support_needed">Possible Support Needed</x-form_label>
 
 
                 <select id="possible_support_needed" type="text" name="possible_support_needed" class="w-full px-3 py-1 text-gray-600 border-b-2 border-blue-200 rounded-md peer ring-0" required>
                     <option value="" disabled selected hidden>Please Select:</option>
                     <option {{ old('possible_support_needed', $client->possible_support_needed) == 'ADHD' ? 'selected' : '' }}>ADHD</option>
-                    <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Adjustment Issues' ? 'selected' : '' }}>Adjustment Issues</option>
-                    <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Adoption' ? 'selected' : '' }}>Adoption</option>
-                    <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Anger' ? 'selected' : '' }}>Anger</option>
-                    <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Anxiety' ? 'selected' : '' }}>Anxiety</option>
-                    <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Autism Spectrum' ? 'selected' : '' }}>Autism Spectrum</option>
-                    <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Bipolar Disorder' ? 'selected' : '' }}>Bipolar Disorder</option>
-                    <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Chronic Illness' ? 'selected' : '' }}>Chronic Illness</option>
-                    <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Chronic Pain' ? 'selected' : '' }}>Chronic Pain</option>
-                    <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Codependency' ? 'selected' : '' }}>Codependency</option>
-                    <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Depression' ? 'selected' : '' }}>Depression</option>
-                    <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Divorce' ? 'selected' : '' }}>Divorce</option>
-                    <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Domestic Violence' ? 'selected' : '' }}>Domestic Violence</option>
-                    <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Eating Disorders' ? 'selected' : '' }}>Eating Disorders</option>
-                    <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Family Conflict' ? 'selected' : '' }}>Family Conflict</option>
-                    <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Family of Origin Issues' ? 'selected' : '' }}>Family of Origin Issues</option>
-                    <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Gambling' ? 'selected' : '' }}>Gambling</option>
-                    <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Grief and Loss' ? 'selected' : '' }}>Grief and Loss</option>
-                    <option {{ old('possible_support_needed', $client->possible_support_needed) == 'HIV/AIDS' ? 'selected' : '' }}>HIV/AIDS</option>
-                    <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Hoarding' ? 'selected' : '' }}>Hoarding</option>
-                    <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Impuslivity' ? 'selected' : '' }}>Impuslivity</option>
-                    <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Intellectual and Developmental Disabilities' ? 'selected' : '' }}>Intellectual and Developmental Disabilities</option>
-                    <option {{ old('possible_support_needed', $client->possible_support_needed) == 'LGBTQ' ? 'selected' : '' }}>LGBTQ</option>
-                    <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Life Coaching' ? 'selected' : '' }}>Life Coaching</option>
-                    <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Life Transitions' ? 'selected' : '' }}>Life Transitions</option>
-                    <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Obesity' ? 'selected' : '' }}>Obesity</option>
-                    <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Obsessive Compulsive Disorder' ? 'selected' : '' }}>Obsessive Compulsive Disorder</option>
-                    <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Parenting' ? 'selected' : '' }}>Parenting</option>
-                    <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Personality Disorders' ? 'selected' : '' }}>Personality Disorders</option>
-                    <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Psychosis' ? 'selected' : '' }}>Psychosis</option>
-                    <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Racial Identity' ? 'selected' : '' }}>Racial Identity</option>
-                    <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Relationship Issues' ? 'selected' : '' }}>Relationship Issues</option>
-                    <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Self-Esteem' ? 'selected' : '' }}>Self-Esteem</option>
-                    <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Self-Harm' ? 'selected' : '' }}>Self-Harm</option>
-                    <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Sex Addiction/Issues' ? 'selected' : '' }}>Sex Addiction/Issues</option>
-                    <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Sexual Assault' ? 'selected' : '' }}>Sexual Assault</option>
-                    <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Sleep Issues' ? 'selected' : '' }}>Sleep Issues</option>
-                    <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Spirituality' ? 'selected' : '' }}>Spirituality</option>
-                    <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Stress' ? 'selected' : '' }}>Stress</option>
-                    <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Substance Use - Sober Only -' ? 'selected' : '' }}>Substance Use - Sober Only </option>
-                    <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Substance Use - Harm Reduction' ? 'selected' : '' }}>Substance Use - Harm Reduction</option>
-                    <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Trauma/Post-Traumatic Stress Disorder' ? 'selected' : '' }}>Trauma/Post-Traumatic Stress Disorder</option>
-                    <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Weight Loss' ? 'selected' : '' }}>Weight Loss</option>
-                    <option {{ old('possible_support_needed', $client->possible_support_needed) == "Women's Issues" ? 'selected' : '' }}>Women's Issues</option>
-                    <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Other' ? 'selected' : '' }}>Other</option>
-                </select>
-            </x-form_input_div>
+            <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Adjustment Issues' ? 'selected' : '' }}>Adjustment Issues</option>
+            <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Adoption' ? 'selected' : '' }}>Adoption</option>
+            <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Anger' ? 'selected' : '' }}>Anger</option>
+            <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Anxiety' ? 'selected' : '' }}>Anxiety</option>
+            <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Autism Spectrum' ? 'selected' : '' }}>Autism Spectrum</option>
+            <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Bipolar Disorder' ? 'selected' : '' }}>Bipolar Disorder</option>
+            <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Chronic Illness' ? 'selected' : '' }}>Chronic Illness</option>
+            <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Chronic Pain' ? 'selected' : '' }}>Chronic Pain</option>
+            <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Codependency' ? 'selected' : '' }}>Codependency</option>
+            <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Depression' ? 'selected' : '' }}>Depression</option>
+            <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Divorce' ? 'selected' : '' }}>Divorce</option>
+            <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Domestic Violence' ? 'selected' : '' }}>Domestic Violence</option>
+            <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Eating Disorders' ? 'selected' : '' }}>Eating Disorders</option>
+            <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Family Conflict' ? 'selected' : '' }}>Family Conflict</option>
+            <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Family of Origin Issues' ? 'selected' : '' }}>Family of Origin Issues</option>
+            <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Gambling' ? 'selected' : '' }}>Gambling</option>
+            <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Grief and Loss' ? 'selected' : '' }}>Grief and Loss</option>
+            <option {{ old('possible_support_needed', $client->possible_support_needed) == 'HIV/AIDS' ? 'selected' : '' }}>HIV/AIDS</option>
+            <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Hoarding' ? 'selected' : '' }}>Hoarding</option>
+            <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Impuslivity' ? 'selected' : '' }}>Impuslivity</option>
+            <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Intellectual and Developmental Disabilities' ? 'selected' : '' }}>Intellectual and Developmental Disabilities</option>
+            <option {{ old('possible_support_needed', $client->possible_support_needed) == 'LGBTQ' ? 'selected' : '' }}>LGBTQ</option>
+            <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Life Coaching' ? 'selected' : '' }}>Life Coaching</option>
+            <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Life Transitions' ? 'selected' : '' }}>Life Transitions</option>
+            <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Obesity' ? 'selected' : '' }}>Obesity</option>
+            <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Obsessive Compulsive Disorder' ? 'selected' : '' }}>Obsessive Compulsive Disorder</option>
+            <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Parenting' ? 'selected' : '' }}>Parenting</option>
+            <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Personality Disorders' ? 'selected' : '' }}>Personality Disorders</option>
+            <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Psychosis' ? 'selected' : '' }}>Psychosis</option>
+            <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Racial Identity' ? 'selected' : '' }}>Racial Identity</option>
+            <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Relationship Issues' ? 'selected' : '' }}>Relationship Issues</option>
+            <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Self-Esteem' ? 'selected' : '' }}>Self-Esteem</option>
+            <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Self-Harm' ? 'selected' : '' }}>Self-Harm</option>
+            <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Sex Addiction/Issues' ? 'selected' : '' }}>Sex Addiction/Issues</option>
+            <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Sexual Assault' ? 'selected' : '' }}>Sexual Assault</option>
+            <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Sleep Issues' ? 'selected' : '' }}>Sleep Issues</option>
+            <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Spirituality' ? 'selected' : '' }}>Spirituality</option>
+            <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Stress' ? 'selected' : '' }}>Stress</option>
+            <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Substance Use - Sober Only -' ? 'selected' : '' }}>Substance Use - Sober Only </option>
+            <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Substance Use - Harm Reduction' ? 'selected' : '' }}>Substance Use - Harm Reduction</option>
+            <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Trauma/Post-Traumatic Stress Disorder' ? 'selected' : '' }}>Trauma/Post-Traumatic Stress Disorder</option>
+            <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Weight Loss' ? 'selected' : '' }}>Weight Loss</option>
+            <option {{ old('possible_support_needed', $client->possible_support_needed) == "Women's Issues" ? 'selected' : '' }}>Women's Issues</option>
+            <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Other' ? 'selected' : '' }}>Other</option>
+            </select>
+            </x-form_input_div> --}}
 
             {{-- <x-form_input_div>
                 <x-form_label for="preferred_language">Preferred Language</x-form_label>
@@ -250,20 +256,16 @@
 
             <x-form_input_div>
                 <x-form_label for="email" class="-mt-2">Email</x-form_label>
-                <x-edit-form-input id="email" name="email" type="text" value="{{ old('email', $client->email) }}" placeholder="email@example.com" />
+                <x-edit-form-input id="email" name="email" type="text" value="{{ old('email', $client->email) }}" />
             </x-form_input_div>
 
-            {{-- <x-form_input_div>
-                <x-form_label for="phone">Phone</x-form_label>
-                <x-edit-form-input id="phone" name="phone" type="text" value="{{ old('phone', $client->phone) }}" x-data x-mask="(999)999-9999" placeholder="(xxx)xxx-xxxx" />
-            </x-form_input_div> --}}
 
             <x-form_input_div>
                 <x-form_label for="country">
                     Country
                 </x-form_label>
                 <select class="w-full p-2 mt-2 border-b-2 border-blue-200 rounded-md peer ring-0" id="home_address_country" name="home_address_country" type="text" required>
-                    <option value="" disabled selected hidden>{{ old('home_address_country') }}</option>
+                    <option value="" disabled selected hidden>{{ old('home_address_country', $client->home_address_country) }}</option>
                     @foreach ($countries as $country)
                     <option value="{{$country['code']}}">{{ $country['name'] }}</option>
                     @endforeach
@@ -274,14 +276,14 @@
                 <x-form_label for="phone">
                     Phone
                 </x-form_label>
-                <x-edit-form-input id="phone" value="{{ old('phone') }}" name="phone" type="tel" required />
+                <x-edit-form-input id="phone" value="{{ old('phone', $client->phone) }}" name="phone" type="tel" required />
             </x-form_input_div>
 
             <x-form_input_div>
                 <x-form_label for="contact_method">Contact Method</x-form_label>
                 <select class="p-2 form-select" id="contact_method" name="contact_method" type="text">
                     <option value="" disabled selected hidden>
-                        {{ old('contact_method') }}</option>
+                        {{ old('contact_method', $client->contact_method) }}</option>
                     </option>
                     <option {{ old('contact_method', $client->contact_method) == 'Telephone Call' ? 'selected' : '' }}>
                         Telephone Call</option>
@@ -311,8 +313,6 @@
 
 <script src="{{ asset('js/intlTelInput.js') }}"></script>
 <script src="{{ asset('js/utils.js') }}"></script>
-
-
 
 <script>
     var input = document.querySelector("#phone");

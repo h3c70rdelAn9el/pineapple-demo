@@ -262,8 +262,9 @@
     </x-form_input_div>
 
 
+    {{-- ! removed the support needed due to HIPAA  --}}
     {{-- possible_support_needed --}}
-    <x-form_input_div>
+    {{-- <x-form_input_div>
         <x-form_label for="possible_support_needed">
             Possible Support Needed
         </x-form_label>
@@ -271,7 +272,7 @@
         <input id="possible_support_needed[]" name="possible_support_needed[]" type="checkbox" value="{{ $category }}">
         <label for="possible_support_needed[]">{{ $category }}</label><br>
         @endforeach
-    </x-form_input_div>
+    </x-form_input_div> --}}
 
     <x-form_input_div>
         <x-form_label for="client_contribution">
