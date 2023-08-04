@@ -61,7 +61,7 @@
 
                             {{-- date --}}
                             <div class="relative mb-5">
-                                <x-jet-label for="date" value="{{ __('Date (optional)') }}" />
+                                <x-jet-label for="date" value="{{ __('Expiration Date (optional)') }}" />
                                 <div class="relative">
                                     <x-jet-input id="date" class="block w-[100%] mt-1" type="date" name="date" :value="old('date')" placeholder="Date" />
                                 </div>
