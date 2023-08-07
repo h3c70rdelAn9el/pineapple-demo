@@ -107,7 +107,12 @@
                 <x-jet-input-error for="account_number" class="mt-2" />
             </div>
 
-
+            {{-- on_vacation --}}
+            <div class="col-span-6 mt-4 sm:col-span-4">
+                <x-jet-label for="on_vacation" value="{{ __('On Vacation') }}" />
+                <input type="checkbox" class="rounded" id="on_vacation" wire:model.defer="state.on_vacation" autocomplete="on_vacation" />
+                <x-jet-input-error for="on_vacation" class="mt-2" />
+            </div>
         </div>
     </x-slot>
 

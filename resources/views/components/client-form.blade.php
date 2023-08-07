@@ -1,13 +1,4 @@
-{{-- commented code out are fields they wanted ommitted. I kept them in place incase someone decides to put them back
---}}
-
-<script>
-    @php
-    $categories = ['ADHD', 'Adjustment Issues', 'Adoption', 'Anger', 'Anxiety', 'Autism Spectrum', 'Bipolar Disorder', 'Chronic Illness', 'Chronic Pain', 'Codependency', 'Depression', 'Divorce', 'Domestic Violence', 'Eating Disorders', 'Family Conflict', 'Family of Origin Issues', 'Gambling', 'Grief and Loss', 'HIV/AIDS', 'Hoarding', 'Impuslivity', 'Intellectual and Developmental Disabilities', 'LGBTQ', 'Life Coaching', 'Life Transitions', 'Obesity', 'Obsessive Compulsive Disorder', 'Parenting', 'Personality Disorders', 'Psychosis', 'Racial Identity', 'Relationship Issues', 'Self-Esteem', 'Self Harm', 'Sex Addiction', 'Sexual Assault', 'Sleep Issues', 'Spirituality', 'Stress', 'Substance Use - Sober Only - ', 'Substance Use - Harm Reduction', 'Trauma/Post-Traumatic Stress Disorder', 'Weight Loss', 'Women\'s Issues', 'Other'];
-    @endphp
-
-</script>
-
+{{-- ! commented code out are fields they wanted ommitted. I kept them in place incase someone decides to put them back --}}
 <form class="z-50 w-5/6 h-full p-4 mx-auto mt-2 mb-4 bg-blue-200 border border-blue-600 rounded-md shadow-lg md:w-2/3" style="z-index: 99999;" action="{{ route('client.store') }}" method="POST">
     @csrf
     <x-form_input_div>
@@ -117,58 +108,9 @@
         </x-form_label>
         <select class="w-full p-3 mt-2 border-b-2 border-blue-200 rounded-md peer ring-0" id="home_address_state" name="home_address_state" type="text">
             <option value="" disabled selected hidden>Select State</option>
-            {{-- TODO: RETRIEVE FROM JSON FILE SUCCESSFULLY --}}
-            <option>N/A</option>
-            <option>Alabama</option>
-            <option>Alaska</option>
-            <option>Arizona</option>
-            <option>Arkansas</option>
-            <option>California</option>
-            <option>Colorado</option>
-            <option>Connecticut</option>
-            <option>Delaware</option>
-            <option>Florida</option>
-            <option>Georgia</option>
-            <option>Hawaii</option>
-            <option>Idaho</option>
-            <option>Illinois</option>
-            <option>Indiana</option>
-            <option>Iowa</option>
-            <option>Kansas</option>
-            <option>Kentucky</option>
-            <option>Louisiana</option>
-            <option>Maine</option>
-            <option>Maryland</option>
-            <option>Massachusetts</option>
-            <option>Michigan</option>
-            <option>Minnesota</option>
-            <option>Mississippi</option>
-            <option>Missouri</option>
-            <option>Montana</option>
-            <option>Nebraska</option>
-            <option>Nevada</option>
-            <option>New Hampshire</option>
-            <option>New Jersey</option>
-            <option>New Mexico</option>
-            <option>New York</option>
-            <option>North Carolina</option>
-            <option>North Dakota</option>
-            <option>Ohio</option>
-            <option>Oklahoma</option>
-            <option>Oregon</option>
-            <option>Pennsylvania</option>
-            <option>Rhode Island</option>
-            <option>South Carolina</option>
-            <option>South Dakota</option>
-            <option>Tennessee</option>
-            <option>Texas</option>
-            <option>Utah</option>
-            <option>Vermont</option>
-            <option>Virginia</option>
-            <option>Washington</option>
-            <option>West Virginia</option>
-            <option>Wisconsin</option>
-            <option>Wyoming</option>
+            @foreach ($states as $state)
+            <option value="{{$state['name']}}">{{ $state['name'] }}</option>
+            @endforeach
         </select>
     </x-form_input_div>
 
@@ -242,19 +184,9 @@
     </x-form_input_div> --}}
 
     {{-- Previous therapy --}}
-    {{-- <x-form_input_div>
-        <x-form_label for="previous_therapy">
-            Previous therapy from Pineapple
-        </x-form_label>
-        <input id="yes" name="previous_therapy" type="radio" value="1">
-        <label for="yes">Yes</label><br>
-        <input id="no" name="previous_therapy" type="radio" value="0">
-        <label for="no">No</label><br>
-    </x-form_input_div> --}}
-
     <x-form_input_div>
         <x-form_label for="previous_therapy">Previous Therapy from Pineapple</x-form_label>
-        <select class="form-select" id="previous_therapy" name="previous_therapy" type="text">
+        <select class="p-3 form-select" id="previous_therapy" name="previous_therapy" type="text">
             <option value="" disabled selected hidden>Select One</option>
             <option>Yes</option>
             <option>No</option>
@@ -262,17 +194,29 @@
     </x-form_input_div>
 
 
-    {{-- ! removed the support needed due to HIPAA  --}}
     {{-- possible_support_needed --}}
-    {{-- <x-form_input_div>
+    <div x-data="{ showDropdown: false }" class="relative w-full mt-6 mb-4">
         <x-form_label for="possible_support_needed">
             Possible Support Needed
         </x-form_label>
-        @foreach ($categories as $category)
-        <input id="possible_support_needed[]" name="possible_support_needed[]" type="checkbox" value="{{ $category }}">
-        <label for="possible_support_needed[]">{{ $category }}</label><br>
-        @endforeach
-    </x-form_input_div> --}}
+        <div class="rounded-md" @click.away="showDropdown = false">
+            <div class="flex justify-between w-full p-3 bg-gray-100 rounded-md">
+                Select Options
+                <button type="button" @click="showDropdown = !showDropdown" class="">
+                    <svg class="w-[18px] h-[18px] text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                    </svg></button>
+            </div>
+            <div x-show="showDropdown" class="rounded-md bg-gray-50 md:flex md:flex-wrap" x-transition.scale.origin.left x-cloak>
+                @foreach ($categories as $category)
+                <label class="items-center p-2">
+                    <input type="checkbox" class="rounded-md mb-0.5 hover:bg-blue-300 transition-all duration-300" name="possible_support_needed[]" value="{{ $category }}">
+                    {{ $category }}
+                </label><br>
+                @endforeach
+            </div>
+        </div>
+    </div>
 
     <x-form_input_div>
         <x-form_label for="client_contribution">
@@ -317,18 +261,12 @@
     </x-form_input_div>
 
     <div class="flex mt-2">
-        {{-- <button class="px-2 py-1 duration-200 bg-blue-300 rounded-md hover:scale-110" type="submit">
-            Add
-        </button> --}}
         <button class="mx-auto button-secondary">Add</button>
     </div>
 </form>
 
-
 <script src="{{ asset('js/intlTelInput.js') }}"></script>
 <script src="{{ asset('js/utils.js') }}"></script>
-
-
 
 <script>
     var input = document.querySelector("#phone");

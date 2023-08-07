@@ -19,8 +19,7 @@ class DashboardController extends Controller
 
         $clients = User::find($user_id)->clients;
         $client = Client::find($user_id);
-        $allClients = Client::all();
-
+        $allClients = Client::all()->sortBy('preferred_name');
 
         $therapySessions = TherapySession::where('user_id', $user->id)
             ->orderBy('id', 'DESC')

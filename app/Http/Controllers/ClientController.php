@@ -45,8 +45,10 @@ class ClientController extends Controller
             $therapist = User::find($user_id);
             $therapists = User::where('admin', 0)->get();
             $countries = $this->getCountries();
+            $categories = $this->getCategories();
+            $states = $this->getStates();
 
-            return view('clients.create')->with(['therapists' => $therapists, 'therapist' => $therapist, 'countries' => $countries]);
+            return view('clients.create')->with(['therapists' => $therapists, 'therapist' => $therapist, 'countries' => $countries, 'categories' => $categories, 'states' => $states]);
         } else {
             return redirect()->route('dashboard')->with('error', '**You do not have permission to access that page**');
         }
@@ -61,6 +63,23 @@ class ClientController extends Controller
         return $countries;
     }
 
+    private function getCategories()
+    {
+        $path = resource_path('json/categories.json');
+        $jsonContents = File::get($path);
+        $categories = json_decode($jsonContents, true)['categories'];
+
+        return $categories;
+    }
+
+    private function getStates()
+    {
+        $path = resource_path('/json/states.json');
+        $jsonContents = File::get($path);
+        $states = json_decode($jsonContents, true)['states'];
+
+        return $states;
+    }
     /**
      * Store a newly created resource in storage.
      *
@@ -73,6 +92,7 @@ class ClientController extends Controller
         $user = $request->user();
 
         $countries = $this->getCountries();
+        $categories = $this->getCategories();
 
         $c = new Client();
         $c->client_code = $request->client_code;
@@ -151,12 +171,8 @@ class ClientController extends Controller
      */
     public function show(Request $request, $id)
     {
-        $client = Client::find($id);
+        $client = Client::find($id, ['*'], 'preferred_name', 'asc');
         $therapySessions = TherapySession::all();
-        // $therapist = Client::find($user_id);
-
-
-
         $user_id = $client->user_id;
         // $therapist = User::find($user_id);
         $therapist = User::where('id', $user_id)->first();
@@ -180,8 +196,10 @@ class ClientController extends Controller
         if (auth()->user() && auth()->user()->admin === 1) {
             $client = Client::find($id);
             $countries = $this->getCountries();
+            $categories = $this->getCategories();
+            $states = $this->getStates();
 
-            return view('clients.edit')->with(['client' => $client, 'countries' => $countries]);
+            return view('clients.edit')->with(['client' => $client, 'countries' => $countries, 'categories' => $categories, 'states' => $states]);
         } else {
             return redirect()->route('dashboard')->with('error', '**You do not have permission to access that page**');
         }
