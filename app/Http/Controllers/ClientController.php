@@ -151,7 +151,7 @@ class ClientController extends Controller
      */
     public function show(Request $request, $id)
     {
-        $client = Client::find($id);
+        $client = Client::find($id, ['*'], 'preferred_name', 'asc');
         $therapySessions = TherapySession::all();
         $user_id = $client->user_id;
         // $therapist = User::find($user_id);
