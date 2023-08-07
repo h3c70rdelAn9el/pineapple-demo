@@ -10,10 +10,10 @@
             </div>
         </section>
         @if (Auth::user()->admin)
-            <a href="{{ route('fileUpload') }}"
+            {{-- <a href="{{ route('fileUpload') }}"
                 class="h-6 ml-10 text-sm text-blue-600 hover:text-blue-800">
                 Upload Insurance Form
-            </a>
+            </a> --}}
             {{-- add the edit route link --}}
             <a href="{{ route('clients.edit', $client->id) }}"
                 class="h-6 ml-10 text-sm text-blue-600 hover:text-blue-800">
