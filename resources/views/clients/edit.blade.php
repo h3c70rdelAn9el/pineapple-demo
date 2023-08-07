@@ -89,66 +89,11 @@
 
             <x-form_input_div>
                 <x-form_label for="home_address_state">State (optional)</x-form_label>
-                {{-- <x-edit-form-input id="home_address_state" name="home_address_state" type="text" value="{{ old('home_address_state', $client->home_address_state) }}" /> --}}
-                <select class="form-select" id="home_address_state" name="home_address_state" type="text">
-                    <option value="" disabled selected hidden>{{ old('home_address_state') }}</option>
-                    <option {{ old('home_address_state', $client->home_address_state) == 'Alabama' ? 'selected' : '' }}>Alabama</option>
-                    <option {{ old('home_address_state', $client->home_address_state) == 'Alaska' ? 'selected' : '' }}>Alaska</option>
-                    <option {{ old('home_address_state', $client->home_address_state) == 'Arizona' ? 'selected' : '' }}>Arizona</option>
-                    <option {{ old('home_address_state', $client->home_address_state) == 'Arkansas' ? 'selected' : '' }}>Arkansas</option>
-                    <option {{ old('home_address_state', $client->home_address_state) == 'California' ? 'selected' : '' }}>California</option>
-                    <option {{ old('home_address_state', $client->home_address_state) == 'Colorado' ? 'selected' : '' }}>Colorado</option>
-                    <option {{ old('home_address_state', $client->home_address_state) == 'Connecticut' ? 'selected' : '' }}>Connecticut</option>
-                    <option {{ old('home_address_state', $client->home_address_state) == 'Delaware' ? 'selected' : '' }}>Delaware</option>
-                    <option {{ old('home_address_state', $client->home_address_state) == 'Florida' ? 'selected' : '' }}>Florida</option>
-                    <option {{ old('home_address_state', $client->home_address_state) == 'Georgia' ? 'selected' : '' }}>Georgia</option>
-                    <option {{ old('home_address_state', $client->home_address_state) == 'Hawaii' ? 'selected' : '' }}>Hawaii</option>
-                    <option {{ old('home_address_state', $client->home_address_state) == 'Idaho' ? 'selected' : '' }}>Idaho</option>
-                    <option {{ old('home_address_state', $client->home_address_state) == 'Illinois' ? 'selected' : '' }}>Illinois</option>
-                    <option {{ old('home_address_state', $client->home_address_state) == 'Indiana' ? 'selected' : '' }}>Indiana</option>
-                    <option {{ old('home_address_state', $client->home_address_state) == 'Iowa' ? 'selected' : '' }}>Iowa</option>
-                    <option {{ old('home_address_state', $client->home_address_state) == 'Kansas' ? 'selected' : '' }}>Kansas</option>
-                    <option {{ old('home_address_state', $client->home_address_state) == 'Kentucky' ? 'selected' : '' }}>Kentucky</option>
-                    <option {{ old('home_address_state', $client->home_address_state) == 'Louisiana' ? 'selected' : '' }}>Louisiana</option>
-                    <option {{ old('home_address_state', $client->home_address_state) == 'Maine' ? 'selected' : '' }}>Maine</option>
-                    <option {{ old('home_address_state', $client->home_address_state) == 'Maryland' ? 'selected' : '' }}>Maryland</option>
-                    <option {{ old('home_address_state', $client->home_address_state) == 'Massachusetts' ? 'selected' : '' }}>Massachusetts</option>
-                    <option {{ old('home_address_state', $client->home_address_state) == 'Michigan' ? 'selected' : '' }}>Michigan</option>
-                    <option {{ old('home_address_state', $client->home_address_state) == 'Minnesota' ? 'selected' : '' }}>Minnesota</option>
-                    <option {{ old('home_address_state', $client->home_address_state) == 'Mississippi' ? 'selected' : '' }}>Mississippi</option>
-                    <option {{ old('home_address_state', $client->home_address_state) == 'Missouri' ? 'selected' : '' }}>Missouri</option>
-                    <option {{ old('home_address_state', $client->home_address_state) == 'Montana' ? 'selected' : '' }}>Montana</option>
-                    <option {{ old('home_address_state', $client->home_address_state) == 'Nebraska' ? 'selected' : '' }}>Nebraska</option>
-                    <option {{ old('home_address_state', $client->home_address_state) == 'Nevada' ? 'selected' : '' }}>Nevada</option>
-                    <option {{ old('home_address_state', $client->home_address_state) == 'New Hampshire' ? 'selected' : '' }}>New Hampshire</option>
-                    <option {{ old('home_address_state', $client->home_address_state) == 'New Jersey' ? 'selected' : '' }}>New Jersey</option>
-                    <option {{ old('home_address_state', $client->home_address_state) == 'New Mexico' ? 'selected' : '' }}>New Mexico</option>
-                    <option {{ old('home_address_state', $client->home_address_state) == 'New York' ? 'selected' : '' }}>New York</option>
-                    <option {{ old('home_address_state', $client->home_address_state) == 'North Carolina' ? 'selected' : '' }}>North Carolina</option>
-                    <option {{ old('home_address_state', $client->home_address_state) == 'North Dakota' ? 'selected' : '' }}>North Dakota</option>
-                    <option {{ old('home_address_state', $client->home_address_state) == 'Ohio' ? 'selected' : '' }}>Ohio</option>
-                    <option {{ old('home_address_state', $client->home_address_state) == 'Oklahoma' ? 'selected' : '' }}>Oklahoma</option>
-                    <option {{ old('home_address_state', $client->home_address_state) == 'Oregon' ? 'selected' : '' }}>Oregon</option>
-                    <option {{ old('home_address_state', $client->home_address_state) == 'Pennsylvania' ? 'selected' : '' }}>Pennsylvania</option>
-                    <option {{ old('home_address_state', $client->home_address_state) == 'Rhode Island' ? 'selected' : '' }}>Rhode Island</option>
-                    <option {{ old('home_address_state', $client->home_address_state) == 'South Carolina' ? 'selected' : '' }}>South Carolina</option>
-                    <option {{ old('home_address_state', $client->home_address_state) == 'South Dakota' ? 'selected' : '' }}>South Dakota</option>
-                    <option {{ old('home_address_state', $client->home_address_state) == 'Tennessee' ? 'selected' : '' }}>Tennessee</option>
-                    <option {{ old('home_address_state', $client->home_address_state) == 'Texas' ? 'selected' : '' }}>Texas</option>
-                    <option {{ old('home_address_state', $client->home_address_state) == 'Utah' ? 'selected' : '' }}>Utah</option>
-                    <option {{ old('home_address_state', $client->home_address_state) == 'Vermont' ? 'selected' : '' }}>Vermont</option>
-                    <option {{ old('home_address_state', $client->home_address_state) == 'Virginia' ? 'selected' : '' }}>Virginia</option>
-                    <option {{ old('home_address_state', $client->home_address_state) == 'Washington' ? 'selected' : '' }}>Washington</option>
-                    <option {{ old('home_address_state', $client->home_address_state) == 'West Virginia' ? 'selected' : '' }}>West Virginia</option>
-                    <option {{ old('home_address_state', $client->home_address_state) == 'Wisconsin' ? 'selected' : '' }}>Wisconsin</option>
-                    <option {{ old('home_address_state', $client->home_address_state) == 'Wyoming' ? 'selected' : '' }}>Wyoming</option>
-                    <option {{ old('home_address_state', $client->home_address_state) == 'Washington DC' ? 'selected' : '' }}>Washington DC</option>
-                    <option {{ old('home_address_state', $client->home_address_state) == 'Puerto Rico' ? 'selected' : '' }}>Puerto Rico</option>
-                    <option {{ old('home_address_state', $client->home_address_state) == 'Guam' ? 'selected' : '' }}>Guam</option>
-                    <option {{ old('home_address_state', $client->home_address_state) == 'American Samoa' ? 'selected' : '' }}>American Samoa</option>
-                    <option {{ old('home_address_state', $client->home_address_state) == 'U.S. Virgin Islands' ? 'selected' : '' }}>U.S. Virgin Islands</option>
-                    <option {{ old('home_address_state', $client->home_address_state) == 'Northern Mariana Islands' ? 'selected' : '' }}>Northern Mariana Islands</option>
-                    <option {{ old('home_address_state', $client->home_address_state) == 'Other' ? 'selected' : '' }}>Other</option>
+                <select class="w-full p-2 mt-2 border-b-2 border-blue-200 rounded-md peer ring-0" id="home_address_state" name="home_address_state" type="text" required>
+                    <option value="" disabled selected hidden>{{ old('home_address_state', $client->home_address_state) }}</option>
+                    @foreach ($states as $state)
+                    <option value="{{$state['name']}}">{{ $state['name'] }}</option>
+                    @endforeach
                 </select>
             </x-form_input_div>
 
@@ -185,59 +130,32 @@
             </x-form_input_div>
 
 
-            {{-- <x-form_input_div>
-                <x-form_label for="possible_support_needed">Possible Support Needed</x-form_label>
+            {{-- Possible Support Needed --}}
+            <div x-data="{ showDropdown: false }" class="relative w-full mt-6 mb-4">
+                <x-form_label for="possible_support_needed">
+                    Possible Support Needed
+                </x-form_label>
+                <div class="rounded-md" @click.away="showDropdown = false">
+                    <div class="flex justify-between w-full p-1.5 bg-white border border-blue-200 rounded-md">
+                        Select Options
+                        <button type="button" @click="showDropdown = !showDropdown" class="">
+                            <svg class="w-[18px] h-[18px] text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                    </div>
+                    <div x-show="showDropdown" class="rounded-md bg-gray-50 md:flex md:flex-wrap" x-transition.scale.origin.top x-cloak>
+                        @foreach ($categories as $category)
+                        <label class="items-center p-2">
+                            <input type="checkbox" class="rounded-md mb-0.5 hover:bg-blue-300 transition-all duration-300" name="possible_support_needed[]" value="{{ $category }}" @if(is_array(old('possible_support_needed')) && in_array($category, old('possible_support_needed'))) checked @endif>
+                            {{ $category }}
+                        </label><br>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
 
 
-                <select id="possible_support_needed" type="text" name="possible_support_needed" class="w-full px-3 py-1 text-gray-600 border-b-2 border-blue-200 rounded-md peer ring-0" required>
-                    <option value="" disabled selected hidden>Please Select:</option>
-                    <option {{ old('possible_support_needed', $client->possible_support_needed) == 'ADHD' ? 'selected' : '' }}>ADHD</option>
-            <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Adjustment Issues' ? 'selected' : '' }}>Adjustment Issues</option>
-            <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Adoption' ? 'selected' : '' }}>Adoption</option>
-            <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Anger' ? 'selected' : '' }}>Anger</option>
-            <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Anxiety' ? 'selected' : '' }}>Anxiety</option>
-            <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Autism Spectrum' ? 'selected' : '' }}>Autism Spectrum</option>
-            <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Bipolar Disorder' ? 'selected' : '' }}>Bipolar Disorder</option>
-            <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Chronic Illness' ? 'selected' : '' }}>Chronic Illness</option>
-            <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Chronic Pain' ? 'selected' : '' }}>Chronic Pain</option>
-            <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Codependency' ? 'selected' : '' }}>Codependency</option>
-            <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Depression' ? 'selected' : '' }}>Depression</option>
-            <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Divorce' ? 'selected' : '' }}>Divorce</option>
-            <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Domestic Violence' ? 'selected' : '' }}>Domestic Violence</option>
-            <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Eating Disorders' ? 'selected' : '' }}>Eating Disorders</option>
-            <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Family Conflict' ? 'selected' : '' }}>Family Conflict</option>
-            <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Family of Origin Issues' ? 'selected' : '' }}>Family of Origin Issues</option>
-            <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Gambling' ? 'selected' : '' }}>Gambling</option>
-            <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Grief and Loss' ? 'selected' : '' }}>Grief and Loss</option>
-            <option {{ old('possible_support_needed', $client->possible_support_needed) == 'HIV/AIDS' ? 'selected' : '' }}>HIV/AIDS</option>
-            <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Hoarding' ? 'selected' : '' }}>Hoarding</option>
-            <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Impuslivity' ? 'selected' : '' }}>Impuslivity</option>
-            <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Intellectual and Developmental Disabilities' ? 'selected' : '' }}>Intellectual and Developmental Disabilities</option>
-            <option {{ old('possible_support_needed', $client->possible_support_needed) == 'LGBTQ' ? 'selected' : '' }}>LGBTQ</option>
-            <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Life Coaching' ? 'selected' : '' }}>Life Coaching</option>
-            <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Life Transitions' ? 'selected' : '' }}>Life Transitions</option>
-            <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Obesity' ? 'selected' : '' }}>Obesity</option>
-            <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Obsessive Compulsive Disorder' ? 'selected' : '' }}>Obsessive Compulsive Disorder</option>
-            <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Parenting' ? 'selected' : '' }}>Parenting</option>
-            <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Personality Disorders' ? 'selected' : '' }}>Personality Disorders</option>
-            <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Psychosis' ? 'selected' : '' }}>Psychosis</option>
-            <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Racial Identity' ? 'selected' : '' }}>Racial Identity</option>
-            <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Relationship Issues' ? 'selected' : '' }}>Relationship Issues</option>
-            <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Self-Esteem' ? 'selected' : '' }}>Self-Esteem</option>
-            <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Self-Harm' ? 'selected' : '' }}>Self-Harm</option>
-            <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Sex Addiction/Issues' ? 'selected' : '' }}>Sex Addiction/Issues</option>
-            <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Sexual Assault' ? 'selected' : '' }}>Sexual Assault</option>
-            <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Sleep Issues' ? 'selected' : '' }}>Sleep Issues</option>
-            <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Spirituality' ? 'selected' : '' }}>Spirituality</option>
-            <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Stress' ? 'selected' : '' }}>Stress</option>
-            <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Substance Use - Sober Only -' ? 'selected' : '' }}>Substance Use - Sober Only </option>
-            <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Substance Use - Harm Reduction' ? 'selected' : '' }}>Substance Use - Harm Reduction</option>
-            <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Trauma/Post-Traumatic Stress Disorder' ? 'selected' : '' }}>Trauma/Post-Traumatic Stress Disorder</option>
-            <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Weight Loss' ? 'selected' : '' }}>Weight Loss</option>
-            <option {{ old('possible_support_needed', $client->possible_support_needed) == "Women's Issues" ? 'selected' : '' }}>Women's Issues</option>
-            <option {{ old('possible_support_needed', $client->possible_support_needed) == 'Other' ? 'selected' : '' }}>Other</option>
-            </select>
-            </x-form_input_div> --}}
 
             {{-- <x-form_input_div>
                 <x-form_label for="preferred_language">Preferred Language</x-form_label>

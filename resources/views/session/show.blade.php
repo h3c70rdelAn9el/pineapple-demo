@@ -3,9 +3,7 @@
         <x-container-header-secondary :user='$user'>
             {{ $user->name }}
         </x-container-header-secondary>
-
-        <section
-            class="w-5/6 h-full p-2 mx-auto mt-3 text-gray-800 bg-gray-100 border border-black rounded-lg shadow-md shadow-blue-100 lg:w-1/2">
+        <section class="w-5/6 h-full p-2 mx-auto mt-3 text-gray-800 bg-gray-100 border border-black rounded-lg shadow-md shadow-blue-100 lg:w-1/2">
             <div>
                 <p class="text-lg">Client: <span class="font-bold capitalize">
                         {{ $therapySession->client->preferred_name }}
@@ -39,8 +37,12 @@
                 <div class="w-1/2 p-2 border-b border-gray-400">{{ $therapySession->session_cost }}</div>
             </div>
             <div class="flex flex-row">
-                <div class="w-1/2 p-2 border-b border-r border-gray-400">Client Contribution:</div>
-                <div class="w-1/2 p-2 border-b border-gray-400">{{ $therapySession->client_contribution }}</div>
+                <div class="w-1/2 p-2 border-b border-r border-gray-400">Original Client Contribution:</div>
+                <div class="w-1/2 p-2 border-b border-gray-400">{{ $client->client_contribution }}</div>
+            </div>
+            <div class="flex flex-row">
+                <div class="w-1/2 p-2 border-b border-r border-gray-400">Remaining Client Contribution:</div>
+                <div class="w-1/2 p-2 border-b border-gray-400">{{ $therapySession->remaining_client_contribution }}</div>
             </div>
             <div class="flex flex-row">
                 <div class="w-1/2 p-2 border-r border-gray-400">Session Attendance:</div>
@@ -48,8 +50,7 @@
             </div>
         </section>
         <div class="flex mt-2">
-            <a href="{{ route('clients.show', $therapySession->client_id) }}"
-                class="mx-auto hover:text-blue-500">
+            <a href="{{ route('clients.show', $therapySession->client_id) }}" class="mx-auto hover:text-blue-500">
                 Back to client Details
             </a>
         </div>
