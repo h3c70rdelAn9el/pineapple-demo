@@ -1,9 +1,3 @@
-<script>
-    @php
-    $categories = ['ADHD', 'Adjustment Issues', 'Adoption', 'Anger', 'Anxiety', 'Autism Spectrum', 'Bipolar Disorder', 'Chronic Illness', 'Chronic Pain', 'Codependency', 'Depression', 'Divorce', 'Domestic Violence', 'Eating Disorders', 'Family Conflict', 'Family of Origin Issues', 'Gambling', 'Grief and Loss', 'HIV/AIDS', 'Hoarding', 'Impuslivity', 'Intellectual and Developmental Disabilities', 'LGBTQ', 'Life Coaching', 'Life Transitions', 'Obesity', 'Obsessive Compulsive Disorder', 'Parenting', 'Personality Disorders', 'Psychosis', 'Racial Identity', 'Relationship Issues', 'Self-Esteem', 'Self Harm', 'Sex Addiction', 'Sexual Assault', 'Sleep Issues', 'Spirituality', 'Stress', 'Substance Use - Sober Only - ', 'Substance Use - Harm Reduction', 'Trauma/Post-Traumatic Stress Disorder', 'Weight Loss', 'Women\'s Issues', 'Other'];
-    @endphp
-</script>
-
 <x-app-layout>
     <x-main-container>
         <h2 class="mt-2 text-lg font-normal text-center">Edit client: {{ $client->preferred_name }}</h2>
@@ -95,66 +89,11 @@
 
             <x-form_input_div>
                 <x-form_label for="home_address_state">State (optional)</x-form_label>
-                {{-- <x-edit-form-input id="home_address_state" name="home_address_state" type="text" value="{{ old('home_address_state', $client->home_address_state) }}" /> --}}
-                <select class="form-select" id="home_address_state" name="home_address_state" type="text">
-                    <option value="" disabled selected hidden>{{ old('home_address_state') }}</option>
-                    <option {{ old('home_address_state', $client->home_address_state) == 'Alabama' ? 'selected' : '' }}>Alabama</option>
-                    <option {{ old('home_address_state', $client->home_address_state) == 'Alaska' ? 'selected' : '' }}>Alaska</option>
-                    <option {{ old('home_address_state', $client->home_address_state) == 'Arizona' ? 'selected' : '' }}>Arizona</option>
-                    <option {{ old('home_address_state', $client->home_address_state) == 'Arkansas' ? 'selected' : '' }}>Arkansas</option>
-                    <option {{ old('home_address_state', $client->home_address_state) == 'California' ? 'selected' : '' }}>California</option>
-                    <option {{ old('home_address_state', $client->home_address_state) == 'Colorado' ? 'selected' : '' }}>Colorado</option>
-                    <option {{ old('home_address_state', $client->home_address_state) == 'Connecticut' ? 'selected' : '' }}>Connecticut</option>
-                    <option {{ old('home_address_state', $client->home_address_state) == 'Delaware' ? 'selected' : '' }}>Delaware</option>
-                    <option {{ old('home_address_state', $client->home_address_state) == 'Florida' ? 'selected' : '' }}>Florida</option>
-                    <option {{ old('home_address_state', $client->home_address_state) == 'Georgia' ? 'selected' : '' }}>Georgia</option>
-                    <option {{ old('home_address_state', $client->home_address_state) == 'Hawaii' ? 'selected' : '' }}>Hawaii</option>
-                    <option {{ old('home_address_state', $client->home_address_state) == 'Idaho' ? 'selected' : '' }}>Idaho</option>
-                    <option {{ old('home_address_state', $client->home_address_state) == 'Illinois' ? 'selected' : '' }}>Illinois</option>
-                    <option {{ old('home_address_state', $client->home_address_state) == 'Indiana' ? 'selected' : '' }}>Indiana</option>
-                    <option {{ old('home_address_state', $client->home_address_state) == 'Iowa' ? 'selected' : '' }}>Iowa</option>
-                    <option {{ old('home_address_state', $client->home_address_state) == 'Kansas' ? 'selected' : '' }}>Kansas</option>
-                    <option {{ old('home_address_state', $client->home_address_state) == 'Kentucky' ? 'selected' : '' }}>Kentucky</option>
-                    <option {{ old('home_address_state', $client->home_address_state) == 'Louisiana' ? 'selected' : '' }}>Louisiana</option>
-                    <option {{ old('home_address_state', $client->home_address_state) == 'Maine' ? 'selected' : '' }}>Maine</option>
-                    <option {{ old('home_address_state', $client->home_address_state) == 'Maryland' ? 'selected' : '' }}>Maryland</option>
-                    <option {{ old('home_address_state', $client->home_address_state) == 'Massachusetts' ? 'selected' : '' }}>Massachusetts</option>
-                    <option {{ old('home_address_state', $client->home_address_state) == 'Michigan' ? 'selected' : '' }}>Michigan</option>
-                    <option {{ old('home_address_state', $client->home_address_state) == 'Minnesota' ? 'selected' : '' }}>Minnesota</option>
-                    <option {{ old('home_address_state', $client->home_address_state) == 'Mississippi' ? 'selected' : '' }}>Mississippi</option>
-                    <option {{ old('home_address_state', $client->home_address_state) == 'Missouri' ? 'selected' : '' }}>Missouri</option>
-                    <option {{ old('home_address_state', $client->home_address_state) == 'Montana' ? 'selected' : '' }}>Montana</option>
-                    <option {{ old('home_address_state', $client->home_address_state) == 'Nebraska' ? 'selected' : '' }}>Nebraska</option>
-                    <option {{ old('home_address_state', $client->home_address_state) == 'Nevada' ? 'selected' : '' }}>Nevada</option>
-                    <option {{ old('home_address_state', $client->home_address_state) == 'New Hampshire' ? 'selected' : '' }}>New Hampshire</option>
-                    <option {{ old('home_address_state', $client->home_address_state) == 'New Jersey' ? 'selected' : '' }}>New Jersey</option>
-                    <option {{ old('home_address_state', $client->home_address_state) == 'New Mexico' ? 'selected' : '' }}>New Mexico</option>
-                    <option {{ old('home_address_state', $client->home_address_state) == 'New York' ? 'selected' : '' }}>New York</option>
-                    <option {{ old('home_address_state', $client->home_address_state) == 'North Carolina' ? 'selected' : '' }}>North Carolina</option>
-                    <option {{ old('home_address_state', $client->home_address_state) == 'North Dakota' ? 'selected' : '' }}>North Dakota</option>
-                    <option {{ old('home_address_state', $client->home_address_state) == 'Ohio' ? 'selected' : '' }}>Ohio</option>
-                    <option {{ old('home_address_state', $client->home_address_state) == 'Oklahoma' ? 'selected' : '' }}>Oklahoma</option>
-                    <option {{ old('home_address_state', $client->home_address_state) == 'Oregon' ? 'selected' : '' }}>Oregon</option>
-                    <option {{ old('home_address_state', $client->home_address_state) == 'Pennsylvania' ? 'selected' : '' }}>Pennsylvania</option>
-                    <option {{ old('home_address_state', $client->home_address_state) == 'Rhode Island' ? 'selected' : '' }}>Rhode Island</option>
-                    <option {{ old('home_address_state', $client->home_address_state) == 'South Carolina' ? 'selected' : '' }}>South Carolina</option>
-                    <option {{ old('home_address_state', $client->home_address_state) == 'South Dakota' ? 'selected' : '' }}>South Dakota</option>
-                    <option {{ old('home_address_state', $client->home_address_state) == 'Tennessee' ? 'selected' : '' }}>Tennessee</option>
-                    <option {{ old('home_address_state', $client->home_address_state) == 'Texas' ? 'selected' : '' }}>Texas</option>
-                    <option {{ old('home_address_state', $client->home_address_state) == 'Utah' ? 'selected' : '' }}>Utah</option>
-                    <option {{ old('home_address_state', $client->home_address_state) == 'Vermont' ? 'selected' : '' }}>Vermont</option>
-                    <option {{ old('home_address_state', $client->home_address_state) == 'Virginia' ? 'selected' : '' }}>Virginia</option>
-                    <option {{ old('home_address_state', $client->home_address_state) == 'Washington' ? 'selected' : '' }}>Washington</option>
-                    <option {{ old('home_address_state', $client->home_address_state) == 'West Virginia' ? 'selected' : '' }}>West Virginia</option>
-                    <option {{ old('home_address_state', $client->home_address_state) == 'Wisconsin' ? 'selected' : '' }}>Wisconsin</option>
-                    <option {{ old('home_address_state', $client->home_address_state) == 'Wyoming' ? 'selected' : '' }}>Wyoming</option>
-                    <option {{ old('home_address_state', $client->home_address_state) == 'Washington DC' ? 'selected' : '' }}>Washington DC</option>
-                    <option {{ old('home_address_state', $client->home_address_state) == 'Puerto Rico' ? 'selected' : '' }}>Puerto Rico</option>
-                    <option {{ old('home_address_state', $client->home_address_state) == 'Guam' ? 'selected' : '' }}>Guam</option>
-                    <option {{ old('home_address_state', $client->home_address_state) == 'American Samoa' ? 'selected' : '' }}>American Samoa</option>
-                    <option {{ old('home_address_state', $client->home_address_state) == 'U.S. Virgin Islands' ? 'selected' : '' }}>U.S. Virgin Islands</option>
-                    <option {{ old('home_address_state', $client->home_address_state) == 'Northern Mariana Islands' ? 'selected' : '' }}>Northern Mariana Islands</option>
-                    <option {{ old('home_address_state', $client->home_address_state) == 'Other' ? 'selected' : '' }}>Other</option>
+                <select class="w-full p-2 mt-2 border-b-2 border-blue-200 rounded-md peer ring-0" id="home_address_state" name="home_address_state" type="text" required>
+                    <option value="" disabled selected hidden>{{ old('home_address_state', $client->home_address_state) }}</option>
+                    @foreach ($states as $state)
+                    <option value="{{$state['name']}}">{{ $state['name'] }}</option>
+                    @endforeach
                 </select>
             </x-form_input_div>
 
@@ -191,30 +130,30 @@
             </x-form_input_div>
 
 
-           {{-- Possible Support Needed --}}
-           <div x-data="{ showDropdown: false }" class="relative w-full mt-6 mb-4">
-               <x-form_label for="possible_support_needed">
-                   Possible Support Needed
-               </x-form_label>
-               <div class="rounded-md" @click.away="showDropdown = false">
-                   <div class="flex justify-between w-full p-1.5 bg-white border border-blue-200 rounded-md">
-                       Select Options
-                       <button type="button" @click="showDropdown = !showDropdown" class="">
-                           <svg class="w-[18px] h-[18px] text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                           </svg>
-                       </button>
-                   </div>
-                   <div x-show="showDropdown" class="rounded-md bg-gray-50 md:flex md:flex-wrap" x-transition.scale.origin.top x-cloak>
-                       @foreach ($categories as $category)
-                       <label class="items-center p-2">
-                           <input type="checkbox" class="rounded-md mb-0.5 hover:bg-blue-300 transition-all duration-300" name="possible_support_needed[]" value="{{ $category }}" @if(is_array(old('possible_support_needed')) && in_array($category, old('possible_support_needed'))) checked @endif>
-                           {{ $category }}
-                       </label><br>
-                       @endforeach
-                   </div>
-               </div>
-           </div>
+            {{-- Possible Support Needed --}}
+            <div x-data="{ showDropdown: false }" class="relative w-full mt-6 mb-4">
+                <x-form_label for="possible_support_needed">
+                    Possible Support Needed
+                </x-form_label>
+                <div class="rounded-md" @click.away="showDropdown = false">
+                    <div class="flex justify-between w-full p-1.5 bg-white border border-blue-200 rounded-md">
+                        Select Options
+                        <button type="button" @click="showDropdown = !showDropdown" class="">
+                            <svg class="w-[18px] h-[18px] text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                    </div>
+                    <div x-show="showDropdown" class="rounded-md bg-gray-50 md:flex md:flex-wrap" x-transition.scale.origin.top x-cloak>
+                        @foreach ($categories as $category)
+                        <label class="items-center p-2">
+                            <input type="checkbox" class="rounded-md mb-0.5 hover:bg-blue-300 transition-all duration-300" name="possible_support_needed[]" value="{{ $category }}" @if(is_array(old('possible_support_needed')) && in_array($category, old('possible_support_needed'))) checked @endif>
+                            {{ $category }}
+                        </label><br>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
 
 
 
