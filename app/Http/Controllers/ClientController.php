@@ -153,10 +153,6 @@ class ClientController extends Controller
     {
         $client = Client::find($id);
         $therapySessions = TherapySession::all();
-        // $therapist = Client::find($user_id);
-
-
-
         $user_id = $client->user_id;
         // $therapist = User::find($user_id);
         $therapist = User::where('id', $user_id)->first();
