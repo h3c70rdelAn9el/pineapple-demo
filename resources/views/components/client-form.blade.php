@@ -1,5 +1,4 @@
-{{-- commented code out are fields they wanted ommitted. I kept them in place incase someone decides to put them back
---}}
+{{-- ! commented code out are fields they wanted ommitted. I kept them in place incase someone decides to put them back --}}
 
 <script>
     @php
@@ -242,19 +241,9 @@
     </x-form_input_div> --}}
 
     {{-- Previous therapy --}}
-    {{-- <x-form_input_div>
-        <x-form_label for="previous_therapy">
-            Previous therapy from Pineapple
-        </x-form_label>
-        <input id="yes" name="previous_therapy" type="radio" value="1">
-        <label for="yes">Yes</label><br>
-        <input id="no" name="previous_therapy" type="radio" value="0">
-        <label for="no">No</label><br>
-    </x-form_input_div> --}}
-
     <x-form_input_div>
         <x-form_label for="previous_therapy">Previous Therapy from Pineapple</x-form_label>
-        <select class="form-select" id="previous_therapy" name="previous_therapy" type="text">
+        <select class="p-3 form-select" id="previous_therapy" name="previous_therapy" type="text">
             <option value="" disabled selected hidden>Select One</option>
             <option>Yes</option>
             <option>No</option>
@@ -262,17 +251,25 @@
     </x-form_input_div>
 
 
-    {{-- ! removed the support needed due to HIPAA  --}}
     {{-- possible_support_needed --}}
-    {{-- <x-form_input_div>
+    <x-form_input_div x-data="{ showDropdown: false }">
         <x-form_label for="possible_support_needed">
             Possible Support Needed
         </x-form_label>
-        @foreach ($categories as $category)
-        <input id="possible_support_needed[]" name="possible_support_needed[]" type="checkbox" value="{{ $category }}">
-        <label for="possible_support_needed[]">{{ $category }}</label><br>
-        @endforeach
-    </x-form_input_div> --}}
+        <div class="rounded-md multiselect-dropdown" @click.away="showDropdown = false">
+            <button type="button" @click="showDropdown = !showDropdown" class="rounded-md multiselect-dropdown-toggle">Select options</button>
+            <div x-show="showDropdown" class="rounded-md multiselect-dropdown-content">
+                <div class="md:flex md:flex-wrap">
+                    @foreach ($categories as $category)
+                    <label>
+                        <input type="checkbox" name="possible_support_needed[]" value="{{ $category }}">
+                        {{ $category }}
+                    </label><br>
+                    @endforeach
+                </div>
+            </div>
+        </div>
+    </x-form_input_div>
 
     <x-form_input_div>
         <x-form_label for="client_contribution">
@@ -324,11 +321,8 @@
     </div>
 </form>
 
-
 <script src="{{ asset('js/intlTelInput.js') }}"></script>
 <script src="{{ asset('js/utils.js') }}"></script>
-
-
 
 <script>
     var input = document.querySelector("#phone");
@@ -339,3 +333,48 @@
     , });
 
 </script>
+
+<style>
+    .multiselect-dropdown {
+        position: relative;
+        display: inline-block;
+        width: 100%;
+    }
+
+    .multiselect-dropdown-toggle {
+        width: 150px;
+        padding: 8px;
+        border: 1px solid #ccc;
+        background-color: #fff;
+        cursor: pointer;
+        text-align: left;
+    }
+
+    .multiselect-dropdown-content {
+        display: none;
+        /* width: 100%; */
+        position: relative;
+        background-color: #fff;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        z-index: 1;
+        flex-wrap: wrap;
+        max-height: 200px;
+        overflow-y: auto;
+
+    }
+
+    .multiselect-dropdown-content label {
+        flex-basis: 50%;
+        padding: 8px;
+    }
+
+    .multiselect-dropdown-content label:hover {
+        background-color: #f2f2f2;
+    }
+
+    input[type="checkbox"] {
+        margin-right: 5px;
+        border-radius: 5px;
+    }
+
+</style>
