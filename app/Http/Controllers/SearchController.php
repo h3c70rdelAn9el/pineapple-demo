@@ -12,26 +12,20 @@ class SearchController extends Controller
     {
         // add the user
         $user = auth()->user();
-
-
+        $query = $request->get('query');
         $results = null;
 
+        if ($query) {
+            if ($user->admin === 1) {
+                $clientResults = Client::search($query)->get();
+                $userResults = User::search($query)->get();
+            } else {
+                $clientResults = $user->clients()->where('preferred_name', 'like', "%{$query}%")->get();
+                $userResults = collect();
+            }
 
-        // if ($query = $request->get('query')) {
-        //     $results = Client::search($query)->get();
-        // }
-
-        if ($query = $request->get('query')) {
-            $clientResults = Client::search($query)->get();
-            $userResults = User::search($query)->get();
             $results = $clientResults->merge($userResults);
         }
-
-
-
-        // return view('search', [
-        //     'results' => $results,
-        // ]);
 
         return view('search', [
             'results' => $results,
