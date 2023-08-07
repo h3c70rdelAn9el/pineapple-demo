@@ -28,6 +28,9 @@
     @livewireScripts
     <script src="https://unpkg.com/@victoryoalli/alpinejs-moment@1.x.x/dist/moment.min.js"></script>
     <script src="https://unpkg.com/@victoryoalli/alpinejs-timeout@1.x.x/dist/timeout.min.js"></script>
+         <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script defer src="https://unpkg.com/@alpinejs/mask@3.x.x/dist/cdn.min.js"></script>
+
 </body>
 
 </html>

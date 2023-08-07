@@ -4,7 +4,6 @@
     @php
     $categories = ['ADHD', 'Adjustment Issues', 'Adoption', 'Anger', 'Anxiety', 'Autism Spectrum', 'Bipolar Disorder', 'Chronic Illness', 'Chronic Pain', 'Codependency', 'Depression', 'Divorce', 'Domestic Violence', 'Eating Disorders', 'Family Conflict', 'Family of Origin Issues', 'Gambling', 'Grief and Loss', 'HIV/AIDS', 'Hoarding', 'Impuslivity', 'Intellectual and Developmental Disabilities', 'LGBTQ', 'Life Coaching', 'Life Transitions', 'Obesity', 'Obsessive Compulsive Disorder', 'Parenting', 'Personality Disorders', 'Psychosis', 'Racial Identity', 'Relationship Issues', 'Self-Esteem', 'Self Harm', 'Sex Addiction', 'Sexual Assault', 'Sleep Issues', 'Spirituality', 'Stress', 'Substance Use - Sober Only - ', 'Substance Use - Harm Reduction', 'Trauma/Post-Traumatic Stress Disorder', 'Weight Loss', 'Women\'s Issues', 'Other'];
     @endphp
-
 </script>
 
 <form class="z-50 w-5/6 h-full p-4 mx-auto mt-2 mb-4 bg-blue-200 border border-blue-600 rounded-md shadow-lg md:w-2/3" style="z-index: 99999;" action="{{ route('client.store') }}" method="POST">
@@ -252,24 +251,30 @@
 
 
     {{-- possible_support_needed --}}
-    <x-form_input_div x-data="{ showDropdown: false }">
+    <div x-data="{ showDropdown: false }" class="relative w-full mt-6 mb-4">
         <x-form_label for="possible_support_needed">
             Possible Support Needed
         </x-form_label>
-        <div class="rounded-md multiselect-dropdown" @click.away="showDropdown = false">
-            <button type="button" @click="showDropdown = !showDropdown" class="rounded-md multiselect-dropdown-toggle">Select options</button>
-            <div x-show="showDropdown" class="rounded-md multiselect-dropdown-content">
-                <div class="md:flex md:flex-wrap">
-                    @foreach ($categories as $category)
-                    <label>
-                        <input type="checkbox" name="possible_support_needed[]" value="{{ $category }}">
-                        {{ $category }}
-                    </label><br>
-                    @endforeach
-                </div>
+        <div class="rounded-md" @click.away="showDropdown = false">
+            <div class="flex justify-between w-full p-3 bg-gray-100 rounded-md">
+                Select Options
+                <button type="button" @click="showDropdown = !showDropdown" class="">
+                 <svg class="w-[18px] h-[18px] text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                    </svg></button>
+            </div>
+            <div x-show="showDropdown" class="rounded-md bg-gray-50 md:flex md:flex-wrap"  x-transition.scale.origin.left x-cloak>
+                @foreach ($categories as $category)
+                <label class="items-center p-2">
+                    <input type="checkbox" class="rounded-md mb-0.5 hover:bg-blue-300 transition-all duration-300" name="possible_support_needed[]" value="{{ $category }}">
+                    {{ $category }}
+                </label><br>
+                @endforeach
             </div>
         </div>
-    </x-form_input_div>
+    </div>
+
+
 
     <x-form_input_div>
         <x-form_label for="client_contribution">
@@ -331,50 +336,4 @@
         , separateDialCode: true
         , utilsScript: "{{ asset('js/utils.js') }}"
     , });
-
 </script>
-
-<style>
-    .multiselect-dropdown {
-        position: relative;
-        display: inline-block;
-        width: 100%;
-    }
-
-    .multiselect-dropdown-toggle {
-        width: 150px;
-        padding: 8px;
-        border: 1px solid #ccc;
-        background-color: #fff;
-        cursor: pointer;
-        text-align: left;
-    }
-
-    .multiselect-dropdown-content {
-        display: none;
-        /* width: 100%; */
-        position: relative;
-        background-color: #fff;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-        z-index: 1;
-        flex-wrap: wrap;
-        max-height: 200px;
-        overflow-y: auto;
-
-    }
-
-    .multiselect-dropdown-content label {
-        flex-basis: 50%;
-        padding: 8px;
-    }
-
-    .multiselect-dropdown-content label:hover {
-        background-color: #f2f2f2;
-    }
-
-    input[type="checkbox"] {
-        margin-right: 5px;
-        border-radius: 5px;
-    }
-
-</style>
