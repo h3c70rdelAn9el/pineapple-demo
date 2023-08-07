@@ -25,7 +25,8 @@ class TherapistsController extends Controller
     {
         $user = auth()->user();
         $therapist = User::find($id);
-        $clients = $therapist->clients()->get();
+        // $clients = $therapist->clients()->get();
+        $clients = $therapist->clients()->orderBy('preferred_name', 'asc')->get();
         $therapySessions = TherapySession::where("client_id", "=", $therapist->id)->get();
         $file_name = FileUpload::find($id);
 
