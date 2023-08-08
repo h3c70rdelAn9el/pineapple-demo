@@ -107,6 +107,13 @@
                 <x-jet-input-error for="account_number" class="mt-2" />
             </div>
 
+            {{-- Routing Number --}}
+            <div class="col-span-6 mt-4 sm:col-span-4">
+                <x-jet-label for="routing_number" value="{{ __('Routing Number') }}" />
+                <x-jet-input id="routing_number" type="text" class="block w-full mt-1" wire:model.defer="state.routing_number" autocomplete="routing_number" />
+                <x-jet-input-error for="routing_number" class="mt-2" />
+            </div>
+
             {{-- on_vacation --}}
             <div class="col-span-6 mt-4 sm:col-span-4">
                 <x-jet-label for="on_vacation" value="{{ __('On Vacation') }}" />
