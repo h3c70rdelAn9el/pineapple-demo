@@ -46,7 +46,15 @@
             </div>
             <div class="flex flex-row">
                 <div class="w-1/2 p-2 border-r border-gray-400">Session Attendance:</div>
+                @if ($therapySession->attendance === 'attended')
+                <div class="w-1/2 p-2 text-green-500 capitalize">{{ $therapySession->attendance }}</div>
+                @elseif ($therapySession->attendance === 'no-show')
+                <div class="w-1/2 p-2 text-red-500 capitalize">{{ $therapySession->attendance }}</div>
+                @elseif ($therapySession->attendance === 'canceled')
+                <div class="w-1/2 p-2 text-yellow-500 capitalize">{{ $therapySession->attendance }}</div>
+                @else
                 <div class="w-1/2 p-2 capitalize">{{ $therapySession->attendance }}</div>
+                @endif
             </div>
         </section>
         <div class="flex mt-2">

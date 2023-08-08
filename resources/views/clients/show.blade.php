@@ -1,7 +1,6 @@
 <x-app-layout>
     <x-main-container>
-        <section
-            class="flex flex-row items-center justify-around w-full mx-auto text-white bg-blue-500 rounded-t-md md:flex-row">
+        <section class="flex flex-row items-center justify-around w-full mx-auto text-white bg-blue-500 rounded-t-md md:flex-row">
             <div class="p-4 text-center capitalize shadow-md sm:rounded-lg">
                 <p class="text-md md:text-xl">Client: <span class="font-bold">{{ $client->preferred_name }}</span></p>
             </div>
@@ -10,26 +9,32 @@
             </div>
         </section>
         @if (Auth::user()->admin)
-            {{-- <a href="{{ route('fileUpload') }}"
-                class="h-6 ml-10 text-sm text-blue-600 hover:text-blue-800">
-                Upload Insurance Form
-            </a> --}}
-            {{-- add the edit route link --}}
-            <a href="{{ route('clients.edit', $client->id) }}"
-                class="h-6 ml-10 text-sm text-blue-600 hover:text-blue-800">
-                Edit Client
-            </a>
+        <a href="{{ route('clients.edit', $client->id) }}" class="h-6 ml-10 text-sm text-blue-600 hover:text-blue-800">
+            Edit Client
+        </a>
         @endif
         <div class="container flex flex-col w-5/6 max-w-5xl mx-auto rounded-lg lg:flex-row">
             {{-- left side --}}
             <div class="p-2 mx-auto mt-2 mb-2 rounded-md shadow-md bg-blue-50 shadow-blue-100 lg:w-1/2">
                 <p class="text-lg text-center">Add Session</p>
                 @include('components/session-form')
-                <div class="flex flex-row mt-4">
-                    <p class="text-xs text-gray-500">Sessions Left:
-                        <span class="font-bold">{{ $client->max_sessions - $client->therapySessions->count() }}</span>
-                        out of <span class="font-bold">{{ $client->max_sessions  }}</span>
+                <div class="flex flex-col mt-4 text-xs">
+                    <p class="text-gray-500 ">Sessions Left:
+                        <span>{{ $attendedSessions->count() }} out of {{ $client->max_sessions }}</span>
                     </p>
+                    <p class="text-green-600">
+                        <span>{{ $client->therapySessions->where('attendance', 'attended')->count() }}</span>
+                        Attended
+                    </p>
+                    <p class="text-yellow-600">
+                        <span>{{ $client->therapySessions->where('attendance', 'canceled')->count() }}</span>
+                        Canceled
+                    </p>
+                    <p class="text-red-600">
+                        <span>{{ $client->therapySessions->where('attendance', 'no-show')->count() }}</span>
+                        No Show
+                    </p>
+
                 </div>
             </div>
             {{-- right side --}}
@@ -37,16 +42,16 @@
                 <h2 class="text-lg font-bold text-center">Client Sessions</h2>
                 <div class="flex flex-row mt-2">
                     <p class="text-xs text-gray-500">Sessions Left:
-                        <span class="font-bold">{{ $client->max_sessions - $client->therapySessions->count() }}</span>
-                        out of <span class="font-bold">{{ $client->max_sessions  }}</span>
+                        {{-- <span class="font-bold">{{ $client->max_sessions - $client->therapySessions->count() }}</span>
+                        out of <span class="font-bold">{{ $client->max_sessions  }}</span> --}}
+                        {{-- $totalSessionsRemaining --}}
                     </p>
                 </div>
                 <div class="flex flex-row flex-wrap w-full p-2 mx-auto overflow-y-scroll border border-indigo-500 rounded-md shadow-md h-96">
                     @forelse ($client->therapySessions as $therapySession)
-                        <x-session-card :therapySession='$therapySession'
-                            :therapist='$therapist' />
+                    <x-session-card :therapySession='$therapySession' :therapist='$therapist' />
                     @empty
-                        <p>Client does not have any sessions</p>
+                    <p>Client does not have any sessions</p>
                     @endforelse
                 </div>
             </div>
