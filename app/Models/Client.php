@@ -25,11 +25,17 @@ class Client extends Model
         'health_coverage_number',
         'health_coverage_expiration',
         'previous_therapy',
-        // 'possible_support_needed',
+        'possible_support_needed',
         'preferred_language',
         'additional_notes',
         'pronouns',
         'client_contribution',
+        // 'user_id',
+        'email',
+        'phone',
+        'contact_method',
+        'status',
+        'max_sessions',
     ];
 
     public function user()

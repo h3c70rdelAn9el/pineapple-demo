@@ -19,19 +19,20 @@
                 <p class="text-lg text-center">Add Session</p>
                 @include('components/session-form')
                 <div class="flex flex-col mt-4 text-xs">
-                    <p class="text-gray-500 ">Sessions Left:
-                        <span>{{ $attendedSessions->count() }} out of {{ $client->max_sessions }}</span>
+                    <p class="text-gray-500 ">
+                        {{-- <span>{{ $attendedSessions->count() }} out of {{ $client->max_sessions }}</span> --}}
+                        <span class="mr-3 font-bold">{{ $client->max_sessions -  $attendedSessions->count() }}</span>Sessions Left
                     </p>
                     <p class="text-green-600">
-                        <span>{{ $client->therapySessions->where('attendance', 'attended')->count() }}</span>
+                        <span class="mr-1">{{ $client->therapySessions->where('attendance', 'attended')->count() }}</span>
                         Attended
                     </p>
                     <p class="text-yellow-600">
-                        <span>{{ $client->therapySessions->where('attendance', 'canceled')->count() }}</span>
+                        <span class="mr-2">{{ $client->therapySessions->where('attendance', 'canceled')->count() }}</span>
                         Canceled
                     </p>
                     <p class="text-red-600">
-                        <span>{{ $client->therapySessions->where('attendance', 'no-show')->count() }}</span>
+                        <span class="mr-2">{{ $client->therapySessions->where('attendance', 'no-show')->count() }}</span>
                         No Show
                     </p>
 

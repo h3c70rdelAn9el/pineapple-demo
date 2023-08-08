@@ -36,20 +36,35 @@
             </x-container-content>
 
             <x-container-content>
-                <x-slot name="title">
-                    Clients: {{ $allClients->count() }}
-                </x-slot>
-                <x-slot name="count">
-                    <button class="button-secondary">
-                        <a href="{{ route('clients.create') }}" class="text-sm ">
-                            Add Client
-                        </a>
-                    </button>
-                </x-slot>
+                    <x-slot name="title" class="">
+                     <div class="flex flex-col w-1/4 text-base">
+                            <div class="flex justify-between">
+                                <p>Clients:</p>
+                                <p>{{ $allClients->count() }}</p>
+                            </div>
+                            <div class="flex justify-between">
+                                <p>Active:</p>
+                                <p class='text-green-500'>{{ $activeClients->count() }}</p>
+                            </div>
+                            <div class="flex justify-between">
+                                <p>Inactive:</p>
+                                <p class="text-orange-500">{{ $inactiveClients->count() }}</p>
+                            </div>
+                     </div>
+
+                    </x-slot>
+                    <x-slot name="count">
+                        <button class="mt-4 button-secondary">
+                            <a href="{{ route('clients.create') }}" class="text-sm ">
+                                Add Client
+                            </a>
+                        </button>
+                    </x-slot>
 
                 <x-slot name="content">
                     @foreach ($allClients as $client)
-                    <x-client-card :client="$client" :therapist="$therapist" :user="$user"></x-client-card>
+                    <x-client-card :client="$client" :therapist="$therapist" :user="$user"
+                    ></x-client-card>
                     @endforeach
                 </x-slot>
             </x-container-content>
