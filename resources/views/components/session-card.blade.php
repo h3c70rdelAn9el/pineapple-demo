@@ -26,17 +26,17 @@
         </div>
         <div class="mr-1 font-light text-right">
             <div>
-                <p class="">Session Date:<span class="ml-2">{{ $therapySession->created_at->format('M d Y') }}</span></p>
+                <p class="">Date:<span class="ml-2">{{ $therapySession->created_at->format('M d Y') }}</span></p>
             </div>
 
-            <div class="">
+            {{-- <div class="">
                 <p><span class="mr-2">Session Cost</span>: {{ $therapySession->session_cost }}</p>
             </div>
             <div class="">
                 <p>
                     Client Contribution remaining: <span class="ml-2">${{ $therapySession->client->client_contribution - $therapySession->client->therapySessions->sum('session_cost') }}</span>
                 </p>
-            </div>
+            </div> --}}
         </div>
     </div>
 </a>
