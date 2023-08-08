@@ -63,7 +63,8 @@
 
                 <x-slot name="content">
                     @foreach ($allClients as $client)
-                    <x-client-card :client="$client" :therapist="$therapist" :user="$user"></x-client-card>
+                    <x-client-card :client="$client" :therapist="$therapist" :user="$user"
+                    ></x-client-card>
                     @endforeach
                 </x-slot>
             </x-container-content>
