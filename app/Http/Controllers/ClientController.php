@@ -122,7 +122,6 @@ class ClientController extends Controller
         // $c->user_id = $user->id;
 
         $c->save();
-
         return redirect()->route('dashboard');
     }
 
@@ -161,6 +160,7 @@ class ClientController extends Controller
         // return redirect()->route('clients.show', $client->id)->with('success', 'Client updated successfully');
         return redirect()->route('dashboard');
     }
+
 
 
     /**
