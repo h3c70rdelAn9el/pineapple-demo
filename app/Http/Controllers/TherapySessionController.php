@@ -53,12 +53,11 @@ class TherapySessionController extends Controller
         // TODO: MAKE A THE REQEUST FORM
 
         $user = auth()->user();
-
-        // $client = Client::find($request->client_id);
         $client_id = $request->client_id;
         $client = Client::find($client_id);
 
-        if ($client->therapySessions()->count() < $client->max_sessions) {
+        if ($client->therapySessions()->whereIn('attendance', ['attended', 'no-show'])->count() < $client->max_sessions) {
+
             $ts = new TherapySession();
             $ts->client_id = $request->client_id;
             $ts->session_cost = $request->session_cost;
@@ -75,7 +74,7 @@ class TherapySessionController extends Controller
             $user_id = $ts->user_id;
             $therapist = User::find($user_id);
 
-            if ($client->therapySessions()->count() === 14) {
+            if ($client->therapySessions()->whereIn('attendance', ['attended', 'no-show'])->count() === 14) {
                 $client->notify(new SessionLimitNotification());
             }
 
@@ -85,7 +84,7 @@ class TherapySessionController extends Controller
                 if ($session->attendance === 'no-show') {
                     $consecutiveNoShows++;
                 } else {
-                    break; // Reset the counter if attendance is not 'no-show'
+                    break;
                 }
             }
 
@@ -113,15 +112,16 @@ class TherapySessionController extends Controller
     public function show(TherapySession $therapySession, Client $client, $id)
     {
         $user = auth()->user();
-
         $therapySession = TherapySession::find($id);
         $client_id = $therapySession->client_id;
         $client = Client::find($client_id);
 
+        $attendedSessions = $client->therapySessions()->whereIn('attendance', ['attended', 'no-show'])->get();
+
         $user_id = $therapySession->user_id;
         $therapist = User::find($user_id);
 
-        return view('session.show', ['therapySession' => $therapySession, 'client' => $client, 'therapist' => $therapist, 'user' => $user]);
+        return view('session.show', ['therapySession' => $therapySession, 'client' => $client, 'therapist' => $therapist, 'user' => $user, 'attendedSessions' => $attendedSessions]);
     }
 
 
