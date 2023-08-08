@@ -5,7 +5,18 @@
                 <p class="mr-1">Client:</p>
                 <p>{{ $therapySession->client->preferred_name }}</p>
             </div>
-
+           <div class="flex flex-row text-xs">
+               <p class="mr-1">Session:</p>
+               @if ($therapySession->attendance === 'attended')
+               <p class="text-green-500">{{ $therapySession->attendance }}</p>
+               @elseif ($therapySession->attendance === 'no-show')
+               <p class="text-red-500">{{ $therapySession->attendance }}</p>
+               @elseif ($therapySession->attendance === 'canceled')
+               <p class="text-yellow-500">{{ $therapySession->attendance }}</p>
+               @else
+               <p>{{ $therapySession->attendance }}</p>
+               @endif
+           </div>
             @if (Auth::user()->admin)
             <div class="flex flex-row">
                 <p class="mr-1">Therapist:</p>
