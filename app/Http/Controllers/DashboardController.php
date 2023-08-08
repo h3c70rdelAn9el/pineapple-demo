@@ -20,6 +20,9 @@ class DashboardController extends Controller
         $clients = User::find($user_id)->clients;
         $client = Client::find($user_id);
         $allClients = Client::all()->sortBy('preferred_name');
+        // show all the clients status column
+        $activeClients = Client::where('status', '0')->get();
+        $inactiveClients = Client::where('status', '1')->get();
 
         $therapySessions = TherapySession::where('user_id', $user->id)
             ->orderBy('id', 'DESC')
@@ -46,9 +49,9 @@ class DashboardController extends Controller
 
 
         if ($user->admin) {
-            return view('dashboard_admin', ['user' => $user, 'therapists' => $therapists, 'allClients' => $allClients, 'therapist' => $therapist, 'therapySessions' => '$therapySessions', 'states' => $states, 'categories' => $categories]);
+            return view('dashboard_admin', ['user' => $user, 'therapists' => $therapists, 'allClients' => $allClients, 'therapist' => $therapist, 'therapySessions' => '$therapySessions', 'states' => $states, 'categories' => $categories, 'activeClients' => $activeClients, 'inactiveClients' => $inactiveClients]);
         } else {
-            return view('dashboard', ['user' => $user, 'clients' => $clients, 'client' => $client, 'therapySessions' => $therapySessions, 'therapist' => $therapist, 'states' => $states]);
+            return view('dashboard', ['user' => $user, 'clients' => $clients, 'client' => $client, 'therapySessions' => $therapySessions, 'therapist' => $therapist, 'states' => $states, 'categories' => $categories, 'activeClients' => $activeClients, 'inactiveClients' => $inactiveClients]);
         }
     }
 }
