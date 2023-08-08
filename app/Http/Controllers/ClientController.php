@@ -173,11 +173,14 @@ class ClientController extends Controller
     {
         $client = Client::find($id, ['*'], 'preferred_name', 'asc');
         $therapySessions = TherapySession::all();
+        $attendedSessions = $client->therapySessions()
+            ->whereIn('attendance', ['attended', 'no-show'])
+            ->get();
         $user_id = $client->user_id;
         // $therapist = User::find($user_id);
         $therapist = User::where('id', $user_id)->first();
 
-        return view('clients.show')->with(['client' => $client, 'therapySessions' => $therapySessions, 'therapist' => $therapist]);
+        return view('clients.show')->with(['client' => $client, 'therapySessions' => $therapySessions, 'therapist' => $therapist, 'attendedSessions' => $attendedSessions]);
     }
 
     /**
@@ -190,7 +193,6 @@ class ClientController extends Controller
     // {
 
     // }
-    // write the edit function
     public function edit(Request $request, $id)
     {
         if (auth()->user() && auth()->user()->admin === 1) {
