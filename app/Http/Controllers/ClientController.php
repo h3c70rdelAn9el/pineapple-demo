@@ -193,7 +193,6 @@ class ClientController extends Controller
     // {
 
     // }
-    // write the edit function
     public function edit(Request $request, $id)
     {
         if (auth()->user() && auth()->user()->admin === 1) {
