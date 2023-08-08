@@ -71,6 +71,15 @@ class TherapySessionController extends Controller
             $ts->user_id = $user->id;
             $ts->attendance = $request->attendance;
             $ts->save();
+
+            if ($client->therapySessions()->whereIn('attendance', ['attended', 'no-show'])->count() >= 16) {
+                $client->status = 1;
+                $client->save();
+            } else {
+                $client->status = 0;
+                $client->save();
+            }
+
             $user_id = $ts->user_id;
             $therapist = User::find($user_id);
 
@@ -91,7 +100,6 @@ class TherapySessionController extends Controller
             if ($consecutiveNoShows >= 3) {
                 $client->notify(new MissedTherapySessions());
             }
-
 
             return redirect()
                 ->back()
