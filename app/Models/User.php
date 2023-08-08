@@ -37,6 +37,7 @@ class User extends Authenticatable
         'expires_at',
         'bank_name',
         'account_number',
+        'routing_number',
         'on_vacation',
     ];
 
