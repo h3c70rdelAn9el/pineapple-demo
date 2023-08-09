@@ -7,6 +7,7 @@ use App\Models\Client;
 use Illuminate\Http\Request;
 use App\Models\TherapySession;
 use Illuminate\Support\Facades\File;
+use App\Notifications\NewClientNotification;
 
 
 class ClientController extends Controller
@@ -157,6 +158,8 @@ class ClientController extends Controller
         // $client->user_id = $request->user_id;
         $client->save();
 
+        $therapist = User::find($request->user_id);
+        $therapist->notify(new NewClientNotification($c));
         // return redirect()->route('clients.show', $client->id)->with('success', 'Client updated successfully');
         return redirect()->route('dashboard');
     }
