@@ -41,11 +41,16 @@
                             <div class="relative">
                                 <select name="document_type" id="document_type" class="block w-full px-3 py-2 pr-8 leading-tight text-gray-700 bg-white border border-blue-400 rounded-md appearance-none focus:outline-none focus:bg-white focus:border-gray-500">
                                     <option value="">Select Document Type</option>
+                                    <option value="photographic_id">Photographic ID</option>
                                     <option value="W9">W9</option>
-                                    <option value="Certificate">Certificate</option>
                                     <option value="clinical_license">Clinical License</option>
-                                    <option value="Insurance">Insurance</option>
+                                    <option value="public_liability_insurance">Public Liability Insurance</option>
+                                    <option value="W8BENE">W8BENE</option>
+                                    <option value="W8BEN">W8BEN</option>
                                     <option value="Voided Check">Voided Check</option>
+                                    <option value="supervisor_approval_letter">Supervisor Approval Letter</option>
+                                    <option value="headshot">Headshot</option>
+                                    <option value="Bio">Bio</option>
                                     <option value="Other">Other</option>
                                 </select>
                             </div>
@@ -90,23 +95,23 @@
                     </form>
                     <div class="flex flex-wrap mt-5">
                         <div class="relative">
-                                                             <a href="{{ route('therapist.forms', $user) }}" class="text-blue-500 hover:text-blue-800">View Forms</a>
+                            <a href="{{ route('therapist.forms', $user) }}" class="text-blue-500 hover:text-blue-800">View Forms</a>
 
 
                         </div>
-{{--
+                        {{--
                              <div class="relative">
                                  <a href="{{ route('therapist.forms', $therapist) }}" class="text-blue-500 hover:text-blue-800">View Forms</a>
-                             </div> --}}
+                    </div> --}}
 
-                    </div>
                 </div>
             </div>
         </div>
-        <div class="w-full h-16 bg-gray-50 rounded-b-md">
-
-        </div>
     </div>
+    <div class="w-full h-16 bg-gray-50 rounded-b-md">
+
+    </div>
+</div>
 </div>
 
 <script>
