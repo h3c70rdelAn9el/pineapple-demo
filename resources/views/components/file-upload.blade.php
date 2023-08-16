@@ -1,10 +1,25 @@
 <div class="flex flex-col h-full grid-cols-6 overflow-hidden md:grid">
-    <div class="flex flex-col md:col-span-2">
+    <div class="flex flex-col mt-10 ml-3 md:col-span-2 md:mt-0 md:ml-0">
         <h3 class="text-lg">Upload Documents</h3>
-        <p class="text-sm text-gray-600">Upload your documents here</p>
+        {{-- <p class="text-sm text-gray-600">Upload your documents here</p> --}}
+        <div class="text-sm text-gray-600">
+            <p class="font-medium">Required Documents:</p>
+            <div class="ml-2 font-light">
+                <p>Clinical License</p>
+                <p>Photographic ID Document</p>
+                <p>Public Liability Insurance</p>
+                <p>W9/W8BENE/W8BEN</p>
+            </div>
+        </div>
+        {{-- on_vacation --}}
+        <div class="flex flex-row mt-2">
+            <input type="checkbox" class="mt-0.5 mr-1 rounded" id="clinical_license_verification_portal" wire:model.defer="state.clinical_license_verification_portal" autocomplete="clinical_license_verification_portal" />
+            <x-jet-label for="clinical_license_verification_portal" value="{{ __('Clinical License Verification Portal') }}" />
+            <p class="mt-[3px] ml-1 text-xs font-light">(Optional)</p>
+            <x-jet-input-error for="clinical_license_verification_portal" class="mt-2" />
+        </div>
     </div>
     <div class="h-full overflow-hidden bg-white border-b border-gray-300 rounded-md shadow-md md:ml-3 md:col-span-4">
-
         <div x-data="imageViewer()" class="relative flex p-3 pl-5 -mb-5">
             <div class="flex mt-2 mb-2">
                 <div class="mt-2">
@@ -79,16 +94,6 @@
                             </div>
                         </div>
 
-
-
-                        {{-- <div class="absolute right-0 w-full border-b border-b-rounded-md bg-gray-50 h-14 mt-7 align-items-end ">
-                            <div class="absolute top-0 p-2 my-0 right-4">
-                                <x-jet-button type="submit">
-                                    Save
-                                </x-jet-button>
-                            </div>
-                        </div> --}}
-                        {{-- button --}}
                         <x-jet-button type="submit" class="absolute right-0 mb-3 mr-6 mt-9">
                             Save
                         </x-jet-button>
@@ -96,22 +101,14 @@
                     <div class="flex flex-wrap mt-5">
                         <div class="relative">
                             <a href="{{ route('therapist.forms', $user) }}" class="text-blue-500 hover:text-blue-800">View Forms</a>
-
-
                         </div>
-                        {{--
-                             <div class="relative">
-                                 <a href="{{ route('therapist.forms', $therapist) }}" class="text-blue-500 hover:text-blue-800">View Forms</a>
-                    </div> --}}
-
+                    </div>
                 </div>
             </div>
         </div>
+        <div class="w-full h-16 bg-gray-50 rounded-b-md">
+        </div>
     </div>
-    <div class="w-full h-16 bg-gray-50 rounded-b-md">
-
-    </div>
-</div>
 </div>
 
 <script>
