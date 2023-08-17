@@ -10,6 +10,16 @@
                     </div>
                 </div>
             </div>
+
+            {{-- Form Search --}}
+            <div class="flex">
+                <form action="{{ route('file-upload.search', ['therapist' => $therapist->id]) }}" method="GET" class="mx-auto">
+                    @csrf
+                    <input type="text" name="search" placeholder="Search by filename" class="rounded-md">
+                    <button type="submit">Search</button>
+                </form>
+            </div>
+
             <div class="w-5/6 px-4 mx-auto md:w-full">
                 <div class="flex flex-col px-2">
                     {{-- <button class="w-32 button-secondary">

@@ -88,6 +88,7 @@ Route::middleware([
     Route::get('/clients/{client_id}/edit', [ClientController::class, 'edit'])->name('clients.edit');
     Route::put('/clients/{client_id}', [ClientController::class, 'update'])->name('clients.update');
     Route::get('/search', SearchController::class)->name('search');
+    Route::get('/file-upload/search/{therapist}', [FileUploadController::class, 'search'])->name('file-upload.search');
 });
 
 Route::middleware([
