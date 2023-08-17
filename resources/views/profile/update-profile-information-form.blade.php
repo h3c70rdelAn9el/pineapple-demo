@@ -93,6 +93,11 @@
             </div>
 
             {{-- Bank Information --}}
+            <div>
+                <h2 class="mt-6 mb-1 text-lg leading-tight text-gray-600">
+                    {{ __('Enter Payment Details') }}
+                </h2>
+            </div>
             {{-- Bank Name --}}
             <div class="col-span-6 mt-4 sm:col-span-4">
                 <x-jet-label for="bank_name" value="{{ __('Bank Name') }}" />
