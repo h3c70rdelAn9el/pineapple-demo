@@ -10,6 +10,17 @@
                     </div>
                 </div>
             </div>
+
+            <div class="flex">
+                <div x-data="{ search: '' }" class="mx-auto">
+                    <form x-on:submit.prevent="searchForm">
+                        @csrf
+                        <input type="text" x-model="search" placeholder="Search for filename" class="p-2.5 text-sm rounded-md">
+                        <button type="submit" class="button">Search</button>
+                    </form>
+                </div>
+            </div>
+
             <div class="w-5/6 px-4 mx-auto md:w-full">
                 <div class="flex flex-col px-2">
                     {{-- <button class="w-32 button-secondary">
@@ -44,7 +55,7 @@
             </div>
             <section class="grid w-5/6 grid-cols-1 gap-5 p-2 px-4 mx-auto md:grid-cols-2 lg:grid-cols-3 md:w-full">
                 @foreach ($file_name as $form)
-                <div class="p-4 rounded-md shadow-xl">
+                <div class="p-4 rounded-md shadow-xl searchable-item">
                     <div>
                         {{-- <p class="mb-2 overflow-hidden text-sm text-ellipsis">{{ $form->file_name }}</p> --}}
                         @if ($form->file_title)
@@ -108,4 +119,99 @@
             </section>
         </div>
     </x-main-container>
+
+
+    {{-- <script>
+        function searchForm() {
+            const searchQuery = this.search.trim().toLowerCase();
+            const items = document.querySelectorAll('.searchable-item');
+
+            items.forEach(item => {
+                const text = item.textContent.trim().toLowerCase();
+                if (text.includes(searchQuery)) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('searchForm', searchForm);
+        });
+
+    </script> --}}
+
+    <script>
+        function searchForm() {
+            const searchQuery = this.search.trim().toLowerCase();
+            const items = document.querySelectorAll('.searchable-item');
+
+            items.forEach(item => {
+                const text = item.textContent.trim().toLowerCase();
+                if (text.includes(searchQuery)) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('searchForm', searchForm);
+            Alpine.store('search', ''); // Initialize search variable in Alpine store
+
+            Alpine.$watch('search', (value) => {
+                searchForm.call({
+                    search: value
+                }); // Trigger searchForm with immediate update
+            });
+        });
+
+    </script>
+
+
+
 </x-app-layout>
+
+{{-- <script>
+    function searchForm() {
+        const searchQuery = this.search.trim().toLowerCase();
+        const items = document.querySelectorAll('.searchable-item');
+
+        items.forEach(item => {
+            const text = item.textContent.trim().toLowerCase();
+            if (text.includes(searchQuery)) {
+                item.style.display = 'block';
+            } else {
+                item.style.display = 'none';
+            }
+        });
+    }
+
+    document.addEventListener('alpine:init', () => {
+        Alpine.data('searchForm', searchForm);
+    });
+
+</script> --}}
+
+{{-- <script>
+    function searchForm() {
+        const searchQuery = this.search.trim().toLowerCase();
+        const items = document.querySelectorAll('.searchable-item');
+
+        items.forEach(item => {
+            const text = item.textContent.trim().toLowerCase();
+            if (text.includes(searchQuery)) {
+                item.style.display = 'block';
+            } else {
+                item.style.display = 'none';
+            }
+        });
+    }
+
+    document.addEventListener('alpine:init', () => {
+        Alpine.data('searchForm', searchForm);
+    });
+
+</script> --}}

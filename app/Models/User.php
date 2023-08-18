@@ -39,6 +39,7 @@ class User extends Authenticatable
         'account_number',
         'routing_number',
         'on_vacation',
+        'clinical_license_verification_portal',
     ];
 
     /**
