@@ -165,4 +165,21 @@ class FileUploadController extends Controller
     {
         //
     }
+
+    public function search(Request $request)
+    {
+        $therapist = User::find($request->therapist);
+        $searchQuery = $request->input('search');
+
+        $file_name = FileUpload::where('user_id', $therapist->id)
+            ->where('file_name', 'LIKE', "%$searchQuery%")
+            ->get();
+
+
+        return view('therapist.forms', [
+            'file_name' => $file_name,
+            'therapist' => $therapist,
+            'user' => auth()->user(),
+        ]);
+    }
 }
