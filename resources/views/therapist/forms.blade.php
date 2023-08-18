@@ -161,11 +161,11 @@
             Alpine.data('searchForm', searchForm);
             Alpine.store('search', ''); // Initialize search variable in Alpine store
 
-            Alpine.$watch('search', (value) => {
-                searchForm.call({
-                    search: value
-                }); // Trigger searchForm with immediate update
-            });
+            // Alpine.$watch('search', (value) => {
+            //     searchForm.call({
+            //         search: value
+            //     }); // Trigger searchForm with immediate update
+            // });
         });
 
     </script>
