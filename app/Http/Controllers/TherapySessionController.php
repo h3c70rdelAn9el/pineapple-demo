@@ -70,6 +70,7 @@ class TherapySessionController extends Controller
             $ts->created_at = $request->created_at;
             $ts->user_id = $user->id;
             $ts->attendance = $request->attendance;
+            $ts->notes = $request->notes;
             $ts->save();
 
             if ($client->therapySessions()->whereIn('attendance', ['attended', 'no-show'])->count() >= 16) {
