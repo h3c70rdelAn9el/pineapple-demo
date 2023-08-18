@@ -4,7 +4,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 
-class importtherapists_us extends Command
+class importtherapists_new extends Command
 {
     /**
      * The name and signature of the console command.
@@ -32,17 +32,15 @@ class importtherapists_us extends Command
         //open the file
         $row = 1;
         if (($handle = fopen("therapists20230815.csv", "r")) !== FALSE) {
-            while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) 
-            {
-               
+            while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
+
                 //$num = count($data);
-                if($row == 1)
-                {
+                if ($row == 1) {
                     $row++;
                     continue;
                 }
 
-/*
+                /*
     [0] => Name
     [1] => Registered 
     [2] => State
@@ -93,7 +91,7 @@ class importtherapists_us extends Command
     [47] => NOTES
     [48] => COVID FUNDRAISER
     */
-    /*
+                /*
 
     [0] => Title
     [1] => Legal Name (Not separated into first and last)
@@ -161,9 +159,9 @@ class importtherapists_us extends Command
                 $user->save();
 
                 $row++;
-            }  
-        
-            
+            }
+
+
             fclose($handle);
         }
 
