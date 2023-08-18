@@ -37,9 +37,14 @@
 
             <option value="" disabled selected hidden>Please Select:</option>
             <option value="attended">Attended</option>
-            <option value="canceled">Canceled</option>
+            {{-- <option value="canceled">Canceled</option> --}}
             <option value="no-show">No Show</option>
         </select>
+    </div>
+
+    <div>
+        <label for="notes">Notes</label>
+        <textarea name="notes" id="notes" cols="30" rows="10" class="form-input" placeholder="Enter notes here..."></textarea>
     </div>
 
     <div class="hidden">
