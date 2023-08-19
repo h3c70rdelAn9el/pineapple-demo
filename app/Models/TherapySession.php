@@ -11,7 +11,7 @@ class TherapySession extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['client_id', 'session_cost', 'client_contribution', 'created_at', 'attendance'];
+    protected $fillable = ['client_id', 'session_cost', 'client_contribution', 'created_at', 'attendance', 'notes'];
 
     public function client()
     {
