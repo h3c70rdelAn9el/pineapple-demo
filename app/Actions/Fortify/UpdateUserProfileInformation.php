@@ -88,7 +88,6 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
 
         ])->save();
 
-        dd($user);
         $user->sendEmailVerificationNotification();
     }
 }
