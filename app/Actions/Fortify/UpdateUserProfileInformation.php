@@ -2,9 +2,11 @@
 
 namespace App\Actions\Fortify;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Support\Facades\Validator;
+use App\Models\User;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Validator;
+use App\Notifications\TherapistProfileUpdated;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Laravel\Fortify\Contracts\UpdatesUserProfileInformation;
 
 class UpdateUserProfileInformation implements UpdatesUserProfileInformation
@@ -62,6 +64,14 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
                 'certificate' => $input['certificate'],
                 'w9' => $input['w9'],
             ])->save();
+
+            if (!$user->isAdmin()) {
+                $admin = User::where('admin', 1)->first();
+                if ($admin) {
+                    $admin->notify(new TherapistProfileUpdated($user));
+                }
+            }
+
         }
     }
 
@@ -87,6 +97,13 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
             'w9' => $input['w9'],
 
         ])->save();
+
+        if (!$user->isAdmin()) {
+            $admin = User::where('admin', 1)->first();
+            if ($admin) {
+                $admin->notify(new TherapistProfileUpdated($user));
+            }
+        }
 
         $user->sendEmailVerificationNotification();
     }
