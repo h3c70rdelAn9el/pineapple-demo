@@ -55,7 +55,7 @@ class FileUploadController extends Controller
     {
         $user = $request->user();
         $request->validate([
-            'file' => 'required|mimes:pdf,jpg,jpeg,png|max:10240',
+            'file' => 'required|mimes:pdf,jpg,jpeg,png|max:1048576',
         ]);
         $fileName = $request->file->getClientOriginalName();
         $verified = $user->admin ? 1 : 0;
