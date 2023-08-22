@@ -86,6 +86,17 @@ class User extends Authenticatable
     {
         return $this->hasMany(FileUpload::class);
     }
+
+    public function isAdmin()
+    {
+        return $this->admin === 1; // Assuming your admin field is 'admin' and holds the value 1 for admin users
+    }
+
+    public function isTherapist()
+    {
+        // Define the condition that determines whether a user is a therapist
+        return $this->admin === 0; // Assuming 0 means the user is a therapist
+    }
     /*
     public function getOnVacationAttribute()
     {
