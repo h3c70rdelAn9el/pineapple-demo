@@ -1243,7 +1243,7 @@
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
     .iti__flag {
         /* background-image: url("/images/flags@2x.png"); */
-        background-iamge: url("{{ asset('../images/flags@2x.png')  }}");
+        background-image: url("{{ asset('../images/flags@2x.png')  }}");
     }
 }
 
