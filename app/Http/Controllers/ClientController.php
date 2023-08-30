@@ -58,8 +58,17 @@ class ClientController extends Controller
                 'prefer not to say',
                 'Other'
             ];
+            $pronouns = [
+                'they/them/theirs',
+                'she/her/hers',
+                'he/him/his',
+                'per/per/pers',
+                'ze/hir/hirs',
+                'prefer not to say',
+                'Other'
+            ];
 
-            return view('clients.create')->with(['therapists' => $therapists, 'therapist' => $therapist, 'countries' => $countries, 'categories' => $categories, 'states' => $states, 'ethnicGroups' => $ethnicGroups]);
+            return view('clients.create')->with(['therapists' => $therapists, 'therapist' => $therapist, 'countries' => $countries, 'categories' => $categories, 'states' => $states, 'ethnicGroups' => $ethnicGroups, 'pronouns' => $pronouns]);
         } else {
             return redirect()->route('dashboard')->with('error', '**You do not have permission to access that page**');
         }

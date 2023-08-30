@@ -7,6 +7,7 @@
             :countries="$countries"
             :categories="$categories"
             :states="$states"
-            :ethnic-groups="$ethnicGroups" />
+            :ethnic-groups="$ethnicGroups"
+            :pronouns="$pronouns" />
     </x-main-container>
 </x-app-layout>
