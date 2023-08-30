@@ -41,26 +41,50 @@
 
     {{-- Pronouns --}}
     <x-form_input_div>
-        <x-form_label for="pronouns">
-            Pronouns
-        </x-form_label>
-        <select class="w-full p-3 mt-2 border-b-2 border-blue-200 rounded-md peer ring-0"
-            id="pronouns"
-            name="pronouns"
-            type="text"
-            required>
-            <option value=""
-                disabled
-                selected
-                hidden>Select Pronouns</option>
-            <option>they/them/theirs</option>
-            <option>she/her/hers</option>
-            <option>he/him/his</option>
-            <option>per/per/pers</option>
-            <option>ze/hir/hirs</option>
-            <option>prefer not to say</option>
-            <option>Other</option>
-        </select>
+        <div class="w-full mt-6 mb-4 realtive"
+            x-data="{ showPronouns: false }">
+            <x-form_label for="pronouns">
+                Pronouns
+            </x-form_label>
+            <div class="rounded-md"
+                @click.away="showPronouns = false">
+                <div class="flex justify-between w-full p-3 bg-gray-100 rounded-md">
+                    <button class="flex justify-between w-full text-gray-600"
+                        type="button"
+                        @click="showPronouns = !showPronouns">
+                        <span class="ml-2">Select Options</span>
+                        <svg class="mt-0.5 h-[18px] w-[18px] text-gray-700"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                </div>
+                <div class="rounded-md bg-gray-50 md:flex md:flex-wrap"
+                    x-show="showPronouns"
+                    x-transition.scale.origin.top
+                    x-transition.duration.300ms
+                    x-trainsition.ease-in-out
+                    x-cloak>
+                    @foreach ($pronouns as $pronoun)
+                        <label class="items-center p-2">
+                            <input class="mb-0.5 rounded-md transition-all duration-300 hover:bg-blue-300"
+                                id="pronouns"
+                                name="pronouns[]"
+                                type="checkbox"
+                                value="{{ $pronoun }}">
+                            {{ $pronoun }}
+                        </label><br>
+                    @endforeach
+                </div>
+            </div>
+        </div>
+
     </x-form_input_div>
 
     {{-- Sexual Orientation --}}
@@ -74,6 +98,7 @@
             type="text"
             required>
             <option value=""
+                class="text-gray-600"
                 disabled
                 selected
                 hidden>Select Orientation</option>
@@ -99,7 +124,7 @@
                     <button class="flex justify-between w-full"
                         type="button"
                         @click="showEthnicGroups = !showEthnicGroups">
-                        Select Options
+                       <span class="text-gray-700">Select Options</span>
                         <svg class="mt-0.5 h-[18px] w-[18px] text-gray-700"
                             fill="none"
                             stroke="currentColor"
@@ -114,7 +139,9 @@
                 </div>
                 <div class="rounded-md bg-gray-50 md:flex md:flex-wrap"
                     x-show="showEthnicGroups"
-                    x-transition.scale.origin.left
+                    x-transition.scale.origin.top
+                    x-transition.duration.300ms
+                    x-trainsition.ease-in-out
                     x-cloak>
                     @foreach ($ethnicGroups as $group)
                         <label class="items-center p-2">
@@ -294,7 +321,7 @@
                 <button class="flex justify-between w-full"
                     type="button"
                     @click="showDropdown = !showDropdown">
-                    Select Options
+                    <span class="text-gray-700">Select Options</span>
                     <svg class="h-[18px] w-[18px] text-gray-700"
                         fill="none"
                         stroke="currentColor"
@@ -308,7 +335,9 @@
             </div>
             <div class="rounded-md bg-gray-50 md:flex md:flex-wrap"
                 x-show="showDropdown"
-                x-transition.scale.origin.left
+                x-transition.scale.origin.top
+                x-transition.duration.300ms
+                x-trainsition.ease-in-out
                 x-cloak>
                 @foreach ($categories as $category)
                     <label class="items-center p-2">
@@ -394,3 +423,13 @@
         utilsScript: "{{ asset('js/utils.js') }}",
     });
 </script>
+
+<style>
+    select {
+    /* give me tailwind gray-600 */
+  color: #4a5568;
+}
+option:not(:first-of-type) {
+  color: black;
+}
+</style>
