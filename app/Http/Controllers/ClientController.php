@@ -48,8 +48,27 @@ class ClientController extends Controller
             $countries = $this->getCountries();
             $categories = $this->getCategories();
             $states = $this->getStates();
+            $ethnicGroups = [
+                'American Indian or Alaska Native',
+                'Asian',
+                'Black or African American',
+                'Hispanic or Latino',
+                'Native Hawaiian or Other Pacific Islander',
+                'White',
+                'prefer not to say',
+                'Other'
+            ];
+            $pronouns = [
+                'they/them/theirs',
+                'she/her/hers',
+                'he/him/his',
+                'per/per/pers',
+                'ze/hir/hirs',
+                'prefer not to say',
+                'Other'
+            ];
 
-            return view('clients.create')->with(['therapists' => $therapists, 'therapist' => $therapist, 'countries' => $countries, 'categories' => $categories, 'states' => $states]);
+            return view('clients.create')->with(['therapists' => $therapists, 'therapist' => $therapist, 'countries' => $countries, 'categories' => $categories, 'states' => $states, 'ethnicGroups' => $ethnicGroups, 'pronouns' => $pronouns]);
         } else {
             return redirect()->route('dashboard')->with('error', '**You do not have permission to access that page**');
         }
