@@ -67,8 +67,15 @@ class ClientController extends Controller
                 'prefer not to say',
                 'Other'
             ];
+            $genders = [
+                'Male',
+                'Female',
+                'Non-Binary',
+                'Prefer Not To Say',
+            ];
+            $optionKey = 'id';
 
-            return view('clients.create')->with(['therapists' => $therapists, 'therapist' => $therapist, 'countries' => $countries, 'categories' => $categories, 'states' => $states, 'ethnicGroups' => $ethnicGroups, 'pronouns' => $pronouns]);
+            return view('clients.create')->with(['therapists' => $therapists, 'therapist' => $therapist, 'countries' => $countries, 'categories' => $categories, 'states' => $states, 'ethnicGroups' => $ethnicGroups, 'pronouns' => $pronouns, 'genders' => $genders, 'optionKey' => $optionKey]);
         } else {
             return redirect()->route('dashboard')->with('error', '**You do not have permission to access that page**');
         }
@@ -139,6 +146,7 @@ class ClientController extends Controller
         $c->contact_method = $request->contact_method;
         $c->user_id = $request->user_id;
         $c->client_contribution = $request->client_contribution;
+        $c->gender = $request->gender;
         // $c->user_id = $user->id;
 
         $c->save();
@@ -175,6 +183,7 @@ class ClientController extends Controller
         $client->contact_method = $request->contact_method;
         $client->client_contribution = $request->client_contribution;
         // $client->user_id = $request->user_id;
+        $client->gender = $request->gender;
         $client->save();
 
         $therapist = User::find($request->user_id);
