@@ -39,53 +39,17 @@
             placeholder="Preferred name" />
     </x-form_input_div>
 
-    {{-- Pronouns --}}
-    <x-form_input_div>
-        <div class="w-full mt-6 mb-4 realtive"
-            x-data="{ showPronouns: false }">
-            <x-form_label for="pronouns">
-                Pronouns
-            </x-form_label>
-            <div class="rounded-md"
-                @click.away="showPronouns = false">
-                <div class="flex justify-between w-full p-3 bg-gray-100 rounded-md">
-                    <button class="flex justify-between w-full text-gray-600"
-                        type="button"
-                        @click="showPronouns = !showPronouns">
-                        <span class="ml-2">Select Options</span>
-                        <svg class="mt-0.5 h-[18px] w-[18px] text-gray-700"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </button>
-                </div>
-                <div class="rounded-md bg-gray-50 md:flex md:flex-wrap"
-                    x-show="showPronouns"
-                    x-transition.scale.origin.top
-                    x-transition.duration.300ms
-                    x-trainsition.ease-in-out
-                    x-cloak>
-                    @foreach ($pronouns as $pronoun)
-                        <label class="items-center p-2">
-                            <input class="mb-0.5 rounded-md transition-all duration-300 hover:bg-blue-300"
-                                id="pronouns"
-                                name="pronouns[]"
-                                type="checkbox"
-                                value="{{ $pronoun }}">
-                            {{ $pronoun }}
-                        </label><br>
-                    @endforeach
-                </div>
-            </div>
-        </div>
+    {{-- Gender --}}
+    <x-multi-select id="gender"
+        name="gender"
+        label="Gender"
+        :options="$genders"></x-multi-select>
 
-    </x-form_input_div>
+    {{-- Pronouns --}}
+    <x-multi-select id="pronouns"
+        name="pronouns"
+        label="Pronouns"
+        :options="$pronouns"></x-multi-select>
 
     {{-- Sexual Orientation --}}
     <x-form_input_div>
@@ -97,8 +61,8 @@
             name="sexual_orientation"
             type="text"
             required>
-            <option value=""
-                class="text-gray-600"
+            <option class="text-gray-600"
+                value=""
                 disabled
                 selected
                 hidden>Select Orientation</option>
@@ -112,51 +76,10 @@
     </x-form_input_div>
 
     {{-- ethnic_group --}}
-    <x-form_input_div>
-        <div class="relative w-full mt-6 mb-4"
-            x-data="{ showEthnicGroups: false }">
-            <x-form_label for="ethnic_group">
-                Ethnic Group
-            </x-form_label>
-            <div class="rounded-md"
-                @click.away="showEthnicGroups = false">
-                <div class="flex justify-between w-full p-3 bg-gray-100 rounded-md">
-                    <button class="flex justify-between w-full"
-                        type="button"
-                        @click="showEthnicGroups = !showEthnicGroups">
-                       <span class="text-gray-700">Select Options</span>
-                        <svg class="mt-0.5 h-[18px] w-[18px] text-gray-700"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </button>
-                </div>
-                <div class="rounded-md bg-gray-50 md:flex md:flex-wrap"
-                    x-show="showEthnicGroups"
-                    x-transition.scale.origin.top
-                    x-transition.duration.300ms
-                    x-trainsition.ease-in-out
-                    x-cloak>
-                    @foreach ($ethnicGroups as $group)
-                        <label class="items-center p-2">
-                            <input class="mb-0.5 rounded-md transition-all duration-300 hover:bg-blue-300"
-                                id="ethnic_group"
-                                name="ethnic_group[]"
-                                type="checkbox"
-                                value="{{ $group }}">
-                            {{ $group }}
-                        </label><br>
-                    @endforeach
-                </div>
-            </div>
-        </div>
-    </x-form_input_div>
+    <x-multi-select id="ethnic_group"
+        name="Ethnic Group"
+        label="Ethnic Group"
+        :options="$ethnicGroups" />
 
     {{-- home_address_line_1 --}}
     {{-- <x-form_input_div>
@@ -211,6 +134,7 @@
         <x-form_input id="home_address_zip" type="text" name="home_address_zip" required placeholder="Zip Code" />
     </x-form_input_div> --}}
 
+    {{-- home_address_country --}}
     <x-form_input_div>
         <x-form_label for="country">
             Country
@@ -230,6 +154,7 @@
         </select>
     </x-form_input_div>
 
+    {{-- email --}}
     <x-form_input_div>
         <x-form_label for="email">
             Email
@@ -241,6 +166,7 @@
             placeholder="email@example.com" />
     </x-form_input_div>
 
+    {{-- phone --}}
     <x-form_input_div>
         <x-form_label for="phone">
             Phone
@@ -251,6 +177,7 @@
             required />
     </x-form_input_div>
 
+    {{-- contact_method --}}
     <x-form_input_div>
         <x-form_label for="contact_method">
             Contact Method
@@ -310,49 +237,12 @@
     </x-form_input_div>
 
     {{-- possible_support_needed --}}
-    <div class="relative w-full mt-6 mb-4"
-        x-data="{ showDropdown: false }">
-        <x-form_label for="possible_support_needed">
-            Possible Support Needed
-        </x-form_label>
-        <div class="rounded-md"
-            @click.away="showDropdown = false">
-            <div class="flex justify-between w-full p-3 bg-gray-100 rounded-md">
-                <button class="flex justify-between w-full"
-                    type="button"
-                    @click="showDropdown = !showDropdown">
-                    <span class="text-gray-700">Select Options</span>
-                    <svg class="h-[18px] w-[18px] text-gray-700"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M19 9l-7 7-7-7"></path>
-                    </svg></button>
-            </div>
-            <div class="rounded-md bg-gray-50 md:flex md:flex-wrap"
-                x-show="showDropdown"
-                x-transition.scale.origin.top
-                x-transition.duration.300ms
-                x-trainsition.ease-in-out
-                x-cloak>
-                @foreach ($categories as $category)
-                    <label class="items-center p-2">
-                        <input class="mb-0.5 rounded-md transition-all duration-300 hover:bg-blue-300"
-                            id="possible_support_needed"
-                            name="possible_support_needed[]"
-                            type="checkbox"
-                            value="{{ $category }}">
-                        {{ $category }}
-                    </label><br>
-                @endforeach
-            </div>
-        </div>
-    </div>
+    <x-multi-select id="possible_support_needed"
+        name="Possible Support Needed"
+        label="Possible Support Needed"
+        :options="$categories" />
 
+    {{-- client_contribution --}}
     <x-form_input_div>
         <x-form_label for="client_contribution">
             Client Contribution
@@ -387,6 +277,7 @@
         </select>
     </x-form_input_div> --}}
 
+    {{-- therapist --}}
     <x-form_input_div>
         <x-form_label for="therapist">
             Therapist
@@ -426,10 +317,10 @@
 
 <style>
     select {
-    /* give me tailwind gray-600 */
-  color: #4a5568;
-}
-option:not(:first-of-type) {
-  color: black;
-}
+        color: #4a5568;
+    }
+
+    option:not(:first-of-type) {
+        color: black;
+    }
 </style>
