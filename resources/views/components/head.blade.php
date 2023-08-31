@@ -6,6 +6,8 @@
         content="{{ csrf_token() }}">
 
     <link rel="stylesheet" href="../../css/intlTelInput.css">
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@2.x"></script>
+
 
     {{-- <title>{{ config('app.name', 'Laravel') }}</title> --}}
     <title>{{ __('Pineapple') }}</title>
