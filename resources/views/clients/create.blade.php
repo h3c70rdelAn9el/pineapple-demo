@@ -8,6 +8,8 @@
             :categories="$categories"
             :states="$states"
             :ethnic-groups="$ethnicGroups"
-            :pronouns="$pronouns" />
+            :pronouns="$pronouns"
+            :genders="$genders"
+            />
     </x-main-container>
 </x-app-layout>
