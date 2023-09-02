@@ -130,7 +130,21 @@ class TherapySessionController extends Controller
         $user_id = $therapySession->user_id;
         $therapist = User::find($user_id);
 
-        return view('session.show', ['therapySession' => $therapySession, 'client' => $client, 'therapist' => $therapist, 'user' => $user, 'attendedSessions' => $attendedSessions]);
+        $attendanceColor = $this->calculateAttendanceColor($therapySession->attendance);
+
+
+        return view('session.show', ['therapySession' => $therapySession, 'client' => $client, 'therapist' => $therapist, 'user' => $user, 'attendedSessions' => $attendedSessions, 'attendanceColor' => $attendanceColor]);
+    }
+
+    private function calculateAttendanceColor($attendance)
+    {
+        if ($attendance === 'attended') {
+            return 'green-500';
+        } elseif ($attendance === 'no-show') {
+            return 'yellow-500';
+        } else {
+            return 'text-gray-800';
+        }
     }
 
 

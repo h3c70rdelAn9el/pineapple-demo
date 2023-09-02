@@ -2,14 +2,6 @@
     <x-main-container>
             <x-container-header :user="$user">
         </x-container-header>
-        @if (Auth::user()->admin)
-            <a class="h-6 ml-10 text-sm text-blue-600 hover:text-blue-800"
-                href="{{ route('clients.edit', $client->id) }}">
-                Edit Client
-            </a>
-        @endif
-
-        {{-- <div class="flex flex-col max-w-5xl mx-auto border border-purple-700 rounded-lg lg:w-full lg:flex-row"> --}}
         <div class="grid w-full grid-cols-1 gap-3 p-2 px-6 mx-auto rounded-lg md:grid-cols-2">
             {{-- left side --}}
             <div
