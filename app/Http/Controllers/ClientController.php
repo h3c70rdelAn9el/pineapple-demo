@@ -208,10 +208,11 @@ class ClientController extends Controller
             ->whereIn('attendance', ['attended', 'no-show'])
             ->get();
         $user_id = $client->user_id;
+        $user = $request->user();
         // $therapist = User::find($user_id);
         $therapist = User::where('id', $user_id)->first();
 
-        return view('clients.show')->with(['client' => $client, 'therapySessions' => $therapySessions, 'therapist' => $therapist, 'attendedSessions' => $attendedSessions]);
+        return view('clients.show')->with(['client' => $client, 'therapySessions' => $therapySessions, 'therapist' => $therapist, 'attendedSessions' => $attendedSessions, 'user' => $user]);
     }
 
     /**
