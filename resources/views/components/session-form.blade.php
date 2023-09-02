@@ -1,5 +1,9 @@
 <form class="capitalize" action="{{ route('session.store') }}" method="POST" x-data="{ showModal: false }">
     @csrf
+       <div>
+        <label for="created_at">Session Date</label>
+        <input class="form-input" id="created_at" name="created_at" type="date" required>
+    </div>
     <div>
         <label for="session_cost">Session Cost</label>
         <input class="form-input" id="session_cost" name="session_cost" type="text" x-data required
@@ -26,10 +30,7 @@
             x-mask:dynamic="$money($input)"
             placeholder="0.00">
     </div> --}}
-    <div>
-        <label for="created_at">Session Date</label>
-        <input class="form-input" id="created_at" name="created_at" type="date" required>
-    </div>
+
 
     <div>
         <label for="attendance">Attendance</label>
