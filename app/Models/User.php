@@ -40,6 +40,19 @@ class User extends Authenticatable
         'routing_number',
         'on_vacation',
         'clinical_license_verification_portal',
+        'title',
+        'preferred_name',
+        'intern',
+        'supervisor_name',
+        'street_address',
+        'zip_code_postal_code',
+        'iban_swift_code',
+        'contract_signed',
+        'all_documents',
+        'full',
+        'session_cost',
+        'contact_for_promotionals',
+        'number_of_potential_clients',
     ];
 
     /**
