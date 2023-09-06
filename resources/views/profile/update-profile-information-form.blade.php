@@ -1,5 +1,45 @@
-{{--  --}}
-
+@php
+    $timeZones = [
+        'Etc/GMT+12' => '(GMT-12:00) International Date Line West',
+        'Pacific/Midway' => '(GMT-11:00) Midway Island, Samoa',
+        'Pacific/Honolulu' => '(GMT-10:00) Hawaii',
+        'America/Anchorage' => '(GMT-09:00) Alaska',
+        'America/Los_Angeles' => '(GMT-08:00) Pacific Time (US & Canada)',
+        'America/Denver' => '(GMT-07:00) Mountain Time (US & Canada)',
+        'America/Phoenix' => '(GMT-07:00) Arizona',
+        'America/Chicago' => '(GMT-06:00) Central Time (US & Canada)',
+        'America/Regina' => '(GMT-06:00) Saskatchewan',
+        'America/Mexico_City' => '(GMT-06:00) Mexico City',
+        'America/Bogota' => '(GMT-05:00) Bogota, Lima, Quito',
+        'America/New_York' => '(GMT-05:00) Eastern Time (US & Canada)',
+        'America/Caracas' => '(GMT-04:00) Caracas',
+        'America/Halifax' => '(GMT-04:00) Atlantic Time (Canada)',
+        'America/La_Paz' => '(GMT-04:00) La Paz',
+        'America/Santiago' => '(GMT-04:00) Santiago',
+        'America/St_Johns' => '(GMT-03:30) Newfoundland',
+        'America/Buenos_Aires' => '(GMT-03:00) Buenos Aires, Georgetown',
+        'America/Sao_Paulo' => '(GMT-03:00) Brasilia',
+        'America/Godthab' => '(GMT-03:00) Greenland',
+        'Atlantic/Azores' => '(GMT-01:00) Azores',
+        'Atlantic/Cape_Verde' => '(GMT-01:00) Cape Verde Islands',
+        'GMT' => '(GMT) Greenwich Mean Time',
+        'Europe/Dublin' => '(GMT) Dublin, Edinburgh, Lisbon, London',
+        'Europe/Lisbon' => '(GMT) Dublin, Edinburgh, Lisbon, London',
+        'Europe/London' => '(GMT) Dublin, Edinburgh, Lisbon, London',
+        'Africa/Casablanca' => '(GMT) Casablanca',
+        'Europe/Amsterdam' => '(GMT+01:00) Amsterdam, Berlin, Bern, Rome, Stockholm, Vienna',
+        'Europe/Belgrade' => '(GMT+01:00) Belgrade, Bratislava, Budapest, Ljubljana, Prague',
+        'Europe/Paris' => '(GMT+01:00) Brussels, Copenhagen, Madrid, Paris',
+        'Europe/Warsaw' => '(GMT+01:00) Sarajevo, Skopje, Warsaw, Zagreb',
+        'Europe/Istanbul' => '(GMT+02:00) Athens, Bucharest, Istanbul',
+        'Asia/Jerusalem' => '(GMT+02:00) Jerusalem',
+        'Asia/Amman' => '(GMT+02:00) Amman',
+        'Asia/Beirut' => '(GMT+02:00) Beirut',
+        'Africa/Windhoek' => '(GMT+02:00) Windhoek',
+        'Africa/Cairo' => '(GMT+02:00) Cairo',
+        'Europe/Helsinki' => '(GMT+02:00) Helsinki, Kyiv, Riga, Sofia, Tallinn, Vilnius',
+    ];
+@endphp
 <x-jet-form-section submit="updateProfileInformation">
     <x-slot name="title">
         {{ __('Profile Information') }}
@@ -97,6 +137,7 @@
         <div class="col-span-6 mt-0 sm:col-span-4">
             <x-multi-select id="gender"
                 name="gender"
+                value="{{ $this->user->gender }}"
                 label="Gender"
                 :options="['Male', 'Female', 'Non-binary', 'Prefer Not To Say']"></x-multi-select>
         </div>
@@ -263,15 +304,10 @@
         {{-- time_zone --}}
         {{-- TODO: ADD A DROPDOWN FOR TIMEZONES --}}
         <div class="col-span-6 mt-4 sm:col-span-4">
-            <x-jet-label for="time_zone"
-                value="{{ __('Time Zone') }}" />
-            <x-jet-input class="mt-1 block w-full"
-                id="time_zone"
-                type="text"
-                wire:model.defer="state.time_zone"
-                autocomplete="time_zone" />
-            <x-jet-input-error class="mt-2"
-                for="time_zone" />
+            <x-single-select id="time_zone"
+                name="time_zone"
+                label="Time Zone"
+                :options="$timeZones"></x-single-select>
         </div>
 
         {{-- IBAN/Swift Code --}}
@@ -291,7 +327,6 @@
         {{-- amke a sleect input three options: yes/no/yes not usa --}}
 
         {{-- contact_for_promotionals --}}
-        {{-- make a boolean --}}
         <div class="col-span-6 mt-4 sm:col-span-4">
             <x-jet-label for="contact_for_promotionals"
                 value="{{ __('Contact for promotionals') }}" />
@@ -375,9 +410,3 @@
         </x-jet-button>
     </x-slot>
 </x-jet-form-section>
-
-<script>
-    @php
-        $genders = ['male', 'female', 'non-binary', 'other'];
-    @endphp
-</script>
