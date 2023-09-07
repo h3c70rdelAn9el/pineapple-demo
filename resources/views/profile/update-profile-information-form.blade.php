@@ -3,6 +3,14 @@
     $timeZonesJson = file_get_contents(resource_path('json/time_zones.json'));
 
     $timeZones = json_decode($timeZonesJson, true);
+
+    $statesJson = file_get_contents(resource_path('json/states.json'));
+
+    $states = json_decode($statesJson, true);
+
+    $countriesJson = file_get_contents(resource_path('json/countries.json'));
+
+    $countries = json_decode($countriesJson, true);
 @endphp
 
 <x-jet-form-section submit="updateProfileInformation">
@@ -226,17 +234,13 @@
         </div>
 
         {{-- state --}}
-        {{-- TODO: add the state options --}}
         <div class="col-span-6 mt-4 sm:col-span-4">
-            <x-jet-label for="state"
-                value="{{ __('State') }}" />
-            <x-jet-input class="mt-1 block w-full"
-                id="state"
-                type="text"
-                wire:model.defer="state.state"
-                autocomplete="state" />
-            <x-jet-input-error class="mt-2"
-                for="state" />
+            <x-single-select id="state"
+                name="state"
+                label="State"
+                :options="$states"
+                :selected="$this->user->state"
+                ></x-single-select>
         </div>
 
         {{-- zip code --}}
@@ -255,15 +259,12 @@
         {{-- country --}}
         {{-- TODO: ADD COUNTRY --}}
         <div class="col-span-6 mt-4 sm:col-span-4">
-            <x-jet-label for="country"
-                value="{{ __('Country') }}" />
-            <x-jet-input class="mt-1 block w-full"
-                id="country"
-                type="text"
-                wire:model.defer="state.country"
-                autocomplete="country" />
-            <x-jet-input-error class="mt-2"
-                for="country" />
+            <x-single-select id="country"
+                name="country"
+                label="Country"
+                :options="$countries"
+                :selected="$this->user->country"
+                ></x-single-select>
         </div>
 
         {{-- time_zone --}}
