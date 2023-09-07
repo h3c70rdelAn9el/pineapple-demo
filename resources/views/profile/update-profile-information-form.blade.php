@@ -234,7 +234,7 @@
         </div>
 
         {{-- state --}}
-        <div class="col-span-6 mt-4 sm:col-span-4">
+        <div class="col-span-6 mt-0 sm:col-span-4">
             <x-single-select id="state"
                 name="state"
                 label="State"
@@ -269,7 +269,7 @@
 
         {{-- time_zone --}}
         {{-- TODO: ADD A DROPDOWN FOR TIMEZONES --}}
-        <div class="col-span-6 mt-4 sm:col-span-4">
+        <div class="col-span-6  sm:col-span-4">
             <x-single-select id="time_zone"
                 name="time_zone"
                 label="Time Zone"
