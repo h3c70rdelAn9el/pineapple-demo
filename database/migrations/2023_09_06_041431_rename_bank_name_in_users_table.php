@@ -7,26 +7,21 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->text('account_name')->nullable();
-            $table->text('account_number')->nullable();
+            $table->renameColumn('account_name', 'account_name');
         });
     }
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn(['account_name', 'account_number']);
+            $table->renameColumn('account_name', 'account_name');
         });
     }
 };

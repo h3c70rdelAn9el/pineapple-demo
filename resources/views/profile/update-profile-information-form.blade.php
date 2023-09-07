@@ -1,3 +1,13 @@
+@php
+    // TODO:  IS THIS OKAY?
+    $timeZonesJson = file_get_contents(resource_path('json/time_zones.json'));
+    $timeZones = json_decode($timeZonesJson, true);
+    $statesJson = file_get_contents(resource_path('json/states.json'));
+    $states = json_decode($statesJson, true);
+    $countriesJson = file_get_contents(resource_path('json/countries.json'));
+    $countries = json_decode($countriesJson, true);
+@endphp
+
 <x-jet-form-section submit="updateProfileInformation">
     <x-slot name="title">
         {{ __('Profile Information') }}
@@ -10,9 +20,14 @@
     <x-slot name="form">
         <!-- Profile Photo -->
         @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
-        <div x-data="{ photoName: null, photoPreview: null }" class="col-span-6 sm:col-span-4">
-            <!-- Profile Photo File Input -->
-            <input type="file" class="hidden" wire:model="photo" x-ref="photo" x-on:change="
+            <div class="col-span-6 sm:col-span-4"
+                x-data="{ photoName: null, photoPreview: null }">
+                <!-- Profile Photo File Input -->
+                <input class="hidden"
+                    type="file"
+                    wire:model="photo"
+                    x-ref="photo"
+                    x-on:change="
                                     photoName = $refs.photo.files[0].name;
                                     const reader = new FileReader();
                                     reader.onload = (e) => {
@@ -21,119 +36,265 @@
                                     reader.readAsDataURL($refs.photo.files[0]);
                             " />
 
-            <x-jet-label for="photo" value="{{ __('Photo') }}" />
+                <x-jet-label for="photo"
+                    value="{{ __('Photo') }}" />
 
-            <!-- Current Profile Photo -->
-            <div class="mt-2" x-show="! photoPreview">
-                <img src="{{ $this->user->profile_photo_url }}" alt="{{ $this->user->name }}" class="object-cover w-20 h-20 rounded-full">
+                <!-- Current Profile Photo -->
+                <div class="mt-2"
+                    x-show="! photoPreview">
+                    <img class="h-20 w-20 rounded-full object-cover"
+                        src="{{ $this->user->profile_photo_url }}"
+                        alt="{{ $this->user->name }}">
+                </div>
+
+                <!-- New Profile Photo Preview -->
+                <div class="mt-2"
+                    style="display: none;"
+                    x-show="photoPreview">
+                    <span class="block h-20 w-20 rounded-full bg-cover bg-center bg-no-repeat"
+                        x-bind:style="'background-image: url(\'' + photoPreview + '\');'">
+                    </span>
+                </div>
+
+                <x-jet-secondary-button class="mr-2 mt-2"
+                    type="button"
+                    x-on:click.prevent="$refs.photo.click()">
+                    {{ __('Select A New Photo') }}
+                </x-jet-secondary-button>
+
+                @if ($this->user->profile_photo_path)
+                    <x-jet-secondary-button class="mt-2"
+                        type="button"
+                        wire:click="deleteProfilePhoto">
+                        {{ __('Remove Photo') }}
+                    </x-jet-secondary-button>
+                @endif
+
+                <x-jet-input-error class="mt-2"
+                    for="photo" />
             </div>
-
-            <!-- New Profile Photo Preview -->
-            <div class="mt-2" x-show="photoPreview" style="display: none;">
-                <span class="block w-20 h-20 bg-center bg-no-repeat bg-cover rounded-full" x-bind:style="'background-image: url(\'' + photoPreview + '\');'">
-                </span>
-            </div>
-
-            <x-jet-secondary-button class="mt-2 mr-2" type="button" x-on:click.prevent="$refs.photo.click()">
-                {{ __('Select A New Photo') }}
-            </x-jet-secondary-button>
-
-            @if ($this->user->profile_photo_path)
-            <x-jet-secondary-button type="button" class="mt-2" wire:click="deleteProfilePhoto">
-                {{ __('Remove Photo') }}
-            </x-jet-secondary-button>
-            @endif
-
-            <x-jet-input-error for="photo" class="mt-2" />
-        </div>
         @endif
 
-        <!-- Name -->
-        <div class="col-span-6 sm:col-span-4">
-            <x-jet-label for="name" value="{{ __('Name') }}" />
-            <x-jet-input id="name" type="text" class="block w-full mt-1" wire:model.defer="state.name" autocomplete="name" />
-            <x-jet-input-error for="name" class="mt-2" />
+        {{-- name --}}
+        <x-user-text-input name="name"
+            type="text"
+            label="Name"
+            model="state.name"
+            autocomplete="name" />
+
+        {{-- preferred name --}}
+        <x-user-text-input name="preferred_name"
+            type="text"
+            label="Preferred Name"
+            model="state.preferred_name"
+            autocomplete="preferred_name" />
+
+        {{-- gender --}}
+        <div class="col-span-6 mt-0 sm:col-span-4">
+            <x-multi-select id="gender"
+                name="gender"
+                value="{{ $this->user->gender }}"
+                label="Gender"
+                :options="['Male', 'Female', 'Non-binary', 'Prefer Not To Say']"></x-multi-select>
         </div>
 
         <!-- Email -->
         <div class="col-span-6 sm:col-span-4">
-            <x-jet-label for="email" value="{{ __('Email') }}" />
-            <x-jet-input id="email" type="email" class="block w-full mt-1" wire:model.defer="state.email" />
-            <x-jet-input-error for="email" class="mt-2" />
+            <x-jet-label for="email"
+                value="{{ __('Email') }}" />
+            <x-jet-input class="mt-1 block w-full"
+                id="email"
+                type="email"
+                wire:model.defer="state.email" />
+            <x-jet-input-error class="mt-2"
+                for="email" />
 
             @if (Laravel\Fortify\Features::enabled(Laravel\Fortify\Features::emailVerification()) &&
-            !$this->user->hasVerifiedEmail())
-            <p class="mt-2 text-sm">
-                {{ __('Your email address is unverified.') }}
+                    !$this->user->hasVerifiedEmail())
+                <p class="mt-2 text-sm">
+                    {{ __('Your email address is unverified.') }}
 
-                <button type="button" class="text-sm text-gray-600 underline hover:text-gray-900" wire:click.prevent="sendEmailVerification">
-                    {{ __('Click here to re-send the verification email.') }}
-                </button>
-            </p>
+                    <button class="text-sm text-gray-600 underline hover:text-gray-900"
+                        type="button"
+                        wire:click.prevent="sendEmailVerification">
+                        {{ __('Click here to re-send the verification email.') }}
+                    </button>
+                </p>
 
-            @if ($this->verificationLinkSent)
-            <p v-show="verificationLinkSent" class="mt-2 text-sm font-medium text-green-600">
-                {{ __('A new verification link has been sent to your email address.') }}
-            </p>
+                @if ($this->verificationLinkSent)
+                    <p class="mt-2 text-sm font-medium text-green-600"
+                        v-show="verificationLinkSent">
+                        {{ __('A new verification link has been sent to your email address.') }}
+                    </p>
+                @endif
             @endif
-            @endif
+        </div>
 
-            {{-- License --}}
-            <div class="col-span-6 mt-4 sm:col-span-4">
-                <x-jet-label for="license" value="{{ __('License') }}" />
-                <x-jet-input id="license" type="text" class="block w-full mt-1" wire:model.defer="state.license" autocomplete="license" />
-                <x-jet-input-error for="license" class="mt-2" />
-            </div>
+        {{-- License --}}
+        <x-user-text-input name="license"
+            type="text"
+            label="License"
+            model="state.license"
+            autocomplete="license" />
 
-            {{-- Expires at --}}
-            <div class="col-span-6 mt-4 sm:col-span-4">
-                <x-jet-label for="expires_at" value="{{ __('Expires at') }}" />
-                <x-jet-input id="expires_at" type="date" class="block w-full mt-1" wire:model.defer="state.expires_at" autocomplete="expires_at" />
-                <x-jet-input-error for="expires_at" class="mt-2" />
-            </div>
+        {{-- Expires at --}}
+        <x-user-text-input name="expires_at"
+            type="date"
+            label="Expires at"
+            model="state.expires_at"
+            autocomplete="expires_at" />
 
-            {{-- Bank Information --}}
-            <div>
-                <h2 class="mt-6 mb-1 text-lg leading-tight text-gray-600">
-                    {{ __('Enter Payment Details') }}
-                </h2>
-            </div>
-            {{-- Bank Name --}}
-            <div class="col-span-6 mt-4 sm:col-span-4">
-                <x-jet-label for="bank_name" value="{{ __('Bank Name') }}" />
-                <x-jet-input id="bank_name" type="text" class="block w-full mt-1" wire:model.defer="state.bank_name" autocomplete="bank_name" />
-                <x-jet-input-error for="bank_name" class="mt-2" />
-            </div>
+        {{-- Bank Information --}}
+        {{-- <div class="border border-purple-400">
+            <h2 class="mb-1 mt-6 text-lg leading-tight text-gray-600">
+                {{ __('Enter Payment Details') }}
+            </h2>
+    </div> --}}
 
-            {{-- Account Number --}}
-            <div class="col-span-6 mt-4 sm:col-span-4">
-                <x-jet-label for="account_number" value="{{ __('Account Number') }}" />
-                <x-jet-input id="account_number" type="text" class="block w-full mt-1" wire:model.defer="state.account_number" autocomplete="account_number" />
-                <x-jet-input-error for="account_number" class="mt-2" />
-            </div>
+        {{-- Intern --}}
+        {{-- make a boolean input --}}
+        <div class="col-span-6 mt-4 sm:col-span-4">
+            <x-jet-label for="intern"
+                value="{{ __('Intern') }}" />
+            <input class="rounded"
+                id="intern"
+                type="checkbox"
+                wire:model.defer="state.intern"
+                autocomplete="intern" />
+            <x-jet-input-error class="mt-2"
+                for="intern" />
+        </div>
 
-            {{-- Routing Number --}}
-            <div class="col-span-6 mt-4 sm:col-span-4">
-                <x-jet-label for="routing_number" value="{{ __('Routing Number') }}" />
-                <x-jet-input id="routing_number" type="text" class="block w-full mt-1" wire:model.defer="state.routing_number" autocomplete="routing_number" />
-                <x-jet-input-error for="routing_number" class="mt-2" />
-            </div>
+        {{-- supervisor name --}}
+        <x-user-text-input name="supervisor_name"
+            type="text"
+            label="Supervisor name"
+            model="state.supervisor_name"
+            autocomplete="supervisor_name" />
 
-            {{-- on_vacation --}}
-            <div class="col-span-6 mt-4 sm:col-span-4">
-                <x-jet-label for="on_vacation" value="{{ __('On Vacation') }}" />
-                <input type="checkbox" class="rounded" id="on_vacation" wire:model.defer="state.on_vacation" autocomplete="on_vacation" />
-                <x-jet-input-error for="on_vacation" class="mt-2" />
+        {{-- street address --}}
+        <x-user-text-input name="street_address"
+            type="text"
+            label="Street address"
+            model="state.street_address"
+            autocomplete="street_address" />
+
+        {{-- county/town --}}
+        <x-user-text-input name="county_town"
+            type="text"
+            label="County/Town"
+            model="state.county_town"
+            autocomplete="county_town" />
+
+        {{-- state --}}
+        <div class="col-span-6 mt-0 sm:col-span-4">
+            <x-single-select id="state"
+                name="state"
+                label="State"
+                :options="$states"
+                :selected="$this->user->state"></x-single-select>
+        </div>
+
+        {{-- zip code --}}
+        <x-user-text-input name="zip_code_postal_code"
+            type="text"
+            label="Zip code/Postal code"
+            model="state.zip_code_postal_code"
+            autocomplete="zip_code_postal_code" />
+
+        {{-- country --}}
+        <div class="col-span-6 mt-4 sm:col-span-4">
+            <x-single-select id="country"
+                name="country"
+                label="Country"
+                :options="$countries"
+                :selected="$this->user->country"></x-single-select>
+        </div>
+
+        {{-- time_zone --}}
+        <div class="col-span-6 sm:col-span-4">
+            <x-single-select id="time_zone"
+                name="time_zone"
+                label="Time Zone"
+                :options="$timeZones"></x-single-select>
+        </div>
+
+        {{-- IBAN/Swift Code --}}
+        <x-user-text-input name="iban_swift_code"
+            type="text"
+            label="IBAN/Swift Code"
+            model="state.iban_swift_code"
+            autocomplete="iban_swift_code" />
+
+        {{-- Out of State coaching --}}
+        <x-user-text-input name="out_of_state_coaching"
+            type="text"
+            label="Out of State coaching"
+            model="state.out_of_state_coaching"
+            autocomplete="out_of_state_coaching" />
+
+        {{-- contact_for_promotionals --}}
+        <div class="col-span-6 mt-4 sm:col-span-4">
+            <x-jet-label for="contact_for_promotionals"
+                value="{{ __('Contact for promotionals') }}" />
+            <input class="rounded"
+                id="contact_for_promotionals"
+                type="checkbox"
+                wire:model.defer="state.contact_for_promotionals"
+                autocomplete="contact_for_promotionals" />
+            <x-jet-input-error class="mt-2"
+                for="contact_for_promotionals" />
+        </div>
+
+        {{-- on_vacation --}}
+        <div class="col-span-6 mt-4 sm:col-span-4">
+            <x-jet-label for="on_vacation"
+                value="{{ __('On Vacation') }}" />
+            <input class="rounded"
+                id="on_vacation"
+                type="checkbox"
+                wire:model.defer="state.on_vacation"
+                autocomplete="on_vacation" />
+            <x-jet-input-error class="mt-2"
+                for="on_vacation" />
+        </div>
+
+        <div class="col-span-6 mt-4 sm:col-span-4">
+            <p>Bank Information</p>
+            <div class="mx-auto mt-2 w-2/3 border border-gray-300">
             </div>
         </div>
+
+        {{-- Account name --}}
+        <x-user-text-input name="account_name"
+            type="text"
+            label="Account name"
+            model="state.account_name"
+            autocomplete="account_name" />
+
+        {{-- Account Number --}}
+        <x-user-text-input name="account_number"
+            type="text"
+            label="Account Number"
+            model="state.account_number"
+            autocomplete="account_number" />
+
+        {{-- Routing Number --}}
+        <x-user-text-input name="routing_number"
+            type="text"
+            label="Routing Number"
+            model="state.routing_number"
+            autocomplete="routing_number" />
     </x-slot>
 
     <x-slot name="actions">
-        <x-jet-action-message class="mr-3" on="saved">
+        <x-jet-action-message class="mr-3"
+            on="saved">
             {{ __('Saved.') }}
         </x-jet-action-message>
 
-        <x-jet-button wire:loading.attr="disabled" wire:target="photo">
+        <x-jet-button wire:loading.attr="disabled"
+            wire:target="photo">
             {{ __('Save') }}
         </x-jet-button>
     </x-slot>
