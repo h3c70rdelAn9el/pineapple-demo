@@ -82,6 +82,7 @@ Route::middleware([
     Route::get('/therapist/forms/{therapist}', [FileUploadController::class, 'index'])->name('therapist.forms');
 
     Route::get('/therapist/{id}/edit', [TherapistsController::class, 'edit'])->name('therapist.edit');
+    Route::put('/therapist/{id}', [TherapistsController::class, 'update'])->name('therapist.update');
     Route::get('/clients/create', [ClientController::class, 'create'])->name('clients.create');
     Route::get('/clients/{client_id}', [ClientController::class, 'show'])->name('clients.show');
     Route::post('/clients/store', [ClientController::class, 'store'])->name('clients.store');
