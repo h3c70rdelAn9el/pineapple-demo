@@ -11,7 +11,7 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->renameColumn('account_name', 'account_name');
+            $table->renameColumn('bank_name', 'account_name');
         });
     }
 
