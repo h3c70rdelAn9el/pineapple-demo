@@ -4,23 +4,27 @@
             {{ $user->name }}
         </x-container-header>
 
-        <div class="flex flex-col w-full h-full max-w-6xl p-4 mx-auto mt-3 rounded-md md:flex-row">
+        <div class="mx-auto mt-3 flex h-full w-full max-w-6xl flex-col rounded-md p-4 md:flex-row">
             {{-- left/top --}}
-            <x-container-content :user="$user">
+            <x-container-content :user="$user">\
                 <x-slot name="title">
-                    <div class="flex flex-row items-center justify-between w-full">
+                    <div class="flex w-full flex-row items-center justify-between">
                         <div class="flex flex-col text-left">
                             <p>{{ $therapist->name }}</p>
                             <p class="text-sm">{{ $therapist->gender }}</p>
                         </div>
+                        @if (auth()->user()->admin === 1)
+                            <div class="flex flex-row justify-end">
+                                <a class="button mt-1"
+                                    href="{{ route('therapist.edit', $therapist) }}">Edit</a>
+                            </div>
+                        @endif
                     </div>
                 </x-slot>
                 <x-slot name="count">
-                {{-- TODO: LEAVE THIS OUT: WILL REDO --}}
-                    {{-- {{ $therapist->clients->count() }} --}}
                 </x-slot>
                 <x-slot name="content">
-                    <div class="p-2 text-sm font-normal">
+                    <div class="p-2 text-sm font-normal capitalize">
                         @foreach ([
                             'Therapist is' => $therapist->on_vacation ? 'On Vacation' : 'Available',
                             'Clients' => $therapist->clients->count(),
@@ -45,16 +49,32 @@
                             'Client Extensions' => $therapist->client_extensions ?: 'Client Extensions n/a',
                             'Notes' => $therapist->notes ?: 'Notes not provided',
                             'Covid Fundraise' => $therapist->covid_fundraise ?: 'Covid Fundraise n/a',
+                            'Title' => $therapist->title ?: 'Title needed',
+                            'Name' => $therapist->name ?: 'Name needed',
+                            'Preferred Name' => $therapist->preferred_name ?: 'Preferred Name needed',
+                            'email' => $therapist->email ?: 'Email needed',
+                            'gender' => $therapist->gender ?: 'Gender needed',
+                            'intern' => $therapist->intern ?: 'Intern needed',
+                            'contact_for_promotionals' => $therapist->contact_for_promotionals ?: 'Contact for Promotionals needed',
+                            'active_status' => $therapist->active_status ?: 'Active Status needed',
+                            'contract_signed' => $therapist->contract_signed ?: 'Contract Signed needed',
+                            'all_documents' => $therapist->all_documents ?: 'All Documents needed',
+                            'website' => $therapist->website ?: 'Website needed',
+                            'quickbooks' => $therapist->quickbooks ?: 'Quickbooks needed',
+                            'session_cost' => $therapist->session_cost ?: 'Session Cost needed',
+                            'client_extensions' => $therapist->client_extensions ?: 'Client Extensions needed',
+                            'notes' => $therapist->notes ?: 'Notes needed',
                         ] as $label => $value)
                             <div class="flex flex-row">
-                                <div class="w-1/2 p-2 border-b border-r border-gray-400">{{ $label }}:</div>
-                                <div class="w-1/2 p-2 border-b border-gray-400">{{ $value }}</div>
+                                <div class="w-1/2 border-b border-r border-gray-400 p-2">{{ $label }}:</div>
+                                <div class="w-1/2 border-b border-gray-400 p-2">{{ $value }}</div>
                             </div>
                         @endforeach
 
-                        <div class="flex flex-wrap mt-5">
+                        <div class="mt-5 flex flex-wrap">
                             <div class="relative">
-                                <a href="{{ route('therapist.forms', $therapist) }}" class="text-blue-500 hover:text-blue-800">View Forms</a>
+                                <a class="text-blue-500 hover:text-blue-800"
+                                    href="{{ route('therapist.forms', $therapist) }}">View Forms</a>
                             </div>
                         </div>
                     </div>
@@ -71,7 +91,9 @@
                 </x-slot>
                 <x-slot name="content">
                     @foreach ($therapist->clients as $client)
-                        <x-client-card :client="$client" :therapist="$therapist" :user="$user"></x-client-card>
+                        <x-client-card :client="$client"
+                            :therapist="$therapist"
+                            :user="$user"></x-client-card>
                     @endforeach
                 </x-slot>
             </x-container-content>
