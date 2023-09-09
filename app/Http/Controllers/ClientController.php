@@ -83,9 +83,9 @@ class ClientController extends Controller
 
     private function getCountries()
     {
-        $path = public_path('/json/countries.json');
+        $path = resource_path('/json/countries.json');
         $jsonContents = File::get($path);
-        $countries = json_decode($jsonContents, true)['countries'];
+        $countries = json_decode($jsonContents, true);
 
         return $countries;
     }
@@ -105,7 +105,13 @@ class ClientController extends Controller
         $jsonContents = File::get($path);
         $states = json_decode($jsonContents, true)['states'];
 
+        // if (isset($data['states'])) {
+        //     return $data['states'];
+        // }
+
+        // return [];
         return $states;
+
     }
     /**
      * Store a newly created resource in storage.
