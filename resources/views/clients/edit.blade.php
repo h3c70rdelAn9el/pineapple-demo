@@ -1,228 +1,226 @@
 <x-app-layout>
     <x-main-container>
-        <h2 class="mt-2 text-lg font-normal text-center">Edit client: {{ $client->preferred_name }}</h2>
-        <div class="w-1/2 mx-auto bg-gray-400 border-b border-gray-400">
-
+        <h2 class="mt-2 text-center text-lg font-normal">Edit client: {{ $client->preferred_name }}</h2>
+        <div class="mx-auto w-1/2 border-b border-gray-400 bg-gray-400">
         </div>
-        <form class="w-1/2 mx-auto" action="{{ route('clients.update', $client->id) }}" method="POST">
+        <form class="mx-auto w-1/2"
+            action="{{ route('clients.update', $client->id) }}"
+            method="POST">
             @csrf
             @method('PUT')
-            <input name="_method" type="hidden" value="PUT">
+            <input name="_method"
+                type="hidden"
+                value="PUT">
 
-            <x-form_input_div>
-                <x-form_label for="client_code">Client Code</x-form_label>
-                <x-edit-form-input id="client_code" name="client_code" type="text" value="{{ old('client_code', $client->client_code) }}" />
-            </x-form_input_div>
+            {{-- client_code --}}
+            <x-form-field name="client_code"
+                type="text"
+                label="Client Code">
+                {{ $client->client_code }}
+            </x-form-field>
 
-            <x-form_input_div>
-                <x-form_label for="preferred_name">Preferred Name</x-form_label>
-                <x-edit-form-input id="preferred_name" name="preferred_name" type="text" value="{{ old('preferred_name', $client->preferred_name) }}" />
-            </x-form_input_div>
+            {{-- preferred_name --}}
+            <x-form-field name="preferred_name"
+                type="text"
+                label="Preferred Name">
+                {{ $client->preferred_name }}
+            </x-form-field>
 
-            <x-form_input_div>
-                <x-form_label for="legal_name">Legal Name</x-form_label>
-                <x-edit-form-input id="legal_name" name="legal_name" type="text" value="{{ old('legal_name', $client->legal_name) }}" />
-            </x-form_input_div>
+            {{-- legal_name --}}
+            <x-form-field name="legal_name"
+                type="text"
+                label="Legal Name">
+                {{ $client->legal_name }}
+            </x-form-field>
 
-            <x-form_input_div>
-                <x-form_label for="pronouns" class="-mt-1">Pronouns</x-form_label>
-                <select class="form-select" id="pronouns" name="pronouns" type="text">
-                    <option value="" disabled selected hidden>{{ old('pronouns') }}</option>
-                    <option {{ old('pronouns', $client->pronouns) == 'they/them/theirs' ? 'selected' : '' }}>
-                        they/them/theirs</option>
-                    <option {{ old('pronouns', $client->pronouns) == 'she/her/hers' ? 'selected' : '' }}>she/her/hers
-                    </option>
-                    <option {{ old('pronouns', $client->pronouns) == 'he/him/his' ? 'selected' : '' }}>he/him/his
-                    </option>
-                    <option {{ old('pronouns', $client->pronouns) == 'per/per/pers' ? 'selected' : '' }}>per/per/pers
-                    </option>
-                    <option {{ old('pronouns', $client->pronouns) == 'ze/hir/hirs' ? 'selected' : '' }}>ze/hir/hirs
-                    </option>
-                    <option {{ old('pronouns', $client->pronouns) == 'prefer not to say' ? 'selected' : '' }}>prefer
-                        not to say</option>
-                    <option {{ old('pronouns', $client->pronouns) == 'Other' ? 'selected' : '' }}>Other</option>
-                </select>
-            </x-form_input_div>
+            {{-- gender --}}
+            <div class="col-span-6 mt-0 sm:col-span-4">
+                <x-multi-select id="gender"
+                    name="gender"
+                    value="{{ $client->gender }}"
+                    label="Gender:   (previous selection: {{ $client->gender }}) "
+                    placeholder="{{ $client->gender }}"
+                    :options="['Male', 'Female', 'Non-binary', 'Prefer Not To Say']"></x-multi-select>
+            </div>
 
+            {{-- Pronouns --}}
+            <div class="col-span-6 mt-0 sm:col-span-4">
+                <x-multi-select id="pronouns"
+                    name="pronouns"
+                    value="{{ $client->pronouns }}"
+                    label="Pronoun(s):   (previous selection: {{ $client->pronouns }}) "
+                    placeholder="{{ $client->pronouns }}"
+                    :options="[
+                        'she/her/hers',
+                        'he/him/his',
+                        'they/them/theirs',
+                        'per/per/pers',
+                        'ze/hir/hirs',
+                        'prefer not to say',
+                        'Other',
+                    ]"></x-multi-select>
+            </div>
 
-            <x-form_input_div>
-                <x-form_label for="sexual_orientation">Sexual Orientation</x-form_label>
-                <select class="form-select" id="sexual_orientation" name="sexual_orientation" type="text">
-                    <option value="" disabled selected hidden>{{ old('sexual_orientation') }}</option>
-                    <option {{ old('sexual_orientation', $client->sexual_orientation) == 'bisexual' ? 'selected' : '' }}>
-                        bisexual</option>
-                    <option {{ old('sexual_orientation', $client->sexual_orientation) == 'gay/lesbian' ? 'selected' : '' }}>
-                        gay/lesbian</option>
-                    <option {{ old('sexual_orientation', $client->sexual_orientation) == 'hetrosexaul/straight' ? 'selected' : '' }}>
-                        hetrosexaul/straight</option>
-                    <option {{ old('sexual_orientation', $client->sexual_orientation) == "don't know" ? 'selected' : '' }}>
-                        don't know</option>
-                    <option {{ old('sexual_orientation', $client->sexual_orientation) == 'prefer not to say' ? 'selected' : '' }}>
-                        prefer not to say</option>
-                    <option {{ old('sexual_orientation', $client->sexual_orientation) == 'Other' ? 'selected' : '' }}>
-                        Other</option>
-                </select>
-            </x-form_input_div>
+            {{-- sexual_orientation --}}
+            <div class="col-span-6 mt-0 sm:col-span-4">
+                <x-single-select id="sexual_orientation"
+                    name="sexual_orientation"
+                    value="{{ $client->sexual_orientation }}"
+                    label="Sexual Orientation:   (previous selection: {{ $client->sexual_orientation }}) "
+                    placeholder="{{ $client->sexual_orientation }}"
+                    :options="[
+                        'she/her/hers',
+                        'he/him/his',
+                        'they/them/theirs',
+                        'per/per/pers',
+                        'ze/hir/hirs',
+                        'prefer not to say',
+                        'Other',
+                    ]"></x-single-select>
+            </div>
 
-            <x-form_input_div>
-                <x-form_label for="ethnic_group">Ethnic Group</x-form_label>
-                <select class="form-select" id="ethnic_group" name="ethnic_group" type="text">
-                    <option value="" disabled selected hidden>{{ old('ethnic_group') }}</option>
-                    <option {{ old('ethnic_group', $client->ethnic_group) == 'American Indian or Alaska Native' ? 'selected' : '' }}>
-                        American Indian or Alaska Native</option>
-                    <option {{ old('ethnic_group', $client->ethnic_group) == 'Asian' ? 'selected' : '' }}>Asian
-                    </option>
-                    <option {{ old('ethnic_group', $client->ethnic_group) == 'Black or African American' ? 'selected' : '' }}>
-                        Black or African American</option>
-                    <option {{ old('ethnic_group', $client->ethnic_group) == 'Hispanic or Latino' ? 'selected' : '' }}>
-                        Hispanic or Latino</option>
-                    <option {{ old('ethnic_group', $client->ethnic_group) == 'Native Hawaiian or Other Pacific Islander' ? 'selected' : '' }}>
-                        Native Hawaiian or Other Pacific Islander</option>
-                    <option {{ old('ethnic_group', $client->ethnic_group) == 'White' ? 'selected' : '' }}>White
-                    </option>
-                    <option {{ old('ethnic_group', $client->ethnic_group) == 'prefer not to say' ? 'selected' : '' }}>
-                        prefer not to say</option>
-                    <option {{ old('ethnic_group', $client->ethnic_group) == 'Other' ? 'selected' : '' }}>Other
-                    </option>
-                </select>
-            </x-form_input_div>
+            {{-- ethnic_groups --}}
+            <div class="col-span-6 mt-0 sm:col-span-4">
+                <x-multi-select id="ethnic_group"
+                    name="ethnic_group"
+                    value="{{ $client->ethnic_group }}"
+                    label="Ethnic Group(s):   (previous selection: {{ $client->ethnic_group }}) "
+                    placeholder="{{ $client->ethnic_group }}"
+                    :options="[
+                        'she/her/hers',
+                        'he/him/his',
+                        'they/them/theirs',
+                        'per/per/pers',
+                        'ze/hir/hirs',
+                        'prefer not to say',
+                        'Other',
+                    ]"></x-multi-select>
+            </div>
 
-            <x-form_input_div>
-                <x-form_label for="home_address_state">State (optional)</x-form_label>
-                <select class="w-full p-2 mt-2 border-b-2 border-blue-200 rounded-md peer ring-0" id="home_address_state" name="home_address_state" type="text" required>
-                    <option value="" disabled selected hidden>{{ old('home_address_state', $client->home_address_state) }}</option>
-                    @foreach ($states as $state)
-                    <option value="{{$state['name']}}">{{ $state['name'] }}</option>
-                    @endforeach
-                </select>
-            </x-form_input_div>
+            {{-- email --}}
+            <x-form-field name="email"
+                type="text"
+                label="Email">
+                {{ $client->email }}
+            </x-form-field>
 
-            {{-- <x-form_input_div>
-                <x-form_label for="health_coverage_provider">Health Coverage Provider</x-form_label>
-                <x-edit-form-input id="health_coverage_provider" name="health_coverage_provider" type="text" value="{{ old('health_coverage_provider', $client->health_coverage_provider) }}" />
-            </x-form_input_div>
+            {{-- phone --}}
+            {{-- TODO: BRING IN THE PHONE INPUT --}}
+            <x-form-field name="phone"
+                type="text"
+                label="Phone">
+                {{ $client->phone }}
+            </x-form-field>
 
-            <x-form_input_div>
-                <x-form_label for="health_coverage_number">Health Coverage Number</x-form_label>
-                <x-edit-form-input id="health_coverage_number" name="health_coverage_number" type="text" value="{{ old('health_coverage_number', $client->health_coverage_number) }}" />
-            </x-form_input_div>
+            {{-- home_address_state --}}
+            <x-single-select id="home_address_state"
+                name="home_address_state"
+                value="{{ $client->home_address_state }}"
+                label="State:   (previous selection: {{ $client->home_address_state }}) "
+                placeholder="{{ $client->home_address_state }}"
+                :options="$states"></x-single-select>
 
-            <x-form_input_div>
-                <x-form_label for="health_coverage_expiration">Health Coverage Expiration</x-form_label>
-                <x-edit-form-input id="health_coverage_expiration" name="health_coverage_expiration" type="text" value="{{ old('health_coverage_expiration', $client->health_coverage_expiration) }}" />
-            </x-form_input_div> --}}
+            {{-- home_address_country --}}
+            <x-single-select id="home_address_country"
+                name="home_address_country"
+                value="{{ $client->home_address_country }}"
+                label="Country: (previous selection: {{ $client->home_address_country }})"
+                placeholder="{{ $client->home_address_country }}"
+                :options="$countries"></x-single-select>
 
-            <x-form_input_div>
-                <x-form_label for="previous_therapy">Previous Therapy from Pineapple</x-form_label>
-                <select class="form-select" id="previous_therapy" name="previous_therapy" type="text">
-                    <option value="" disabled selected hidden>
-                        @php
-                        $previousTherapy = old('previous_therapy', $client->previous_therapy);
-                        $displayText = $previousTherapy ? 'Yes' : 'No';
-                        @endphp
-                        {{ $displayText }}
-                    </option>
-                    <option {{ old('previous_therapy', $client->previous_therapy) == 'Yes' ? 'selected' : '' }}>Yes
-                    </option>
-                    <option {{ old('previous_therapy', $client->previous_therapy) == 'No' ? 'selected' : '' }}>No
-                    </option>
-                </select>
-            </x-form_input_div>
+            {{-- contact_method --}}
+            <x-single-select id="contact_method"
+                name="contact_method"
+                value="{{ $client->contact_method }}"
+                label="Contact Method:   (previous selection: {{ $client->contact_method }}) "
+                placeholder="{{ $client->contact_method }}"
+                :options="['Telephone Call', 'Text Message', 'Email']"></x-single-select>
 
+            {{-- previous therapy --}}
+            <div class="col-span-6 my-4 sm:col-span-4">
+                <x-jet-label for="Previous Therapy from Pineapple"
+                    value="Previous Therapy from Pineapple:  previous: {{ $client->previous_therapy == 0 ? 'No' : 'Yes' }}" />
+                <input class="rounded"
+                    id="previous_therapy"
+                    type="checkbox"
+                    wire:model.defer="state.previous_therapy"
+                    autocomplete="previous_therapy" />
+                <x-jet-input-error class="mt-2"
+                    for="previous_therapy" />
+            </div>
 
             {{-- Possible Support Needed --}}
-            <div x-data="{ showDropdown: false }" class="relative w-full mt-6 mb-4">
-                <x-form_label for="possible_support_needed">
-                    Possible Support Needed
-                </x-form_label>
-                <div class="rounded-md" @click.away="showDropdown = false">
-                    <div class="flex justify-between w-full p-1.5 bg-white border border-blue-200 rounded-md">
-                        Select Options
-                        <button type="button" @click="showDropdown = !showDropdown" class="">
-                            <svg class="w-[18px] h-[18px] text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                            </svg>
-                        </button>
-                    </div>
-                    <div x-show="showDropdown" class="rounded-md bg-gray-50 md:flex md:flex-wrap" x-transition.scale.origin.top x-cloak>
-                        @foreach ($categories as $category)
-                        <label class="items-center p-2">
-                            <input type="checkbox" class="rounded-md mb-0.5 hover:bg-blue-300 transition-all duration-300" name="possible_support_needed[]" value="{{ $category }}" @if(is_array(old('possible_support_needed')) && in_array($category, old('possible_support_needed'))) checked @endif>
-                            {{ $category }}
-                        </label><br>
-                        @endforeach
+            <div class="col-span-6 mt-0 sm:col-span-4">
+                <div class="relative mb-4 mt-6 w-full"
+                    x-data="{ showDropdown: false }">
+                    <x-form_label for="possible_support_needed">
+                        <p>Possible Support Needed <span class="ml-2 text-xs">Previous selection:
+                                {{ $client->possible_support_needed }}</span></p>
+                    </x-form_label>
+                    <div class="rounded-md"
+                        @click.away="showDropdown = false">
+                        <div class="flex w-full justify-between rounded-md border border-blue-300 bg-gray-100 p-1.5">
+                            <button class="flex w-full flex-row justify-between"
+                                type="button"
+                                @click="showDropdown = !showDropdown">
+                                <p class="ml-1 p-1">Select Options</p>
+                                <svg class="mt-1 h-[18px] w-[18px] text-gray-700"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="rounded-md bg-gray-50 md:flex md:flex-wrap"
+                            x-show="showDropdown"
+                            x-transition.scale.origin.top
+                            x-cloak>
+                            @foreach ($categories as $category)
+                                <label class="items-center p-2">
+                                    <input class="mb-0.5 rounded-md transition-all duration-300 hover:bg-blue-300"
+                                        name="possible_support_needed[]"
+                                        type="checkbox"
+                                        value="{{ $category }}"
+                                        @if (is_array(old('possible_support_needed')) && in_array($category, old('possible_support_needed'))) checked @endif>
+                                    {{ $category }}
+                                </label><br>
+                            @endforeach
+                        </div>
                     </div>
                 </div>
             </div>
 
+            {{-- client_contribution --}}
+            <x-form-field name="client_contribution"
+                type="text"
+                label="Client Contribution">
+                {{ $client->client_contribution }}
+            </x-form-field>
 
+            {{-- additional_notes --}}
+            <div class="w-full">
+                <x-jet-label for="notes"
+                    value="{{ __('Notes') }}" />
+                <textarea class="w-full rounded border border-blue-200 bg-gray-100"
+                    id="notes"
+                    type="text"
+                    cols="30"
+                    width:
+                    100%;
+                    wire:model.defer="state.notes"
+                    placeholder="Enter notes here..."
+                    autocomplete="notes"></textarea>
+                <x-jet-input-error class="mt-2"
+                    for="notes" />
+            </div>
 
-            {{-- <x-form_input_div>
-                <x-form_label for="preferred_language">Preferred Language</x-form_label>
-                <select id="preferred_language" type="text" name="preferred_language" class="w-full p-3 text-gray-600 border-b-2 border-blue-200 rounded-md peer ring-0">
-                    <option value="" disabled selected hidden>{{ old('preferred_language') }}</option>
-            <option {{ old('preferred_language', $client->preferred_language) == 'English' ? 'selected' : '' }}>English</option>
-            <option {{ old('preferred_language', $client->preferred_language) == 'Spanish' ? 'selected' : '' }}>Spanish</option>
-            <option {{ old('preferred_language', $client->preferred_language) == 'French' ? 'selected' : '' }}>French</option>
-            <option {{ old('preferred_language', $client->preferred_language) == 'German' ? 'selected' : '' }}>German</option>
-            <option {{ old('preferred_language', $client->preferred_language) == 'Chinese' ? 'selected' : '' }}>Chinese</option>
-            <option {{ old('preferred_language', $client->preferred_language) == 'Japanese' ? 'selected' : '' }}>Japanese</option>
-            <option {{ old('preferred_language', $client->preferred_language) == 'prefer not to say' ? 'selected' : '' }}>prefer not to say</option>
-            <option {{ old('preferred_language', $client->preferred_language) == 'Other' ? 'selected' : '' }}>Other</option>
-            </select>
-            </x-form_input_div> --}}
-
-            <x-form_input_div>
-                <x-form_label for="email" class="-mt-2">Email</x-form_label>
-                <x-edit-form-input id="email" name="email" type="text" value="{{ old('email', $client->email) }}" />
-            </x-form_input_div>
-
-
-            <x-form_input_div>
-                <x-form_label for="country">
-                    Country
-                </x-form_label>
-                <select class="w-full p-2 mt-2 border-b-2 border-blue-200 rounded-md peer ring-0" id="home_address_country" name="home_address_country" type="text" required>
-                    <option value="" disabled selected hidden>{{ old('home_address_country', $client->home_address_country) }}</option>
-                    @foreach ($countries as $country)
-                    <option value="{{$country['code']}}">{{ $country['name'] }}</option>
-                    @endforeach
-                </select>
-            </x-form_input_div>
-
-            <x-form_input_div>
-                <x-form_label for="phone">
-                    Phone
-                </x-form_label>
-                <x-edit-form-input id="phone" value="{{ old('phone', $client->phone) }}" name="phone" type="tel" required />
-            </x-form_input_div>
-
-            <x-form_input_div>
-                <x-form_label for="contact_method">Contact Method</x-form_label>
-                <select class="p-2 form-select" id="contact_method" name="contact_method" type="text">
-                    <option value="" disabled selected hidden>
-                        {{ old('contact_method', $client->contact_method) }}</option>
-                    </option>
-                    <option {{ old('contact_method', $client->contact_method) == 'Telephone Call' ? 'selected' : '' }}>
-                        Telephone Call</option>
-                    <option {{ old('contact_method', $client->contact_method) == 'TextMessage' ? 'selected' : '' }}>
-                        Text Message</option>
-                    <option {{ old('contact_method', $client->contact_method) == 'Email' ? 'selected' : '' }}>Email
-                    </option>
-                </select>
-            </x-form_input_div>
-
-            <x-form_input_div>
-                <x-form_label for="client_contribution">Client Contribution</x-form_label>
-                <x-edit-form-input id="client_contribution" name="client_contribution" type="text" value="{{ old('client_contribution', $client->client_contribution) }}" />
-            </x-form_input_div>
-
-            <x-form_input_div>
-                <x-form_label for="additional_notes">Additional Notes</x-form_label>
-                <textarea class="w-full border-blue-300 rounded-md focus:ring-blue-300" id="additional_notes" name="additional_notes" type="text" value="{{ old('additional_notes', $client->additional_notes) }}"></textarea>
-            </x-form_input_div>
-
-            <x-jet-button class="ml-4" type="submit">
+            <x-jet-button class="ml-4"
+                type="submit">
                 {{ __('Update') }}
             </x-jet-button>
         </form>
@@ -235,9 +233,21 @@
 <script>
     var input = document.querySelector("#phone");
     window.intlTelInput(input, {
-        initialCountry: "us"
-        , separateDialCode: true
-        , utilsScript: "{{ asset('js/utils.js') }}"
-    , });
+        // initialCountry: "us",
+        separateDialCode: true,
+        utilsScript: "{{ asset('js/utils.js') }}",
+    });
+</script>
 
+<script>
+    var input = document.querySelector("#phone");
+    var iti = window.intlTelInput(input, {
+        separateDialCode: true,
+        utilsScript: "{{ asset('js/utils.js') }}",
+    });
+
+    var selectedCountryCode = iti.getSelectedCountryData().iso2;
+
+    // Get the country data used by intlTelInput
+    const countryData = window.intlTelInputGlobals.getCountryData();
 </script>
