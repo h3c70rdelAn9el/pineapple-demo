@@ -103,7 +103,7 @@ class ClientController extends Controller
     {
         $path = resource_path('/json/states.json');
         $jsonContents = File::get($path);
-        $states = json_decode($jsonContents, true)['states'];
+        $states = json_decode($jsonContents, true);
 
         // if (isset($data['states'])) {
         //     return $data['states'];
