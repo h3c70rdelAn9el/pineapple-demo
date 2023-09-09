@@ -40,7 +40,7 @@
                         name="{{ $name }}[]"
                         type="checkbox"
                         :id="$id"
-                        :value="{{ $option }}"
+                        :value=" $option "
                         x-on:click="toggleSelectedOption('{{ $option }}')">
                     {{ $option }}
                 </label><br>
