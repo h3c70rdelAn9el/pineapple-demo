@@ -1,8 +1,6 @@
-\*\* User Fields
 the fields in the user table are getting a bit tangled up. the client has requested a few changes and therefore some fields have been commented out in the code, etc.
 
 the original fields are still there, and the newer fields are the ones from 9/5/23
-Sure, I can provide you with a list of the keys from the JSON data you provided without including the values. Here it is:
 
 1. id
 2. name
