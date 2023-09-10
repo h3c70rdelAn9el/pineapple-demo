@@ -95,8 +95,19 @@ class TherapistsController extends Controller
 
         // $therapist = User::find($id);
         // $form = $therapist->therapist;
+        $user = User::find($id);
 
-        User::find($id)->update($validatedData);
+        if ($user == 1) {
+            unset($validatedData['full']);
+        } else {
+            if ($validatedData['space_for_new_clients'] == 0) {
+                $validatedData['full'] = 1;
+            }
+        }
+
+        // User::find($id)->update($validatedData);
+
+        $user->update($validatedData);
 
         return redirect()->route('therapist.show', $id)->with('success', 'Therapist updated successfully');
     }
