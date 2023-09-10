@@ -1,13 +1,15 @@
 <x-app-layout>
     {{-- make a sample edit page and form from other client-form --}}
     <x-main-container>
-        <h2 class="text-center font-bold text-lg">
+        <h2 class="text-center text-lg font-bold">
             Therapist: {{ $therapist->name }}
         </h2>
         {{-- <form class="w-1/2 mx-auto" action="{{ route('clients.update', $client->id) }}" method="POST"> --}}
 
         {{-- <form action="{{ route('therapist.update', ['id' => $therapist->id]) }}" method="POST" class="w-1/2 mx-auto"> --}}
-        <form action="{{ route('therapist.update',  $therapist->id) }}" method="POST" class="w-1/2 mx-auto">
+        <form class="mx-auto w-1/2"
+            action="{{ route('therapist.update', $therapist->id) }}"
+            method="POST">
 
             @csrf
             @method('PUT')
@@ -148,11 +150,17 @@
             </x-form-field>
 
             {{-- full --}}
-            {{-- <x-form-field name="full"
-                type="text"
-                label="Full">
-                {{ $therapist->full }}
-            </x-form-field> --}}
+            <div class="col-span-6 mt-4 sm:col-span-4">
+                <x-jet-label for="full"
+                    value="Therapist is Full/   previous: {{ $therapist->full == 1 ? 'Yes' : ($therapist->full == 0 ? 'No' : $therapist->full) }}" />
+                <input class="rounded"
+                    id="full"
+                    type="checkbox"
+                    wire:model.defer="state.full"
+                    autocomplete="full" />
+                <x-jet-input-error class="mt-2"
+                    for="full" />
+            </div>
 
             {{-- out_of_state_coaching --}}
             <x-form-field name="out_of_state_coaching"
@@ -232,7 +240,7 @@
 
             {{-- quickbooks --}}
             {{-- boolean --}}
-            <div class="col-span-6 mt-4 mb-4 sm:col-span-4">
+            <div class="col-span-6 mb-4 mt-4 sm:col-span-4">
                 <x-jet-label for="quickbooks"
                     value="{{ __('Quickbooks') }}" />
                 <input class="rounded"
@@ -264,11 +272,12 @@
             <div class="w-full">
                 <x-jet-label for="notes"
                     value="{{ __('Notes') }}" />
-                <textarea class="rounded w-full bg-gray-100 border border-blue-200"
+                <textarea class="w-full rounded border border-blue-200 bg-gray-100"
                     id="notes"
-                    cols="30"
-                    width: 100%;
                     type="text"
+                    cols="30"
+                    width:
+                    100%;
                     wire:model.defer="state.notes"
                     autocomplete="notes"></textarea>
                 <x-jet-input-error class="mt-2"
