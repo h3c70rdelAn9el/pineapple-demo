@@ -1,5 +1,5 @@
  <div class="p-1 px-3 mt-2 overflow-x-scroll border border-green-500 rounded-md shadow-md h-[500px] bg-blue-50 shadow-blue-100">
-     <h2 class="text-lg font-bold text-center">Client Info</h2>
+     <h2 class="text-lg font-bold text-center">Client: {{ $client->preferred_name }}</h2>
         @if (auth()->user()->admin === 1)
         <div class="flex flex-row justify-end">
             <a href="{{ route('clients.edit', $client) }}" class="button">Edit</a>
