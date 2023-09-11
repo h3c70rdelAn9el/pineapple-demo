@@ -47,17 +47,22 @@ class TherapistsController extends Controller
     public function edit($id)
     {
         $user = auth()->user();
-        $therapist = User::find($id);
-        $form = $therapist->therapist;
-        // dd($therapist);
-        return view('therapist.edit', [
-            'therapist' => $therapist,
-            'user' => $user,
-            'form' => $form,
-        ]);
+        if ($user && $user->admin === 1) {
+
+
+            $therapist = User::find($id);
+            $form = $therapist->therapist;
+            // dd($therapist);
+            return view('therapist.edit', [
+                'therapist' => $therapist,
+                'user' => $user,
+                'form' => $form,
+            ]);
+        } else {
+            return redirect()->route('dashboard')->with('error', 'You are not authorized to edit this therapist');
+        }
     }
 
-    // give me the update function
 
     public function update(Request $request, $id)
     {
