@@ -1,5 +1,5 @@
-<div class="flex flex-col h-full grid-cols-6 overflow-hidden md:grid">
-    <div class="flex flex-col mt-10 ml-3 md:col-span-2 md:mt-0 md:ml-0">
+<div class="flex h-full grid-cols-6 flex-col overflow-hidden md:grid">
+    <div class="ml-3 mt-10 flex flex-col md:col-span-2 md:ml-0 md:mt-0">
         <h3 class="text-lg">Upload Documents</h3>
         {{-- <p class="text-sm text-gray-600">Upload your documents here</p> --}}
         <div class="text-sm text-gray-600">
@@ -11,50 +11,66 @@
                 <p>W9/W8BENE/W8BEN</p>
             </div>
         </div>
-        {{-- on_vacation --}}
-        <div class="flex flex-row mt-2">
-            <input type="checkbox" class="mt-0.5 mr-1 rounded" id="clinical_license_verification_portal" wire:model.defer="state.clinical_license_verification_portal" autocomplete="clinical_license_verification_portal" />
+        {{-- clinical_license_verification_portal --}}
+        {{-- <div class="flex flex-col mt-2">
             <x-jet-label for="clinical_license_verification_portal" value="{{ __('Clinical License Verification Portal') }}" />
+            <input type="text" class="mt-0.5 mr-1 rounded" id="clinical_license_verification_portal" wire:model.defer="state.clinical_license_verification_portal" autocomplete="clinical_license_verification_portal" />
             <p class="mt-[3px] ml-1 text-xs font-light">(Optional)</p>
             <x-jet-input-error for="clinical_license_verification_portal" class="mt-2" />
-        </div>
+        </div> --}}
     </div>
-    <div class="h-full overflow-hidden bg-white border-b border-gray-300 rounded-md shadow-md md:ml-3 md:col-span-4">
-        <div x-data="imageViewer()" class="relative flex p-3 pl-5 -mb-5">
-            <div class="flex mt-2 mb-2">
+    <div class="h-full overflow-hidden rounded-md border-b border-gray-300 bg-white shadow-md md:col-span-4 md:ml-3">
+        <div class="relative -mb-5 flex p-3 pl-5"
+            x-data="imageViewer()">
+            <div class="mb-2 mt-2 flex">
                 <div class="mt-2">
                     <template x-if="imageUrl">
                         <div class="mr-3">
-                            <img :src="imageUrl" class="object-cover mr-3 border border-gray-200 rounded-md shadow-md" style="width: 100px; height: 100px;">
+                            <img class="mr-3 rounded-md border border-gray-200 object-cover shadow-md"
+                                style="width: 100px; height: 100px;"
+                                :src="imageUrl">
                         </div>
                     </template>
 
                     <template x-if="!imageUrl">
-                        <div class="mr-3 bg-gray-100 border border-gray-200 rounded-md shadow-md shadow-blue-100" style="width: 100px; height: 100px;"></div>
+                        <div class="mr-3 rounded-md border border-gray-200 bg-gray-100 shadow-md shadow-blue-100"
+                            style="width: 100px; height: 100px;"></div>
                     </template>
                 </div>
 
                 <div>
                     @if ($message = Session::get('success'))
-                    <div class="alert alert-success alert-block">
-                        <strong>{{ $message }}</strong>
-                    </div>
+                        <div class="alert alert-success alert-block">
+                            <strong>{{ $message }}</strong>
+                        </div>
                     @endif
-                    <form action="{{ route('fileStore') }}" method="POST" enctype="multipart/form-data">
+                    <form action="{{ route('fileStore') }}"
+                        method="POST"
+                        enctype="multipart/form-data">
                         @csrf
 
                         {{-- file input --}}
-                        <div class="flex flex-wrap mb-3">
-                            <input class="mt-2" type="file" accept="image/*, application/pdf" id="file_name" name="file" class="@error('file') is-invalid @enderror " @change="fileChosen" placeholder="">
+                        <div class="mb-3 flex flex-wrap">
+                            <input class="mt-2"
+                                class="@error('file') is-invalid @enderror"
+                                id="file_name"
+                                name="file"
+                                type="file"
+                                accept="image/*, application/pdf"
+                                @change="fileChosen"
+                                placeholder="">
                             @error('file')
-                            <span class="text-red-900">{{ $message }}</span>
+                                <span class="text-red-900">{{ $message }}</span>
                             @enderror
                         </div>
 
                         {{-- document type --}}
-                        <div class="flex flex-wrap mb-5">
+                        <div class="mb-5 flex flex-wrap">
                             <div class="relative">
-                                <select name="document_type" id="document_type" class="block w-full px-3 py-2 pr-8 leading-tight text-gray-700 bg-white border border-blue-400 rounded-md appearance-none focus:outline-none focus:bg-white focus:border-gray-500">
+                                <select
+                                    class="block w-full appearance-none rounded-md border border-blue-400 bg-white px-3 py-2 pr-8 leading-tight text-gray-700 focus:border-gray-500 focus:bg-white focus:outline-none"
+                                    id="document_type"
+                                    name="document_type">
                                     <option value="">Select Document Type</option>
                                     <option value="photographic_id">Photographic ID</option>
                                     <option value="W9">W9</option>
@@ -71,42 +87,76 @@
                             </div>
                         </div>
 
-                        <div class="flex flex-col mb-5">
+                        <div class="mb-5 flex flex-col">
                             <div class="relative mb-5">
-                                <x-jet-label for="file_title" value="File Title" />
+                                <x-jet-label for="file_title"
+                                    value="File Title" />
                                 <div class="relative">
-                                    <x-jet-input id="file_title" class="block w-[100%] mt-1" type="text" name="file_title" :value="old('file_title')" placeholder="File Title" />
+                                    <x-jet-input class="mt-1 block w-[100%]"
+                                        id="file_title"
+                                        name="file_title"
+                                        type="text"
+                                        :value="old('file_title')"
+                                        placeholder="File Title" />
                                 </div>
                             </div>
 
                             {{-- date --}}
                             <div class="relative mb-5">
-                                <x-jet-label for="date" value="{{ __('Expiration Date (optional)') }}" />
+                                <x-jet-label for="date"
+                                    value="{{ __('Expiration Date (optional)') }}" />
                                 <div class="relative">
-                                    <x-jet-input id="date" class="block w-[100%] mt-1" type="date" name="date" :value="old('date')" placeholder="Date" />
+                                    <x-jet-input class="mt-1 block w-[100%]"
+                                        id="date"
+                                        name="date"
+                                        type="date"
+                                        :value="old('date')"
+                                        placeholder="Date" />
                                 </div>
                             </div>
 
                             {{-- note --}}
                             <div class="relative">
-                                <x-jet-label for="note" value="{{ __('Note (optional)') }}" />
-                                <textarea name="note" id="note" cols="40" rows="2" class="block w-full px-3 py-2 pr-8 leading-tight text-gray-700 bg-white border border-blue-300 rounded appearance-none focus:outline-none focus:bg-white focus:border-gray-500" placeholder="Note"></textarea>
+                                <x-jet-label for="note"
+                                    value="{{ __('Note (optional)') }}" />
+                                <textarea
+                                    class="block w-full appearance-none rounded border border-blue-300 bg-white px-3 py-2 pr-8 leading-tight text-gray-700 focus:border-gray-500 focus:bg-white focus:outline-none"
+                                    id="note"
+                                    name="note"
+                                    cols="40"
+                                    rows="2"
+                                    placeholder="Note"></textarea>
+                            </div>
+
+                            <div class="relative mt-4">
+                                <x-jet-label for="clinical_license_verification_portal"
+                                    value="{{ __('Clinical License Verification Portal') }}" />
+                                <x-jet-input class="mr-1 mt-0.5 w-full"
+                                    id="clinical_license_verification_portal"
+                                    type="text"
+                                    wire:model.defer="state.clinical_license_verification_portal"
+                                    autocomplete="clinical_license_verification_portal" />
+                                <p class="ml-1 mt-[3px] text-xs font-light">(Optional)</p>
+                                <x-jet-input-error class="mt-2"
+                                    for="clinical_license_verification_portal" />
                             </div>
                         </div>
 
-                        <x-jet-button type="submit" class="absolute right-0 mb-3 mr-6 mt-9">
+                        <x-jet-button class="absolute right-0 mb-3 mr-6 mt-9"
+                            type="submit">
                             Save
                         </x-jet-button>
                     </form>
-                    <div class="flex flex-wrap mt-5">
+                    <div class="mt-5 flex flex-wrap">
                         <div class="relative">
-                            <a href="{{ route('therapist.forms', $user) }}" class="text-blue-500 hover:text-blue-800">View Forms</a>
+                            <a class="text-blue-500 hover:text-blue-800"
+                                href="{{ route('therapist.forms', $user) }}">View Forms</a>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="w-full h-16 bg-gray-50 rounded-b-md">
+        <div class="h-16 w-full rounded-b-md bg-gray-50">
         </div>
     </div>
 </div>
@@ -114,21 +164,20 @@
 <script>
     function imageViewer(src = "") {
         return {
-            imageUrl: src
-            , fileChosen(event) {
+            imageUrl: src,
+            fileChosen(event) {
                 this.fileToDataUrl(event, src => this.imageUrl = src)
             },
 
             fileToDataUrl(event, callback) {
                 if (!event.target.files.length) return
 
-                let file = event.target.files[0]
-                    , reader = new FileReader()
+                let file = event.target.files[0],
+                    reader = new FileReader()
 
                 reader.readAsDataURL(file)
                 reader.onload = e => callback(e.target.result)
-            }
-        , }
+            },
+        }
     }
-
 </script>
