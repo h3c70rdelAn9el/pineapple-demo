@@ -75,6 +75,7 @@ class ClientController extends Controller
             ];
             $optionKey = 'id';
 
+
             return view('clients.create')->with(['therapists' => $therapists, 'therapist' => $therapist, 'countries' => $countries, 'categories' => $categories, 'states' => $states, 'ethnicGroups' => $ethnicGroups, 'pronouns' => $pronouns, 'genders' => $genders, 'optionKey' => $optionKey]);
         } else {
             return redirect()->route('dashboard')->with('error', '**You do not have permission to access that page**');
@@ -83,7 +84,9 @@ class ClientController extends Controller
 
     private function getCountries()
     {
-        $path = resource_path('/json/countries.json');
+        // $path = resource_path('/json/countries.json');
+        // get it from pulic path
+        $path = public_path('json/countries.json');
         $jsonContents = File::get($path);
         $countries = json_decode($jsonContents, true);
 
@@ -101,17 +104,11 @@ class ClientController extends Controller
 
     private function getStates()
     {
-        $path = resource_path('/json/states.json');
+        $path = resource_path('json/states.json');
         $jsonContents = File::get($path);
-        $states = json_decode($jsonContents, true);
+        $states = json_decode($jsonContents, true)['states'];
 
-        // if (isset($data['states'])) {
-        //     return $data['states'];
-        // }
-
-        // return [];
         return $states;
-
     }
     /**
      * Store a newly created resource in storage.
@@ -144,6 +141,13 @@ class ClientController extends Controller
         $c->health_coverage_expiration = $request->health_coverage_expiration;
         $c->previous_therapy = $request->previous_therapy;
         // $c->possible_support_needed = implode(', ', $request->possible_support_needed);
+        // if (is_array($request->possible_support_needed) && !empty($request->possible_support_needed)) {
+        //     // $c->possible_support_needed = implode(', ', $request->possible_support_needed);
+        //     $c->possible_support_needed = $request->possible_support_needed;
+        // } else {
+        //     $c->possible_support_needed = '';
+        // }
+        $c->possible_support_needed = $request->possible_support_needed;
         $c->preferred_language = $request->preferred_language;
         $c->additional_notes = $request->additional_notes;
         $c->pronouns = $request->pronouns;

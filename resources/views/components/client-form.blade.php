@@ -1,43 +1,43 @@
 {{-- ! commented code out are fields they wanted ommitted. I kept them in place incase someone decides to put them back --}}
-<form class="z-50 w-5/6 h-full p-4 mx-auto mt-2 mb-4 bg-blue-200 border border-blue-600 rounded-md shadow-lg md:w-2/3"
+<form class="z-50 mx-auto mb-4 mt-2 h-full w-5/6 rounded-md border border-blue-600 bg-blue-200 p-4 shadow-lg md:w-2/3"
     style="z-index: 99999;"
     action="{{ route('client.store') }}"
     method="POST">
     @csrf
-    <x-form_input_div>
-        <x-form_label for="client_code">
-            Client Code
-        </x-form_label>
-        <x-form_input id="client_code"
-            name="client_code"
-            type="text"
-            required
-            placeholder="Client code" />
-    </x-form_input_div>
+    {{-- <x-form_input_div> --}}
+    <x-form_label for="client_code">
+        Client Code
+    </x-form_label>
+    <x-form_input id="client_code"
+        name="client_code"
+        type="text"
+        required
+        placeholder="Client code" />
+    {{-- </x-form_input_div> --}}
 
     {{-- Legal Name --}}
-    <x-form_input_div>
-        <x-form_label for="legal_name">
-            Legal Name
-        </x-form_label>
-        <x-form_input id="legal_name"
-            name="legal_name"
-            type="text"
-            required
-            placeholder="Legal name" />
-    </x-form_input_div>
+    {{-- <x-form_input_div> --}}
+    <x-form_label for="legal_name">
+        Legal Name
+    </x-form_label>
+    <x-form_input id="legal_name"
+        name="legal_name"
+        type="text"
+        required
+        placeholder="Legal name" />
+    {{-- </x-form_input_div> --}}
 
     {{-- Preferred Name --}}
-    <x-form_input_div>
-        <x-form_label for="preferred_name">
-            Preferred Name
-        </x-form_label>
-        <x-form_input id="preferred_name"
-            name="preferred_name"
-            type="text"
-            required
-            placeholder="Preferred name" />
-    </x-form_input_div>
+    {{-- <x-form_input_div> --}}
+    <x-form_label for="preferred_name">
+        Preferred Name
+    </x-form_label>
+    <x-form_input id="preferred_name"
+        name="preferred_name"
+        type="text"
+        required
+        placeholder="Preferred name" />
+    {{-- </x-form_input_div> --}}
 
     {{-- Gender --}}
     <x-multi-select id="gender"
@@ -52,28 +52,28 @@
         :options="$pronouns"></x-multi-select>
 
     {{-- Sexual Orientation --}}
-    <x-form_input_div>
-        <x-form_label for="sexual_orientation">
-            Sexual Orientation
-        </x-form_label>
-        <select class="w-full p-3 mt-2 border-b-2 border-blue-200 rounded-md peer ring-0"
-            id="sexual_orientation"
-            name="sexual_orientation"
-            type="text"
-            required>
-            <option class="text-gray-600"
-                value=""
-                disabled
-                selected
-                hidden>Select Orientation</option>
-            <option>bisexual</option>
-            <option>gay/lesbian</option>
-            <option>hetrosexaul/straight</option>
-            <option>don't know</option>
-            <option>prefer not to say</option>
-            <option>Other</option>
-        </select>
-    </x-form_input_div>
+    {{-- <x-form_input_div> --}}
+    <x-form_label for="sexual_orientation">
+        Sexual Orientation
+    </x-form_label>
+    <select class="peer mt-2 w-full rounded-md border-b-2 border-blue-200 p-3 ring-0"
+        id="sexual_orientation"
+        name="sexual_orientation"
+        type="text"
+        required>
+        <option class="text-gray-600"
+            value=""
+            disabled
+            selected
+            hidden>Select Orientation</option>
+        <option>bisexual</option>
+        <option>gay/lesbian</option>
+        <option>hetrosexaul/straight</option>
+        <option>don't know</option>
+        <option>prefer not to say</option>
+        <option>Other</option>
+    </select>
+    {{-- </x-form_input_div> --}}
 
     {{-- ethnic_group --}}
     <x-multi-select id="ethnic_group"
@@ -108,23 +108,26 @@
     </x-form_input_div> --}}
 
     {{-- home_address_state --}}
-    <x-form_input_div>
-        <x-form_label for="home_address_state">
-            State (optional)
-        </x-form_label>
-        <select class="w-full p-3 mt-2 border-b-2 border-blue-200 rounded-md peer ring-0"
-            id="home_address_state"
-            name="home_address_state"
-            type="text">
-            <option value=""
-                disabled
-                selected
-                hidden>Select State</option>
-            @foreach ($states as $state)
+    {{-- <x-form_input_div> --}}
+    <x-form_label for="home_address_state">
+        State (optional)
+    </x-form_label>
+    <select class="peer mt-2 w-full rounded-md border-b-2 border-blue-200 p-3 ring-0"
+        id="home_address_state"
+        name="home_address_state"
+        type="text">
+        <option value=""
+            disabled
+            selected
+            hidden>Select State</option>
+        {{-- @foreach ($states as $state)
                 <option value="{{ $state['name'] }}">{{ $state['name'] }}</option>
-            @endforeach
-        </select>
-    </x-form_input_div>
+            @endforeach --}}
+        @foreach ($states as $state)
+            <option value="{{ $state }}">{{ $state }}</option>
+        @endforeach
+    </select>
+    {{-- </x-form_input_div> --}}
 
     {{-- home_address_zip --}}
     {{-- <x-form_input_div>
@@ -135,11 +138,11 @@
     </x-form_input_div> --}}
 
     {{-- home_address_country --}}
-    <x-form_input_div>
-        <x-form_label for="country">
-            Country
-        </x-form_label>
-        <select class="w-full p-3 mt-2 border-b-2 border-blue-200 rounded-md peer ring-0"
+    {{-- <x-form_input_div> --}}
+    <x-form_label for="country">
+        Country
+    </x-form_label>
+    {{-- <select class="w-full p-3 mt-2 border-b-2 border-blue-200 rounded-md peer ring-0"
             id="home_address_country"
             name="home_address_country"
             type="text"
@@ -149,53 +152,84 @@
                 selected
                 hidden>Select Country</option>
             @foreach ($countries as $country)
+                <option value="{{ $country }}">{{ $country }}</option>
+            @endforeach
+        </select> --}}
+    {{-- <select class="w-full p-3 mt-2 border-b-2 border-blue-200 rounded-md peer ring-0"
+        id="home_address_country"
+        name="home_address_country"
+        type="text"
+        required>
+        <option value=""
+            disabled
+            selected
+            hidden>Select Country</option>
+        @if (isset($countries) && is_array($countries))
+            @foreach ($countries as $country)
+                <option value="{{ $country }}">{{ $country }}</option>
+            @endforeach
+        @endif
+    </select> --}}
+    <select class="peer mt-2 w-full rounded-md border-b-2 border-blue-200 p-3 ring-0"
+        id="home_address_country"
+        name="home_address_country"
+        type="text"
+        required>
+        <option value=""
+            disabled
+            selected
+            hidden>Select Country</option>
+        @if (isset($countries) && is_array($countries))
+            @foreach ($countries as $country)
                 <option value="{{ $country['code'] }}">{{ $country['name'] }}</option>
             @endforeach
-        </select>
-    </x-form_input_div>
+        @endif
+    </select>
+
+    {{-- </x-form_input_div> --}}
 
     {{-- email --}}
-    <x-form_input_div>
-        <x-form_label for="email">
-            Email
-        </x-form_label>
-        <x-form_input id="email"
-            name="email"
-            type="text"
-            required
-            placeholder="email@example.com" />
-    </x-form_input_div>
+    {{-- <x-form_input_div> --}}
+    <x-form_label for="email">
+        Email
+    </x-form_label>
+    <x-form_input id="email"
+        name="email"
+        type="text"
+        required
+        placeholder="email@example.com" />
+    {{-- </x-form_input_div> --}}
 
     {{-- phone --}}
-    <x-form_input_div>
-        <x-form_label for="phone">
-            Phone
-        </x-form_label>
-        <x-form_input id="phone"
-            name="phone"
-            type="tel"
-            required />
-    </x-form_input_div>
+    {{-- <x-form_input_div> --}}
+    <x-form_label for="phone">
+        Phone
+    </x-form_label>
+    <x-form_input id="phone"
+        name="phone"
+        type="tel"
+        required />
+    {{-- </x-form_input_div> --}}
 
     {{-- contact_method --}}
-    <x-form_input_div>
-        <x-form_label for="contact_method">
-            Contact Method
-        </x-form_label>
-        <select class="w-full p-3 mt-2 border-b-2 border-blue-200 rounded-md peer ring-0"
-            id="contact_method"
-            name="contact_method"
-            type="text"
-            required>
-            <option value=""
-                disabled
-                selected
-                hidden>Select Contact Method</option>
-            <option>Telephone Call</option>
-            <option>Text Message</option>
-            <option>Email</option>
-        </select>
-    </x-form_input_div>
+    {{-- <x-form_input_div> --}}
+    <x-form_label for="contact_method">
+        Contact Method
+    </x-form_label>
+    <select class="peer mt-2 w-full rounded-md border-b-2 border-blue-200 p-3 ring-0"
+        id="contact_method"
+        name="contact_method"
+        type="text"
+        required>
+        <option value=""
+            disabled
+            selected
+            hidden>Select Contact Method</option>
+        <option>Telephone Call</option>
+        <option>Text Message</option>
+        <option>Email</option>
+    </select>
+    {{-- </x-form_input_div> --}}
 
     {{-- <x-form_input_div>
         <x-form_label for="health_coverage_provider">
@@ -221,20 +255,20 @@
     </x-form_input_div> --}}
 
     {{-- Previous therapy --}}
-    <x-form_input_div>
-        <x-form_label for="previous_therapy">Previous Therapy from Pineapple</x-form_label>
-        <select class="p-3 form-select"
-            id="previous_therapy"
-            name="previous_therapy"
-            type="text">
-            <option value=""
-                disabled
-                selected
-                hidden>Select One</option>
-            <option>Yes</option>
-            <option>No</option>
-        </select>
-    </x-form_input_div>
+    {{-- <x-form_input_div> --}}
+    <x-form_label for="previous_therapy">Previous Therapy from Pineapple</x-form_label>
+    <select class="form-select p-3"
+        id="previous_therapy"
+        name="previous_therapy"
+        type="text">
+        <option value=""
+            disabled
+            selected
+            hidden>Select One</option>
+        <option>Yes</option>
+        <option>No</option>
+    </select>
+    {{-- </x-form_input_div> --}}
 
     {{-- possible_support_needed --}}
     <x-multi-select id="possible_support_needed"
@@ -243,18 +277,18 @@
         :options="$categories" />
 
     {{-- client_contribution --}}
-    <x-form_input_div>
-        <x-form_label for="client_contribution">
-            Client Contribution
-        </x-form_label>
-        <x-form_input id="client_contribution"
-            name="client_contribution"
-            type="number"
-            required
-            placeholder="xxx"
-            inputmode="numeric"
-            pattern="[0-9]*" />
-    </x-form_input_div>
+    {{-- <x-form_input_div> --}}
+    <x-form_label for="client_contribution">
+        Client Contribution
+    </x-form_label>
+    <x-form_input id="client_contribution"
+        name="client_contribution"
+        type="number"
+        required
+        placeholder="xxx"
+        inputmode="numeric"
+        pattern="[0-9]*" />
+    {{-- </x-form_input_div> --}}
 
     {{-- preferred_language --}}
     {{-- <x-form_input_div>
@@ -278,28 +312,28 @@
     </x-form_input_div> --}}
 
     {{-- therapist --}}
-    <x-form_input_div>
-        <x-form_label for="therapist">
-            Therapist
-        </x-form_label>
-        <select class="w-full p-3 mt-2 border-b-2 border-blue-200 rounded-md peer ring-0"
-            id="user_id"
-            name="user_id"
-            required>
-            <option value=""
-                disabled
-                selected
-                hidden>Therapist</option>
-            @foreach ($therapists as $row)
-                <option value="{{ $row->id }}">
-                    {{ $row->name }}
-                </option>
-            @endforeach
-        </select>
-    </x-form_input_div>
+    {{-- <x-form_input_div> --}}
+    <x-form_label for="therapist">
+        Therapist
+    </x-form_label>
+    <select class="peer mt-2 w-full rounded-md border-b-2 border-blue-200 p-3 ring-0"
+        id="user_id"
+        name="user_id"
+        required>
+        <option value=""
+            disabled
+            selected
+            hidden>Therapist</option>
+        @foreach ($therapists as $row)
+            <option value="{{ $row->id }}">
+                {{ $row->name }}
+            </option>
+        @endforeach
+    </select>
+    {{-- </x-form_input_div> --}}
 
-    <div class="flex mt-2">
-        <button class="mx-auto button-secondary">Add</button>
+    <div class="mt-2 flex">
+        <button class="button-secondary mx-auto">Add</button>
     </div>
 </form>
 
