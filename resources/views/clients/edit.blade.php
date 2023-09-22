@@ -1,3 +1,13 @@
+@php
+    // TODO:  IS THIS OKAY?
+    // $timeZonesJson = file_get_contents(resource_path('json/time_zones.json'));
+    // $timeZones = json_decode($timeZonesJson, true);
+    // $statesJson = file_get_contents(resource_path('json/states.json'));
+    // $states = json_decode($statesJson, true);
+    $countriesJson = file_get_contents(resource_path('json/countries.json'));
+    $clientCountries = json_decode($countriesJson, true);
+@endphp
+
 <x-app-layout>
     <x-main-container>
         <h2 class="mt-2 text-center text-lg font-normal">Edit client: {{ $client->preferred_name }}</h2>
@@ -126,7 +136,7 @@
                 value="{{ $client->home_address_country }}"
                 label="Country: (previous selection: {{ $client->home_address_country }})"
                 placeholder="{{ $client->home_address_country }}"
-                :options="$countries"></x-single-select>
+                :options="$clientCountries"></x-single-select>
 
             {{-- contact_method --}}
             <x-single-select id="contact_method"
