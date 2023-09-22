@@ -495,10 +495,10 @@
     {{-- </x-form_input_div> --}}
 
     {{-- possible_support_needed --}}
-    {{-- <x-multi-select id="possible_support_needed"
+    <x-multi-select id="possible_support_needed"
         name="Possible Support Needed"
         label="Possible Support Needed"
-        :options="$categories" /> --}}
+        :options="$categories" />
 
     {{-- client_contribution --}}
     {{-- <x-form_input_div> --}}
