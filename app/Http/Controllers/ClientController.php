@@ -44,7 +44,7 @@ class ClientController extends Controller
         if (auth()->user() && auth()->user()->admin === 1) {
             $user_id = $request->user()->id;
             $therapist = User::find($user_id);
-            $therapists = User::where('admin', 0)->get();
+            $therapists = User::where('admin', 0)->get()->sortBy('name');
             $countries = $this->getCountries();
             $categories = $this->getCategories();
             $states = $this->getStates();
@@ -70,10 +70,17 @@ class ClientController extends Controller
             $genders = [
                 'Male',
                 'Female',
+                'Transgender',
+                'Genderqueer',
+                'Genderfluid',
+                'Agender',
+                'Bigender',
+                'Cisgender',
                 'Non-Binary',
                 'Prefer Not To Say',
             ];
             $optionKey = 'id';
+
 
             return view('clients.create')->with(['therapists' => $therapists, 'therapist' => $therapist, 'countries' => $countries, 'categories' => $categories, 'states' => $states, 'ethnicGroups' => $ethnicGroups, 'pronouns' => $pronouns, 'genders' => $genders, 'optionKey' => $optionKey]);
         } else {
@@ -83,7 +90,9 @@ class ClientController extends Controller
 
     private function getCountries()
     {
-        $path = resource_path('/json/countries.json');
+        // $path = resource_path('/json/countries.json');
+        // get it from pulic path
+        $path = public_path('json/countries.json');
         $jsonContents = File::get($path);
         $countries = json_decode($jsonContents, true);
 
@@ -101,17 +110,11 @@ class ClientController extends Controller
 
     private function getStates()
     {
-        $path = resource_path('/json/states.json');
+        $path = resource_path('json/states.json');
         $jsonContents = File::get($path);
-        $states = json_decode($jsonContents, true);
+        $states = json_decode($jsonContents, true)['states'];
 
-        // if (isset($data['states'])) {
-        //     return $data['states'];
-        // }
-
-        // return [];
         return $states;
-
     }
     /**
      * Store a newly created resource in storage.
@@ -127,12 +130,45 @@ class ClientController extends Controller
         $countries = $this->getCountries();
         $categories = $this->getCategories();
 
+        $selectedGenders = $request->input('gender');
+
+        // $genderString = implode(', ', $selectedGenders);
+        // $genderString = implode(', ', $request->input('gender'));
+
+        // write an if statement if there is more than one gender selected
+        if (is_array($selectedGenders) && !empty($selectedGenders)) {
+            $genderString = implode(', ', $selectedGenders);
+        } else {
+            $genderString = '';
+        }
+
+        $selectedEthnicGroups = $request->input('ethnic_group');
+
+        if (is_array($selectedEthnicGroups) && !empty($selectedEthnicGroups)) {
+            $ethnicGroupString = implode(', ', $selectedEthnicGroups);
+        } else {
+            $ethnicGroupString = '';
+        }
+        // $selectedEthnicGroups = $request->input('ethnic_group');
+
+        // if (is_array($selectedEthnicGroups) && !empty($selectedEthnicGroups)) {
+        //     $ethnicGroupArray = $selectedEthnicGroups;
+        // } else {
+        //     $ethnicGroupArray = [];
+        // }
+
+        // $c->ethnic_group = json_encode($ethnicGroupArray);
+
+
+
+
         $c = new Client();
         $c->client_code = $request->client_code;
         $c->legal_name = $request->legal_name;
         $c->preferred_name = $request->preferred_name;
         $c->sexual_orientation = $request->sexual_orientation;
-        $c->ethnic_group = $request->ethnic_group;
+        // $c->ethnic_group = $request->ethnic_group;
+
         $c->home_address_line_1 = $request->home_address_line_1;
         $c->home_address_line_2 = $request->home_address_line_2;
         $c->home_address_city = $request->home_address_city;
@@ -144,6 +180,13 @@ class ClientController extends Controller
         $c->health_coverage_expiration = $request->health_coverage_expiration;
         $c->previous_therapy = $request->previous_therapy;
         // $c->possible_support_needed = implode(', ', $request->possible_support_needed);
+        // if (is_array($request->possible_support_needed) && !empty($request->possible_support_needed)) {
+        //     // $c->possible_support_needed = implode(', ', $request->possible_support_needed);
+        //     $c->possible_support_needed = $request->possible_support_needed;
+        // } else {
+        //     $c->possible_support_needed = '';
+        // }
+        $c->possible_support_needed = $request->possible_support_needed;
         $c->preferred_language = $request->preferred_language;
         $c->additional_notes = $request->additional_notes;
         $c->pronouns = $request->pronouns;
@@ -152,13 +195,24 @@ class ClientController extends Controller
         $c->contact_method = $request->contact_method;
         $c->user_id = $request->user_id;
         $c->client_contribution = $request->client_contribution;
-        $c->gender = $request->gender;
+        $c->gender = $genderString;
+        $c->ethnic_group = $ethnicGroupString;
+        // $c->ethnic_group = json_encode($ethnicGroupArray);
+
         // $c->user_id = $user->id;
 
         $c->save();
         return redirect()->route('dashboard');
     }
 
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Client  $client
+     * @return \Illuminate\Http\Response
+     */
     public function update(Request $request, $id)
     {
         $client = Client::find($id);
@@ -244,28 +298,6 @@ class ClientController extends Controller
             return redirect()->route('dashboard')->with('error', '**You do not have permission to access that page**');
         }
     }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Client  $client
-     * @return \Illuminate\Http\Response
-     */
-
-
-    // public function update(Request $request, $id)
-    // {
-    //     $client = Client::find($id);
-
-    //     $client->fill($request->all());
-    //     $client->save();
-
-    //     return redirect()->route('clients.show', $client->id)->with('success', 'Client updated successfully');
-
-    // }
-
-
 
 
     /**
