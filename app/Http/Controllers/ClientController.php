@@ -44,7 +44,7 @@ class ClientController extends Controller
         if (auth()->user() && auth()->user()->admin === 1) {
             $user_id = $request->user()->id;
             $therapist = User::find($user_id);
-            $therapists = User::where('admin', 0)->get();
+            $therapists = User::where('admin', 0)->get()->sortBy('name');
             $countries = $this->getCountries();
             $categories = $this->getCategories();
             $states = $this->getStates();
@@ -205,6 +205,14 @@ class ClientController extends Controller
         return redirect()->route('dashboard');
     }
 
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Client  $client
+     * @return \Illuminate\Http\Response
+     */
     public function update(Request $request, $id)
     {
         $client = Client::find($id);
@@ -290,28 +298,6 @@ class ClientController extends Controller
             return redirect()->route('dashboard')->with('error', '**You do not have permission to access that page**');
         }
     }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Client  $client
-     * @return \Illuminate\Http\Response
-     */
-
-
-    // public function update(Request $request, $id)
-    // {
-    //     $client = Client::find($id);
-
-    //     $client->fill($request->all());
-    //     $client->save();
-
-    //     return redirect()->route('clients.show', $client->id)->with('success', 'Client updated successfully');
-
-    // }
-
-
 
 
     /**
