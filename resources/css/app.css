@@ -20,6 +20,14 @@
     .form-select {
         @apply w-full px-3 py-1 text-gray-600 border-b-2 border-blue-200 rounded-md ring-0;
     }
+
+    .select-input {
+        @apply form-checkbox h-4 w-4 text-indigo-600 transition duration-150 ease-in-out rounded-full hover:bg-blue-400 hover:cursor-pointer;
+    }
+
+    .select-input-div {
+        @apply ml-4 flex items-center p-2;
+    }
 }
 
 [x-cloak] {
