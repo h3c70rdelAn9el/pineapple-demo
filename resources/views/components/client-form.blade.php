@@ -201,7 +201,7 @@
     <x-form_label for="sexual_orientation">
         Sexual Orientation
     </x-form_label>
-    <select class="peer mt-2 w-full rounded-md border-b-2 border-blue-200 p-3 ring-0"
+    <select class="peer mt-2 w-full rounded-md border-b-2 border-blue-200 p-3 ring-0 capitalize"
         id="sexual_orientation"
         name="sexual_orientation"
         type="text"
@@ -540,7 +540,7 @@
     <x-form_label for="therapist">
         Therapist
     </x-form_label>
-    <select class="peer mt-2 w-full rounded-md border-b-2 border-blue-200 p-3 ring-0"
+    <select class="peer mt-2 w-full rounded-md border-b-2 border-blue-200 p-3 ring-0 capitalize"
         id="user_id"
         name="user_id"
         required>
