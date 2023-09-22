@@ -70,6 +70,12 @@ class ClientController extends Controller
             $genders = [
                 'Male',
                 'Female',
+                'Transgender',
+                'Genderqueer',
+                'Genderfluid',
+                'Agender',
+                'Bigender',
+                'Cisgender',
                 'Non-Binary',
                 'Prefer Not To Say',
             ];
@@ -124,12 +130,45 @@ class ClientController extends Controller
         $countries = $this->getCountries();
         $categories = $this->getCategories();
 
+        $selectedGenders = $request->input('gender');
+
+        // $genderString = implode(', ', $selectedGenders);
+        // $genderString = implode(', ', $request->input('gender'));
+
+        // write an if statement if there is more than one gender selected
+        if (is_array($selectedGenders) && !empty($selectedGenders)) {
+            $genderString = implode(', ', $selectedGenders);
+        } else {
+            $genderString = '';
+        }
+
+        $selectedEthnicGroups = $request->input('ethnic_group');
+
+        if (is_array($selectedEthnicGroups) && !empty($selectedEthnicGroups)) {
+            $ethnicGroupString = implode(', ', $selectedEthnicGroups);
+        } else {
+            $ethnicGroupString = '';
+        }
+        // $selectedEthnicGroups = $request->input('ethnic_group');
+
+        // if (is_array($selectedEthnicGroups) && !empty($selectedEthnicGroups)) {
+        //     $ethnicGroupArray = $selectedEthnicGroups;
+        // } else {
+        //     $ethnicGroupArray = [];
+        // }
+
+        // $c->ethnic_group = json_encode($ethnicGroupArray);
+
+
+
+
         $c = new Client();
         $c->client_code = $request->client_code;
         $c->legal_name = $request->legal_name;
         $c->preferred_name = $request->preferred_name;
         $c->sexual_orientation = $request->sexual_orientation;
-        $c->ethnic_group = $request->ethnic_group;
+        // $c->ethnic_group = $request->ethnic_group;
+
         $c->home_address_line_1 = $request->home_address_line_1;
         $c->home_address_line_2 = $request->home_address_line_2;
         $c->home_address_city = $request->home_address_city;
@@ -156,7 +195,10 @@ class ClientController extends Controller
         $c->contact_method = $request->contact_method;
         $c->user_id = $request->user_id;
         $c->client_contribution = $request->client_contribution;
-        $c->gender = $request->gender;
+        $c->gender = $genderString;
+        $c->ethnic_group = $ethnicGroupString;
+        // $c->ethnic_group = json_encode($ethnicGroupArray);
+
         // $c->user_id = $user->id;
 
         $c->save();
