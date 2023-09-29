@@ -8,12 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Scout\Searchable;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Client extends Model
 {
     use Searchable;
     use HasFactory;
     use Notifiable;
+    use LogsActivity;
     protected $fillable = [
         'client_code',
         'preferred_name',
