@@ -7,6 +7,7 @@ use App\Models\Patient;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\LogOptions;
 
 class TherapySession extends Model
 {
@@ -18,5 +19,10 @@ class TherapySession extends Model
     public function client()
     {
         return $this->belongsTo(Client::class);
+    }
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logAll();
     }
 }
