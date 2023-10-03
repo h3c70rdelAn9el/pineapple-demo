@@ -39,7 +39,7 @@
                         </div>
                         <div class="flex justify-between">
                             <p>Active:</p>
-                            <p class='text-green-500'>{{ $activeTherapists->count() }}</p>
+                            <p class='text-blue-600'>{{ $activeTherapists->count() }}</p>
                         </div>
                         <div class="flex justify-between">
                             <p>Inactive:</p>
