@@ -10,6 +10,7 @@ use Illuminate\Contracts\View\View;
 use App\Notifications\TherapistFileUploaded;
 use Illuminate\Support\Facades\Notification;
 use App\Http\Controllers\TherapistsController;
+use Illuminate\Support\Facades\Storage;
 
 
 class FileUploadController extends Controller
@@ -57,12 +58,14 @@ class FileUploadController extends Controller
         $request->validate([
             'file' => 'required|mimes:pdf,jpg,jpeg,png|max:1048576',
         ]);
-        $fileName = $request->file->getClientOriginalName();
+        $fileName = time() . $request->file->getClientOriginalName();
         $verified = $user->admin ? 1 : 0;
-        $request->file->storeAs('uploads/forms/therapist', $fileName);
-        $request->file->move(public_path('uploads/forms/therapist'), $fileName);
+        $path = 'uploads/forms/therapist/' . $user->id . '/';
+        $request->file->storeAs($path, $fileName);
+        //Storage::put($path . $fileName, $request->file('file')->getContent());
+
         $user->fileUploads()->create([
-            'file_path' => $fileName,
+            'file_path' => $path,
             'file_name' => $fileName,
             'document_type' => $request->document_type,
             'date' => $request->date,
@@ -182,4 +185,6 @@ class FileUploadController extends Controller
             'user' => auth()->user(),
         ]);
     }
+    
+
 }
