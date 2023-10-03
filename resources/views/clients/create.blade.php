@@ -10,6 +10,8 @@
             :ethnic-groups="$ethnicGroups"
             :pronouns="$pronouns"
             :genders="$genders"
+            :activeTherapists="$activeTherapists"
+            :inactiveTherapists="$inactiveTherapists"
             />
     </x-main-container>
 </x-app-layout>
