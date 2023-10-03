@@ -11,11 +11,11 @@
                     Str::contains($form->file_name, '.jpeg') ||
                     Str::contains($form->file_name, '.JPEG'))
                 <img class="h-64 w-full rounded-md md:h-[300px] md:w-full"
-                    src="{{ asset('uploads/forms/therapist/' . $form->file_name) }}" alt="{{ $form->file_name }}" />
+                    src="{{ $form->url() }}" alt="{{ $form->file_name }}" />
             @endif
 
             @if($user->admin == 1)
-            <a class="text-xs button" href="{{ asset('uploads/forms/therapist/' . $form->file_name) }}" download>
+            <a class="text-xs button" href="{{ $form->url() }}" download>
                 Download
             </a>
             @endif

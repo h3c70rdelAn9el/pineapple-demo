@@ -9,6 +9,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Scout\Searchable;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Activitylog\LogOptions;
+use Illuminate\Support\Facades\Storage;
 
 class FileUpload extends Model
 {
@@ -36,5 +37,21 @@ class FileUpload extends Model
     {
         return LogOptions::defaults()
             ->logAll();
+    }
+    public function url()
+    {
+       
+        
+
+        if (env('FILESYSTEM_DRIVER') == 's3') {
+            $url = Storage::temporaryUrl(
+                $this->file_path . $this->file_name, 
+                now()->addMinutes(5)
+            );
+         } else {
+             $url = Storage::url($this->file_path . $this->file_name);
+         }
+        
+        return $url;
     }
 }
