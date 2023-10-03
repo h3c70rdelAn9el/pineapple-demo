@@ -28,6 +28,9 @@ class DashboardController extends Controller
         $therapist = Client::find($user_id)?->therapist;
         $attendedSessions = TherapySession::whereIn('client_id', $clients->pluck('id'))->whereIn('attendance', ['attended', 'no-show'])->get();
 
+        $inactiveTherapists = User::where('admin', 0)->where('active_status', 1)->get();
+        $activeTherapists = User::where('admin', 0)->where('active_status', 0)->get();
+
         $file = file_get_contents(storage_path('states.json'));
         $states = json_decode($file, true);
 
@@ -35,7 +38,7 @@ class DashboardController extends Controller
         $categories = json_decode($jsonFile, true);
 
         if ($user->admin) {
-            return view('dashboard_admin', ['user' => $user, 'therapists' => $therapists, 'allClients' => $allClients, 'therapist' => $therapist, 'therapySessions' => '$therapySessions', 'states' => $states, 'categories' => $categories, 'activeClients' => $activeClients, 'inactiveClients' => $inactiveClients, 'attendedSessions' => $attendedSessions]);
+            return view('dashboard_admin', ['user' => $user, 'therapists' => $therapists, 'allClients' => $allClients, 'therapist' => $therapist, 'therapySessions' => '$therapySessions', 'states' => $states, 'categories' => $categories, 'activeClients' => $activeClients, 'inactiveClients' => $inactiveClients, 'attendedSessions' => $attendedSessions, 'inactiveTherapists' => $inactiveTherapists, 'activeTherapists' => $activeTherapists]);
         } else {
             return view('dashboard', ['user' => $user, 'clients' => $clients, 'client' => $client, 'therapySessions' => $therapySessions, 'therapist' => $therapist, 'states' => $states, 'categories' => $categories, 'activeClients' => $activeClients, 'inactiveClients' => $inactiveClients]);
         }
