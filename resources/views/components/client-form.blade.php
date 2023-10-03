@@ -548,7 +548,7 @@
             disabled
             selected
             hidden>Therapist</option>
-        @foreach ($therapists as $row)
+        @foreach ($activeTherapists as $row)
             <option value="{{ $row->id }}">
                 {{ $row->name }}
             </option>
