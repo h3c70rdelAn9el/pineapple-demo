@@ -44,6 +44,8 @@ class ClientController extends Controller
         if (auth()->user() && auth()->user()->admin === 1) {
             $user_id = $request->user()->id;
             $therapist = User::find($user_id);
+            $activeTherapists = User::where('admin', 0)->where('active_status', 0)->get();
+            $inactiveTherapists = User::where('admin', 0)->where('active_status', 1)->get();
             $therapists = User::where('admin', 0)->get()->sortBy('name');
             $countries = $this->getCountries();
             $categories = $this->getCategories();
@@ -82,7 +84,7 @@ class ClientController extends Controller
             $optionKey = 'id';
 
 
-            return view('clients.create')->with(['therapists' => $therapists, 'therapist' => $therapist, 'countries' => $countries, 'categories' => $categories, 'states' => $states, 'ethnicGroups' => $ethnicGroups, 'pronouns' => $pronouns, 'genders' => $genders, 'optionKey' => $optionKey]);
+            return view('clients.create')->with(['therapists' => $therapists, 'therapist' => $therapist, 'countries' => $countries, 'categories' => $categories, 'states' => $states, 'ethnicGroups' => $ethnicGroups, 'pronouns' => $pronouns, 'genders' => $genders, 'optionKey' => $optionKey, 'activeTherapists' => $activeTherapists, 'inactiveTherapists' => $inactiveTherapists]);
         } else {
             return redirect()->route('dashboard')->with('error', '**You do not have permission to access that page**');
         }
