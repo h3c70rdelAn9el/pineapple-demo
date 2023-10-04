@@ -33,7 +33,7 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
             'on_vacation' => ['required', 'boolean'],
             'certificate' => ['nullable', 'mimes:pdf,jpg,jpeg,png', 'max:1024'],
             'w9' => ['nullable', 'mimes:pdf,jpg,jpeg,png', 'max:1024'],
-            'file_upload' => ['nullable', 'mimes:pdf,jpg,jpeg,png', 'max:1024'],
+            //'file_upload' => ['nullable', 'mimes:pdf,jpg,jpeg,png', 'max:1024'],
             'routing_number' => ['nullable', 'string', 'max:255'],
             'clinical_license_verification_portal' => ['nullable', 'string', 'max:255'],
             'title' => ['nullable', 'string', 'max:255'],
@@ -67,7 +67,7 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
             $w9Path = $input['w9']->store('w9s', 'public');
             $user->update(['w9' => $w9Path]);
         }
-
+        /*
         if (isset($input['file_upload'])) {
             $fileUploadPath = $input['file_upload']->store('file_uploads', 'public');
             $user->update(['file_upload' => $fileUploadPath]);
@@ -76,6 +76,7 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
                 $admin->notify(new FileUpload($user));
             }
         }
+        */
 
         if (
             $input['email'] !== $user->email &&
@@ -93,7 +94,7 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
                 'on_vacation' => $input['on_vacation'],
                 'certificate' => $input['certificate'],
                 'w9' => $input['w9'],
-                'file_upload' => $input['file_upload'],
+                //'file_upload' => $input['file_upload'],
                 'routing_number' => $input['routing_number'],
                 'clinical_license_verification_portal' => $input['clinical_license_verification_portal'],
                 'title' => $input['title'],
@@ -146,7 +147,7 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
             'account_number' => $input['account_number'],
             'certificate' => $input['certificate'],
             'w9' => $input['w9'],
-            'file_upload' => $input['file_upload'],
+            //'file_upload' => $input['file_upload'],
             'routing_number' => $input['routing_number'],
             'clinical_license_verification_portal' => $input['clinical_license_verification_portal'],
             'title' => $input['title'],
