@@ -80,9 +80,9 @@
 
                     <div class="items-center justify-center">
                         @if (Str::contains($form->file_name, '.pdf'))
-                        <embed src="{{ asset('uploads/forms/therapist/' . $form->file_name) }}" class="h-64 w-full rounded-md md:h-[300px] md:w-full object-cover" type="application/pdf" alt="{{ $form->file_name }}" />
+                        <embed src="{{ $form->url() }}" class="h-64 w-full rounded-md md:h-[300px] md:w-full object-cover" type="application/pdf" alt="{{ $form->file_name }}" />
                         @elseif (Str::contains($form->file_name, '.jpg') || Str::contains($form->file_name, '.png') || Str::contains($form->file_name, '.jpeg') || Str::contains($form->file_name, '.JPEG'))
-                        <img src="{{ asset('uploads/forms/therapist/' . $form->file_path) }}" class="h-64 w-full rounded-md md:h-[300px] md:w-full object-cover" alt="{{ $form->file_name }}" />
+                        <img src="{{ $form->url() }}" class="h-64 w-full rounded-md md:h-[300px] md:w-full object-cover" alt="{{ $form->file_name }}" />
                         @endif
                     </div>
 
