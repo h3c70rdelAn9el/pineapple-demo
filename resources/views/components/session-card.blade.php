@@ -3,7 +3,7 @@
         <div class="flex flex-col">
             <div class="flex flex-row">
                 <p class="mr-1">Client:</p>
-                <p>{{ $therapySession->client->preferred_name }}</p>
+                <p>{{ $therapySession->client->preferred_name ?? 'N/A'}}</p>
             </div>
            <div class="flex flex-row text-xs">
                <p class="mr-1">Session:</p>
