@@ -43,7 +43,7 @@ class FileUpload extends Model
        
         
 
-        if (env('FILESYSTEM_DRIVER') == 's3') {
+        if (env('FILESYSTEM_DISK') == 's3') {
             $url = Storage::temporaryUrl(
                 $this->file_path . $this->file_name, 
                 now()->addMinutes(5)
