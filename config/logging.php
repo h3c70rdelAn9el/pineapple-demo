@@ -53,7 +53,7 @@ return [
     'channels' => [
         'stack' => [
             'driver' => 'stack',
-            'channels' => ['single'],
+            'channels' => ['discord','single'],
             'ignore_exceptions' => false,
         ],
 
@@ -68,6 +68,13 @@ return [
             'path' => storage_path('logs/laravel.log'),
             'level' => env('LOG_LEVEL', 'debug'),
             'days' => 14,
+        ],
+        'discord' => [
+            'driver' => 'custom',
+            'via'    => MarvinLabs\DiscordLogger\Logger::class,
+            'level'  => 'debug',
+            'url'    => env('LOG_DISCORD_WEBHOOK_URL'),
+            'ignore_exceptions' => env('LOG_DISCORD_IGNORE_EXCEPTIONS', false),
         ],
 
         'slack' => [
