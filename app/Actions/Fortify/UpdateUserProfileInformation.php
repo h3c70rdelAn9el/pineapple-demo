@@ -103,7 +103,7 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
                 'supervisor_name' => $input['supervisor_name'],
                 'street_address' => $input['street_address'],
                 'zip_code_postal_code' => $input['zip_code_postal_code'],
-                'county_town' => $input['county_town'],
+                'county_town' => $input['county_town'] ?? '',
                 'country' => $input['country'],
                 'time_zone' => $input['time_zone'],
                 'iban_swift_code' => $input['iban_swift_code'],
