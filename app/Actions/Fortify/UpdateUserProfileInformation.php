@@ -19,18 +19,19 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
      * @param  array  $input
      * @return void
      */
+
     public function update($user, array $input)
     {
+
         Validator::make($input, [
             'name' => ['required', 'string', 'max:255'],
-            // TODO: CAHNGE  TO LEGAL_NAME
             'email' => ['required', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
             'photo' => ['nullable', 'mimes:jpg,jpeg,png', 'max:1024'],
             'license' => ['nullable', 'string', 'max:255'],
             'expires_at' => ['nullable', 'date'],
             'account_name' => ['nullable', 'string', 'max:255'],
             'account_number' => ['nullable', 'string', 'max:255'],
-            'on_vacation' => ['required', 'boolean'],
+            'on_vacation' => ['nullable', 'boolean'],
             'certificate' => ['nullable', 'mimes:pdf,jpg,jpeg,png', 'max:1024'],
             'w9' => ['nullable', 'mimes:pdf,jpg,jpeg,png', 'max:1024'],
             //'file_upload' => ['nullable', 'mimes:pdf,jpg,jpeg,png', 'max:1024'],
@@ -42,7 +43,7 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
             'supervisor_name' => ['nullable', 'string', 'max:255'],
             'street_address' => ['nullable', 'string', 'max:255'],
             'zip_code_postal_code' => ['nullable', 'string', 'max:255'],
-            'county_town' => ['nullable', 'string', 'max:255'],
+            'county' => ['nullable', 'string', 'max:255'],
             'country' => ['nullable', 'string', 'max:255'],
             'time_zone' => ['nullable', 'string', 'max:255'],
             'iban_swift_code' => ['nullable', 'string', 'max:255'],
@@ -52,7 +53,9 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
             'session_cost' => ['nullable', 'numeric'],
             'contact_for_promotionals' => ['nullable', 'boolean'],
             'number_of_potential_clients' => ['nullable', 'numeric'],
+            'out_of_state_coaching' => ['nullable', 'boolean'],
         ])->validateWithBag('updateProfileInformation');
+
 
         if (isset($input['photo'])) {
             $user->updateProfilePhoto($input['photo']);
@@ -77,6 +80,8 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
             }
         }
         */
+
+
 
         if (
             $input['email'] !== $user->email &&
@@ -103,16 +108,17 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
                 'supervisor_name' => $input['supervisor_name'],
                 'street_address' => $input['street_address'],
                 'zip_code_postal_code' => $input['zip_code_postal_code'],
-                'county_town' => $input['county_town'] ?? '',
+                'county' => $input['county'] ?? '',
                 'country' => $input['country'],
                 'time_zone' => $input['time_zone'],
                 'iban_swift_code' => $input['iban_swift_code'],
                 'contract_signed' => $input['contract_signed'],
-                'all_documents' => $input['all_documents'],
+                // 'all_documents' => $input['all_documents'],
                 'full' => $input['full'],
                 'session_cost' => $input['session_cost'],
                 'contact_for_promotionals' => $input['contact_for_promotionals'],
                 'number_of_potential_clients' => $input['number_of_potential_clients'],
+                'out_of_state_coaching' => $input['out_of_state_coaching'],
             ])->save();
 
             if (!$user->isAdmin()) {
@@ -134,6 +140,11 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
      * @param  array  $input
      * @return void
      */
+
+    public function submitForm()
+    {
+        return redirect()->route('therapist.update');
+    }
     protected function updateVerifiedUser($user, array $input)
     {
         $user->forceFill([

@@ -59,6 +59,26 @@ class User extends Authenticatable
         'session_cost',
         'contact_for_promotionals',
         'number_of_potential_clients',
+        'out_of_state_coaching',
+        'file_upload',
+        'w9',
+        'headshot',
+        'voided_cheque',
+        'bio',
+        'website',
+        'quickbooks',
+        'dropbox',
+        'client_extensions',
+        'notes',
+        'covid_fundraise',
+        'insurance',
+        'signed_documents',
+        'leah_signed',
+        'space_for_new_clients',
+        'admin',
+        'county_town',
+        'country',
+
     ];
 
     /**

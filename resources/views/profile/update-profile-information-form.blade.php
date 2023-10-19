@@ -8,7 +8,8 @@
     $countries = json_decode($countriesJson, true);
 @endphp
 
-<x-jet-form-section submit="updateProfileInformation">
+<x-jet-form-section submit="updateProfileInformation" wire:submit='submitForm'>
+{{-- Todo:  add the submitForm? --}}
     <x-slot name="title">
         {{ __('Profile Information') }}
     </x-slot>
@@ -76,27 +77,41 @@
         @endif
 
         {{-- name --}}
-        <x-user-text-input name="name"
+        {{-- <x-user-text-input name="name"
             type="text"
             label="Name"
             model="state.name"
-            autocomplete="name" />
+            autocomplete="name" /> --}}
+
+                    <div class="col-span-6 sm:col-span-4">
+            <x-jet-label for="name" value="{{ __('Name') }}" />
+            <x-jet-input id="name" type="text" class="mt-1 block w-full" wire:model.defer="state.name" autocomplete="name" />
+            <x-jet-input-error for="name" class="mt-2" />
+        </div>
+
 
         {{-- preferred name --}}
-        <x-user-text-input name="preferred_name"
+        {{-- <x-user-text-input name="preferred_name"
             type="text"
             label="Preferred Name"
             model="state.preferred_name"
-            autocomplete="preferred_name" />
+            autocomplete="preferred_name" /> --}}
 
+        <div class="col-span-6 sm:col-span-4">
+            <x-jet-label for="preferred_name" value="{{ __('preferred_name') }}" />
+            <x-jet-input id="preferred_name" type="text" class="mt-1 block w-full" wire:model.defer="state.preferred_name" autocomplete="preferred_name" />
+            <x-jet-input-error for="preferred_name" class="mt-2" />
+        </div>
         {{-- gender --}}
-        <div class="col-span-6 mt-0 sm:col-span-4">
+        {{-- <div class="col-span-6 mt-0 sm:col-span-4">
             <x-multi-select id="gender"
                 name="gender"
                 value="{{ $this->user->gender }}"
                 label="Gender"
-                :options="['Male', 'Female', 'Non-binary', 'Prefer Not To Say']"></x-multi-select>
-        </div>
+                :options="['Male', 'Female', 'Non-binary', 'Prefer Not To Say']"
+                wire:model="selectedOptions"
+                ></x-multi-select>
+        </div> --}}
 
         <!-- Email -->
         <div class="col-span-6 sm:col-span-4">
@@ -133,15 +148,17 @@
         {{-- License --}}
         <x-user-text-input name="license"
             type="text"
+            id="license"
             label="License"
-            model="state.license"
+            wire:model.defer="state.license"
             autocomplete="license" />
 
         {{-- Expires at --}}
         <x-user-text-input name="expires_at"
             type="date"
+            id="expires_at"
             label="Expires at"
-            model="state.expires_at"
+            wire:model.defer="state.expires_at"
             autocomplete="expires_at" />
 
         {{-- Bank Information --}}
@@ -168,23 +185,27 @@
         {{-- supervisor name --}}
         <x-user-text-input name="supervisor_name"
             type="text"
+            id="supervisor_name"
             label="Supervisor name"
-            model="state.supervisor_name"
+            wire:model.defer="state.supervisor_name"
             autocomplete="supervisor_name" />
 
         {{-- street address --}}
         <x-user-text-input name="street_address"
             type="text"
+            id="street_address"
+            wire:model.defer="state.street_address"
             label="Street address"
-            model="state.street_address"
             autocomplete="street_address" />
 
         {{-- county/town --}}
-        <x-user-text-input name="county_town"
+        <x-user-text-input name="county"
             type="text"
+            id="county"
+            wire:model.defer="state.county"
             label="County/Town"
-            model="state.county_town"
-            autocomplete="county_town" />
+            model="state.county"
+            autocomplete="county" />
 
 
 
@@ -195,6 +216,7 @@
             </x-form_label>
             <select class="peer mt-2 w-full rounded-md border-b-2 border-blue-200 bg-gray-100 p-3 ring-0"
                 id="state"
+                wire:model.defer="state.state"
                 name="state"
                 type="text">
                 <option value=""
@@ -278,40 +300,72 @@
         {{-- zip code --}}
         <x-user-text-input name="zip_code_postal_code"
             type="text"
+            id="zip_code_postal_code"
             label="Zip code/Postal code"
-            model="state.zip_code_postal_code"
+            wore:model.defer="state.zip_code_postal_code"
+
             autocomplete="zip_code_postal_code" />
 
         {{-- country --}}
-        <div class="col-span-6 sm:col-span-4">
+        {{-- <div class="col-span-6 sm:col-span-4">
             <x-single-select id="country"
                 name="country"
                 label="Country"
                 :options="$countries"
-                :selected="$this->user->country"></x-single-select>
-        </div>
+                :selected="$this->user->country"
+                wire:model.defer="state.country"
+                ></x-single-select>
+        </div> --}}
 
         {{-- time_zone --}}
-        <div class="col-span-6 sm:col-span-4">
+        {{-- <div class="col-span-6 sm:col-span-4">
             <x-single-select id="time_zone"
                 name="time_zone"
                 label="Time Zone"
-                :options="$timeZones"></x-single-select>
-        </div>
+                :options="$timeZones"
+                :selected="$this->user->time_zone"
+                wire:model.defer="state.time_zone"
+                ></x-single-select>
+        </div> --}}
 
         {{-- IBAN/Swift Code --}}
-        <x-user-text-input name="iban_swift_code"
+        {{-- <x-user-text-input name="iban_swift_code"
             type="text"
             label="IBAN/Swift Code"
             model="state.iban_swift_code"
-            autocomplete="iban_swift_code" />
+            autocomplete="iban_swift_code" /> --}}
+        <div class="col-span-6 mt-4 sm:col-span-4">
+            <x-jet-label for="iban_swift_code"
+                value="{{ __('iban_swift_code') }}" />
+            <input class="rounded"
+                id="iban_swift_code"
+                type="text"
+                wire:model.defer="state.iban_swift_code"
+                autocomplete="iban_swift_code" />
+            <x-jet-input-error class="mt-2"
+                for="iban_swift_code" />
+        </div>
 
         {{-- Out of State coaching --}}
-        <x-user-text-input name="out_of_state_coaching"
+        {{-- <x-user-text-input name="out_of_state_coaching"
             type="text"
             label="Out of State coaching"
             model="state.out_of_state_coaching"
-            autocomplete="out_of_state_coaching" />
+            autocomplete="out_of_state_coaching" /> --}}
+
+        {{-- Out of state coaching --}}
+        <div class="col-span-6 mt-4 sm:col-span-4">
+            <x-jet-label for="out_of_state_coaching"
+                value="{{ __('out_of_state_coaching') }}" />
+            <input class="rounded"
+                id="out_of_state_coaching"
+                type="checkbox"
+                wire:model.defer="state.out_of_state_coaching"
+                autocomplete="out_of_state_coaching" />
+            <x-jet-input-error class="mt-2"
+                for="out_of_state_coaching" />
+        </div>
+
 
         {{-- contact_for_promotionals --}}
         <div class="col-span-6 mt-4 sm:col-span-4">
@@ -348,15 +402,17 @@
         {{-- Account name --}}
         <x-user-text-input name="account_name"
             type="text"
+            id="account_name"
             label="Account name"
-            model="state.account_name"
+            wire:model.defer="state.account_name"
             autocomplete="account_name" />
 
         {{-- Account Number --}}
         <x-user-text-input name="account_number"
             type="text"
+            id="account_number"
             label="Account Number"
-            model="state.account_number"
+            wire:model.state="state.account_number"
             autocomplete="account_number" />
 
         {{-- Routing Number --}}
@@ -373,9 +429,19 @@
             {{ __('Saved.') }}
         </x-jet-action-message>
 
-        <x-jet-button wire:loading.attr="disabled"
+        {{-- <x-jet-button wire:loading.attr="disabled"
             wire:target="photo">
             {{ __('Save') }}
-        </x-jet-button>
+        </x-jet-button> --}}
+
+        <a href="{{ route('therapist.update', ['id' => $this->id]) }}"
+            type="submit"
+            class="w-40 p-2 m-2 text-center transition-all duration-200 ease-in bg-blue-200 rounded-md shadow-md shadow-blue-100 hover:bg-blue-400"
+            wire:loading.attr="disabled"
+            wire:target="photo"
+        >
+            Save
+        </a>
+
     </x-slot>
 </x-jet-form-section>

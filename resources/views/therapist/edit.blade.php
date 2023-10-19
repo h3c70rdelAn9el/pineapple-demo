@@ -15,28 +15,50 @@
             @method('PUT')
 
             {{-- title --}}
-            <x-form-field name="title"
+            {{-- <x-form-field name="title"
                 type="text"
-                label="Title">
+                label="Title"
+                id="title"
+                >
                 {{ $therapist->title }}
-            </x-form-field>
+            </x-form-field> --}}
 
-            {{-- name --}}
-            <x-form-field name="name"
+            <x-form-field id="title"
+                name="title"
                 type="text"
-                label="Name">
+                label="Title"
+                :value="$therapist->title"
+                :placeholder="$therapist->title" />
+            <x-form-field id="name"
+                name="name"
+                type="text"
+                label="Name"
+                :value="$therapist->name"
+                :placeholder="$therapist->name">
                 {{ $therapist->name }}
             </x-form-field>
 
-            {{-- preferred_name --}}
-            <x-form-field name="preferred_name"
+            {{-- <x-form-field id="preferred_name"
+                name="preferred_name"
                 type="text"
-                label="Preferred Name">
+                label="Preferred Name"
+                :value="$therapist->preferred_name" /> --}}
+
+            <x-form-field
+                id="preferred_name"
+                name="preferred_name"
+                type="text"
+                label="Preferred Name"
+                    :value="old('preferred_name', $therapist->preferred_name)"
+
+                :placeholder="$therapist->preferred_name"
+                >
                 {{ $therapist->preferred_name }}
             </x-form-field>
 
             {{-- email --}}
-            <x-form-field name="email"
+            <x-form-field id="email"
+                name="email"
                 type="text"
                 label="Email">
                 {{ $therapist->email }}
@@ -65,56 +87,64 @@
             </div>
 
             {{-- supervisor_name --}}
-            <x-form-field name="supervisor_name"
+            <x-form-field id="supervisor_name"
+                name="supervisor_name"
                 type="text"
                 label="Supervisor Name">
                 {{ $therapist->supervisor_name }}
             </x-form-field>
 
             {{-- street_address --}}
-            <x-form-field name="street_address"
+            <x-form-field id="street_address"
+                name="street_address"
                 type="text"
                 label="Street Address">
                 {{ $therapist->street_address }}
             </x-form-field>
 
             {{-- county_town --}}
-            <x-form-field name="county_town"
+            <x-form-field id="county_town"
+                name="county_town"
                 type="text"
                 label="County/Town">
                 {{ $therapist->county_town }}
             </x-form-field>
 
             {{-- state --}}
-            <x-form-field name="state"
+            <x-form-field id="state"
+                name="state"
                 type="text"
                 label="State">
                 {{ $therapist->state }}
             </x-form-field>
 
             {{-- zip_code --}}
-            <x-form-field name="zip_code"
+            <x-form-field id="zip_code"
+                name="zip_code"
                 type="text"
                 label="Zip Code">
                 {{ $therapist->zip_code }}
             </x-form-field>
 
             {{-- country --}}
-            <x-form-field name="country"
+            <x-form-field id="country"
+                name="country"
                 type="text"
                 label="Country">
                 {{ $therapist->country }}
             </x-form-field>
 
             {{-- time_zone --}}
-            <x-form-field name="time_zone"
+            <x-form-field id="time_zone"
+                name="time_zone"
                 type="text"
                 label="Time Zone">
                 {{ $therapist->time_zone }}
             </x-form-field>
 
             {{-- account_name --}}
-            <x-form-field name="account_name"
+            <x-form-field id="account_name"
+                name="account_name"
                 type="text"
                 label="Account Name">
                 {{ $therapist->account_name }}
@@ -122,28 +152,32 @@
             </x-form-field>
 
             {{-- account_number --}}
-            <x-form-field name="account_number"
+            <x-form-field id="account_number"
+                name="account_number"
                 type="text"
                 label="Account Number">
                 {{ $therapist->account_number }}
             </x-form-field>
 
             {{-- routing_number --}}
-            <x-form-field name="routing_number"
+            <x-form-field id="routing_number"
+                name="routing_number"
                 type="text"
                 label="Routing Number">
                 {{ $therapist->routing_number }}
             </x-form-field>
 
             {{-- iban_swift_code --}}
-            <x-form-field name="iban_swift_code"
+            <x-form-field id="iban_swift_code"
+                name="iban_swift_code"
                 type="text"
                 label="IBAN/Swift Code">
                 {{ $therapist->iban_swift_code }}
             </x-form-field>
 
             {{-- client_spaces --}}
-            <x-form-field name="client_spaces"
+            <x-form-field id="client_spaces"
+                name="client_spaces"
                 type="text"
                 label="Client Spaces">
                 {{ $therapist->client_spaces }}
@@ -163,7 +197,8 @@
             </div>
 
             {{-- out_of_state_coaching --}}
-            <x-form-field name="out_of_state_coaching"
+            <x-form-field id="out_of_state_coaching"
+                name="out_of_state_coaching"
                 type="text"
                 label="Out of State Coaching">
                 {{ $therapist->out_of_state_coaching }}
@@ -253,7 +288,8 @@
             </div>
 
             {{-- session_cost --}}
-            <x-form-field name="session_cost"
+            <x-form-field id="session_cost"
+                name="session_cost"
                 type="text"
                 label="Session Cost">
                 {{ $therapist->session_cost }}
