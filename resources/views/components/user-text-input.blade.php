@@ -4,8 +4,9 @@
         id="{{ $name }}"
         type="{{ $type }}"
         class="mt-1 block w-full"
-        wire:model.defer="{{ $model }}"
+        {{-- wire:model.defer="{{ $model }}" --}}
         autocomplete="{{ $autocomplete }}"
+        {{-- value="{{ old($name, $value) }}" --}}
     />
     <x-jet-input-error for="{{ $name }}" class="mt-2" />
 </div>

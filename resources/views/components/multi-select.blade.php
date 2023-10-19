@@ -41,6 +41,8 @@
                         type="checkbox"
                         :id="$id"
                         :value=" $option "
+                        wire:model='multi'
+                        multiple
                         x-on:click="toggleSelectedOption('{{ $option }}')">
                     {{ $option }}
                 </label><br>
