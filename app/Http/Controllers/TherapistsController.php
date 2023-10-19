@@ -108,6 +108,7 @@ class TherapistsController extends Controller
             'notes' => 'nullable|string|max:255',
         ]);
 
+        // Retrieve the existing therapist from the database
         // $therapist = User::find($id);
         $user = User::find($id);
 

@@ -8,7 +8,8 @@
     $countries = json_decode($countriesJson, true);
 @endphp
 
-<x-jet-form-section submit="updateProfileInformation">
+<x-jet-form-section submit="updateProfileInformation" wire:submit='submitForm'>
+{{-- Todo:  add the submitForm? --}}
     <x-slot name="title">
         {{ __('Profile Information') }}
     </x-slot>
@@ -175,6 +176,7 @@
         {{-- <x-user-text-input id="license"
             name="license"
             type="text"
+            id="license"
             label="License"
             wire:model.defer="state.license"
             autocomplete="license" /> --}}
@@ -189,6 +191,7 @@
         {{-- <x-user-text-input id="expires_at"
             name="expires_at"
             type="date"
+            id="expires_at"
             label="Expires at"
             wire:model.defer="state.expires_at"
             autocomplete="expires_at" /> --}}
@@ -223,6 +226,7 @@
         {{-- <x-user-text-input id="supervisor_name"
             name="supervisor_name"
             type="text"
+            id="supervisor_name"
             label="Supervisor name"
             wire:model.defer="state.supervisor_name"
             autocomplete="supervisor_name" /> --}}
@@ -284,6 +288,7 @@
             </x-form_label>
             <select class="peer mt-2 w-full rounded-md border-b-2 border-blue-200 bg-gray-100 p-3 ring-0"
                 id="state"
+                wire:model.defer="state.state"
                 name="state"
                 type="text"
                 wire:model.defer="state.state">
@@ -365,6 +370,7 @@
         {{-- <x-user-text-input id="zip_code_postal_code"
             name="zip_code_postal_code"
             type="text"
+            id="zip_code_postal_code"
             label="Zip code/Postal code"
             wore:model.defer="state.zip_code_postal_code"
             autocomplete="zip_code_postal_code" /> --}}
@@ -476,6 +482,7 @@
         {{-- <x-user-text-input id="account_name"
             name="account_name"
             type="text"
+            id="account_name"
             label="Account name"
             wire:model.defer="state.account_name"
             autocomplete="account_name" /> --}}
@@ -495,6 +502,7 @@
         {{-- <x-user-text-input id="account_number"
             name="account_number"
             type="text"
+            id="account_number"
             label="Account Number"
             wire:model.state="state.account_number"
             autocomplete="account_number" /> --}}
@@ -535,7 +543,7 @@
             {{ __('Saved.') }}
         </x-jet-action-message>
 
-        <x-jet-button wire:loading.attr="disabled"
+        {{-- <x-jet-button wire:loading.attr="disabled"
             wire:target="photo">
             {{ __('Save') }}
         </x-jet-button>

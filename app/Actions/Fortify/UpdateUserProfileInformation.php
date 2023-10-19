@@ -26,6 +26,7 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
 
     public function update($user, array $input)
     {
+
         Validator::make($input, [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['nullable', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
@@ -103,6 +104,8 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
             }
         }
         */
+
+
 
         if (
             $input['email'] !== $user->email &&
