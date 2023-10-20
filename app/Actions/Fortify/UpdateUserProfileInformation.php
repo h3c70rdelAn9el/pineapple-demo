@@ -10,8 +10,11 @@ use App\Notifications\TherapistProfileUpdated;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Laravel\Fortify\Contracts\UpdatesUserProfileInformation;
 
+
 class UpdateUserProfileInformation implements UpdatesUserProfileInformation
 {
+    protected $redirectTo = 'therapist.update';
+
     /**
      * Validate and update the given user's profile information.
      *
@@ -131,7 +134,13 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
             $user->notify(new TherapistProfileUpdated($user));
 
         }
+        $this->redirectTo = route('therapist.update', ['id' => $user->id]);
+
+        return redirect($this->redirectTo)->with('success', 'Profile updated successfully!');
+
     }
+
+
 
     /**
      * Update the given verified user's profile information.
@@ -141,10 +150,10 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
      * @return void
      */
 
-    public function submitForm()
-    {
-        return redirect()->route('therapist.update');
-    }
+    // public function submitForm()
+    // {
+    //     return redirect()->route('therapist.update');
+    // }
     protected function updateVerifiedUser($user, array $input)
     {
         $user->forceFill([

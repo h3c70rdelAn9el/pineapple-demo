@@ -8,16 +8,20 @@
     $countries = json_decode($countriesJson, true);
 @endphp
 
-<x-jet-form-section submit="updateProfileInformation">
-    <x-slot name="title">
+<div submit="updateProfileInformation">
+    {{-- <x-slot name="title">
         {{ __('Profile Information') }}
-    </x-slot>
+    </x-slot> --}}
 
-    <x-slot name="description">
+    {{-- <x-slot name="description">
         {{ __('Update your account\'s profile information and email address.') }}
-    </x-slot>
+    </x-slot> --}}
 
-    <x-slot name="form">
+    {{-- <x-slot name="form"> --}}
+   <form method="POST" action="{{ route('therapist.update', $id) }}">
+
+  @csrf
+  @method('PUT')
         <!-- Profile Photo -->
         @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
             <div class="col-span-6 sm:col-span-4"
@@ -84,7 +88,11 @@
 
         <div class="col-span-6 sm:col-span-4">
             <x-jet-label for="name"
-                value="{{ __('Name') }}" />
+                {{-- value="{{ __('Name') }}"  --}}
+                {{-- show previous value --}}
+                value="{{ $user->name }}"
+                />
+
             <x-jet-input class="mt-1 block w-full"
                 id="name"
                 type="text"
@@ -107,6 +115,7 @@
             <x-jet-input class="mt-1 block w-full"
                 id="preferred_name"
                 type="text"
+                value="{{ $user->preferred_name }}"
                 wire:model.defer="state.preferred_name"
                 autocomplete="preferred_name" />
             <x-jet-input-error class="mt-2"
@@ -423,26 +432,15 @@
             label="Routing Number"
             model="state.routing_number"
             autocomplete="routing_number" />
-    </x-slot>
+    {{-- </x-slot> --}}
 
-    <x-slot name="actions">
-        <x-jet-action-message class="mr-3"
-            on="saved">
-            {{ __('Saved.') }}
-        </x-jet-action-message>
-
-        {{-- <x-jet-button wire:loading.attr="disabled"
-            wire:target="photo">
-            {{ __('Save') }}
-        </x-jet-button> --}}
-
-        <a class="m-2 w-40 rounded-md bg-blue-200 p-2 text-center shadow-md shadow-blue-100 transition-all duration-200 ease-in hover:bg-blue-400"
+        <button class="m-2 w-40 rounded-md bg-blue-200 p-2 text-center shadow-md shadow-blue-100 transition-all duration-200 ease-in hover:bg-blue-400"
             type="submit"
-            href="{{ route('therapist.update', ['id' => $this->id]) }}"
+            {{-- href="{{ route('therapist.update', ['id' => $this->id]) }}" --}}
             wire:loading.attr="disabled"
             {{-- wire:target="photo" --}}>
             Save
-        </a>
+        </button>
+    </form>
 
-    </x-slot>
-</x-jet-form-section>
+</div>
