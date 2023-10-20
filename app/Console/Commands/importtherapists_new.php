@@ -134,6 +134,7 @@ class importtherapists_new extends Command
                 $user->time_zone = $data[12];
                 $user->county = $data[8];
                 $user->gender = $data[4];
+                $user->preferred_name = $data[2];
                 //$user->clinical_license = $data[9];
                 //$user->state_license_board = $data[10];
                 //$user->annual_contact_about_complaints_uk_date = $data[11];
@@ -152,9 +153,11 @@ class importtherapists_new extends Command
                 $user->quickbooks = $data[25];
                 //$user->dropbox = $data[45];
                 $user->client_extensions = $data[27];
-                //$user->notes = $data[47];
+                $user->notes = $data[28];
                 //$user->covid_fundraise = $data[48];
-
+                $user->session_cost = $data[26];
+                $user->intern = $data[5];
+                $user->supervisor_name = $data[6];
 
                 $user->save();
 
