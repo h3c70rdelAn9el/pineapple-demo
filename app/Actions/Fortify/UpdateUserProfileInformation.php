@@ -116,8 +116,8 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
             ])->save();
 
             if (!$user->isAdmin()) {
-                $admin = User::where('admin', 1)->first();
-                if ($admin) {
+                $admins = User::where('admin', 1)->get();
+                foreach ($admins as $admin) {
                     $admin->notify(new TherapistProfileUpdated($user));
                 }
             }
@@ -169,8 +169,8 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
         ])->save();
 
         if (!$user->isAdmin()) {
-            $admin = User::where('admin', 1)->first();
-            if ($admin) {
+            $admins = User::where('admin', 1)->get();
+            foreach ($admins as $admin) {
                 $admin->notify(new TherapistProfileUpdated($user));
             }
         }
