@@ -10,7 +10,6 @@
     $countries = json_decode($countriesJson, true);
 @endphp
 
-
 <div>
     {{-- <x-slot name="title">
         {{ __('Profile Information') }}
@@ -22,12 +21,11 @@
 
     {{-- <x-slot name="form"> --}}
     <form method="POST"
-        action="{{ route('therapist.update', $id) }}">
-
+        action="{{ route('profile.update') }}">
         @csrf
-        @method('PUT')
+        @method('put')
         <!-- Profile Photo -->
-        @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
+        {{-- @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
             <div class="col-span-6 sm:col-span-4"
                 x-data="{ photoName: null, photoPreview: null }">
                 <!-- Profile Photo File Input -->
@@ -81,371 +79,387 @@
                 <x-jet-input-error class="mt-2"
                     for="photo" />
             </div>
-        @endif
+        @endif --}}
 
-        {{-- name --}}
-        {{-- <x-user-text-input name="name"
-            type="text"
-            label="Name"
-            model="state.name"
-            autocomplete="name" /> --}}
-
-        <div class="col-span-6 sm:col-span-4">
-            <x-jet-label for="name"
-                value="{{ $user->name }}"
-                {{-- value="{{ __('Name') }}"  --}}
-                {{-- show previous value --}} />
-
+        <div>
+            <x-jet-label value="Name" />
             <x-jet-input class="mt-1 block w-full"
                 id="name"
+                name="name"
                 type="text"
+                value="{{ $user->name }}"
                 wire:model.defer="state.name"
                 autocomplete="name" />
             <x-jet-input-error class="mt-2"
                 for="name" />
         </div>
 
-        {{-- preferred name --}}
-        {{-- <x-user-text-input name="preferred_name"
-            type="text"
-            label="Preferred Name"
-            model="state.preferred_name"
-            autocomplete="preferred_name" /> --}}
-
-        <div class="col-span-6 sm:col-span-4">
-            <x-jet-label for="preferred_name"
-                value="{{ __('preferred_name') }}" />
-            <x-jet-input class="mt-1 block w-full"
-                id="preferred_name"
-                type="text"
-                value="{{ $user->preferred_name }}"
-                wire:model.defer="state.preferred_name"
-                autocomplete="preferred_name" />
-            <x-jet-input-error class="mt-2"
-                for="preferred_name" />
-        </div>
-        {{-- gender --}}
-        {{-- <div class="col-span-6 mt-0 sm:col-span-4">
-            <x-multi-select id="gender"
-                name="gender"
-                value="{{ $this->user->gender }}"
-                label="Gender"
-                :options="['Male', 'Female', 'Non-binary', 'Prefer Not To Say']"
-                wire:model="selectedOptions"
-                ></x-multi-select>
-        </div> --}}
-
-        <!-- Email -->
-        <div class="col-span-6 sm:col-span-4">
-            <x-jet-label for="email"
-                value="{{ __('Email') }}" />
+        {{-- email --}}
+        <div>
+            <x-jet-label value="email" />
             <x-jet-input class="mt-1 block w-full"
                 id="email"
+                name="email"
                 type="email"
+                value="{{ $user->email }}"
                 wire:model.defer="state.email" />
             <x-jet-input-error class="mt-2"
                 for="email" />
-
-            @if (Laravel\Fortify\Features::enabled(Laravel\Fortify\Features::emailVerification()) &&
-                    !$this->user->hasVerifiedEmail())
-                <p class="mt-2 text-sm">
-                    {{ __('Your email address is unverified.') }}
-
-                    <button class="text-sm text-gray-600 underline hover:text-gray-900"
-                        type="button"
-                        wire:click.prevent="sendEmailVerification">
-                        {{ __('Click here to re-send the verification email.') }}
-                    </button>
-                </p>
-
-                @if ($this->verificationLinkSent)
-                    <p class="mt-2 text-sm font-medium text-green-600"
-                        v-show="verificationLinkSent">
-                        {{ __('A new verification link has been sent to your email address.') }}
-                    </p>
-                @endif
-            @endif
+        </div>
+        <!--
+            'name',
+        'email',
+        'password',
+        'license',
+        'certificate',
+        'expires_at',
+        'account_name',
+        'account_number',
+        'routing_number',
+        'on_vacation',
+        'clinical_license_verification_portal',
+        'title',
+        'preferred_name',
+        'intern',
+        'supervisor_name',
+        'street_address',
+        'zip_code_postal_code',
+        'iban_swift_code',
+        'contract_signed',
+        'all_documents',
+        'full',
+        'session_cost',
+        'contact_for_promotionals',
+        'number_of_potential_clients',
+        'out_of_state_coaching',
+        'file_upload',
+        'w9',
+        'headshot',
+        'voided_cheque',
+        'bio',
+        'website',
+        'quickbooks',
+        'dropbox',
+        'client_extensions',
+        'notes',
+        'covid_fundraise',
+        'insurance',
+        'signed_documents',
+        'leah_signed',
+        'space_for_new_clients',
+        'admin',
+        'county_town',
+        'country',
+        'state',
+        -->
+        {{-- license --}}
+        <div>
+            <x-jet-label value="License" />
+            <x-jet-input class="mt-1 block w-full"
+                id="license"
+                name="license"
+                type="text"
+                value="{{ $user->license }}"
+                wire:model.defer="state.license" />
+            <x-jet-input-error class="mt-2"
+                for="license" />
         </div>
 
-        {{-- License --}}
-        <x-user-text-input id="license"
-            name="license"
-            type="text"
-            label="License"
-            wire:model.defer="state.license"
-            autocomplete="license" />
+        {{-- certificate --}}
 
-        {{-- Expires at --}}
-        <x-user-text-input id="expires_at"
-            name="expires_at"
-            type="date"
-            label="Expires at"
-            wire:model.defer="state.expires_at"
-            autocomplete="expires_at" />
+        {{-- expires_at --}}
+        {{-- <div>
+                <x-jet-label value="{{ $user->expires_at }}" />
+                <x-jet-input class="mt-1 block w-full"
+                    id="expires_at"
+                    name="expires_at"
+                    type="date"
+                    value="{{ $user->expires_at }}"
+                    wire:model.defer="state.expires_at" />
+                <x-jet-input-error class="mt-2"
+                    for="expires_at" />
+            </div> --}}
 
-        {{-- Bank Information --}}
-        {{-- <div class="border border-purple-400">
-            <h2 class="mb-1 mt-6 text-lg leading-tight text-gray-600">
-                {{ __('Enter Payment Details') }}
-            </h2>
-        </div> --}}
+        {{-- account_name --}}
+        <div>
+            <x-jet-label value="Account Name" />
+            <x-jet-input class="mt-1 block w-full"
+                id="account_name"
+                name="account_name"
+                type="text"
+                value="{{ $user->account_name }}"
+                wire:model.defer="state.account_name" />
+            <x-jet-input-error class="mt-2"
+                for="account_name" />
+        </div>
 
-        {{-- Intern --}}
-        {{-- make a boolean input --}}
-        <div class="col-span-6 mt-4 sm:col-span-4">
-            <x-jet-label for="intern"
-                value="{{ __('Intern') }}" />
-            <input class="rounded"
-                id="intern"
+        {{-- account_number --}}
+        <div>
+            <x-jet-label value="Account Number" />
+            <x-jet-input class="mt-1 block w-full"
+                id="account_number"
+                name="account_number"
+                type="text"
+                value="{{ $user->account_number }}"
+                wire:model.defer="state.account_number" />
+            <x-jet-input-error class="mt-2"
+                for="account_number" />
+        </div>
+
+        {{-- routing_number --}}
+        <div>
+            <x-jet-label value="Routing Number" />
+            <x-jet-input class="mt-1 block w-full"
+                id="routing_number"
+                name="routing_number"
+                type="text"
+                value="{{ $user->routing_number }}"
+                wire:model.defer="state.routing_number" />
+            <x-jet-input-error class="mt-2"
+                for="routing_number" />
+        </div>
+
+        {{-- on_vacation --}}
+        {{-- <div>
+                    <x-jet-label value="On vacation" />
+
+                        <x-jet-input type="checkbox"
+                            id="on_vacation"
+                            name="on_vacation"
+                            value="{{ $user->on_vacation }}"
+                            wire:model.defer="state.on_vacation" />
+                    <x-jet-input-error class="mt-2"
+                        for="on_vacation" />
+                </div> --}}
+
+        {{-- clinical_license_verification_portal --}}
+        <div>
+            <x-jet-label value="Clinical License Verification Portal" />
+            <x-jet-input class="mt-1 block w-full"
+                id="clinical_license_verification_portal"
+                name="clinical_license_verification_portal"
+                type="text"
+                value="{{ $user->clinical_license_verification_portal }}"
+                wire:model.defer="state.clinical_license_verification_portal" />
+            <x-jet-input-error class="mt-2"
+                for="clinical_license_verification_portal" />
+        </div>
+
+        {{-- title --}}
+        <div>
+            <x-jet-label value="Title" />
+            <x-jet-input class="mt-1 block w-full"
+                id="title"
+                name="title"
+                type="text"
+                value="{{ $user->title }}"
+                wire:model.defer="state.title" />
+            <x-jet-input-error class="mt-2"
+                for="title" />
+        </div>
+
+        {{-- preferred_name --}}
+        <div>
+            <x-jet-label value="Preferred Name" />
+            <x-jet-input class="mt-1 block w-full"
+                id="preferred_name"
+                name="preferred_name"
+                type="text"
+                value="{{ $user->preferred_name }}"
+                wire:model.defer="state.preferred_name" />
+            <x-jet-input-error class="mt-2"
+                for="preferred_name" />
+        </div>
+
+        {{-- intern --}}
+        {{-- make a check --}}
+        <div>
+            <x-jet-label value="Intern" />
+            <x-jet-input id="intern"
+                name="intern"
                 type="checkbox"
-                wire:model.defer="state.intern"
-                autocomplete="intern" />
+                value="{{ $user->intern }}"
+                wire:model.defer="state.intern" />
             <x-jet-input-error class="mt-2"
                 for="intern" />
         </div>
 
-        {{-- supervisor name --}}
-        <x-user-text-input id="supervisor_name"
-            name="supervisor_name"
-            type="text"
-            label="Supervisor name"
-            wire:model.defer="state.supervisor_name"
-            autocomplete="supervisor_name" />
-
-        {{-- street address --}}
-        <x-user-text-input id="street_address"
-            name="street_address"
-            type="text"
-            wire:model.defer="state.street_address"
-            label="Street address"
-            autocomplete="street_address" />
-
-        {{-- county/town --}}
-        <x-user-text-input id="county"
-            name="county"
-            type="text"
-            wire:model.defer="state.county"
-            label="County/Town"
-            model="state.county"
-            autocomplete="county" />
-
-        {{-- States --}}
-        <div class="relative col-span-6 mb-4 w-full sm:col-span-4">
-            <x-form_label for="state">
-                State (optional)
-            </x-form_label>
-            <select class="peer mt-2 w-full rounded-md border-b-2 border-blue-200 bg-gray-100 p-3 ring-0"
-                id="state"
-                name="state"
+        {{-- supervisor_name --}}
+        <div>
+            <x-jet-label value="Supervisor Name" />
+            <x-jet-input class="mt-1 block w-full"
+                id="supervisor_name"
+                name="supervisor_name"
                 type="text"
-                wire:model.defer="state.state">
-                <option value=""
-                    disabled
-                    selected
-                    hidden>Select State</option>
-
-                {{-- @foreach ($states as $state)
-                <option value="{{ $state }}">{{ $state }}</option>
-            @endforeach --}}
-                <!-- States -->
-                <option value="Alabama">Alabama</option>
-                <option value="Alaska">Alaska</option>
-                <option value="Arizona">Arizona</option>
-                <option value="Arkansas">Arkansas</option>
-                <option value="California">California</option>
-                <option value="Colorado">Colorado</option>
-                <option value="Connecticut">Connecticut</option>
-                <option value="Delaware">Delaware</option>
-                <option value="Florida">Florida</option>
-                <option value="Georgia">Georgia</option>
-                <option value="Hawaii">Hawaii</option>
-                <option value="Idaho">Idaho</option>
-                <option value="Illinois">Illinois</option>
-                <option value="Indiana">Indiana</option>
-                <option value="Iowa">Iowa</option>
-                <option value="Kansas">Kansas</option>
-                <option value="Kentucky">Kentucky</option>
-                <option value="Louisiana">Louisiana</option>
-                <option value="Maine">Maine</option>
-                <option value="Maryland">Maryland</option>
-                <option value="Massachusetts">Massachusetts</option>
-                <option value="Michigan">Michigan</option>
-                <option value="Minnesota">Minnesota</option>
-                <option value="Mississippi">Mississippi</option>
-                <option value="Missouri">Missouri</option>
-                <option value="Montana">Montana</option>
-                <option value="Nebraska">Nebraska</option>
-                <option value="Nevada">Nevada</option>
-                <option value="New Hampshire">New Hampshire</option>
-                <option value="New Jersey">New Jersey</option>
-                <option value="New Mexico">New Mexico</option>
-                <option value="New York">New York</option>
-                <option value="North Carolina">North Carolina</option>
-                <option value="North Dakota">North Dakota</option>
-                <option value="Ohio">Ohio</option>
-                <option value="Oklahoma">Oklahoma</option>
-                <option value="Oregon">Oregon</option>
-                <option value="Pennsylvania">Pennsylvania</option>
-                <option value="Rhode Island">Rhode Island</option>
-                <option value="South Carolina">South Carolina</option>
-                <option value="South Dakota">South Dakota</option>
-                <option value="Tennessee">Tennessee</option>
-                <option value="Texas">Texas</option>
-                <option value="Utah">Utah</option>
-                <option value="Vermont">Vermont</option>
-                <option value="Virginia">Virginia</option>
-                <option value="Washington">Washington</option>
-                <option value="West Virginia">West Virginia</option>
-                <option value="Wisconsin">Wisconsin</option>
-                <option value="Wyoming">Wyoming</option>
-
-                <!-- U.S. Territories and Others -->
-                <option value="American Samoa">American Samoa</option>
-                <option value="Guam">Guam</option>
-                <option value="Northern Mariana Islands">Northern Mariana Islands</option>
-                <option value="Puerto Rico">Puerto Rico</option>
-                <option value="U.S. Virgin Islands">U.S. Virgin Islands</option>
-                <option value="District Of Columbia">District Of Columbia</option>
-                <option value="Federated States Of Micronesia">Federated States Of Micronesia</option>
-                <option value="Marshall Islands">Marshall Islands</option>
-                <option value="Palau">Palau</option>
-
-            </select>
+                value="{{ $user->supervisor_name }}"
+                wire:model.defer="state.supervisor_name" />
+            <x-jet-input-error class="mt-2"
+                for="supervisor_name" />
         </div>
 
-        {{-- zip code --}}
-        <x-user-text-input id="zip_code_postal_code"
-            name="zip_code_postal_code"
-            type="text"
-            label="Zip code/Postal code"
-            wore:model.defer="state.zip_code_postal_code"
-            autocomplete="zip_code_postal_code" />
-
-        {{-- country --}}
-        {{-- <div class="col-span-6 sm:col-span-4">
-            <x-single-select id="country"
-                name="country"
-                label="Country"
-                :options="$countries"
-                :selected="$this->user->country"
-                wire:model.defer="state.country"
-                ></x-single-select>
-        </div> --}}
-
-        {{-- time_zone --}}
-        {{-- <div class="col-span-6 sm:col-span-4">
-            <x-single-select id="time_zone"
-                name="time_zone"
-                label="Time Zone"
-                :options="$timeZones"
-                :selected="$this->user->time_zone"
-                wire:model.defer="state.time_zone"
-                ></x-single-select>
-        </div> --}}
-
-        {{-- IBAN/Swift Code --}}
-        {{-- <x-user-text-input name="iban_swift_code"
-            type="text"
-            label="IBAN/Swift Code"
-            model="state.iban_swift_code"
-            autocomplete="iban_swift_code" /> --}}
-        <div class="col-span-6 mt-4 sm:col-span-4">
-            <x-jet-label for="iban_swift_code"
-                value="{{ __('iban_swift_code') }}" />
-            <input class="rounded"
-                id="iban_swift_code"
+        {{-- street_address --}}
+        <div>
+            <x-jet-label value="Street Address" />
+            <x-jet-input class="mt-1 block w-full"
+                id="street_address"
+                name="street_address"
                 type="text"
-                wire:model.defer="state.iban_swift_code"
-                autocomplete="iban_swift_code" />
+                value="{{ $user->street_address }}"
+                wire:model.defer="state.street_address" />
+            <x-jet-input-error class="mt-2"
+                for="street_address" />
+        </div>
+
+        {{-- zip_code_postal_code --}}
+        <div>
+            <x-jet-label value="Zip Code Postal Code" />
+            <x-jet-input class="mt-1 block w-full"
+                id="zip_code_postal_code"
+                name="zip_code_postal_code"
+                type="text"
+                value="{{ $user->zip_code_postal_code }}"
+                wire:model.defer="state.zip_code_postal_code" />
+            <x-jet-input-error class="mt-2"
+                for="zip_code_postal_code" />
+        </div>
+
+        {{-- iban_swift_code --}}
+        <div>
+            <x-jet-label value="IBAN Swift Code" />
+            <x-jet-input class="mt-1 block w-full"
+                id="iban_swift_code"
+                name="iban_swift_code"
+                type="text"
+                value="{{ $user->iban_swift_code }}"
+                wire:model.defer="state.iban_swift_code" />
             <x-jet-input-error class="mt-2"
                 for="iban_swift_code" />
         </div>
 
-        {{-- Out of State coaching --}}
-        {{-- <x-user-text-input name="out_of_state_coaching"
-            type="text"
-            label="Out of State coaching"
-            model="state.out_of_state_coaching"
-            autocomplete="out_of_state_coaching" /> --}}
-
-        {{-- Out of state coaching --}}
-        <div class="col-span-6 mt-4 sm:col-span-4">
-            <x-jet-label for="out_of_state_coaching"
-                value="{{ __('out_of_state_coaching') }}" />
-            <input class="rounded"
-                id="out_of_state_coaching"
-                type="checkbox"
-                wire:model.defer="state.out_of_state_coaching"
-                autocomplete="out_of_state_coaching" />
-            <x-jet-input-error class="mt-2"
-                for="out_of_state_coaching" />
-        </div>
+        {{-- full --}}
+        {{-- <div>
+                    <x-jet-label value="Full" />
+                    <x-jet-input
+                        id="full"
+                        name="full"
+                        type="checkbox"
+                        value="{{ $user->full }}"
+                        wire:model.defer="state.full" />
+                    <x-jet-input-error class="mt-2"
+                        for="full" />
+                </div> --}}
 
         {{-- contact_for_promotionals --}}
-        <div class="col-span-6 mt-4 sm:col-span-4">
-            <x-jet-label for="contact_for_promotionals"
-                value="{{ __('Contact for promotionals') }}" />
-            <input class="rounded"
-                id="contact_for_promotionals"
+        <div>
+            <x-jet-label value="Contact For Promotionals" />
+            <x-jet-input id="contact_for_promotionals"
+                name="contact_for_promotionals"
                 type="checkbox"
-                wire:model.defer="state.contact_for_promotionals"
-                autocomplete="contact_for_promotionals" />
+                value="{{ $user->contact_for_promotionals }}"
+                wire:model.defer="state.contact_for_promotionals" />
             <x-jet-input-error class="mt-2"
                 for="contact_for_promotionals" />
         </div>
 
-        {{-- on_vacation --}}
-        <div class="col-span-6 mt-4 sm:col-span-4">
-            <x-jet-label for="on_vacation"
-                value="{{ __('On Vacation') }}" />
-            <input class="rounded"
-                id="on_vacation"
-                type="checkbox"
-                wire:model.defer="state.on_vacation"
-                autocomplete="on_vacation" />
+        {{-- number_of_potential_clients --}}
+        <div>
+            <x-jet-label value="Number Of Potential Clients" />
+            <x-jet-input class="mt-1 block w-full"
+                id="number_of_potential_clients"
+                name="number_of_potential_clients"
+                type="numerical"
+                value="{{ $user->number_of_potential_clients }}"
+                wire:model.defer="state.number_of_potential_clients" />
             <x-jet-input-error class="mt-2"
-                for="on_vacation" />
+                for="number_of_potential_clients" />
         </div>
 
-        <div class="col-span-6 mt-4 sm:col-span-4">
-            <p>Bank Information</p>
-            <div class="mx-auto mt-2 w-2/3 border border-gray-300">
-            </div>
+        {{-- out_of_state_coaching --}}
+        <div>
+            <x-jet-label value="Out Of State Coaching" />
+            <x-jet-input id="out_of_state_coaching"
+                name="out_of_state_coaching"
+                type="checkbox"
+                value="{{ $user->out_of_state_coaching }}"
+                wire:model.defer="state.out_of_state_coaching" />
+            <x-jet-input-error class="mt-2"
+                for="out_of_state_coaching" />
         </div>
 
-        {{-- Account name --}}
-        <x-user-text-input id="account_name"
-            name="account_name"
-            type="text"
-            label="Account name"
-            wire:model.defer="state.account_name"
-            autocomplete="account_name" />
+        {{-- state --}}
+        <div>
+            <x-jet-label value="State" />
+            <x-jet-input class="mt-1 block w-full"
+                id="state"
+                name="state"
+                type="text"
+                value="{{ $user->state }}"
+                wire:model.defer="state.state" />
+            <x-jet-input-error class="mt-2"
+                for="state" />
+        </div>
 
-        {{-- Account Number --}}
-        <x-user-text-input id="account_number"
-            name="account_number"
-            type="text"
-            label="Account Number"
-            wire:model.state="state.account_number"
-            autocomplete="account_number" />
+        {{-- country --}}
+        <div>
+            <x-jet-label value="Country" />
+            <x-jet-input class="mt-1 block w-full"
+                id="country"
+                name="country"
+                type="text"
+                value="{{ $user->country }}"
+                wire:model.defer="state.country" />
+            <x-jet-input-error class="mt-2"
+                for="country" />
+        </div>
 
-        {{-- Routing Number --}}
-        <x-user-text-input name="routing_number"
-            type="text"
-            label="Routing Number"
-            model="state.routing_number"
-            autocomplete="routing_number" />
-        {{-- </x-slot> --}}
+        {{-- county_town --}}
+        <div>
+            <x-jet-label value="County Town" />
+            <x-jet-input class="mt-1 block w-full"
+                id="county_town"
+                name="county_town"
+                type="text"
+                value="{{ $user->county_town }}"
+                wire:model.defer="state.county_town" />
+            <x-jet-input-error class="mt-2"
+                for="county_town" />
+        </div>
 
-        <button
-            class="m-2 w-40 rounded-md bg-blue-200 p-2 text-center shadow-md shadow-blue-100 transition-all duration-200 ease-in hover:bg-blue-400"
-            type="submit"
-            {{-- href="{{ route('therapist.update', ['id' => $this->id]) }}" --}}
-            wire:loading.attr="disabled"
-            {{-- wire:target="photo" --}}
-            >
-            Save
-        </button>
+        {{-- space for new clients --}}
+        <div>
+            <x-jet-label value="Space For New Clients" />
+            {{-- make a numberical input --}}
+            <x-jet-input class="mt-1 block w-full"
+                id="space_for_new_clients"
+                name="space_for_new_clients"
+                type="numerical"
+                value="{{ $user->space_for_new_clients }}"
+                wire:model.defer="state.space_for_new_clients" />
+            <x-jet-input-error class="mt-2"
+                for="space_for_new_clients" />
+        </div>
+
+        {{-- notes --}}
+        {{-- make a text area --}}
+        <div>
+            <x-jet-label value="Notes" />
+            <textarea class="mt-1 block w-full"
+                id="notes"
+                name="notes"
+                type="text"
+                value="{{ $user->notes }}">
+        </textarea>
+
+            {{-- website --}}
+
+            <button
+                class="m-2 w-40 rounded-md bg-blue-200 p-2 text-center shadow-md shadow-blue-100 transition-all duration-200 ease-in hover:bg-blue-400"
+                type="submit"
+                {{-- href="{{ route('therapist.update', ['id' => $this->id]) }}" --}}
+                {{-- wire:loading.attr="disabled" --}}
+                {{-- wire:target="photo" --}}>
+                Save
+            </button>
     </form>
 
 </div>
