@@ -41,10 +41,10 @@
 
     <div>
         <div class="mx-auto max-w-7xl py-10 sm:px-6 lg:px-8">
-            @if (Laravel\Fortify\Features::canUpdateProfileInformation())
+            {{-- @if (Laravel\Fortify\Features::canUpdateProfileInformation())
             @livewire('profile.update-profile-information-form', ['user' => $user])
             <x-jet-section-border />
-            @endif
+            @endif --}}
 
             {{-- @livewire('profile.update-profile-information.form', ['user' => $user]) --}}
 
@@ -56,6 +56,12 @@
                 :therapist="$therapist"
                 :id="$id"
             /> --}}
+
+            <x-profile-update-form
+                :user="$user"
+                :therapist="$therapist"
+                :id="$id"
+            />
 
 
 

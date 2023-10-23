@@ -1,12 +1,13 @@
 <?php
 
-use App\Http\Controllers\SearchController;
 use App\Models\TherapySession;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\FileUploadController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\ClientController;
+use App\Http\Controllers\SearchController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\FileUploadController;
 use App\Http\Controllers\TherapistsController;
 use App\Http\Controllers\TherapySessionController;
 
@@ -77,6 +78,7 @@ Route::middleware([
     // Route::put('file-update/{id}', 'App\Http\Controllers\FileUploadController@update')->name('fileUpdate');
     // Route::get('file-edit/{id}', [FileUploadController::class, 'edit'])->name('fileEdit');
 
+    Route::put('/profile/update', [UserController::class, 'updateUserProfile'])->name('profile.update');
 
     Route::get('/therapist/{id}/forms/', [FileUploadController::class, 'index'])->name('therapist.forms');
     Route::get('/therapist/forms/{therapist}', [FileUploadController::class, 'index'])->name('therapist.forms');
