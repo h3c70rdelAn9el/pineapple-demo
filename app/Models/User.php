@@ -78,8 +78,11 @@ class User extends Authenticatable
         'admin',
         'county_town',
         'country',
-
+        'state',
     ];
+
+    // tried guarded and it didn't work
+    // protected $guarded = [];
 
     /**
      * The attributes that should be hidden for serialization.
