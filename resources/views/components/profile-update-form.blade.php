@@ -1,3 +1,5 @@
+{{-- tried making this file as an extra form for user. didn't work --}}
+
 @php
     // TODO:  IS THIS OKAY?
     $timeZonesJson = file_get_contents(resource_path('json/time_zones.json'));
@@ -8,7 +10,8 @@
     $countries = json_decode($countriesJson, true);
 @endphp
 
-<div submit="updateProfileInformation">
+
+<div>
     {{-- <x-slot name="title">
         {{ __('Profile Information') }}
     </x-slot> --}}
@@ -18,10 +21,11 @@
     </x-slot> --}}
 
     {{-- <x-slot name="form"> --}}
-   <form method="POST" action="{{ route('therapist.update', $id) }}">
+    <form method="POST"
+        action="{{ route('therapist.update', $id) }}">
 
-  @csrf
-  @method('PUT')
+        @csrf
+        @method('PUT')
         <!-- Profile Photo -->
         @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
             <div class="col-span-6 sm:col-span-4"
@@ -88,10 +92,9 @@
 
         <div class="col-span-6 sm:col-span-4">
             <x-jet-label for="name"
-                {{-- value="{{ __('Name') }}"  --}}
-                {{-- show previous value --}}
                 value="{{ $user->name }}"
-                />
+                {{-- value="{{ __('Name') }}"  --}}
+                {{-- show previous value --}} />
 
             <x-jet-input class="mt-1 block w-full"
                 id="name"
@@ -432,13 +435,15 @@
             label="Routing Number"
             model="state.routing_number"
             autocomplete="routing_number" />
-    {{-- </x-slot> --}}
+        {{-- </x-slot> --}}
 
-        <button class="m-2 w-40 rounded-md bg-blue-200 p-2 text-center shadow-md shadow-blue-100 transition-all duration-200 ease-in hover:bg-blue-400"
+        <button
+            class="m-2 w-40 rounded-md bg-blue-200 p-2 text-center shadow-md shadow-blue-100 transition-all duration-200 ease-in hover:bg-blue-400"
             type="submit"
             {{-- href="{{ route('therapist.update', ['id' => $this->id]) }}" --}}
             wire:loading.attr="disabled"
-            {{-- wire:target="photo" --}}>
+            {{-- wire:target="photo" --}}
+            >
             Save
         </button>
     </form>

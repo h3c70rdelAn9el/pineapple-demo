@@ -2,6 +2,7 @@
 
 namespace App\Actions\Fortify;
 
+use App\Http\Controllers\TherapistsController;
 use App\Models\User;
 use App\Models\FileUpload;
 use Illuminate\Validation\Rule;
@@ -13,7 +14,7 @@ use Laravel\Fortify\Contracts\UpdatesUserProfileInformation;
 
 class UpdateUserProfileInformation implements UpdatesUserProfileInformation
 {
-    protected $redirectTo = 'therapist.update';
+
 
     /**
      * Validate and update the given user's profile information.
@@ -25,38 +26,57 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
 
     public function update($user, array $input)
     {
-
         Validator::make($input, [
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
+            'email' => ['nullable', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
             'photo' => ['nullable', 'mimes:jpg,jpeg,png', 'max:1024'],
+            'admin' => ['nullable', 'boolean'],
             'license' => ['nullable', 'string', 'max:255'],
             'expires_at' => ['nullable', 'date'],
             'account_name' => ['nullable', 'string', 'max:255'],
             'account_number' => ['nullable', 'string', 'max:255'],
-            'on_vacation' => ['nullable', 'boolean'],
-            'certificate' => ['nullable', 'mimes:pdf,jpg,jpeg,png', 'max:1024'],
-            'w9' => ['nullable', 'mimes:pdf,jpg,jpeg,png', 'max:1024'],
-            //'file_upload' => ['nullable', 'mimes:pdf,jpg,jpeg,png', 'max:1024'],
-            'routing_number' => ['nullable', 'string', 'max:255'],
-            'clinical_license_verification_portal' => ['nullable', 'string', 'max:255'],
-            'title' => ['nullable', 'string', 'max:255'],
-            'preferred_name' => ['nullable', 'string', 'max:255'],
-            'intern' => ['nullable', 'boolean'],
-            'supervisor_name' => ['nullable', 'string', 'max:255'],
-            'street_address' => ['nullable', 'string', 'max:255'],
-            'zip_code_postal_code' => ['nullable', 'string', 'max:255'],
-            'county' => ['nullable', 'string', 'max:255'],
-            'country' => ['nullable', 'string', 'max:255'],
-            'time_zone' => ['nullable', 'string', 'max:255'],
-            'iban_swift_code' => ['nullable', 'string', 'max:255'],
-            'contract_signed' => ['nullable', 'boolean'],
+            'active-status' => ['nullable', 'boolean'],
             'all_documents' => ['nullable', 'string', 'max:255'],
-            'full' => ['nullable', 'boolean'],
-            'session_cost' => ['nullable', 'numeric'],
+            'annual_contact_about_complaints_uk_date' => ['boolean', 'nullable'],
+            'avatar' => ['nullable', 'string', 'max:255'],
+            'bio' => ['nullable', 'string', 'max:255'],
+            'certificate' => ['nullable', 'mimes:pdf,jpg,jpeg,png', 'max:1024'],
+            'client_extensions' => ['nullable', 'string', 'max:255'],
+            'clinical_license' => ['nullable', 'boolean'],
+            'clinical_license_verification_portal' => ['nullable', 'string', 'max:255'],
             'contact_for_promotionals' => ['nullable', 'boolean'],
-            'number_of_potential_clients' => ['nullable', 'numeric'],
+            'country' => ['nullable', 'string', 'max:255'],
+            'county_town' => ['nullable', 'string', 'max:255'],
+            'dropbox' => ['nullable', 'boolean'],
+            'full' => ['nullable', 'boolean'],
+            'gender' => ['nullable', 'string', 'max:255'],
+            'headshot' => ['nullable', 'boolean'],
+            'iban_swift_code' => ['nullable', 'string', 'max:255'],
+            'insurance' => ['nullable', 'boolean'],
+            'intern' => ['nullable', 'boolean'],
+            'leah_signed' => ['nullable', 'boolean'],
             'out_of_state_coaching' => ['nullable', 'boolean'],
+            'preferred_name' => ['nullable', 'string', 'max:255'],
+            'quickbooks' => ['nullable', 'boolean'],
+            'registered' => ['nullable', 'boolean'],
+            'response' => ['nullable', 'boolean'],
+            'routing_number' => ['nullable', 'string', 'max:255'],
+            'session_cost' => ['nullable', 'numeric'],
+            'signed_documents' => ['nullable', 'boolean'],
+            'space_for_new_clients' => ['nullable', 'boolean'],
+            'state' => ['nullable', 'string', 'max:255'],
+            'state_license_board' => ['nullable', 'string', 'max:255'],
+            'street_address' => ['nullable', 'string', 'max:255'],
+            'supervisor_name' => ['nullable', 'string', 'max:255'],
+            'time_zone' => ['nullable', 'string', 'max:255'],
+            'title' => ['nullable', 'string', 'max:255'],
+            'voided_cheque' => ['nullable', 'boolean'],
+            'w9' => ['nullable', 'mimes:pdf,jpg,jpeg,png', 'max:1024'],
+            'website' => ['nullable', 'boolean'],
+            'zip_code_postal_code' => ['nullable', 'string', 'max:255'],
+            'contract_signed' => ['nullable', 'boolean'],
+            'number_of_potential_clients' => ['nullable', 'numeric'],
+            'file_upload' => ['nullable', 'mimes:pdf,jpg,jpeg,png', 'max:1024'],
         ])->validateWithBag('updateProfileInformation');
 
 
@@ -84,8 +104,6 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
         }
         */
 
-
-
         if (
             $input['email'] !== $user->email &&
             $user instanceof MustVerifyEmail
@@ -93,35 +111,55 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
             $this->updateVerifiedUser($user, $input);
         } else {
             $user->forceFill([
-                'name' => $input['name'],
-                'email' => $input['email'],
-                'license' => $input['license'],
-                'expires_at' => $input['expires_at'],
-                'account_name' => $input['account_name'],
-                'account_number' => $input['account_number'],
-                'on_vacation' => $input['on_vacation'],
-                'certificate' => $input['certificate'],
-                'w9' => $input['w9'],
-                //'file_upload' => $input['file_upload'],
-                'routing_number' => $input['routing_number'],
-                'clinical_license_verification_portal' => $input['clinical_license_verification_portal'],
-                'title' => $input['title'],
-                'preferred_name' => $input['preferred_name'],
-                'intern' => $input['intern'],
-                'supervisor_name' => $input['supervisor_name'],
-                'street_address' => $input['street_address'],
-                'zip_code_postal_code' => $input['zip_code_postal_code'],
-                'county' => $input['county'] ?? '',
-                'country' => $input['country'],
-                'time_zone' => $input['time_zone'],
-                'iban_swift_code' => $input['iban_swift_code'],
-                'contract_signed' => $input['contract_signed'],
-                // 'all_documents' => $input['all_documents'],
-                'full' => $input['full'],
-                'session_cost' => $input['session_cost'],
-                'contact_for_promotionals' => $input['contact_for_promotionals'],
-                'number_of_potential_clients' => $input['number_of_potential_clients'],
-                'out_of_state_coaching' => $input['out_of_state_coaching'],
+                "account_name" => $input['account_name'],
+                "account_number" => $input['account_number'],
+                "active_status" => $input['active_status'],
+                "admin" => $input['admin'],
+                "all_documents" => $input['all_documents'],
+                "annual_contact_about_complaints_uk_date" => $input['annual_contact_about_complaints_uk_date'],
+                "avatar" => $input['avatar'],
+                "bio" => $input['bio'],
+                "certificate" => $input['certificate'],
+                "client_extensions" => $input['client_extensions'],
+                "clinical_license" => $input['clinical_license'],
+                "clinical_license_verification_portal" => $input['clinical_license_verification_portal'],
+                "contact_for_promotionals" => $input['contact_for_promotionals'],
+                "country" => $input['country'],
+                "county_town" => $input['county_town'],
+                "dropbox" => $input['dropbox'],
+                "email" => $input['email'],
+                "expires_at" => $input['expires_at'],
+                "full" => $input['full'],
+                "gender" => $input["gender"],
+                "headshot" => $input['headshot'],
+                "iban_swift_code" => $input['iban_swift_code'],
+                "insurance" => $input['insurance'],
+                "intern" => $input['intern'],
+                "leah_signed" => $input['leah_signed'],
+                "license" => $input['license'],
+                "name" => $input['name'],
+                "out_of_state_coaching" => $input['out_of_state_coaching'],
+                "preferred_name" => $input['preferred_name'],
+                "quickbooks" => $input['quickbooks'],
+                "registered" => $input['registered'],
+                "response" => $input['response'],
+                "routing_number" => $input['routing_number'],
+                "session_cost" => $input['session_cost'],
+                "signed_documents" => $input['signed_documents'],
+                "space_for_new_clients" => $input['space_for_new_clients'],
+                "state" => $input['state'],
+                "state_license_board" => $input['state_license_board'],
+                "street_address" => $input['street_address'],
+                "supervisor_name" => $input['supervisor_name'],
+                "time_zone" => $input['time_zone'],
+                "title" => $input['title'],
+                "voided_cheque" => $input['voided_cheque'],
+                "w9" => $input['w9'],
+                "website" => $input['website'],
+                "zip_code_postal_code" => $input['zip_code_postal_code'],
+                "contract_signed" => $input['contract_signed'],
+                "number_of_potential_clients" => $input['number_of_potential_clients'],
+                "file_upload" => $input['file_upload'],
             ])->save();
 
             if (!$user->isAdmin()) {
@@ -134,10 +172,6 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
             $user->notify(new TherapistProfileUpdated($user));
 
         }
-        $this->redirectTo = route('therapist.update', ['id' => $user->id]);
-
-        return redirect($this->redirectTo)->with('success', 'Profile updated successfully!');
-
     }
 
 
@@ -150,42 +184,58 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
      * @return void
      */
 
-    // public function submitForm()
-    // {
-    //     return redirect()->route('therapist.update');
-    // }
     protected function updateVerifiedUser($user, array $input)
     {
         $user->forceFill([
-            'name' => $input['name'],
-            'email' => $input['email'],
-            'email_verified_at' => null,
-            'on_vacation' => $input['on_vacation'],
-            'license' => $input['license'],
-            'expires_at' => $input['expires_at'],
             'account_name' => $input['account_name'],
             'account_number' => $input['account_number'],
-            'certificate' => $input['certificate'],
-            'w9' => $input['w9'],
-            //'file_upload' => $input['file_upload'],
-            'routing_number' => $input['routing_number'],
-            'clinical_license_verification_portal' => $input['clinical_license_verification_portal'],
-            'title' => $input['title'],
-            'preferred_name' => $input['preferred_name'],
-            'intern' => $input['intern'],
-            'supervisor_name' => $input['supervisor_name'],
-            'street_address' => $input['street_address'],
-            'zip_code_postal_code' => $input['zip_code_postal_code'],
-            'county_town' => $input['county_town'],
-            'country' => $input['country'],
-            'time_zone' => $input['time_zone'],
-            'iban_swift_code' => $input['iban_swift_code'],
-            'contract_signed' => $input['contract_signed'],
+            'active_status' => $input['active_status'],
+            'admin' => $input['admin'],
             'all_documents' => $input['all_documents'],
-            'full' => $input['full'],
-            'session_cost' => $input['session_cost'],
+            'annual_contact_about_complaints_uk_date' => $input['annual_contact_about_complaints_uk_date'],
+            'avatar' => $input['avatar'],
+            'bio' => $input['bio'],
+            'certificate' => $input['certificate'],
+            'client_extensions' => $input['client_extensions'],
+            'clinical_license' => $input['clinical_license'],
+            'clinical_license_verification_portal' => $input['clinical_license_verification_portal'],
             'contact_for_promotionals' => $input['contact_for_promotionals'],
+            'country' => $input['country'],
+            'county_town' => $input['county_town'],
+            'dropbox' => $input['dropbox'],
+            'email' => $input['email'],
+            'expires_at' => $input['expires_at'],
+            'full' => $input['full'],
+            'gender' => $input['gender'],
+            'headshot' => $input['headshot'],
+            'iban_swift_code' => $input['iban_swift_code'],
+            'insurance' => $input['insurance'],
+            'intern' => $input['intern'],
+            'leah_signed' => $input['leah_signed'],
+            'license' => $input['license'],
+            'name' => $input['name'],
+            'out_of_state_coaching' => $input['out_of_state_coaching'],
+            'preferred_name' => $input['preferred_name'],
+            'quickbooks' => $input['quickbooks'],
+            'registered' => $input['registered'],
+            'response' => $input['response'],
+            'routing_number' => $input['routing_number'],
+            'session_cost' => $input['session_cost'],
+            'signed_documents' => $input['signed_documents'],
+            'space_for_new_clients' => $input['space_for_new_clients'],
+            'state' => $input['state'],
+            'state_license_board' => $input['state_license_board'],
+            'street_address' => $input['street_address'],
+            'supervisor_name' => $input['supervisor_name'],
+            'time_zone' => $input['time_zone'],
+            'title' => $input['title'],
+            'voided_cheque' => $input['voided_cheque'],
+            'w9' => $input['w9'],
+            'website' => $input['website'],
+            'zip_code_postal_code' => $input['zip_code_postal_code'],
+            'contract_signed' => $input['contract_signed'],
             'number_of_potential_clients' => $input['number_of_potential_clients'],
+            'file_upload' => $input['file_upload'],
         ])->save();
 
         if (!$user->isAdmin()) {
@@ -194,8 +244,6 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
                 $admin->notify(new TherapistProfileUpdated($user));
             }
         }
-
-
 
         $user->sendEmailVerificationNotification();
     }
