@@ -16,9 +16,11 @@ class TherapistFileUploaded extends Notification
      *
      * @return void
      */
-    public function __construct()
+    protected $user;
+
+    public function __construct($user)
     {
-        //
+        $this->user = $user;
     }
 
     /**
@@ -42,7 +44,9 @@ class TherapistFileUploaded extends Notification
     {
         return (new MailMessage)
             ->line('A therapist has uploaded a new file.')
-            ->action('View Therapist', url('/therapist'));
+            ->line('Therapist Name: ' . $this->user->name)
+            ->line('Therapist ID: ' . $this->user->id)
+            ->action('View Therapist', url('/therapist/' .  $this->user->id));
     }
 
     /**
