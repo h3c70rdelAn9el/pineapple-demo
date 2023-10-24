@@ -111,13 +111,11 @@ class TherapistsController extends Controller
         // $therapist = User::find($id);
         $user = User::find($id);
 
-
-        // // Update the therapist's record in the database
-        // $therapist->update($mergedData);
-
-        foreach ($validatedData as $key => $value) {
-            if (!is_null($value)) {
-                $user->$key = $value;
+        if ($user->admin == 1) {
+            unset($validatedData['full']);
+        } else {
+            if ($validatedData['space_for_new_clients'] == 0) {
+                $validatedData['full'] = 1;
             }
         }
 
