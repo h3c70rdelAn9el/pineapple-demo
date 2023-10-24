@@ -102,7 +102,7 @@ class TherapistsController extends Controller
         // $form = $therapist->therapist;
         $user = User::find($id);
 
-        if ($user == 1) {
+        if ($user->admin == 1) {
             unset($validatedData['full']);
         } else {
             if ($validatedData['space_for_new_clients'] == 0) {
