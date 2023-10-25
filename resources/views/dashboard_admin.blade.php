@@ -4,6 +4,14 @@
             {{ $user->name }}
         </x-container-header>
 
+        @if($user->admin==1)
+        <div class="flex flex-row pt-2 ml-7">
+            <p class="ml-2">
+                Admin Priveleges
+            </p>
+        </div>
+        @endif
+
         {{-- <div class="flex flex-row pt-2 ml-7">
             <p class="ml-2">
                 {{ $user->on_vacation ? 'On Vacation' : 'Available' }}

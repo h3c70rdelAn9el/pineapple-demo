@@ -47,7 +47,7 @@ class TherapistsController extends Controller
     public function edit($id)
     {
         $user = auth()->user();
-        if ($user && $user->admin === 1) {
+        if ($user && $user->admin == 1) {
 
 
             $therapist = User::find($id);
