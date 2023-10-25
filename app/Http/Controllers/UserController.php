@@ -51,7 +51,7 @@ class UserController extends Controller
         $validated = $request->validate([
             'name' => 'nullable|string|max:255',
             // 'gender' => 'nullable|string|max:255',
-            'selectedGenders' => 'nullable|array',
+            // 'selectedGenders' => 'nullable|array',
             'email' => 'nullable|string|email|max:255',
             'license' => 'nullable|string|max:255',
             'certificate' => 'nullable|string|max:255',
@@ -98,7 +98,11 @@ class UserController extends Controller
 
         ]);
 
-        $user->update([$validated, 'gender' => implode(', ', $selectedGenders)]);
+        // $user->update([$validated, 'gender' => implode(', ', $selectedGenders)]);
+        $user->fill($validated);
+        $user->gender = implode(', ', $selectedGenders);
+        $user->save();
+
         // $genderString = implode(',', $user->gender);
 
         // $genderArray = unserialize($user->gender);
