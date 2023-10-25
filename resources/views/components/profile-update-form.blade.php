@@ -4,7 +4,7 @@
     $timeZones = json_decode($timeZonesJson, true);
     $statesJson = file_get_contents(resource_path('json/states.json'));
     $states = json_decode($statesJson, true);
-    $countriesJson = file_get_contents(resource_path('json/countries.json'));
+    $countriesJson = file_get_contents(public_path('json/countries.json'));
     $countries = json_decode($countriesJson, true);
 
 
@@ -12,7 +12,6 @@
     $statesData = json_decode($statesJson, true);
     $states = $statesData['states'];
 @endphp
-
 
 <div>
     <form method="POST"
@@ -98,16 +97,7 @@
     </select>
     <x-jet-input-error class="mt-2" for="state" />
 </div> --}}
-<div>
-    <x-jet-label value="State  (Optional)" />
-    <select id="state" name="state" class="mt-1 block w-full rounded-md border border-blue-300 bg-gray-100">
-        <option value="">Select a state &nbsp &nbsp &nbsp(selected:{{ $user->state }})</option>
-        @foreach($states as $state)
-            <option value="{{ $state }}">{{ $state }}</option>
-        @endforeach
-    </select>
-    <x-jet-input-error class="mt-2" for="state" />
-</div>
+
 
 
         {{-- preferred_name --}}
@@ -416,17 +406,6 @@
                 for="out_of_state_coaching" />
         </div>
 
-
-
-
-        {{-- <div>
-    <x-jet-label for="contact_for_promotionals">Contact for Promotionals</x-jet-label>
-    <x-jet-input id="contact_for_promotionals"
-        name="contact_for_promotionals"
-        type="checkbox"
-        {{ $user->contact_for_promotionals ? 'checked' : '' }}>
-</div> --}}
-
         {{-- number_of_potential_clients --}}
         <div>
             <x-jet-label value="Number Of Potential Clients" />
@@ -442,24 +421,34 @@
 
 
         {{-- state --}}
+        <div>
+    <x-jet-label value="State  (Optional)" />
+    <select id="state" name="state" class="mt-1 block w-full rounded-md border border-blue-300 bg-gray-100">
+        <option value="">Select state &nbsp &nbsp &nbsp(selected:{{ $user->state }})</option>
+        @foreach($states as $state)
+            <option value="{{ $state }}">{{ $state }}</option>
+        @endforeach
+    </select>
+    <x-jet-input-error class="mt-2" for="state" />
+</div>
 
 
         {{-- country --}}
         <div>
             <x-jet-label value="Country" />
-            <x-jet-input class="mt-1 block w-full"
-                id="country"
-                name="country"
-                type="text"
-                value="{{ $user->country }}"
-                wire:model.defer="state.country" />
+                <select name="country" id="country" class="mt-1 block w-full rounded-md border border-blue-300 bg-gray-100">
+                    <option value="">Select country &nbsp &nbsp &nbsp(selected:{{ $user->country }})</option>
+                    @foreach ($countries as $country)
+                        <option value="{{ $country['name'] }}">{{ $country['name'] }}</option>
+                    @endforeach
+                </select>
             <x-jet-input-error class="mt-2"
                 for="country" />
         </div>
 
         {{-- county_town --}}
         <div>
-            <x-jet-label value="County Town" />
+            <x-jet-label value="County/Town" />
             <x-jet-input class="mt-1 block w-full"
                 id="county_town"
                 name="county_town"
@@ -470,23 +459,11 @@
                 for="county_town" />
         </div>
 
-        {{-- space for new clients --}}
-        <div>
-            <x-jet-label value="Space For New Clients" />
-            <x-jet-input class="mt-1 block w-full"
-                id="space_for_new_clients"
-                name="space_for_new_clients"
-                type="numeric"
-                value="{{ $user->space_for_new_clients }}"
-                wire:model.defer="state.space_for_new_clients" />
-            <x-jet-input-error class="mt-2"
-                for="space_for_new_clients" />
-        </div>
 
         {{-- notes --}}
         <div>
             <x-jet-label value="Notes" />
-            <textarea class="mt-1 block w-full text-gray-600"
+            <textarea class="mt-1 block w-full text-gray-600 bg-gray-100 rounded-md"
                 id="notes"
                 name="notes"
                 type="text">
@@ -495,14 +472,14 @@
         </div>
 
 
-        <button
-            class="m-2 w-40 rounded-md bg-blue-200 p-2 text-center shadow-md shadow-blue-100 transition-all duration-200 ease-in hover:bg-blue-400"
+        <x-jet-button
+            class="mt-2"
             type="submit"
             {{-- href="{{ route('therapist.update', ['id' => $this->id]) }}" --}}
             {{-- wire:loading.attr="disabled" --}}
             {{-- wire:target="photo" --}}>
             Save
-        </button>
+        </x-jet-button>
     </form>
 
 </div>
