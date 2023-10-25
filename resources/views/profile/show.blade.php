@@ -1,6 +1,7 @@
 @php
     $therapist = $user->therapist;
     $id = $user->id;
+    $contact_for_promotionals = $user->contact_for_promotionals;
     // $user = $therapist;
 
     //

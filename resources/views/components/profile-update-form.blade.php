@@ -6,6 +6,7 @@
     $states = json_decode($statesJson, true);
     $countriesJson = file_get_contents(resource_path('json/countries.json'));
     $countries = json_decode($countriesJson, true);
+    $contact_for_promotionals = $user->contact_for_promotionals;
 @endphp
 
 <div>
@@ -358,17 +359,48 @@
                 </div> --}}
 
         {{-- contact_for_promotionals --}}
+
+
+
+
+<div>
+    <x-jet-label value="Contact for Promotionals" />
+    <input id="contact_for_promotionals"
+        name="contact_for_promotionals"
+        class="rounded-md"
+        type="checkbox"
+        value="1"
+        {{-- value="{{ $user->contact_for_promotionals }}" --}}
+        {{ $user->contact_for_promotionals ? 'checked' : '' }}/>
+    <x-jet-input-error class="mt-2" for="contact_for_promotionals" />
+</div>
+
+
+
+        {{-- out_of_state_coaching --}}
         <div>
-            <x-jet-label value="Contact For Promotionals" />
-            <x-jet-input id="contact_for_promotionals"
-                name="contact_for_promotionals"
+            <x-jet-label value="Out Of State Coaching" />
+            <input id="out_of_state_coaching"
+            class="rounded-md"
+                name="out_of_state_coaching"
                 type="checkbox"
+                {{-- value="{{ $user->out_of_state_coaching }}"  --}}
                 value="1"
-                {{-- Assuming the value is boolean, set it to 1 for true --}}
-                {{ $user->contact_for_promotionals ? 'checked' : '' }} />
+        {{ $user->out_of_state_coaching ? 'checked' : '' }}/>
             <x-jet-input-error class="mt-2"
-                for="contact_for_promotionals" />
+                for="out_of_state_coaching" />
         </div>
+
+
+
+
+        {{-- <div>
+    <x-jet-label for="contact_for_promotionals">Contact for Promotionals</x-jet-label>
+    <x-jet-input id="contact_for_promotionals"
+        name="contact_for_promotionals"
+        type="checkbox"
+        {{ $user->contact_for_promotionals ? 'checked' : '' }}>
+</div> --}}
 
         {{-- number_of_potential_clients --}}
         <div>
@@ -376,24 +408,13 @@
             <x-jet-input class="mt-1 block w-full"
                 id="number_of_potential_clients"
                 name="number_of_potential_clients"
-                type="numerical"
+                type="numeric"
                 value="{{ $user->number_of_potential_clients }}"
                 wire:model.defer="state.number_of_potential_clients" />
             <x-jet-input-error class="mt-2"
                 for="number_of_potential_clients" />
         </div>
 
-        {{-- out_of_state_coaching --}}
-        <div>
-            <x-jet-label value="Out Of State Coaching" />
-            <x-jet-input id="out_of_state_coaching"
-                name="out_of_state_coaching"
-                type="checkbox"
-                value="{{ $user->out_of_state_coaching }}"
-                wire:model.defer="state.out_of_state_coaching" />
-            <x-jet-input-error class="mt-2"
-                for="out_of_state_coaching" />
-        </div>
 
         {{-- state --}}
         <div>
