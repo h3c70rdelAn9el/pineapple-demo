@@ -119,11 +119,11 @@
             </x-form-field>
 
             {{-- zip_code --}}
-            <x-form-field id="zip_code"
-                name="zip_code"
+            <x-form-field id="zip_code_postal_code"
+                name="zip_code_postal_code"
                 type="text"
                 label="Zip Code">
-                {{ $therapist->zip_code }}
+                {{ $therapist->zip_code_postal_code }}
             </x-form-field>
 
             {{-- country --}}

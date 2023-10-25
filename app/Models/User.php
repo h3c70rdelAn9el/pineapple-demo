@@ -79,6 +79,7 @@ class User extends Authenticatable
         'county_town',
         'country',
         'state',
+        'gender',
     ];
 
     // tried guarded and it didn't work

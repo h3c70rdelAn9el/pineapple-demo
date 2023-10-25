@@ -2,7 +2,17 @@
 @props(['options' => [], 'label' => 'Select Options', 'name' => 'options', 'id' => 'options'])
 
 <div class="relative w-full mt-6 mb-4"
-    x-data="{ showOptions: false, selectedOptions: [], toggleSelectedOption(option) { if (this.selectedOptions.includes(option)) { this.selectedOptions = this.selectedOptions.filter(item => item !== option); } else { this.selectedOptions.push(option); } } }"
+    x-data='{
+        showOptions: false,
+        selectedOptions: [],
+        toggleSelectedOption(option) {
+            if (this.selectedOptions.includes(option)) {
+                this.selectedOptions = this.selectedOptions.filter(item => item !== option);
+            } else {
+                this.selectedOptions.push(option);
+            }
+        }
+    }'
     x-init="alpine.watch('showOptions', value => { if (!value) showOptions = false; })">
 
     <x-form_label :for="$id">
@@ -50,7 +60,3 @@
         </div>
     </div>
 </div>
- <script>
-    // import alpine from the cdn
-    import 'https://cdnjs.cloudflare.com/ajax/libs/alpinejs/2.8.0/alpine.js';
- </script>

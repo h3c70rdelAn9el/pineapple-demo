@@ -1,5 +1,3 @@
-{{-- tried making this file as an extra form for user. didn't work --}}
-
 @php
     // TODO:  IS THIS OKAY?
     $timeZonesJson = file_get_contents(resource_path('json/time_zones.json'));
@@ -11,17 +9,9 @@
 @endphp
 
 <div>
-    {{-- <x-slot name="title">
-        {{ __('Profile Information') }}
-    </x-slot> --}}
-
-    {{-- <x-slot name="description">
-        {{ __('Update your account\'s profile information and email address.') }}
-    </x-slot> --}}
-
-    {{-- <x-slot name="form"> --}}
     <form method="POST"
-        action="{{ route('profile.update') }}">
+        action="{{ route('profile.update') }}"
+        x-on:submit.prevent="submitForm">
         @csrf
         @method('put')
         <!-- Profile Photo -->
@@ -94,6 +84,83 @@
                 for="name" />
         </div>
 
+        {{-- preferred_name --}}
+        <div>
+            <x-jet-label value="Preferred Name" />
+            <x-jet-input class="mt-1 block w-full"
+                id="preferred_name"
+                name="preferred_name"
+                type="text"
+                value="{{ $user->preferred_name }}"
+                wire:model.defer="state.preferred_name" />
+            <x-jet-input-error class="mt-2"
+                for="preferred_name" />
+        </div>
+
+        {{-- gender --}}
+
+        <div x-data="{ isOpen: false, selectedGenders: @json($user->genders ?: []) }">
+            <div class="relative">
+                <x-jet-label value="Gender  (previous selection: {{ $user->gender }})" />
+                {{-- <x-jet-label>
+                    <span>Gender</span>
+                    <span class="ml-2 text-xs">(previous selection: {{ $user->gender }})</span>
+                </x-jet-label> --}}
+                <div class="mt-1"
+                    x-on:click="isOpen = !isOpen">
+                    <div
+                        class="flex flex-row justify-between rounded border border-blue-300 bg-gray-100 p-2 hover:cursor-pointer">
+                        <span x-text="selectedGenders.length ? selectedGenders.join(', ') : 'Select gender(s)'"></span>
+                        <svg class="inline-block h-5 w-5"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth="2"
+                                d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </div>
+
+                    <div x-show="isOpen"
+                        {{-- make a transition to open  --}}
+                        x-on:click.away="isOpen = false"
+                        x-cloak>
+
+                        <div class="absolute w-full rounded-md border border-gray-300 shadow-lg">
+
+                            <select class="flex w-full flex-row bg-gray-200"
+                                name="selectedGenders[]"
+                                x-model="selectedGenders"
+                                multiple>
+                                <option class="gender-options transition duration-200"
+                                    value="Male">Male</option>
+                                <option class="gender-options"
+                                    value="Female">Female</option>
+                                <option class="gender-options transition duration-200"
+                                    value="Transgender">Transgender</option>
+                                <option class="gender-options transition duration-200"
+                                    value="Genderfluid">Genderfluid</option>
+                                <option class="gender-options transition duration-200"
+                                    value="Genderqueer">Genderqueer</option>
+                                <option class="gender-options transition duration-200"
+                                    value="Agender">Agender</option>
+                                <option class="gender-options transition duration-200"
+                                    value="Cisgender">Cisgender</option>
+                                <option class="gender-options transition duration-200"
+                                    value="Bigender">Bigender</option>
+                                <option class="gender-options transition duration-200"
+                                    value="Non-binary">Non-Binary</option>
+                                <option class="gender-options transition duration-200"
+                                    value="Prefer Not To Say">Prefer Not To Say</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         {{-- email --}}
         <div>
             <x-jet-label value="email" />
@@ -106,52 +173,7 @@
             <x-jet-input-error class="mt-2"
                 for="email" />
         </div>
-        <!--
-            'name',
-        'email',
-        'password',
-        'license',
-        'certificate',
-        'expires_at',
-        'account_name',
-        'account_number',
-        'routing_number',
-        'on_vacation',
-        'clinical_license_verification_portal',
-        'title',
-        'preferred_name',
-        'intern',
-        'supervisor_name',
-        'street_address',
-        'zip_code_postal_code',
-        'iban_swift_code',
-        'contract_signed',
-        'all_documents',
-        'full',
-        'session_cost',
-        'contact_for_promotionals',
-        'number_of_potential_clients',
-        'out_of_state_coaching',
-        'file_upload',
-        'w9',
-        'headshot',
-        'voided_cheque',
-        'bio',
-        'website',
-        'quickbooks',
-        'dropbox',
-        'client_extensions',
-        'notes',
-        'covid_fundraise',
-        'insurance',
-        'signed_documents',
-        'leah_signed',
-        'space_for_new_clients',
-        'admin',
-        'county_town',
-        'country',
-        'state',
-        -->
+
         {{-- license --}}
         <div>
             <x-jet-label value="License" />
@@ -258,21 +280,7 @@
                 for="title" />
         </div>
 
-        {{-- preferred_name --}}
-        <div>
-            <x-jet-label value="Preferred Name" />
-            <x-jet-input class="mt-1 block w-full"
-                id="preferred_name"
-                name="preferred_name"
-                type="text"
-                value="{{ $user->preferred_name }}"
-                wire:model.defer="state.preferred_name" />
-            <x-jet-input-error class="mt-2"
-                for="preferred_name" />
-        </div>
-
         {{-- intern --}}
-        {{-- make a check --}}
         <div>
             <x-jet-label value="Intern" />
             <x-jet-input id="intern"
@@ -355,8 +363,9 @@
             <x-jet-input id="contact_for_promotionals"
                 name="contact_for_promotionals"
                 type="checkbox"
-                value="{{ $user->contact_for_promotionals }}"
-                wire:model.defer="state.contact_for_promotionals" />
+                value="1"
+                {{-- Assuming the value is boolean, set it to 1 for true --}}
+                {{ $user->contact_for_promotionals ? 'checked' : '' }} />
             <x-jet-input-error class="mt-2"
                 for="contact_for_promotionals" />
         </div>
@@ -428,11 +437,10 @@
         {{-- space for new clients --}}
         <div>
             <x-jet-label value="Space For New Clients" />
-            {{-- make a numberical input --}}
             <x-jet-input class="mt-1 block w-full"
                 id="space_for_new_clients"
                 name="space_for_new_clients"
-                type="numerical"
+                type="numeric"
                 value="{{ $user->space_for_new_clients }}"
                 wire:model.defer="state.space_for_new_clients" />
             <x-jet-input-error class="mt-2"
@@ -440,26 +448,54 @@
         </div>
 
         {{-- notes --}}
-        {{-- make a text area --}}
         <div>
             <x-jet-label value="Notes" />
-            <textarea class="mt-1 block w-full"
+            <textarea class="mt-1 block w-full text-gray-600"
                 id="notes"
                 name="notes"
-                type="text"
-                value="{{ $user->notes }}">
-        </textarea>
+                type="text">
+                    {{ $user->notes }}
+            </textarea>
+        </div>
 
-            {{-- website --}}
 
-            <button
-                class="m-2 w-40 rounded-md bg-blue-200 p-2 text-center shadow-md shadow-blue-100 transition-all duration-200 ease-in hover:bg-blue-400"
-                type="submit"
-                {{-- href="{{ route('therapist.update', ['id' => $this->id]) }}" --}}
-                {{-- wire:loading.attr="disabled" --}}
-                {{-- wire:target="photo" --}}>
-                Save
-            </button>
+        <button
+            class="m-2 w-40 rounded-md bg-blue-200 p-2 text-center shadow-md shadow-blue-100 transition-all duration-200 ease-in hover:bg-blue-400"
+            type="submit"
+            {{-- href="{{ route('therapist.update', ['id' => $this->id]) }}" --}}
+            {{-- wire:loading.attr="disabled" --}}
+            {{-- wire:target="photo" --}}>
+            Save
+        </button>
     </form>
 
 </div>
+
+<script>
+    function saveSelectedGenders(selectedGenders) {
+        // Perform actions with the selected genders, for example, send them to the server.
+        console.log('Selected Genders:', selectedGenders);
+        // You can send the selectedGenders array to your server using an API call here.
+    }
+</script>
+
+<style>
+    .gender-options:hover {
+        background-color: #4299e1;
+        /* what is tailwindcss blue-400 */
+    }
+</style>
+
+{{-- <script>
+    // Alpine.js code
+    window.addEventListener('DOMContentLoaded', () => {
+        Alpine.data('formController', () => ({
+            selectedGenders: @json($user->genders ?: []), // Initialize selected genders from server data if available
+            selectedGendersInput: [],
+
+            saveSelectedGenders() {
+                this.selectedGendersInput = this.selectedGenders;
+            }
+        }));
+    });
+</script> --}}
