@@ -73,6 +73,9 @@ class UserController extends Controller
             'full' => 'nullable|boolean',
             'session_cost' => 'nullable|numeric',
             'contact_for_promotionals' => 'nullable|boolean',
+
+            // 'contact_for_promotionals' => $request->has('contact_for_promotionals') ? 1 : 0,
+
             'number_of_potential_clients' => 'nullable|string|max:255',
             'out_of_state_coaching' => 'nullable|boolean',
             // 'file_upload' => $request->file_upload,

@@ -104,6 +104,19 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'contact_for_promotionals' => 'boolean',
+        'out_of_state_coaching' => 'boolean',
+        'contract_signed' => 'boolean',
+        'full' => 'boolean',
+        'intern' => 'boolean',
+        'client_extensions' => 'boolean',
+        'covid_fundraise' => 'boolean',
+        'insurance' => 'boolean',
+        'signed_documents' => 'boolean',
+        'leah_signed' => 'boolean',
+        'admin' => 'boolean',
+        'on_vacation' => 'boolean',
+        'gender' => 'array',
     ];
 
     /**
