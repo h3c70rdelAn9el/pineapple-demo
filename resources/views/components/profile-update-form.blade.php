@@ -6,17 +6,20 @@
     $states = json_decode($statesJson, true);
     $countriesJson = file_get_contents(public_path('json/countries.json'));
     $countries = json_decode($countriesJson, true);
-
-
     $statesJson = file_get_contents(resource_path('json/states.json'));
     $statesData = json_decode($statesJson, true);
     $states = $statesData['states'];
 @endphp
 
-<div>
+<div class="grid grid-cols-1 md:grid-cols-3">
+    <div>
+        Profile Information
+    </div>
     <form method="POST"
+    class="col-span-2 p-4 bg-white rounded-md mb-4 shadow-sm"
         action="{{ route('profile.update') }}"
         x-on:submit.prevent="submitForm">
+
         @csrf
         @method('put')
         <!-- Profile Photo -->
@@ -91,14 +94,25 @@
         {{-- <div>
     <x-jet-label value="State" />
     <select id="stateSelect" name="state" class="mt-1 block w-full">
-        @foreach($states as $state)
+        @foreach ($states as $state)
             <option value="{{ $state[id] }}">{{ $state }}</option>
         @endforeach
     </select>
     <x-jet-input-error class="mt-2" for="state" />
 </div> --}}
-
-
+        {{-- name --}}
+        <div>
+            <x-jet-label value="Name" />
+            <x-jet-input class="mt-1 block w-full"
+                id="name"
+                name="name"
+                type="text"
+                value="{{ $user->name }}"
+                wire:model.defer="state.name"
+                autocomplete="name" />
+            <x-jet-input-error class="mt-2"
+                for="name" />
+        </div>
 
         {{-- preferred_name --}}
         <div>
@@ -203,8 +217,6 @@
                 for="license" />
         </div>
 
-        {{-- certificate --}}
-
         {{-- expires_at --}}
         {{-- <div>
                 <x-jet-label value="{{ $user->expires_at }}" />
@@ -217,45 +229,6 @@
                 <x-jet-input-error class="mt-2"
                     for="expires_at" />
             </div> --}}
-
-        {{-- account_name --}}
-        <div>
-            <x-jet-label value="Account Name" />
-            <x-jet-input class="mt-1 block w-full"
-                id="account_name"
-                name="account_name"
-                type="text"
-                value="{{ $user->account_name }}"
-                wire:model.defer="state.account_name" />
-            <x-jet-input-error class="mt-2"
-                for="account_name" />
-        </div>
-
-        {{-- account_number --}}
-        <div>
-            <x-jet-label value="Account Number" />
-            <x-jet-input class="mt-1 block w-full"
-                id="account_number"
-                name="account_number"
-                type="text"
-                value="{{ $user->account_number }}"
-                wire:model.defer="state.account_number" />
-            <x-jet-input-error class="mt-2"
-                for="account_number" />
-        </div>
-
-        {{-- routing_number --}}
-        <div>
-            <x-jet-label value="Routing Number" />
-            <x-jet-input class="mt-1 block w-full"
-                id="routing_number"
-                name="routing_number"
-                type="text"
-                value="{{ $user->routing_number }}"
-                wire:model.defer="state.routing_number" />
-            <x-jet-input-error class="mt-2"
-                for="routing_number" />
-        </div>
 
         {{-- on_vacation --}}
         {{-- <div>
@@ -334,6 +307,19 @@
                 for="street_address" />
         </div>
 
+        {{-- county_town --}}
+        <div>
+            <x-jet-label value="County/Town" />
+            <x-jet-input class="mt-1 block w-full"
+                id="county_town"
+                name="county_town"
+                type="text"
+                value="{{ $user->county_town }}"
+                wire:model.defer="state.county_town" />
+            <x-jet-input-error class="mt-2"
+                for="county_town" />
+        </div>
+
         {{-- zip_code_postal_code --}}
         <div>
             <x-jet-label value="Zip Code Postal Code" />
@@ -345,6 +331,36 @@
                 wire:model.defer="state.zip_code_postal_code" />
             <x-jet-input-error class="mt-2"
                 for="zip_code_postal_code" />
+        </div>
+
+        {{-- country --}}
+        <div>
+            <x-jet-label value="Country" />
+            <select class="mt-1 block w-full rounded-md border border-blue-300 bg-gray-100"
+                id="country"
+                name="country">
+                <option value="">Select country &nbsp &nbsp &nbsp(selected:{{ $user->country }})</option>
+                @foreach ($countries as $country)
+                    <option value="{{ $country['name'] }}">{{ $country['name'] }}</option>
+                @endforeach
+            </select>
+            <x-jet-input-error class="mt-2"
+                for="country" />
+        </div>
+
+        {{-- state --}}
+        <div>
+            <x-jet-label value="State  (Optional)" />
+            <select class="mt-1 block w-full rounded-md border border-blue-300 bg-gray-100"
+                id="state"
+                name="state">
+                <option value="">Select state &nbsp &nbsp &nbsp(selected:{{ $user->state }})</option>
+                @foreach ($states as $state)
+                    <option value="{{ $state }}">{{ $state }}</option>
+                @endforeach
+            </select>
+            <x-jet-input-error class="mt-2"
+                for="state" />
         </div>
 
         {{-- iban_swift_code --}}
@@ -360,56 +376,38 @@
                 for="iban_swift_code" />
         </div>
 
-        {{-- full --}}
-        {{-- <div>
-                    <x-jet-label value="Full" />
-                    <x-jet-input
-                        id="full"
-                        name="full"
-                        type="checkbox"
-                        value="{{ $user->full }}"
-                        wire:model.defer="state.full" />
-                    <x-jet-input-error class="mt-2"
-                        for="full" />
-                </div> --}}
-
         {{-- contact_for_promotionals --}}
-
-
-
-
-<div>
-    <x-jet-label value="Contact for Promotionals" />
-    <input id="contact_for_promotionals"
-        name="contact_for_promotionals"
-        class="rounded-md"
-        type="checkbox"
-        value="1"
-        {{-- value="{{ $user->contact_for_promotionals }}" --}}
-        {{ $user->contact_for_promotionals ? 'checked' : '' }}/>
-    <x-jet-input-error class="mt-2" for="contact_for_promotionals" />
-</div>
-
-
+        <div>
+            <x-jet-label value="Contact for Promotionals" />
+            <input class="rounded-md"
+                id="contact_for_promotionals"
+                name="contact_for_promotionals"
+                type="checkbox"
+                value="1"
+                {{-- value="{{ $user->contact_for_promotionals }}" --}}
+                {{ $user->contact_for_promotionals ? 'checked' : '' }} />
+            <x-jet-input-error class="mt-2"
+                for="contact_for_promotionals" />
+        </div>
 
         {{-- out_of_state_coaching --}}
         <div>
             <x-jet-label value="Out Of State Coaching" />
-            <input id="out_of_state_coaching"
-            class="rounded-md"
+            <input class="rounded-md"
+                id="out_of_state_coaching"
                 name="out_of_state_coaching"
                 type="checkbox"
-                {{-- value="{{ $user->out_of_state_coaching }}"  --}}
                 value="1"
-        {{ $user->out_of_state_coaching ? 'checked' : '' }}/>
+                {{-- value="{{ $user->out_of_state_coaching }}"  --}}
+                {{ $user->out_of_state_coaching ? 'checked' : '' }} />
             <x-jet-input-error class="mt-2"
                 for="out_of_state_coaching" />
         </div>
 
         {{-- number_of_potential_clients --}}
         <div>
-            <x-jet-label value="Number Of Potential Clients" />
-            <x-jet-input class="mt-1 block w-full"
+            <x-jet-label value="Number Of Potential Clients:" />
+            <x-jet-input class="mt-1 block p-2 border border-blue-200"
                 id="number_of_potential_clients"
                 name="number_of_potential_clients"
                 type="numeric"
@@ -420,50 +418,10 @@
         </div>
 
 
-        {{-- state --}}
-        <div>
-    <x-jet-label value="State  (Optional)" />
-    <select id="state" name="state" class="mt-1 block w-full rounded-md border border-blue-300 bg-gray-100">
-        <option value="">Select state &nbsp &nbsp &nbsp(selected:{{ $user->state }})</option>
-        @foreach($states as $state)
-            <option value="{{ $state }}">{{ $state }}</option>
-        @endforeach
-    </select>
-    <x-jet-input-error class="mt-2" for="state" />
-</div>
-
-
-        {{-- country --}}
-        <div>
-            <x-jet-label value="Country" />
-                <select name="country" id="country" class="mt-1 block w-full rounded-md border border-blue-300 bg-gray-100">
-                    <option value="">Select country &nbsp &nbsp &nbsp(selected:{{ $user->country }})</option>
-                    @foreach ($countries as $country)
-                        <option value="{{ $country['name'] }}">{{ $country['name'] }}</option>
-                    @endforeach
-                </select>
-            <x-jet-input-error class="mt-2"
-                for="country" />
-        </div>
-
-        {{-- county_town --}}
-        <div>
-            <x-jet-label value="County/Town" />
-            <x-jet-input class="mt-1 block w-full"
-                id="county_town"
-                name="county_town"
-                type="text"
-                value="{{ $user->county_town }}"
-                wire:model.defer="state.county_town" />
-            <x-jet-input-error class="mt-2"
-                for="county_town" />
-        </div>
-
-
         {{-- notes --}}
         <div>
             <x-jet-label value="Notes" />
-            <textarea class="mt-1 block w-full text-gray-600 bg-gray-100 rounded-md"
+            <textarea class="mt-1 block w-full rounded-md bg-gray-100 text-gray-600"
                 id="notes"
                 name="notes"
                 type="text">
@@ -472,14 +430,55 @@
         </div>
 
 
-        <x-jet-button
-            class="mt-2"
-            type="submit"
-            {{-- href="{{ route('therapist.update', ['id' => $this->id]) }}" --}}
-            {{-- wire:loading.attr="disabled" --}}
-            {{-- wire:target="photo" --}}>
-            Save
-        </x-jet-button>
+        <p class='mb-2 mt-4 text-lg font-bold'>Bank Information</p>
+        <hr class="border border-gray-300">
+        {{-- account_name --}}
+        <div>
+            <x-jet-label value="Account Name" />
+            <x-jet-input class="mt-1 block w-full"
+                id="account_name"
+                name="account_name"
+                type="text"
+                value="{{ $user->account_name }}"
+                wire:model.defer="state.account_name" />
+            <x-jet-input-error class="mt-2"
+                for="account_name" />
+        </div>
+
+        {{-- account_number --}}
+        <div>
+            <x-jet-label value="Account Number" />
+            <x-jet-input class="mt-1 block w-full"
+                id="account_number"
+                name="account_number"
+                type="text"
+                value="{{ $user->account_number }}"
+                wire:model.defer="state.account_number" />
+            <x-jet-input-error class="mt-2"
+                for="account_number" />
+        </div>
+
+        {{-- routing_number --}}
+        <div>
+            <x-jet-label value="Routing Number" />
+            <x-jet-input class="mt-1 block w-full"
+                id="routing_number"
+                name="routing_number"
+                type="text"
+                value="{{ $user->routing_number }}"
+                wire:model.defer="state.routing_number" />
+            <x-jet-input-error class="mt-2"
+                for="routing_number" />
+        </div>
+
+        <div class="flex justify-end h-10 bg-gray-700 w-full">
+            <x-jet-button class="mt-2 md:mr-4 mr-1"
+                type="submit"
+                {{-- wire:loading.attr="disabled" --}}
+                {{-- wire:target="photo" --}}>
+                Save
+            </x-jet-button>
+        </div>
     </form>
 
 </div>
@@ -498,17 +497,3 @@
         /* what is tailwindcss blue-400 */
     }
 </style>
-
-{{-- <script>
-    // Alpine.js code
-    window.addEventListener('DOMContentLoaded', () => {
-        Alpine.data('formController', () => ({
-            selectedGenders: @json($user->genders ?: []), // Initialize selected genders from server data if available
-            selectedGendersInput: [],
-
-            saveSelectedGenders() {
-                this.selectedGendersInput = this.selectedGenders;
-            }
-        }));
-    });
-</script> --}}
