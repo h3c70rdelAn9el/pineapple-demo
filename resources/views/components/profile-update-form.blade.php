@@ -6,8 +6,13 @@
     $states = json_decode($statesJson, true);
     $countriesJson = file_get_contents(resource_path('json/countries.json'));
     $countries = json_decode($countriesJson, true);
-    $contact_for_promotionals = $user->contact_for_promotionals;
+
+
+    $statesJson = file_get_contents(resource_path('json/states.json'));
+    $statesData = json_decode($statesJson, true);
+    $states = $statesData['states'];
 @endphp
+
 
 <div>
     <form method="POST"
@@ -72,7 +77,7 @@
             </div>
         @endif --}}
 
-        <div>
+        {{-- <div>
             <x-jet-label value="Name" />
             <x-jet-input class="mt-1 block w-full"
                 id="name"
@@ -83,7 +88,27 @@
                 autocomplete="name" />
             <x-jet-input-error class="mt-2"
                 for="name" />
-        </div>
+        </div> --}}
+        {{-- <div>
+    <x-jet-label value="State" />
+    <select id="stateSelect" name="state" class="mt-1 block w-full">
+        @foreach($states as $state)
+            <option value="{{ $state[id] }}">{{ $state }}</option>
+        @endforeach
+    </select>
+    <x-jet-input-error class="mt-2" for="state" />
+</div> --}}
+<div>
+    <x-jet-label value="State  (Optional)" />
+    <select id="state" name="state" class="mt-1 block w-full rounded-md border border-blue-300 bg-gray-100">
+        <option value="">Select a state &nbsp &nbsp &nbsp(selected:{{ $user->state }})</option>
+        @foreach($states as $state)
+            <option value="{{ $state }}">{{ $state }}</option>
+        @endforeach
+    </select>
+    <x-jet-input-error class="mt-2" for="state" />
+</div>
+
 
         {{-- preferred_name --}}
         <div>
@@ -417,17 +442,7 @@
 
 
         {{-- state --}}
-        <div>
-            <x-jet-label value="State" />
-            <x-jet-input class="mt-1 block w-full"
-                id="state"
-                name="state"
-                type="text"
-                value="{{ $user->state }}"
-                wire:model.defer="state.state" />
-            <x-jet-input-error class="mt-2"
-                for="state" />
-        </div>
+
 
         {{-- country --}}
         <div>
