@@ -49,22 +49,13 @@
 
             {{-- @livewire('profile.update-profile-information.form', ['user' => $user]) --}}
 
-
-
-            {{-- tried another form --}}
-            {{-- <x-profile-update-form
-                :user="$user"
-                :therapist="$therapist"
-                :id="$id"
-            /> --}}
-
             <x-profile-update-form
                 :user="$user"
                 :therapist="$therapist"
                 :id="$id"
             />
 
-
+            <x-jet-section-border />
 
             <x-file-upload :user="$user" :therapist="$therapist" />
 
