@@ -137,7 +137,6 @@ class ClientController extends Controller
         // $genderString = implode(', ', $selectedGenders);
         // $genderString = implode(', ', $request->input('gender'));
 
-        // write an if statement if there is more than one gender selected
         if (is_array($selectedGenders) && !empty($selectedGenders)) {
             $genderString = implode(', ', $selectedGenders);
         } else {
