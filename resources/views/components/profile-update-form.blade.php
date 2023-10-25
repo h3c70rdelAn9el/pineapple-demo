@@ -419,7 +419,7 @@
 
 
         {{-- notes --}}
-        <div>
+        {{-- <div>
             <x-jet-label value="Notes" />
             <textarea class="mt-1 block w-full rounded-md bg-gray-100 text-gray-600"
                 id="notes"
@@ -427,7 +427,7 @@
                 type="text">
                     {{ $user->notes }}
             </textarea>
-        </div>
+        </div> --}}
 
 
         <p class='mb-2 mt-4 text-lg font-bold'>Bank Information</p>
