@@ -66,6 +66,7 @@ class UserController extends Controller
         // $user->update([$validated, 'gender' => implode(', ', $selectedGenders)]);
         $user->fill($validated);
         $user->gender = implode(', ', $selectedGenders);
+        $user->time_zone = $request->time_zone;
         $user->save();
 
         // $genderString = implode(',', $user->gender);
@@ -76,6 +77,7 @@ class UserController extends Controller
         // } else {
         //     $genderString = ''; // or handle the case where $genderArray is not an array
         // }
+
 
         $genderString = implode(', ', $selectedGenders);
 
