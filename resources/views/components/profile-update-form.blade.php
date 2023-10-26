@@ -370,10 +370,9 @@
                 id="time_zone"
                 name="time_zone">
                 <option value="">Select time zone &nbsp &nbsp &nbsp(selected:{{ $user->time_zone }})</option>
-                @foreach ($timeZones as $timeZone => $displayName)
-                    <option value="{{ $user->time_zone }}"
-                        {{ $user->time_zone == $timeZone ? 'selected' : '' }}>
-                        {{ $displayName }}
+                @foreach ($timeZones as $timeZone)
+                    <option value="{{ $timeZone }}">
+                        {{ $timeZone }}
                     </option>
                 @endforeach
             </select>
