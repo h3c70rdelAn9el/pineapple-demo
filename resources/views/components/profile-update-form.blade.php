@@ -100,7 +100,7 @@
     <x-jet-input-error class="mt-2" for="state" />
 </div> --}}
         {{-- name --}}
-        <div>
+        <div class="input-div">
             <x-jet-label value="Name" />
             <x-jet-input class="mt-1 block w-full"
                 id="name"
@@ -114,7 +114,7 @@
         </div>
 
         {{-- preferred_name --}}
-        <div>
+        <div class="input-div">
             <x-jet-label value="Preferred Name" />
             <x-jet-input class="mt-1 block w-full"
                 id="preferred_name"
@@ -127,7 +127,7 @@
         </div>
 
         {{-- title --}}
-        <div>
+        <div class="input-div">
             <x-jet-label value="Title" />
             <x-jet-input class="mt-1 block w-full"
                 id="title"
@@ -141,7 +141,7 @@
 
         {{-- gender --}}
 
-        <div x-data="{ isOpen: false, selectedGenders: @json($user->genders ?: []) }">
+        <div x-data="{ isOpen: false, selectedGenders: @json($user->genders ?: []) }" class="input-div">
             <div class="relative">
                 <x-jet-label value="Gender  (previous selection: {{ $user->gender }})" />
                 {{-- <x-jet-label>
@@ -204,7 +204,7 @@
         </div>
 
         {{-- email --}}
-        <div>
+        <div class="input-div">
             <x-jet-label value="email" />
             <x-jet-input class="mt-1 block w-full"
                 id="email"
@@ -269,7 +269,7 @@
         </div> --}}
 
         {{-- intern --}}
-        <div>
+        <div class="input-div">
             <x-jet-label value="Intern" />
             <x-jet-input id="intern"
                 name="intern"
@@ -281,7 +281,7 @@
         </div>
 
         {{-- supervisor_name --}}
-        <div>
+        <div class="input-div">
             <x-jet-label value="Supervisor Name" />
             <x-jet-input class="mt-1 block w-full"
                 id="supervisor_name"
@@ -294,7 +294,7 @@
         </div>
 
         {{-- street_address --}}
-        <div>
+        <div class="input-div">
             <x-jet-label value="Street Address" />
             <x-jet-input class="mt-1 block w-full"
                 id="street_address"
@@ -307,7 +307,7 @@
         </div>
 
         {{-- county_town --}}
-        <div>
+        <div class="input-div">
             <x-jet-label value="County/Town" />
             <x-jet-input class="mt-1 block w-full"
                 id="county_town"
@@ -320,7 +320,7 @@
         </div>
 
         {{-- zip_code_postal_code --}}
-        <div>
+        <div class="input-div">
             <x-jet-label value="Zip Code Postal Code" />
             <x-jet-input class="mt-1 block w-full"
                 id="zip_code_postal_code"
@@ -333,7 +333,7 @@
         </div>
 
         {{-- country --}}
-        <div>
+        <div class="input-div">
             <x-jet-label value="Country" />
             <select class="mt-1 block w-full rounded-md border border-blue-300 bg-gray-100"
                 id="country"
@@ -348,7 +348,7 @@
         </div>
 
         {{-- state --}}
-        <div>
+        <div class="input-div">
             <x-jet-label value="State  (Optional)" />
             <select class="mt-1 block w-full rounded-md border border-blue-300 bg-gray-100"
                 id="state"
@@ -364,7 +364,7 @@
 
         {{-- do the same for time_zone as country --}}
         {{-- time_zone --}}
-        <div>
+        <div class="input-div">
             <x-jet-label value="Time Zone" />
             <select class="mt-1 block w-full rounded-md border border-blue-300 bg-gray-100"
                 id="time_zone"
@@ -382,7 +382,7 @@
         </div>
 
         {{-- iban_swift_code --}}
-        <div>
+        <div class="input-div">
             <x-jet-label value="IBAN Swift Code" />
             <x-jet-input class="mt-1 block w-full"
                 id="iban_swift_code"
@@ -395,7 +395,7 @@
         </div>
 
         {{-- contact_for_promotionals --}}
-        <div>
+        <div class="input-div">
             <x-jet-label value="Contact for Promotionals" />
             <input class="rounded-md"
                 id="contact_for_promotionals"
@@ -409,7 +409,7 @@
         </div>
 
         {{-- out_of_state_coaching --}}
-        <div>
+        <div class="input-div">
             <x-jet-label value="Out Of State Coaching" />
             <input class="rounded-md"
                 id="out_of_state_coaching"
@@ -423,7 +423,7 @@
         </div>
 
         {{-- number_of_potential_clients --}}
-        <div>
+        <div class="input-div">
             <x-jet-label value="Number Of Potential Clients:" />
             <x-jet-input class="mt-1 block border border-blue-200 p-2"
                 id="number_of_potential_clients"
@@ -449,7 +449,7 @@
         <p class='mb-2 mt-4 text-lg font-bold'>Bank Information</p>
         <hr class="border border-gray-300">
         {{-- account_name --}}
-        <div>
+        <div class="input-div">
             <x-jet-label value="Account Name" />
             <x-jet-input class="mt-1 block w-full"
                 id="account_name"
@@ -462,7 +462,7 @@
         </div>
 
         {{-- account_number --}}
-        <div>
+        <div class="input-div">
             <x-jet-label value="Account Number" />
             <x-jet-input class="mt-1 block w-full"
                 id="account_number"
@@ -475,7 +475,7 @@
         </div>
 
         {{-- routing_number --}}
-        <div>
+        <div class="input-div">
             <x-jet-label value="Routing Number" />
             <x-jet-input class="mt-1 block w-full"
                 id="routing_number"
@@ -503,5 +503,9 @@
     .gender-options:hover {
         background-color: #4299e1;
         /* what is tailwindcss blue-400 */
+    }
+
+    .input-div {
+        margin: 22px 0px 22px 0px;
     }
 </style>
