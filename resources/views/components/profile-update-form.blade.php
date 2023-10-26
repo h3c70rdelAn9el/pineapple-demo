@@ -126,6 +126,19 @@
                 for="preferred_name" />
         </div>
 
+        {{-- title --}}
+        <div>
+            <x-jet-label value="Title" />
+            <x-jet-input class="mt-1 block w-full"
+                id="title"
+                name="title"
+                type="text"
+                value="{{ $user->title }}"
+                wire:model.defer="state.title" />
+            <x-jet-input-error class="mt-2"
+                for="title" />
+        </div>
+
         {{-- gender --}}
 
         <div x-data="{ isOpen: false, selectedGenders: @json($user->genders ?: []) }">
@@ -255,19 +268,6 @@
                 for="clinical_license_verification_portal" />
         </div> --}}
 
-        {{-- title --}}
-        <div>
-            <x-jet-label value="Title" />
-            <x-jet-input class="mt-1 block w-full"
-                id="title"
-                name="title"
-                type="text"
-                value="{{ $user->title }}"
-                wire:model.defer="state.title" />
-            <x-jet-input-error class="mt-2"
-                for="title" />
-        </div>
-
         {{-- intern --}}
         <div>
             <x-jet-label value="Intern" />
@@ -380,7 +380,6 @@
             <x-jet-input-error class="mt-2"
                 for="time_zone" />
         </div>
-
 
         {{-- iban_swift_code --}}
         <div>
@@ -499,7 +498,6 @@
     </form>
 
 </div>
-
 
 <style>
     .gender-options:hover {
