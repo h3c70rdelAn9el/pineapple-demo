@@ -80,6 +80,7 @@ class User extends Authenticatable
         'country',
         'state',
         'gender',
+        'time_zone'
     ];
 
     // tried guarded and it didn't work

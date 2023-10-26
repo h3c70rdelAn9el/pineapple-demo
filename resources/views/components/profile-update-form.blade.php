@@ -1,7 +1,7 @@
 @php
-    // TODO:  IS THIS OKAY?
     $timeZonesJson = file_get_contents(resource_path('json/time_zones.json'));
     $timeZones = json_decode($timeZonesJson, true);
+    // $time_zones = $timeZones['time_zones'];
     $statesJson = file_get_contents(resource_path('json/states.json'));
     $states = json_decode($statesJson, true);
     $countriesJson = file_get_contents(public_path('json/countries.json'));
@@ -10,13 +10,12 @@
     $statesData = json_decode($statesJson, true);
     $states = $statesData['states'];
 @endphp
-
 <div class="grid grid-cols-1 md:grid-cols-3">
     <div>
         Profile Information
     </div>
-    <form method="POST"
-    class="col-span-2 p-4 bg-white rounded-md mb-4 shadow-sm"
+    <form class="col-span-2 mb-4 rounded-md bg-white p-4 shadow-sm"
+        method="POST"
         action="{{ route('profile.update') }}"
         x-on:submit.prevent="submitForm">
 
@@ -205,7 +204,7 @@
         </div>
 
         {{-- license --}}
-        <div>
+        {{-- <div>
             <x-jet-label value="License" />
             <x-jet-input class="mt-1 block w-full"
                 id="license"
@@ -215,7 +214,7 @@
                 wire:model.defer="state.license" />
             <x-jet-input-error class="mt-2"
                 for="license" />
-        </div>
+        </div> --}}
 
         {{-- expires_at --}}
         {{-- <div>
@@ -244,7 +243,7 @@
                 </div> --}}
 
         {{-- clinical_license_verification_portal --}}
-        <div>
+        {{-- <div>
             <x-jet-label value="Clinical License Verification Portal" />
             <x-jet-input class="mt-1 block w-full"
                 id="clinical_license_verification_portal"
@@ -254,7 +253,7 @@
                 wire:model.defer="state.clinical_license_verification_portal" />
             <x-jet-input-error class="mt-2"
                 for="clinical_license_verification_portal" />
-        </div>
+        </div> --}}
 
         {{-- title --}}
         <div>
@@ -363,6 +362,26 @@
                 for="state" />
         </div>
 
+        {{-- do the same for time_zone as country --}}
+        {{-- time_zone --}}
+        <div>
+            <x-jet-label value="Time Zone" />
+            <select class="mt-1 block w-full rounded-md border border-blue-300 bg-gray-100"
+                id="time_zone"
+                name="time_zone">
+                <option value="">Select time zone &nbsp &nbsp &nbsp(selected:{{ $user->time_zone }})</option>
+                @foreach ($timeZones as $timeZone => $displayName)
+                    <option value="{{ $user->time_zone }}"
+                        {{ $user->time_zone == $timeZone ? 'selected' : '' }}>
+                        {{ $displayName }}
+                    </option>
+                @endforeach
+            </select>
+            <x-jet-input-error class="mt-2"
+                for="time_zone" />
+        </div>
+
+
         {{-- iban_swift_code --}}
         <div>
             <x-jet-label value="IBAN Swift Code" />
@@ -407,7 +426,7 @@
         {{-- number_of_potential_clients --}}
         <div>
             <x-jet-label value="Number Of Potential Clients:" />
-            <x-jet-input class="mt-1 block p-2 border border-blue-200"
+            <x-jet-input class="mt-1 block border border-blue-200 p-2"
                 id="number_of_potential_clients"
                 name="number_of_potential_clients"
                 type="numeric"
@@ -416,7 +435,6 @@
             <x-jet-input-error class="mt-2"
                 for="number_of_potential_clients" />
         </div>
-
 
         {{-- notes --}}
         {{-- <div>
@@ -428,7 +446,6 @@
                     {{ $user->notes }}
             </textarea>
         </div> --}}
-
 
         <p class='mb-2 mt-4 text-lg font-bold'>Bank Information</p>
         <hr class="border border-gray-300">
@@ -471,8 +488,8 @@
                 for="routing_number" />
         </div>
 
-        <div class="flex justify-end h-10 bg-gray-700 w-full">
-            <x-jet-button class="mt-2 md:mr-4 mr-1"
+        <div class="flex h-10 w-full justify-end bg-gray-700">
+            <x-jet-button class="mr-1 mt-2 md:mr-4"
                 type="submit"
                 {{-- wire:loading.attr="disabled" --}}
                 {{-- wire:target="photo" --}}>
@@ -483,13 +500,6 @@
 
 </div>
 
-<script>
-    function saveSelectedGenders(selectedGenders) {
-        // Perform actions with the selected genders, for example, send them to the server.
-        console.log('Selected Genders:', selectedGenders);
-        // You can send the selectedGenders array to your server using an API call here.
-    }
-</script>
 
 <style>
     .gender-options:hover {

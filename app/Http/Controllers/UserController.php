@@ -12,41 +12,16 @@ class UserController extends Controller
         $user = User::find(auth()->user()->id);
 
         $selectedGenders = $request->input('selectedGenders');
-        // $selectedGendersArray = explode(',', $selectedGenders);
-
-        // dd($selectedGendersArray);
-
-        // $user->gender = $selectedGendersArray;
 
         if (!is_array($selectedGenders)) {
             $selectedGenders = [$selectedGenders];
         }
-
-        // $user->gender = $selectedGenders;
-
-        // $user->gender = serialize($selectedGenders);
 
         $selectedGenders = $request->input('selectedGenders');
 
-        // $genderString = implode(', ', $selectedGenders);
-        // $genderString = implode(', ', $request->input('gender'));
-
         if (!is_array($selectedGenders)) {
             $selectedGenders = [$selectedGenders];
         }
-
-
-
-
-
-        // if (is_array($selectedGenders) && !empty($selectedGenders)) {
-        //     $genderString = implode(', ', $selectedGenders);
-        // } else {
-        //     $genderString = '';
-        // }
-
-
-
 
         $validated = $request->validate([
             'name' => 'nullable|string|max:255',
@@ -73,30 +48,17 @@ class UserController extends Controller
             'full' => 'nullable|boolean',
             'session_cost' => 'nullable|numeric',
             'contact_for_promotionals' => 'nullable|boolean',
-
-            // 'contact_for_promotionals' => $request->has('contact_for_promotionals') ? 1 : 0,
-
             'number_of_potential_clients' => 'nullable|string|max:255',
             'out_of_state_coaching' => 'nullable|boolean',
-            // 'file_upload' => $request->file_upload,
-            // 'w9' => 'nullable|boolean',
-            // 'headshot' => 'nullable|boolean',
-            // 'voided_cheque' => 'nullable|boolean',
-            // 'bio' => 'nullable|boolean',
-            // 'website' => 'nullable|boolean',
-            // 'quickbooks' => 'nullable|boolean',
-            // 'dropbox' => 'nullable|boolean',
             'client_extensions' => 'nullable|boolean',
             'notes' => 'nullable|string|max:255',
             'covid_fundraise' => 'nullable|boolean',
             'insurance' => 'nullable|boolean',
-            // 'signed_documents' => 'nullable|boolean',
-            // 'leah_signed' => 'nullable|boolean',
             'space_for_new_clients' => 'nullable|numeric',
-            // 'admin' => 'nullable|boolean',
             'county_town' => 'nullable|string|max:255',
             'country' => 'nullable|string|max:255',
             'state' => 'nullable|string|max:255',
+            'time_zone' => 'nullable|string|max:255',
             // 'gender' => $genderString,
 
         ]);
