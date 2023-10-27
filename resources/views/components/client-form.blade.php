@@ -514,6 +514,18 @@
         pattern="[0-9]*" />
     {{-- </x-form_input_div> --}}
 
+    {{-- additional_notes --}}
+    {{-- <x-form_input_div> --}}
+    <x-form_label for="additional_notes">
+        Additional Notes
+    </x-form_label>
+    <x-form_input id="additional_notes"
+        name="additional_notes"
+        type="text"
+        
+        />
+    {{-- </x-form_input_div> --}}
+
     {{-- preferred_language --}}
     {{-- <x-form_input_div>
         <x-form_label for="preferred_language">
