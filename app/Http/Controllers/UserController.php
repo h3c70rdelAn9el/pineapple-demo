@@ -60,12 +60,15 @@ class UserController extends Controller
             'state' => 'nullable|string|max:255',
             'time_zone' => 'nullable|string|max:255',
             // 'gender' => $genderString,
+            'selectedGenders' => 'nullable|array',
 
         ]);
 
         // $user->update([$validated, 'gender' => implode(', ', $selectedGenders)]);
         $user->fill($validated);
-        $user->gender = implode(', ', $selectedGenders);
+        // $user->gender = implode(', ', $selectedGenders);
+        $user->gender = implode(', ', $request->input('selectedGenders', []));
+
         $user->time_zone = $request->time_zone;
         $user->save();
 
