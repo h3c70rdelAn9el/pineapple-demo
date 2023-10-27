@@ -9,6 +9,7 @@
     $statesJson = file_get_contents(resource_path('json/states.json'));
     $statesData = json_decode($statesJson, true);
     $states = $statesData['states'];
+    $genders = ['Male', 'Female', 'Transgender', 'Genderfluid', 'Genderqueer', 'Agender', 'Cisgender', 'Bigender', 'Non-binary', 'Prefer Not to Say'];
 @endphp
 <div class="grid grid-cols-1 md:grid-cols-3">
     <div>
@@ -139,68 +140,18 @@
                 for="title" />
         </div>
 
-        {{-- gender --}}
-
-        <div x-data="{ isOpen: false, selectedGenders: @json($user->genders ?: []) }" class="input-div">
-            <div class="relative">
-                <x-jet-label value="Gender  (previous selection: {{ $user->gender }})" />
-                {{-- <x-jet-label>
-                    <span>Gender</span>
-                    <span class="ml-2 text-xs">(previous selection: {{ $user->gender }})</span>
-                </x-jet-label> --}}
-                <div class="mt-1"
-                    x-on:click="isOpen = !isOpen">
-                    <div
-                        class="flex flex-row justify-between rounded border border-blue-300 bg-gray-100 p-2 hover:cursor-pointer">
-                        <span x-text="selectedGenders.length ? selectedGenders.join(', ') : 'Select gender(s)'"></span>
-                        <svg class="inline-block h-5 w-5"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth="2"
-                                d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </div>
-
-                    <div x-show="isOpen"
-                        {{-- make a transition to open  --}}
-                        x-on:click.away="isOpen = false"
-                        x-cloak>
-
-                        <div class="absolute w-full rounded-md border border-gray-300 shadow-lg">
-
-                            <select class="flex w-full flex-row bg-gray-200"
-                                name="selectedGenders[]"
-                                x-model="selectedGenders"
-                                multiple>
-                                <option class="gender-options transition duration-200"
-                                    value="Male">Male</option>
-                                <option class="gender-options"
-                                    value="Female">Female</option>
-                                <option class="gender-options transition duration-200"
-                                    value="Transgender">Transgender</option>
-                                <option class="gender-options transition duration-200"
-                                    value="Genderfluid">Genderfluid</option>
-                                <option class="gender-options transition duration-200"
-                                    value="Genderqueer">Genderqueer</option>
-                                <option class="gender-options transition duration-200"
-                                    value="Agender">Agender</option>
-                                <option class="gender-options transition duration-200"
-                                    value="Cisgender">Cisgender</option>
-                                <option class="gender-options transition duration-200"
-                                    value="Bigender">Bigender</option>
-                                <option class="gender-options transition duration-200"
-                                    value="Non-binary">Non-Binary</option>
-                                <option class="gender-options transition duration-200"
-                                    value="Prefer Not To Say">Prefer Not To Say</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div class="input-div">
+            <x-jet-label value="Gender(s)" />
+            <select class="mt-1 block w-full rounded-md border border-blue-300 bg-gray-100"
+                id="gender"
+                name="gender">
+                <option value="">Select time zone &nbsp &nbsp &nbsp(selected:{{ $user->gender }})</option>
+                @foreach ($genders as $gender)
+                    <option value="{{ $gender }}">{{ $gender }}</option>
+                @endforeach
+            </select>
+            <x-jet-input-error class="mt-2"
+                for="gender" />
         </div>
 
         {{-- email --}}
@@ -214,83 +165,6 @@
                 wire:model.defer="state.email" />
             <x-jet-input-error class="mt-2"
                 for="email" />
-        </div>
-
-        {{-- license --}}
-        {{-- <div>
-            <x-jet-label value="License" />
-            <x-jet-input class="mt-1 block w-full"
-                id="license"
-                name="license"
-                type="text"
-                value="{{ $user->license }}"
-                wire:model.defer="state.license" />
-            <x-jet-input-error class="mt-2"
-                for="license" />
-        </div> --}}
-
-        {{-- expires_at --}}
-        {{-- <div>
-                <x-jet-label value="{{ $user->expires_at }}" />
-                <x-jet-input class="mt-1 block w-full"
-                    id="expires_at"
-                    name="expires_at"
-                    type="date"
-                    value="{{ $user->expires_at }}"
-                    wire:model.defer="state.expires_at" />
-                <x-jet-input-error class="mt-2"
-                    for="expires_at" />
-            </div> --}}
-
-        {{-- on_vacation --}}
-        {{-- <div>
-                    <x-jet-label value="On vacation" />
-
-                        <x-jet-input type="checkbox"
-                            id="on_vacation"
-                            name="on_vacation"
-                            value="{{ $user->on_vacation }}"
-                            wire:model.defer="state.on_vacation" />
-                    <x-jet-input-error class="mt-2"
-                        for="on_vacation" />
-                </div> --}}
-
-        {{-- clinical_license_verification_portal --}}
-        {{-- <div>
-            <x-jet-label value="Clinical License Verification Portal" />
-            <x-jet-input class="mt-1 block w-full"
-                id="clinical_license_verification_portal"
-                name="clinical_license_verification_portal"
-                type="text"
-                value="{{ $user->clinical_license_verification_portal }}"
-                wire:model.defer="state.clinical_license_verification_portal" />
-            <x-jet-input-error class="mt-2"
-                for="clinical_license_verification_portal" />
-        </div> --}}
-
-        {{-- intern --}}
-        <div class="input-div">
-            <x-jet-label value="Intern" />
-            <x-jet-input id="intern"
-                name="intern"
-                type="checkbox"
-                value="{{ $user->intern }}"
-                wire:model.defer="state.intern" />
-            <x-jet-input-error class="mt-2"
-                for="intern" />
-        </div>
-
-        {{-- supervisor_name --}}
-        <div class="input-div">
-            <x-jet-label value="Supervisor Name" />
-            <x-jet-input class="mt-1 block w-full"
-                id="supervisor_name"
-                name="supervisor_name"
-                type="text"
-                value="{{ $user->supervisor_name }}"
-                wire:model.defer="state.supervisor_name" />
-            <x-jet-input-error class="mt-2"
-                for="supervisor_name" />
         </div>
 
         {{-- street_address --}}
@@ -362,7 +236,6 @@
                 for="state" />
         </div>
 
-        {{-- do the same for time_zone as country --}}
         {{-- time_zone --}}
         <div class="input-div">
             <x-jet-label value="Time Zone" />
@@ -432,6 +305,31 @@
                 wire:model.defer="state.number_of_potential_clients" />
             <x-jet-input-error class="mt-2"
                 for="number_of_potential_clients" />
+        </div>
+
+        {{-- intern --}}
+        <div class="input-div">
+            <x-jet-label value="Intern" />
+            <x-jet-input id="intern"
+                name="intern"
+                type="checkbox"
+                value="{{ $user->intern }}"
+                wire:model.defer="state.intern" />
+            <x-jet-input-error class="mt-2"
+                for="intern" />
+        </div>
+
+        {{-- supervisor_name --}}
+        <div class="input-div">
+            <x-jet-label value="Supervisor Name" />
+            <x-jet-input class="mt-1 block w-full"
+                id="supervisor_name"
+                name="supervisor_name"
+                type="text"
+                value="{{ $user->supervisor_name }}"
+                wire:model.defer="state.supervisor_name" />
+            <x-jet-input-error class="mt-2"
+                for="supervisor_name" />
         </div>
 
         {{-- notes --}}
