@@ -41,7 +41,7 @@ class ClientController extends Controller
     // }
     public function create(Request $request)
     {
-        if (auth()->user() && auth()->user()->admin === 1) {
+        if (auth()->user() && auth()->user()->admin == 1) {
             $user_id = $request->user()->id;
             $therapist = User::find($user_id);
             $activeTherapists = User::where('admin', 0)->where('active_status', 0)->get();
