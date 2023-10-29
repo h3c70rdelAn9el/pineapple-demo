@@ -12,7 +12,7 @@
             @click="openGender = !openGender">
             <span> (Select multiple if applicable)</span>
             <span class="ml-0"
-                x-text="selectedOptions.length > 0 ? selectedOptions.join(', ') : 'Select Options'"></span>
+                x-text="selectedGenders.length > 0 ? selectedOGendes.join(', ') : 'Select Options'"></span>
             <svg class="mt-0.5 h-[18px] w-[18px] text-gray-800"
                 fill="none"
                 stroke="currentColor"
