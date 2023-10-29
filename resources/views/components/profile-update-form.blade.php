@@ -18,7 +18,8 @@
     <form class="col-span-2 mb-4 rounded-md bg-white p-4 shadow-sm"
         method="POST"
         action="{{ route('profile.update') }}"
-        x-on:submit.prevent="submitForm">
+        x-on:submit.prevent="submitForm"
+        >
 
         @csrf
         @method('put')
@@ -140,11 +141,12 @@
                 for="title" />
         </div>
 
-        <div class="input-div">
+        {{-- <div class="input-div">
             <x-jet-label value="Gender(s)" />
             <select class="mt-1 block w-full rounded-md border border-blue-300 bg-gray-100"
                 id="gender"
-                name="gender">
+                name="selectedGenders[]"
+                multiple>
                 <option value="">Select time zone &nbsp &nbsp &nbsp(selected:{{ $user->gender }})</option>
                 @foreach ($genders as $gender)
                     <option value="{{ $gender }}">{{ $gender }}</option>
@@ -152,7 +154,7 @@
             </select>
             <x-jet-input-error class="mt-2"
                 for="gender" />
-        </div>
+        </div> --}}
 
         {{-- email --}}
         <div class="input-div">
