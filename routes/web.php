@@ -79,6 +79,8 @@ Route::middleware([
     // Route::get('file-edit/{id}', [FileUploadController::class, 'edit'])->name('fileEdit');
 
     Route::put('/profile/update', [UserController::class, 'updateUserProfile'])->name('profile.update');
+    // Route::post('/update-gender', 'UserController@updateGender')->name('update.gender');
+    Route::post('update-gender', [UserController::class, 'updateGender'])->name('update.gender');
 
     Route::get('/therapist/{id}/forms/', [FileUploadController::class, 'index'])->name('therapist.forms');
     Route::get('/therapist/forms/{therapist}', [FileUploadController::class, 'index'])->name('therapist.forms');

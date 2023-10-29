@@ -11,22 +11,8 @@ class UserController extends Controller
     {
         $user = User::find(auth()->user()->id);
 
-        $selectedGenders = $request->input('selectedGenders');
-
-        if (!is_array($selectedGenders)) {
-            $selectedGenders = [$selectedGenders];
-        }
-
-        $selectedGenders = $request->input('selectedGenders');
-
-        if (!is_array($selectedGenders)) {
-            $selectedGenders = [$selectedGenders];
-        }
-
-        $validated = $request->validate([
+        $validatedData = $request->validate([
             'name' => 'nullable|string|max:255',
-            // 'gender' => 'nullable|string|max:255',
-            // 'selectedGenders' => 'nullable|array',
             'email' => 'nullable|string|email|max:255',
             'license' => 'nullable|string|max:255',
             'certificate' => 'nullable|string|max:255',
@@ -59,34 +45,36 @@ class UserController extends Controller
             'country' => 'nullable|string|max:255',
             'state' => 'nullable|string|max:255',
             'time_zone' => 'nullable|string|max:255',
-            // 'gender' => $genderString,
             'selectedGenders' => 'nullable|array',
-
         ]);
 
-        // $user->update([$validated, 'gender' => implode(', ', $selectedGenders)]);
-        $user->fill($validated);
-        // $user->gender = implode(', ', $selectedGenders);
-        $user->gender = implode(', ', $request->input('selectedGenders', []));
+        // Handle selectedGenders separately
+        if ($request->has('selectedGenders')) {
+            $validatedData['gender'] = implode(', ', $validatedData['selectedGenders']);
+        } else {
+            // If none are selected, set gender to null or an empty string as needed
+            $validatedData['gender'] = null; // or $validatedData['gender'] = '';
+        }
 
-        $user->time_zone = $request->time_zone;
-        $user->save();
-
-        // $genderString = implode(',', $user->gender);
-
-        // $genderArray = unserialize($user->gender);
-        // if (is_array($genderArray)) {
-        //     $genderString = implode(', ', $genderArray);
-        // } else {
-        //     $genderString = ''; // or handle the case where $genderArray is not an array
-        // }
-
-
-        $genderString = implode(', ', $selectedGenders);
-
-        // $user->gender = $genderString;
-
+        // Update the user record
+        $user->update($validatedData);
 
         return redirect()->back()->with('success', 'Profile updated successfully.');
     }
+
+    public function updateGender(Request $request)
+    {
+        $user = User::find(auth()->user()->id);
+
+        // Validate the request
+        $validatedData = $request->validate([
+            'selectedGenders' => 'nullable|array',
+        ]);
+
+        // Update the gender field
+        $user->update(['gender' => implode(', ', $validatedData['selectedGenders'])]);
+
+        return redirect()->back()->with('success', 'Gender updated successfully.');
+    }
+
 }

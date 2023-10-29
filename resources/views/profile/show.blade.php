@@ -6,6 +6,8 @@
 
     //
     // $therapist = Therapist::findOrFail($id);
+    $gender = $user->gender;
+    $genders = ['male', 'female'];
 
 @endphp
 
@@ -49,15 +51,17 @@
 
             {{-- @livewire('profile.update-profile-information.form', ['user' => $user]) --}}
 
-            <x-profile-update-form
-                :user="$user"
+            <x-profile-update-form :user="$user"
                 :therapist="$therapist"
-                :id="$id"
-            />
+                :id="$id" />
+
+            <x-gender-form :genders="$genders"
+                :user="$user"></x-gender-form>
 
             <x-jet-section-border />
 
-            <x-file-upload :user="$user" :therapist="$therapist" />
+            <x-file-upload :user="$user"
+                :therapist="$therapist" />
 
             <x-jet-section-border />
 
@@ -91,3 +95,10 @@
 
     </div>
 </x-app-layout>
+
+<script>
+    function openGenderFormModal() {
+        var modal = document.getElementById('genderFormModal');
+        modal.style.display = 'block';
+    }
+</script>
