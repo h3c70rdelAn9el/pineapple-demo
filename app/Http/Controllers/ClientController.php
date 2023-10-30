@@ -199,6 +199,8 @@ class ClientController extends Controller
         $c->client_contribution = $request->client_contribution;
         $c->gender = $genderString;
         $c->ethnic_group = $ethnicGroupString;
+        $therapist = User::find($request->user_id);
+        $therapist->notify(new NewClientNotification());
         // $c->ethnic_group = json_encode($ethnicGroupArray);
 
         // $c->user_id = $user->id;
@@ -244,7 +246,7 @@ class ClientController extends Controller
         $client->phone = $request->phone;
         $client->contact_method = $request->contact_method;
         $client->client_contribution = $request->client_contribution;
-        // $client->user_id = $request->user_id;
+        $client->user_id = $request->user_id;
         $client->gender = $request->gender;
         $client->save();
 
