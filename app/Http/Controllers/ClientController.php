@@ -249,7 +249,7 @@ class ClientController extends Controller
         $client->save();
 
         $therapist = User::find($request->user_id);
-        $therapist->notify(new NewClientNotification($c));
+        $therapist->notify(new NewClientNotification());
         // return redirect()->route('clients.show', $client->id)->with('success', 'Client updated successfully');
         return redirect()->route('dashboard');
     }
