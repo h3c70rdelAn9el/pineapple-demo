@@ -225,7 +225,7 @@ class ClientController extends Controller
         $client->client_code = $request->client_code;
         $client->legal_name = $request->legal_name;
         $client->preferred_name = $request->preferred_name;
-        $client->sexual_orientation = $request->sexual_orientation;
+        $client->sexual_orientation = $request->sexual_orientation ?? null;
         $client->ethnic_group = $request->ethnic_group;
         // $client->home_address_line_1 = $request->home_address_line_1;
         // $client->home_address_line_2 = $request->home_address_line_2;
@@ -240,7 +240,7 @@ class ClientController extends Controller
         $client->possible_support_needed = $request->possible_support_needed;
         // $client->preferred_language = $request->preferred_language;
         $client->additional_notes = $request->additional_notes;
-        $client->pronouns = $request->pronouns;
+        $client->pronouns = $request->pronouns ?? null;
         $client->email = $request->email;
         $client->phone = $request->phone;
         $client->contact_method = $request->contact_method;
