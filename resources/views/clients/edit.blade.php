@@ -61,32 +61,39 @@
                     label="Pronoun(s):   (previous selection: {{ $client->pronouns }}) "
                     placeholder="{{ $client->pronouns }}"
                     :options="[
-                        'she/her/hers',
-                        'he/him/his',
-                        'they/them/theirs',
-                        'per/per/pers',
-                        'ze/hir/hirs',
-                        'prefer not to say',
+                        'She/Her/Her/Hers/Herself',
+                        'He/Him/His/His/Himself',
+                        'They/Them/Their/Theirs/Themselves',
+                        'Ze/Hir/Hir/Hirs/Hirself',
+                        'Ey/Em/Eir/Eirs/Eirself',
+                        'Per/Per/Pers/Perself/Perse',
+                        'Xe/Xem/Xyr/Xyrs/Xemself',
+                        'Zie/Zim/Zir/Zirs/Zirself',
+                        'He/She/His/Hers/Himself/Herself',
+                        'Prefer Not To Say',
                         'Other',
                     ]"></x-multi-select>
             </div>
 
             {{-- sexual_orientation --}}
             <div class="col-span-6 mt-0 sm:col-span-4">
-                <x-single-select id="sexual_orientation"
+                <x-multi-select id="sexual_orientation"
                     name="sexual_orientation"
                     value="{{ $client->sexual_orientation }}"
-                    label="Sexual Orientation:   (previous selection: {{ $client->sexual_orientation }}) "
+                    label="Gender:   (previous selection: {{ $client->sexual_orientation }}) "
                     placeholder="{{ $client->sexual_orientation }}"
                     :options="[
-                        'she/her/hers',
-                        'he/him/his',
-                        'they/them/theirs',
-                        'per/per/pers',
-                        'ze/hir/hirs',
-                        'prefer not to say',
+                        'Heterosexual',
+                        'Bisexual',
+                        'Homosexual',
+                        'Asexual',
+                        'Pansexual',
+                        'Demisexual',
+                        'Queer',
+                        'Questioning',
+                        'Prefer Not To Say',
                         'Other',
-                    ]"></x-single-select>
+                    ]"></x-multi-select>
             </div>
 
             {{-- ethnic_groups --}}

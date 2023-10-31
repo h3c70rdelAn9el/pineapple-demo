@@ -19,7 +19,9 @@
         </x-container-header>
         <div class="mx-auto grid w-full grid-cols-1 gap-3 rounded-lg p-2 px-6 md:grid-cols-2">
             {{-- left side --}}
-            @include('partials.client-fields')
+            {{-- @include('partials.client-fields') --}}
+            {{-- make the include but pass the id as well --}}
+            @include('partials.client-fields', ['id' => $id])
 
             {{-- right side --}}
             <div class="mt-2 flex flex-col rounded-md border border-purple-500 p-1 shadow-md shadow-blue-100">

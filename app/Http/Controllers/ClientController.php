@@ -272,10 +272,11 @@ class ClientController extends Controller
             ->get();
         $user_id = $client->user_id;
         $user = $request->user();
+        $id = $client->id;
         // $therapist = User::find($user_id);
         $therapist = User::where('id', $user_id)->first();
 
-        return view('clients.show')->with(['client' => $client, 'therapySessions' => $therapySessions, 'therapist' => $therapist, 'attendedSessions' => $attendedSessions, 'user' => $user]);
+        return view('clients.show')->with(['client' => $client, 'therapySessions' => $therapySessions, 'therapist' => $therapist, 'attendedSessions' => $attendedSessions, 'user' => $user, 'id' => $id]);
     }
 
     /**
@@ -290,13 +291,14 @@ class ClientController extends Controller
     // }
     public function edit(Request $request, $id)
     {
-        if (auth()->user() && auth()->user()->admin === 1) {
+        if (auth()->user() && auth()->user()->admin == 1) {
             $client = Client::find($id);
             $countries = $this->getCountries();
             $categories = $this->getCategories();
             $states = $this->getStates();
+            $id = $client->id;
 
-            return view('clients.edit')->with(['client' => $client, 'countries' => $countries, 'categories' => $categories, 'states' => $states]);
+            return view('clients.edit')->with(['client' => $client, 'countries' => $countries, 'categories' => $categories, 'states' => $states, 'id' => $id]);
         } else {
             return redirect()->route('dashboard')->with('error', '**You do not have permission to access that page**');
         }
