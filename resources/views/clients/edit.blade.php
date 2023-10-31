@@ -22,6 +22,11 @@
                 type="hidden"
                 value="PUT">
 
+                {{-- add hidden field for user_id --}}
+                <input name="user_id"
+                    type="hidden"
+                    value="{{ $client->user_id }}">
+
             {{-- client_code --}}
             <x-form-field name="client_code"
                 type="text"
