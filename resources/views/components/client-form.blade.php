@@ -190,10 +190,23 @@
             disabled
             selected
             hidden>Select Pronouns</option>
-        <option>She/Her/Hers</option>
-        <option>He/Him/His</option>
-        <option>They/Them/Theirs</option>
-        <option>Other</option>
+        <option value="She/Her/Her/Hers/Herself">She/Her/Her/Hers/Herself
+        </option>
+        <option value="He/Him/His/His/Himself">He/Him/His/His/Himself</option>
+        <option value="They/Them/Their/Theirs/Themselves">They/Them/Their/Theirs/Themselves</option>
+        <option value="Ze/Hir/Hir/Hirs/Hirself">Ze/Hir/Hir/Hirs/Hirself</option>
+        <option value="Ey/Em/Eir/Eirs/Eirself">Ey/Em/Eir/Eirs/Eirself
+        </option value="Per/Per/Pers/Perself/Perse">
+        <option>Per/Per/Pers/Perself/Perse
+        </option>
+        <option value="Ve/Ver/Vis/Verself/Veself">Ve/Ver/Vis/Verself/Veself
+        </option>
+        <option value="Xe/Xem/Xyr/Xyrs/Xemself">Xe/Xem/Xyr/Xyrs/Xemself
+        </option>
+        <option value="Zie/Zim/Zir/Zirs/Zirself">Zie/Zim/Zir/Zirs/Zirself
+        </option>
+        <option value="Other">Other</option>
+        <option value="Prefer Not To Say">Prefer Not to Say</option>
     </select>
 
     {{-- Sexual Orientation --}}
@@ -201,7 +214,7 @@
     <x-form_label for="sexual_orientation">
         Sexual Orientation
     </x-form_label>
-    <select class="peer mt-2 w-full rounded-md border-b-2 border-blue-200 p-3 ring-0 capitalize"
+    <select class="peer mt-2 w-full rounded-md border-b-2 border-blue-200 p-3 capitalize ring-0"
         id="sexual_orientation"
         name="sexual_orientation"
         type="text"
@@ -521,9 +534,7 @@
     </x-form_label>
     <x-form_input id="additional_notes"
         name="additional_notes"
-        type="text"
-        
-        />
+        type="text" />
     {{-- </x-form_input_div> --}}
 
     {{-- preferred_language --}}
@@ -552,7 +563,7 @@
     <x-form_label for="therapist">
         Therapist
     </x-form_label>
-    <select class="peer mt-2 w-full rounded-md border-b-2 border-blue-200 p-3 ring-0 capitalize"
+    <select class="peer mt-2 w-full rounded-md border-b-2 border-blue-200 p-3 capitalize ring-0"
         id="user_id"
         name="user_id"
         required>
