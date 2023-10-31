@@ -41,7 +41,7 @@ class ClientController extends Controller
     // }
     public function create(Request $request)
     {
-        if (auth()->user() && auth()->user()->admin === 1) {
+        if (auth()->user() && auth()->user()->admin == 1) {
             $user_id = $request->user()->id;
             $therapist = User::find($user_id);
             $activeTherapists = User::where('admin', 0)->where('active_status', 0)->orderBy('name', 'asc')->get();
@@ -137,7 +137,6 @@ class ClientController extends Controller
         // $genderString = implode(', ', $selectedGenders);
         // $genderString = implode(', ', $request->input('gender'));
 
-        // write an if statement if there is more than one gender selected
         if (is_array($selectedGenders) && !empty($selectedGenders)) {
             $genderString = implode(', ', $selectedGenders);
         } else {

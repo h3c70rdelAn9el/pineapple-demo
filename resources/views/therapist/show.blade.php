@@ -13,10 +13,10 @@
                             <p>{{ $therapist->name }}</p>
                             <p class="text-sm">{{ $therapist->gender }}</p>
                         </div>
-                        @if (auth()->user()->admin === 1)
+                        @if (auth()->user()->admin == 1)
                             <div class="flex flex-row justify-end">
                                 <a class="button mt-1"
-                                    href="{{ route('therapist.edit', $therapist) }}">Edit</a>
+                                    href="{{ route('therapist.edit', $therapist->id) }}">Edit</a>
                             </div>
                         @endif
                     </div>
