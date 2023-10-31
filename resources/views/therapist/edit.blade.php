@@ -337,5 +337,17 @@
             <button class="button"
                 type="submit">Submit</button>
         </form>
+
+        <div class="border border-b border-gray-300 w-2/3 mx-auto my-4">
+
+        </div>
+
+        <div class="flex mt-2">
+            <button class="button-secondary mx-auto">
+                <a href="{{ route('fileEdit', ['id' => $id]) }}">
+                    View Forms
+                </a>
+            </button>
+        </div>
     </x-main-container>
 </x-app-layout>

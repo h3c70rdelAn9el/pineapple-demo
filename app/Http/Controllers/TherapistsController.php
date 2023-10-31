@@ -57,6 +57,7 @@ class TherapistsController extends Controller
                 'therapist' => $therapist,
                 'user' => $user,
                 'form' => $form,
+                'id' => $id,
             ]);
         } else {
             return redirect()->route('dashboard')->with('error', 'You are not authorized to edit this therapist');
