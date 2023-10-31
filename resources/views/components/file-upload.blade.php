@@ -127,11 +127,12 @@
                                     rows="2"
                                     placeholder="Note"></textarea>
                             </div>
-
+{{--
                             <div class="relative mt-4">
                                 <x-jet-label for="clinical_license_verification_portal"
                                     value="{{ __('Clinical License Verification Portal') }}" />
                                 <x-jet-input class="mr-1 mt-0.5 w-full"
+                                    name="clinical_license_verification_portal"
                                     id="clinical_license_verification_portal"
                                     type="text"
                                     wire:model.defer="state.clinical_license_verification_portal"
@@ -139,7 +140,7 @@
                                 <p class="ml-1 mt-[3px] text-xs font-light">(Optional)</p>
                                 <x-jet-input-error class="mt-2"
                                     for="clinical_license_verification_portal" />
-                            </div>
+                            </div> --}}
                         </div>
 
                         <x-jet-button class="absolute right-0 mb-3 mr-6 mt-9"
