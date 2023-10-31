@@ -316,7 +316,19 @@
                 name="intern"
                 type="checkbox"
                 value="{{ $user->intern }}"
-                wire:model.defer="state.intern" />
+                wire:model.defer="state.intern" />         <div class="relative mt-4">
+                                <x-jet-label for="clinical_license_verification_portal"
+                                    value="{{ __('Clinical License Verification Portal') }}" />
+                                <x-jet-input class="mr-1 mt-0.5 w-full"
+                                    name="clinical_license_verification_portal"
+                                    id="clinical_license_verification_portal"
+                                    type="text"
+                                    wire:model.defer="state.clinical_license_verification_portal"
+                                    autocomplete="clinical_license_verification_portal" />
+                                <p class="ml-1 mt-[3px] text-xs font-light">(Optional)</p>
+                                <x-jet-input-error class="mt-2"
+                                    for="clinical_license_verification_portal" />
+                            </div>
             <x-jet-input-error class="mt-2"
                 for="intern" />
         </div>
@@ -333,6 +345,8 @@
             <x-jet-input-error class="mt-2"
                 for="supervisor_name" />
         </div>
+
+        {{-- clinical_license_verification_portal --}}
 
         {{-- notes --}}
         {{-- <div>
