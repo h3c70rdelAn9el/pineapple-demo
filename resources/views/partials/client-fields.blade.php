@@ -2,7 +2,7 @@
      <h2 class="text-lg font-bold text-center">Client: {{ $client->preferred_name }}</h2>
         @if (auth()->user()->admin == 1)
         <div class="flex flex-row justify-end">
-            <a href="{{ route('clients.edit', $client) }}" class="button">Edit</a>
+            <a href="{{ route('clients.edit', $id) }}" class="button">Edit</a>
         </div>
         @endif
      @foreach ([
