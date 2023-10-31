@@ -243,7 +243,7 @@ class ClientController extends Controller
         $client->pronouns = $request->pronouns ?? null;
         $client->email = $request->email;
         $client->phone = $request->phone;
-        $client->contact_method = $request->contact_method;
+        $client->contact_method = $request->contact_method ?? null;
         $client->client_contribution = $request->client_contribution;
         $client->user_id = $request->user_id;
         $client->gender = $request->gender;
