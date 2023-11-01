@@ -91,7 +91,7 @@ Route::middleware([
     Route::get('/clients/{client_id}', [ClientController::class, 'show'])->name('clients.show');
     Route::post('/clients/store', [ClientController::class, 'store'])->name('clients.store');
     Route::get('/clients/{client_id}/edit', [ClientController::class, 'edit'])->name('clients.edit');
-    Route::put('/clients/{client_id}', [ClientController::class, 'update'])->name('clients.update');
+    Route::put('/clients/{client_id}/update', [ClientController::class, 'update'])->name('clients.update');
     Route::get('/search', SearchController::class)->name('search');
     Route::get('/file-upload/search/{therapist}', [FileUploadController::class, 'search'])->name('file-upload.search');
 });
