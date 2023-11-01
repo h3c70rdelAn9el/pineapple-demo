@@ -23,7 +23,8 @@
             x-data
             required
             x-mask:dynamic="$money($input)"
-            placeholder="0.00">
+            placeholder="0.00"
+            value="{{ $therapist->session_cost }}">
     </div>
     <div class="my-2 text-xs font-light">
         <p>

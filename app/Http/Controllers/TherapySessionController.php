@@ -55,16 +55,18 @@ class TherapySessionController extends Controller
         $user = auth()->user();
         $client_id = $request->client_id;
         $client = Client::find($client_id);
+        $therapist = User::find($user->id);
 
         if ($client->therapySessions()->whereIn('attendance', ['attended', 'no-show'])->count() < $client->max_sessions) {
 
             $ts = new TherapySession();
             $ts->client_id = $request->client_id;
-            $ts->session_cost = $request->session_cost;
+            $ts->session_cost = $therapist->session_cost;
             $clientContribution = DB::table('clients')
                 ->where('id', $request->client_id)
                 ->value('client_contribution');
-            $ts->client_contribution = $request->client_contribution;
+            $client_contribution = $client->client_contribution;
+            $ts->client_contribution = $client->$client_contribution;
             $ts->remaining_client_contribution = $clientContribution - $request->session_cost;
             $ts->client_contribution = $request->client_contribution;
             $ts->created_at = $request->created_at;
