@@ -65,7 +65,8 @@ class TherapySessionController extends Controller
             $clientContribution = DB::table('clients')
                 ->where('id', $request->client_id)
                 ->value('client_contribution');
-            $ts->client_contribution = $request->client_contribution;
+            $client_contribution = $client->client_contribution;
+            $ts->client_contribution = $client->$client_contribution;
             $ts->remaining_client_contribution = $clientContribution - $request->session_cost;
             $ts->client_contribution = $request->client_contribution;
             $ts->created_at = $request->created_at;
