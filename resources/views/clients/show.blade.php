@@ -2,7 +2,10 @@
     <div x-data="{ showLimitModal: {{ $client->therapySessions()->whereIn('attendance', ['attended', 'no-show'])->count() >= 16? 'true': 'false' }} }">
         <div class="relative">
             <div class="fixed inset-0 z-50 flex items-center justify-center overflow-auto bg-gray-800 bg-opacity-50"
-                x-show="showLimitModal">
+                x-show="showLimitModal"
+                x-transition.duration.300ms
+                x-cloak
+                >
                 <div class="fixed z-50 rounded-lg bg-gray-200 p-8 shadow-md flex flex-col text-center border-2 border-blue-700">
                     <h2 class="mb-4 text-2xl font-bold">Client Reached 16 Sessions</h2>
                     <p>Client has completed 16 sessions.</p>
