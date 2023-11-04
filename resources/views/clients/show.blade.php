@@ -29,6 +29,7 @@
             {{-- right side --}}
             <div class="mt-2 flex flex-col rounded-md border border-purple-500 p-1 shadow-md shadow-blue-100">
                 <h2 class="text-center text-lg font-bold">Client Sessions</h2>
+                <p class="text-xs ml-2">Assigned Sessions: {{ $client->max_sessions }}</p>
                 <div class="mx-auto flex w-2/3 flex-row">
                     @include('partials.sessions-attended')
                     <div class="mx-auto mb-2 mt-2 rounded-md bg-blue-50 p-2 shadow-md shadow-blue-100 lg:w-1/2">
