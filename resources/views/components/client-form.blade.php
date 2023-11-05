@@ -185,7 +185,7 @@
         id="pronouns"
         name="pronouns"
         type="text"
-        required>
+         >
         <option value=""
             disabled
             selected
@@ -218,7 +218,7 @@
         id="sexual_orientation"
         name="sexual_orientation"
         type="text"
-        required>
+         >
         <option class="text-gray-600"
             value=""
             disabled
@@ -375,43 +375,14 @@
     </x-form_input_div> --}}
 
     {{-- home_address_country --}}
-    {{-- <x-form_input_div> --}}
     <x-form_label for="country">
         Country
     </x-form_label>
-    {{-- <select class="w-full p-3 mt-2 border-b-2 border-blue-200 rounded-md peer ring-0"
-            id="home_address_country"
-            name="home_address_country"
-            type="text"
-            required>
-            <option value=""
-                disabled
-                selected
-                hidden>Select Country</option>
-            @foreach ($countries as $country)
-                <option value="{{ $country }}">{{ $country }}</option>
-            @endforeach
-        </select> --}}
-    {{-- <select class="w-full p-3 mt-2 border-b-2 border-blue-200 rounded-md peer ring-0"
-        id="home_address_country"
-        name="home_address_country"
-        type="text"
-        required>
-        <option value=""
-            disabled
-            selected
-            hidden>Select Country</option>
-        @if (isset($countries) && is_array($countries))
-            @foreach ($countries as $country)
-                <option value="{{ $country }}">{{ $country }}</option>
-            @endforeach
-        @endif
-    </select> --}}
     <select class="peer mt-2 w-full rounded-md border-b-2 border-blue-200 p-3 ring-0"
         id="home_address_country"
         name="home_address_country"
         type="text"
-        required>
+         >
         <option value=""
             disabled
             selected
@@ -423,7 +394,6 @@
         @endif
     </select>
 
-    {{-- </x-form_input_div> --}}
 
     {{-- email --}}
     {{-- <x-form_input_div> --}}
