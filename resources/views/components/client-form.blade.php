@@ -226,7 +226,7 @@
             hidden>Select Orientation</option>
         <option>bisexual</option>
         <option>gay/lesbian</option>
-        <option>hetrosexaul/straight</option>
+        <option>heterosexaul/straight</option>
         <option>don't know</option>
         <option>prefer not to say</option>
         <option>Other</option>
