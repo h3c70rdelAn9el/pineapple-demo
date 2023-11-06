@@ -184,8 +184,7 @@
     <select class="peer mt-2 w-full rounded-md border-b-2 border-blue-200 p-3 ring-0"
         id="pronouns"
         name="pronouns"
-        type="text"
-         >
+        type="text">
         <option value=""
             disabled
             selected
@@ -217,8 +216,7 @@
     <select class="peer mt-2 w-full rounded-md border-b-2 border-blue-200 p-3 capitalize ring-0"
         id="sexual_orientation"
         name="sexual_orientation"
-        type="text"
-         >
+        type="text">
         <option class="text-gray-600"
             value=""
             disabled
@@ -381,8 +379,7 @@
     <select class="peer mt-2 w-full rounded-md border-b-2 border-blue-200 p-3 ring-0"
         id="home_address_country"
         name="home_address_country"
-        type="text"
-         >
+        type="text">
         <option value=""
             disabled
             selected
@@ -394,9 +391,7 @@
         @endif
     </select>
 
-
     {{-- email --}}
-    {{-- <x-form_input_div> --}}
     <x-form_label for="email">
         Email
     </x-form_label>
@@ -405,10 +400,8 @@
         type="text"
         required
         placeholder="email@example.com" />
-    {{-- </x-form_input_div> --}}
 
     {{-- phone --}}
-    {{-- <x-form_input_div> --}}
     <x-form_label for="phone">
         Phone
     </x-form_label>
@@ -416,53 +409,69 @@
         name="phone"
         type="tel"
         required />
-    {{-- </x-form_input_div> --}}
 
     {{-- contact_method --}}
-    {{-- <x-form_input_div> --}}
-    <x-form_label for="contact_method">
-        Contact Method
-    </x-form_label>
-    <select class="peer mt-2 w-full rounded-md border-b-2 border-blue-200 p-3 ring-0"
-        id="contact_method"
-        name="contact_method"
-        type="text"
-        required>
-        <option value=""
-            disabled
-            selected
-            hidden>Select Contact Method</option>
-        <option>Telephone Call</option>
-        <option>Text Message</option>
-        <option>Email</option>
-    </select>
-    {{-- </x-form_input_div> --}}
+    <div class="my-4 flex flex-col"
+        x-data="{ openContact: false }">
+        <x-jet-label>Contact Method:</x-jet-label>
+        <button
+            class="-m-0.5 flex w-full justify-between rounded-md border border-blue-300 bg-gray-100 p-3 text-gray-700 focus:border-blue-500"
+            type="button"
+            @click="openContact = !openContact">
+            <span> (Select multiple if applicable)</span>
+            <span class="ml-0"
+                x-text="selectedOptions.length > 0 ? selectedOptions.join(', ') : 'Select Options'"></span>
+            <svg class="mt-0.5 h-[18px] w-[18px] text-gray-800"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M19 9l-7 7-7-7"></path>
+            </svg>
 
-    {{-- <x-form_input_div>
-        <x-form_label for="health_coverage_provider">
-            Health Coverage Provider
-        </x-form_label>
-        <x-form_input id="health_coverage_provider" type="text" name="health_coverage_provider" required
-                      placeholder="Health Coverage Provider" />
-    </x-form_input_div>
-
-    <x-form_input_div>
-        <x-form_label for="health_coverage_number">
-            Health Coverage Number
-        </x-form_label>
-        <x-form_input id="health_coverage_number" type="text" name="health_coverage_number" required
-                      placeholder="Health Coverage Number" />
-    </x-form_input_div>
-
-    <x-form_input_div>
-        <x-form_label for="health_coverage_expiration">
-            Health Coverage Expiration
-        </x-form_label>
-        <input type="date" required id="health_cover_expiration" name="health_coverage_expiration">
-    </x-form_input_div> --}}
+        </button>
+        <div class="-ml-[2px] -mt-2 mr-[2px] rounded-md rounded-t-none border border-b border-r border-t-0 border-blue-500 bg-gray-100 py-4 md:flex md:flex-wrap"
+            x-show="openContact"
+            x-transition.scale.origin.top
+            x-transition:enter.duration.300ms
+            x-transition:enter.ease-in-out
+            x-transition:leave.duration.300ms
+            x-transition:ease-in-out
+            x-cloak>
+            <div class="select-input-div">
+                <input class="select-input"
+                    id="telephone"
+                    name="contact_method[]"
+                    type="checkbox"
+                    value="telephone">
+                <label class="ml-2"
+                    for="telephone">Telephone</label>
+            </div>
+            <div class="select-input-div">
+                <input class="select-input"
+                    id="text"
+                    name="contact_method[]"
+                    type="checkbox"
+                    value="text">
+                <label class="ml-2"
+                    for="text">Text</label>
+            </div>
+            <div class="select-input-div">
+                <input class="select-input"
+                    id="email"
+                    name="contact_method[]"
+                    type="checkbox"
+                    value="email">
+                <label class="ml-2"
+                    for="email">Email</label>
+            </div>
+        </div>
+    </div>
 
     {{-- Previous therapy --}}
-    {{-- <x-form_input_div> --}}
     <x-form_label for="previous_therapy">Previous Therapy from Pineapple</x-form_label>
     <select class="form-select p-3"
         id="previous_therapy"
