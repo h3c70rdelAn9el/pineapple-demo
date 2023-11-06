@@ -4,7 +4,6 @@
     action="{{ route('client.store') }}"
     method="POST">
     @csrf
-    {{-- <x-form_input_div> --}}
     <x-form_label for="client_code">
         Client Code
     </x-form_label>
@@ -16,7 +15,6 @@
     {{-- </x-form_input_div> --}}
 
     {{-- Legal Name --}}
-    {{-- <x-form_input_div> --}}
     <x-form_label for="legal_name">
         Legal Name
     </x-form_label>
@@ -28,7 +26,6 @@
     {{-- </x-form_input_div> --}}
 
     {{-- Preferred Name --}}
-    {{-- <x-form_input_div> --}}
     <x-form_label for="preferred_name">
         Preferred Name
     </x-form_label>
@@ -209,7 +206,6 @@
     </select>
 
     {{-- Sexual Orientation --}}
-    {{-- <x-form_input_div> --}}
     <x-form_label for="sexual_orientation">
         Sexual Orientation
     </x-form_label>
@@ -229,13 +225,7 @@
         <option>prefer not to say</option>
         <option>Other</option>
     </select>
-    {{-- </x-form_input_div> --}}
 
-    {{-- ethnic_group --}}
-    {{-- <x-multi-select id="ethnic_group"
-        name="Ethnic Group"
-        label="Ethnic Group"
-        :options="$ethnicGroups" /> --}}
 
     <div class="my-4 flex flex-col"
         x-data="{ openEthnicGroup: false, selectedEthnicGroups: [] }">
@@ -343,7 +333,6 @@
     </div>
 
     {{-- home_address_state --}}
-    {{-- <x-form_input_div> --}}
     <x-form_label for="home_address_state">
         State (optional)
     </x-form_label>
@@ -355,22 +344,10 @@
             disabled
             selected
             hidden>Select State</option>
-        {{-- @foreach ($states as $state)
-                <option value="{{ $state['name'] }}">{{ $state['name'] }}</option>
-            @endforeach --}}
         @foreach ($states as $state)
             <option value="{{ $state }}">{{ $state }}</option>
         @endforeach
     </select>
-    {{-- </x-form_input_div> --}}
-
-    {{-- home_address_zip --}}
-    {{-- <x-form_input_div>
-        <x-form_label for="home_address_zip">
-            Zip Code
-        </x-form_label>
-        <x-form_input id="home_address_zip" type="text" name="home_address_zip" required placeholder="Zip Code" />
-    </x-form_input_div> --}}
 
     {{-- home_address_country --}}
     <x-form_label for="country">
@@ -484,7 +461,6 @@
         <option>Yes</option>
         <option>No</option>
     </select>
-    {{-- </x-form_input_div> --}}
 
     {{-- possible_support_needed --}}
     <x-multi-select id="possible_support_needed"
@@ -493,7 +469,6 @@
         :options="$categories" />
 
     {{-- client_contribution --}}
-    {{-- <x-form_input_div> --}}
     <x-form_label for="client_contribution">
         Client Contribution
     </x-form_label>
@@ -504,41 +479,16 @@
         placeholder="xxx"
         inputmode="numeric"
         pattern="[0-9]*" />
-    {{-- </x-form_input_div> --}}
 
     {{-- additional_notes --}}
-    {{-- <x-form_input_div> --}}
     <x-form_label for="additional_notes">
         Additional Notes
     </x-form_label>
     <x-form_input id="additional_notes"
         name="additional_notes"
         type="text" />
-    {{-- </x-form_input_div> --}}
 
-    {{-- preferred_language --}}
-    {{-- <x-form_input_div>
-        <x-form_label for="preferred_language">
-            Preferred Language
-        </x-form_label>
-        <select id="preferred_language" type="text" name="preferred_language"
-                class="w-full p-3 mt-2 border-b-2 border-blue-200 rounded-md peer ring-0" required>
-            <option value="" disabled selected hidden>Please Select:</option>
-            <option>English</option>
-            <option>Spanish</option>
-            <option>French</option>
-            <option>German</option>
-            <option>Italian</option>
-            <option>Portuguese</option>
-            <option>Chinese</option>
-            <option>Japanese</option>
-            <option>Arabic</option>
-            <option>Other</option>
-        </select>
-    </x-form_input_div> --}}
-
-    {{-- therapist --}}
-    {{-- <x-form_input_div> --}}
+    {{-- Therapist --}}
     <x-form_label for="therapist">
         Therapist
     </x-form_label>
@@ -550,13 +500,35 @@
             disabled
             selected
             hidden>Therapist</option>
-        @foreach ($activeTherapists as $row)
-            <option value="{{ $row->id }}">
-                {{ $row->name }}
-            </option>
+
+        @php
+            $groupedTherapists = $therapists->groupBy('state')->sortKeys();
+        @endphp
+
+        @foreach ($groupedTherapists as $state => $therapistsInState)
+            @php
+                $activeTherapistsInState = $therapistsInState->filter(function ($therapist) {
+                    return $therapist->active_status == 0;
+                });
+            @endphp
+
+            @if ($activeTherapistsInState->isNotEmpty())
+                <optgroup label="{{ $state }}">
+                    @foreach ($activeTherapistsInState as $therapist)
+                        <option value="{{ $therapist->id }}">
+                            {{ $therapist->name }}
+                            @if (!empty($therapist->state))
+                                (State: {{ $therapist->state }})
+                            @else
+                                (No state available)
+                            @endif
+                        </option>
+                    @endforeach
+                </optgroup>
+            @endif
         @endforeach
     </select>
-    {{-- </x-form_input_div> --}}
+
 
     <div class="mt-2 flex">
         <button class="button-secondary mx-auto">Add</button>
