@@ -150,6 +150,16 @@ class ClientController extends Controller
         } else {
             $ethnicGroupString = '';
         }
+
+        // do the same as above for contact_method
+        $selectedContactMethods = $request->input('contact_method');
+        $contactMethodString = implode(', ', $selectedContactMethods);
+        if (is_array($request->contact_method) && !empty($request->contact_method)) {
+            $contactMethodString = implode(', ', $request->contact_method);
+        } else {
+            $contactMethodString = '';
+        }
+
         // $selectedEthnicGroups = $request->input('ethnic_group');
 
         // if (is_array($selectedEthnicGroups) && !empty($selectedEthnicGroups)) {
@@ -180,6 +190,10 @@ class ClientController extends Controller
         $c->health_coverage_number = $request->health_coverage_number;
         $c->health_coverage_expiration = $request->health_coverage_expiration;
         $c->previous_therapy = $request->previous_therapy;
+        // $selectedContactMethods = $request->input('contact_method');
+        // $contactMethodString = implode(', ', $selectedContactMethods);
+        $c->contact_method = $contactMethodString;
+
         // $c->possible_support_needed = implode(', ', $request->possible_support_needed);
         // if (is_array($request->possible_support_needed) && !empty($request->possible_support_needed)) {
         //     // $c->possible_support_needed = implode(', ', $request->possible_support_needed);
@@ -193,7 +207,7 @@ class ClientController extends Controller
         $c->pronouns = $request->pronouns;
         $c->email = $request->email;
         $c->phone = $request->phone;
-        $c->contact_method = $request->contact_method;
+        // $c->contact_method = $request->contact_method;
         $c->user_id = $request->user_id;
         $c->client_contribution = $request->client_contribution;
         $c->gender = $genderString;
@@ -243,10 +257,13 @@ class ClientController extends Controller
         $client->pronouns = $request->pronouns ?? null;
         $client->email = $request->email;
         $client->phone = $request->phone;
-        $client->contact_method = $request->contact_method ?? null;
+        // $client->contact_method = $request->contact_method ?? null;
         $client->client_contribution = $request->client_contribution;
         $client->user_id = $request->user_id;
         $client->gender = $request->gender;
+        $selectedContactMethods = $request->input('contact_method');
+        $contactMethodString = implode(', ', $selectedContactMethods);
+        $client->contact_method = $contactMethodString;
         $client->save();
 
         $therapist = User::find($request->user_id);
