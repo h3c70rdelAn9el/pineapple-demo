@@ -44,7 +44,13 @@ class ClientController extends Controller
         if (auth()->user() && auth()->user()->admin == 1) {
             $user_id = $request->user()->id;
             $therapist = User::find($user_id);
-            $activeTherapists = User::where('admin', 0)->where('active_status', 0)->orderBy('name', 'asc')->get();
+            // $activeTherapists = User::where('admin', 0)->where('active_status', 0)->orderBy('name', 'asc')->get();
+            $activeTherapists = User::where('active_status', 1)
+                ->orderBy('state')
+                ->orderBy('name')
+                ->get();
+
+
             $inactiveTherapists = User::where('admin', 0)->where('active_status', 1)->orderBy('name', 'asc')->get();
             $therapists = User::where('admin', 0)->orderBy('name', 'asc')->get();
             $countries = $this->getCountries();
