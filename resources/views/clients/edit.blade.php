@@ -22,10 +22,9 @@
                 type="hidden"
                 value="PUT">
 
-                {{-- add hidden field for user_id --}}
-                <input name="user_id"
-                    type="hidden"
-                    value="{{ $client->user_id }}">
+            <input name="user_id"
+                type="hidden"
+                value="{{ $client->user_id }}">
 
             {{-- client_code --}}
             <x-form-field name="client_code"
@@ -47,6 +46,23 @@
                 label="Legal Name">
                 {{ $client->legal_name }}
             </x-form-field>
+
+            {{-- Status --}}
+            <x-form_label for="status">
+                Status
+            </x-form_label>
+            {{-- make a boolean --}}
+            <select class="peer mt-2 w-full rounded-md border-blue-200 bg-gray-100 p-2 ring-0"
+                id="status"
+                name="status"
+                type="text">
+                <option value=""
+                    disabled
+                    selected
+                    hidden>Previous: {{ $client->status == 0 ? 'Active' : 'Inactive' }}</option>
+                <option value="0">Active</option>
+                <option value="1">Inactive</option>
+            </select>
 
             {{-- gender --}}
             <div class="col-span-6 mt-0 sm:col-span-4">
@@ -106,7 +122,7 @@
                 x-data="{ openEthnicGroup: false, selectedEthnicGroups: [] }">
                 <x-jet-label>Ethnic Group</x-jet-label>
                 <button
-                    class="-m-0.5 flex w-full justify-between rounded-md border border-blue-300 bg-gray-100 p-3 text-gray-700 focus:border-blue-500"
+                    class="-m-0.5 flex w-full justify-between rounded-md border border-blue-300 bg-gray-100 p-2 text-gray-700 focus:border-blue-500"
                     type="button"
                     @click="openEthnicGroup = !openEthnicGroup">
                     <span class="ml-0"
@@ -239,20 +255,10 @@
                 :options="$clientCountries"></x-single-select>
 
             {{-- contact_method --}}
-            {{-- <x-single-select id="contact_method"
+            <x-multi-select id="contact_method"
                 name="contact_method"
                 value="{{ $client->contact_method }}"
-                label="Contact Method:   (previous selection: {{ $client->contact_method }}) "
-                placeholder="{{ $client->contact_method }}"
-                :options="['Telephone Call', 'Text Message', 'Email']"></x-single-select> --}}
-
-            <x-multi-select
-                id="contact_method"
-                name="contact_method"
-                value="{{ $client->contact_method }}"
-                label="Contact Method(@hasSection()
-
-                @endif:   (previous selection: {{ $client->contact_method }}) "
+                label="Contact Method (previous selection: {{ $client->contact_method }})"
                 placeholder="{{ $client->contact_method }}"
                 :options="['Telephone Call', 'Text Message', 'Email']"></x-multi-select>
 
@@ -322,49 +328,49 @@
                 {{ $client->client_contribution }}
             </x-form-field>
 
-             {{-- Therapist --}}
-    <x-form_label for="therapist">
-        Therapist
-    </x-form_label>
-    <select class="peer mt-2 w-full rounded-md border-b-2 border-blue-200 p-3 capitalize ring-0 bg-gray-100"
-        id="user_id"
-        name="user_id"
-        required>
-        <option value=""
-            disabled
-            selected
-            hidden>Previous: {{ $therapist->name }}</option>
+            {{-- Therapist --}}
+            <x-form_label for="therapist">
+                Therapist
+            </x-form_label>
+            <select class="peer mt-2 w-full rounded-md border-blue-200 bg-gray-100 p-2 capitalize ring-0"
+                id="user_id"
+                name="user_id"
+                required>
+                <option value=""
+                    disabled
+                    selected
+                    hidden>Previous: {{ $therapist->name }}</option>
 
-        @php
-            $groupedTherapists = $therapists->groupBy('state')->sortKeys();
-        @endphp
+                @php
+                    $groupedTherapists = $therapists->groupBy('state')->sortKeys();
+                @endphp
 
-        @foreach ($groupedTherapists as $state => $therapistsInState)
-            @php
-                $activeTherapistsInState = $therapistsInState->filter(function ($therapist) {
-                    return $therapist->active_status == 0;
-                });
-            @endphp
+                @foreach ($groupedTherapists as $state => $therapistsInState)
+                    @php
+                        $activeTherapistsInState = $therapistsInState->filter(function ($therapist) {
+                            return $therapist->active_status == 0;
+                        });
+                    @endphp
 
-            @if ($activeTherapistsInState->isNotEmpty())
-                <optgroup label="{{ $state }}">
-                    @foreach ($activeTherapistsInState as $therapist)
-                        <option value="{{ $therapist->id }}">
-                            {{ $therapist->name }}
-                            @if (!empty($therapist->state))
-                                (State: {{ $therapist->state }})
-                            @else
-                                (No state available)
-                            @endif
-                        </option>
-                    @endforeach
-                </optgroup>
-            @endif
-        @endforeach
-    </select>
+                    @if ($activeTherapistsInState->isNotEmpty())
+                        <optgroup label="{{ $state }}">
+                            @foreach ($activeTherapistsInState as $therapist)
+                                <option value="{{ $therapist->id }}">
+                                    {{ $therapist->name }}
+                                    @if (!empty($therapist->state))
+                                        (State: {{ $therapist->state }})
+                                    @else
+                                        (No state available)
+                                    @endif
+                                </option>
+                            @endforeach
+                        </optgroup>
+                    @endif
+                @endforeach
+            </select>
 
             {{-- additional_notes --}}
-            <div class="w-full">
+            <div class="mb-2 mt-4 w-full">
                 <x-jet-label for="notes"
                     value="{{ __('Notes') }}" />
                 <textarea class="w-full rounded border border-blue-200 bg-gray-100"
