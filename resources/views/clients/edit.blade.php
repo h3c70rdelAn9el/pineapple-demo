@@ -22,10 +22,9 @@
                 type="hidden"
                 value="PUT">
 
-                {{-- add hidden field for user_id --}}
-                <input name="user_id"
-                    type="hidden"
-                    value="{{ $client->user_id }}">
+            <input name="user_id"
+                type="hidden"
+                value="{{ $client->user_id }}">
 
             {{-- client_code --}}
             <x-form-field name="client_code"
@@ -48,164 +47,21 @@
                 {{ $client->legal_name }}
             </x-form-field>
 
-            {{-- gender --}}
-            <div class="col-span-6 mt-0 sm:col-span-4">
-                <x-multi-select id="gender"
-                    name="gender"
-                    value="{{ $client->gender }}"
-                    label="Gender:   (previous selection: {{ $client->gender }}) "
-                    placeholder="{{ $client->gender }}"
-                    :options="['Male', 'Female', 'Non-binary', 'Prefer Not To Say']"></x-multi-select>
-            </div>
-
-            {{-- Pronouns --}}
-            <div class="col-span-6 mt-0 sm:col-span-4">
-                <x-multi-select id="pronouns"
-                    name="pronouns"
-                    value="{{ $client->pronouns }}"
-                    label="Pronoun(s):   (previous selection: {{ $client->pronouns }}) "
-                    placeholder="{{ $client->pronouns }}"
-                    :options="[
-                        'She/Her/Her/Hers/Herself',
-                        'He/Him/His/His/Himself',
-                        'They/Them/Their/Theirs/Themselves',
-                        'Ze/Hir/Hir/Hirs/Hirself',
-                        'Ey/Em/Eir/Eirs/Eirself',
-                        'Per/Per/Pers/Perself/Perse',
-                        'Xe/Xem/Xyr/Xyrs/Xemself',
-                        'Zie/Zim/Zir/Zirs/Zirself',
-                        'He/She/His/Hers/Himself/Herself',
-                        'Prefer Not To Say',
-                        'Other',
-                    ]"></x-multi-select>
-            </div>
-
-            {{-- sexual_orientation --}}
-            <div class="col-span-6 mt-0 sm:col-span-4">
-                <x-multi-select id="sexual_orientation"
-                    name="sexual_orientation"
-                    value="{{ $client->sexual_orientation }}"
-                    label="Sexual Orientation:   (previous selection: {{ $client->sexual_orientation }}) "
-                    placeholder="{{ $client->sexual_orientation }}"
-                    :options="[
-                        'Heterosexual',
-                        'Bisexual',
-                        'Homosexual',
-                        'Asexual',
-                        'Pansexual',
-                        'Demisexual',
-                        'Queer',
-                        'Questioning',
-                        'Prefer Not To Say',
-                        'Other',
-                    ]"></x-multi-select>
-            </div>
-
-            {{-- Ethnic groups --}}
-            <div class="my-4 flex flex-col"
-                x-data="{ openEthnicGroup: false, selectedEthnicGroups: [] }">
-                <x-jet-label>Ethnic Group</x-jet-label>
-                <button
-                    class="-m-0.5 flex w-full justify-between rounded-md border border-blue-300 bg-gray-100 p-3 text-gray-700 focus:border-blue-500"
-                    type="button"
-                    @click="openEthnicGroup = !openEthnicGroup">
-                    <span class="ml-0"
-                        x-text="selectedEthnicGroups.length > 0 ? selectedEthnicGroups.join(', ') : 'Select Options'"></span>
-                    <svg class="mt-0.5 h-[18px] w-[18px] text-gray-800"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M19 9l-7 7-7-7"></path>
-                    </svg>
-                </button>
-                <div class="-ml-[2px] -mt-2 mr-[2px] rounded-md rounded-t-none border border-b border-r border-t-0 border-blue-500 bg-gray-100 py-4 md:flex md:flex-wrap"
-                    x-show="openEthnicGroup"
-                    x-transition.scale.origin.top
-                    x-transition:enter.duration.300ms
-                    x-transition:enter.ease-in-out
-                    x-transition:leave.duration.300ms
-                    x-transition:ease-in-out
-                    x-cloak>
-
-                    <div class="select-input-div">
-                        <input class="select-input"
-                            id="american-indian"
-                            name="ethnic_group[]"
-                            type="checkbox"
-                            value="American Indian or Alaska Native">
-                        <label class="ml-2"
-                            for="american-indian">American Indian or Alaska Native</label>
-                    </div>
-                    <div class="select-input-div">
-                        <input class="select-input"
-                            id="asian"
-                            name="ethnic_group[]"
-                            type="checkbox"
-                            value="Asian">
-                        <label class="ml-2"
-                            for="asian">Asian</label>
-                    </div>
-                    <div class="select-input-div">
-                        <input class="select-input"
-                            id="black"
-                            name="ethnic_group[]"
-                            type="checkbox"
-                            value="Black or African American">
-                        <label class="ml-2"
-                            for="black">Black or African American</label>
-                    </div>
-                    <div class="select-input-div">
-                        <input class="select-input"
-                            id="hispanic"
-                            name="ethnic_group[]"
-                            type="checkbox"
-                            value="Hispanic or Latino">
-                        <label class="ml-2"
-                            for="hispanic">Hispanic or Latino</label>
-                    </div>
-                    <div class="select-input-div">
-                        <input class="select-input"
-                            id="pacific-islander"
-                            name="ethnic_group[]"
-                            type="checkbox"
-                            value="Native Hawaiian or Other Pacific Islander">
-                        <label class="ml-2"
-                            for="pacific-islander">Native Hawaiian or Other Pacific Islander</label>
-                    </div>
-                    <div class="select-input-div">
-                        <input class="select-input"
-                            id="white"
-                            name="ethnic_group[]"
-                            type="checkbox"
-                            value="White">
-                        <label class="ml-2"
-                            for="white">White</label>
-                    </div>
-                    <div class="select-input-div">
-                        <input class="select-input"
-                            id="prefer-not-to-say-ethnic"
-                            name="ethnic_group[]"
-                            type="checkbox"
-                            value="prefer not to say">
-                        <label class="ml-2"
-                            for="prefer-not-to-say-ethnic">Prefer Not To Say</label>
-                    </div>
-                    <div class="select-input-div">
-                        <input class="select-input"
-                            id="other-ethnic"
-                            name="ethnic_group[]"
-                            type="checkbox"
-                            value="Other">
-                        <label class="ml-2"
-                            for="other-ethnic">Other</label>
-                    </div>
-
-                </div>
-            </div>
+            {{-- Status --}}
+            <x-form_label for="status">
+                Status
+            </x-form_label>
+            <select class="peer mt-2 w-full rounded-md border-blue-200 bg-gray-100 p-2 ring-0"
+                id="status"
+                name="status"
+                type="text">
+                <option value=""
+                    disabled
+                    selected
+                    hidden>Previous: {{ $client->status == 0 ? 'Active' : 'Inactive' }}</option>
+                <option value="0">Active</option>
+                <option value="1">Inactive</option>
+            </select>
 
             {{-- email --}}
             <x-form-field name="email"
@@ -215,46 +71,198 @@
             </x-form-field>
 
             {{-- phone --}}
-            {{-- TODO: BRING IN THE PHONE INPUT --}}
             <x-form-field name="phone"
                 type="text"
                 label="Phone">
                 {{ $client->phone }}
             </x-form-field>
 
-            {{-- home_address_state --}}
-            <x-single-select id="home_address_state"
-                name="home_address_state"
-                value="{{ $client->home_address_state }}"
-                label="State:   (previous selection: {{ $client->home_address_state }}) "
-                placeholder="{{ $client->home_address_state }}"
-                :options="$states"></x-single-select>
-
-            {{-- home_address_country --}}
-            <x-single-select id="home_address_country"
-                name="home_address_country"
-                value="{{ $client->home_address_country }}"
-                label="Country: (previous selection: {{ $client->home_address_country }})"
-                placeholder="{{ $client->home_address_country }}"
-                :options="$clientCountries"></x-single-select>
-
             {{-- contact_method --}}
-            {{-- <x-single-select id="contact_method"
+            <x-multi-select id="contact_method"
                 name="contact_method"
                 value="{{ $client->contact_method }}"
-                label="Contact Method:   (previous selection: {{ $client->contact_method }}) "
-                placeholder="{{ $client->contact_method }}"
-                :options="['Telephone Call', 'Text Message', 'Email']"></x-single-select> --}}
-
-            <x-multi-select
-                id="contact_method"
-                name="contact_method"
-                value="{{ $client->contact_method }}"
-                label="Contact Method(@hasSection()
-
-                @endif:   (previous selection: {{ $client->contact_method }}) "
+                label="Contact Method (previous selection: {{ $client->contact_method }})"
                 placeholder="{{ $client->contact_method }}"
                 :options="['Telephone Call', 'Text Message', 'Email']"></x-multi-select>
+
+            <div class="my-4 rounded-lg border-2 border-blue-300 bg-blue-100 p-2">
+                <p>Optional Fields</p>
+                {{-- gender --}}
+                <div class="col-span-6 mt-0 sm:col-span-4">
+                    <x-multi-select id="gender"
+                        name="gender"
+                        value="{{ $client->gender }}"
+                        label="Gender:   (previous selection: {{ $client->gender }}) "
+                        placeholder="{{ $client->gender }}"
+                        :options="['Male', 'Female', 'Non-binary', 'Prefer Not To Say']"></x-multi-select>
+                </div>
+
+                {{-- Pronouns --}}
+                <div class="col-span-6 mt-0 sm:col-span-4">
+                    <x-multi-select id="pronouns"
+                        name="pronouns"
+                        value="{{ $client->pronouns }}"
+                        label="Pronoun(s):   (previous selection: {{ $client->pronouns }}) "
+                        placeholder="{{ $client->pronouns }}"
+                        :options="[
+                            'She/Her/Her/Hers/Herself',
+                            'He/Him/His/His/Himself',
+                            'They/Them/Their/Theirs/Themselves',
+                            'Ze/Hir/Hir/Hirs/Hirself',
+                            'Ey/Em/Eir/Eirs/Eirself',
+                            'Per/Per/Pers/Perself/Perse',
+                            'Xe/Xem/Xyr/Xyrs/Xemself',
+                            'Zie/Zim/Zir/Zirs/Zirself',
+                            'He/She/His/Hers/Himself/Herself',
+                            'Prefer Not To Say',
+                            'Other',
+                        ]"></x-multi-select>
+                </div>
+
+                {{-- sexual_orientation --}}
+                <div class="col-span-6 mt-0 sm:col-span-4">
+                    <x-multi-select id="sexual_orientation"
+                        name="sexual_orientation"
+                        value="{{ $client->sexual_orientation }}"
+                        label="Sexual Orientation:   (previous selection: {{ $client->sexual_orientation }}) "
+                        placeholder="{{ $client->sexual_orientation }}"
+                        :options="[
+                            'Heterosexual',
+                            'Bisexual',
+                            'Homosexual',
+                            'Asexual',
+                            'Pansexual',
+                            'Demisexual',
+                            'Queer',
+                            'Questioning',
+                            'Prefer Not To Say',
+                            'Other',
+                        ]"></x-multi-select>
+                </div>
+
+                {{-- Ethnic groups --}}
+                <div class="my-4 flex flex-col"
+                    x-data="{ openEthnicGroup: false, selectedEthnicGroups: [] }">
+                    <x-jet-label>Ethnic Group</x-jet-label>
+                    <button
+                        class="-m-0.5 flex w-full justify-between rounded-md border border-blue-300 bg-gray-100 p-2 text-gray-700 focus:border-blue-500"
+                        type="button"
+                        @click="openEthnicGroup = !openEthnicGroup">
+                        <span class="ml-0"
+                            x-text="selectedEthnicGroups.length > 0 ? selectedEthnicGroups.join(', ') : 'Select Options'"></span>
+                        <svg class="mt-0.5 h-[18px] w-[18px] text-gray-800"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                    <div class="-ml-[2px] -mt-2 mr-[2px] rounded-md rounded-t-none border border-b border-r border-t-0 border-blue-500 bg-gray-100 py-4 md:flex md:flex-wrap"
+                        x-show="openEthnicGroup"
+                        x-transition.scale.origin.top
+                        x-transition:enter.duration.300ms
+                        x-transition:enter.ease-in-out
+                        x-transition:leave.duration.300ms
+                        x-transition:ease-in-out
+                        x-cloak>
+
+                        <div class="select-input-div">
+                            <input class="select-input"
+                                id="american-indian"
+                                name="ethnic_group[]"
+                                type="checkbox"
+                                value="American Indian or Alaska Native">
+                            <label class="ml-2"
+                                for="american-indian">American Indian or Alaska Native</label>
+                        </div>
+                        <div class="select-input-div">
+                            <input class="select-input"
+                                id="asian"
+                                name="ethnic_group[]"
+                                type="checkbox"
+                                value="Asian">
+                            <label class="ml-2"
+                                for="asian">Asian</label>
+                        </div>
+                        <div class="select-input-div">
+                            <input class="select-input"
+                                id="black"
+                                name="ethnic_group[]"
+                                type="checkbox"
+                                value="Black or African American">
+                            <label class="ml-2"
+                                for="black">Black or African American</label>
+                        </div>
+                        <div class="select-input-div">
+                            <input class="select-input"
+                                id="hispanic"
+                                name="ethnic_group[]"
+                                type="checkbox"
+                                value="Hispanic or Latino">
+                            <label class="ml-2"
+                                for="hispanic">Hispanic or Latino</label>
+                        </div>
+                        <div class="select-input-div">
+                            <input class="select-input"
+                                id="pacific-islander"
+                                name="ethnic_group[]"
+                                type="checkbox"
+                                value="Native Hawaiian or Other Pacific Islander">
+                            <label class="ml-2"
+                                for="pacific-islander">Native Hawaiian or Other Pacific Islander</label>
+                        </div>
+                        <div class="select-input-div">
+                            <input class="select-input"
+                                id="white"
+                                name="ethnic_group[]"
+                                type="checkbox"
+                                value="White">
+                            <label class="ml-2"
+                                for="white">White</label>
+                        </div>
+                        <div class="select-input-div">
+                            <input class="select-input"
+                                id="prefer-not-to-say-ethnic"
+                                name="ethnic_group[]"
+                                type="checkbox"
+                                value="prefer not to say">
+                            <label class="ml-2"
+                                for="prefer-not-to-say-ethnic">Prefer Not To Say</label>
+                        </div>
+                        <div class="select-input-div">
+                            <input class="select-input"
+                                id="other-ethnic"
+                                name="ethnic_group[]"
+                                type="checkbox"
+                                value="Other">
+                            <label class="ml-2"
+                                for="other-ethnic">Other</label>
+                        </div>
+
+                    </div>
+                </div>
+
+                {{-- home_address_state --}}
+                <x-single-select id="home_address_state"
+                    name="home_address_state"
+                    value="{{ $client->home_address_state }}"
+                    label="State:   (previous selection: {{ $client->home_address_state }}) "
+                    placeholder="{{ $client->home_address_state }}"
+                    :options="$states"></x-single-select>
+
+                {{-- home_address_country --}}
+                <x-single-select id="home_address_country"
+                    name="home_address_country"
+                    value="{{ $client->home_address_country }}"
+                    label="Country: (previous selection: {{ $client->home_address_country }})"
+                    placeholder="{{ $client->home_address_country }}"
+                    :options="$clientCountries"></x-single-select>
+
+            </div>
 
             {{-- previous therapy --}}
             <div class="col-span-6 my-4 sm:col-span-4">
@@ -322,8 +330,49 @@
                 {{ $client->client_contribution }}
             </x-form-field>
 
+            {{-- Therapist --}}
+            <x-form_label for="therapist">
+                Therapist
+            </x-form_label>
+            <select class="peer mt-2 w-full rounded-md border-blue-200 bg-gray-100 p-2 capitalize ring-0"
+                id="user_id"
+                name="user_id"
+                required>
+                <option value=""
+                    disabled
+                    selected
+                    hidden>Previous: {{ $therapist->name }}</option>
+
+                @php
+                    $groupedTherapists = $therapists->groupBy('state')->sortKeys();
+                @endphp
+
+                @foreach ($groupedTherapists as $state => $therapistsInState)
+                    @php
+                        $activeTherapistsInState = $therapistsInState->filter(function ($therapist) {
+                            return $therapist->active_status == 0;
+                        });
+                    @endphp
+
+                    @if ($activeTherapistsInState->isNotEmpty())
+                        <optgroup label="{{ $state }}">
+                            @foreach ($activeTherapistsInState as $therapist)
+                                <option value="{{ $therapist->id }}">
+                                    {{ $therapist->name }}
+                                    @if (!empty($therapist->state))
+                                        (State: {{ $therapist->state }})
+                                    @else
+                                        (No state available)
+                                    @endif
+                                </option>
+                            @endforeach
+                        </optgroup>
+                    @endif
+                @endforeach
+            </select>
+
             {{-- additional_notes --}}
-            <div class="w-full">
+            <div class="mb-2 mt-4 w-full">
                 <x-jet-label for="notes"
                     value="{{ __('Notes') }}" />
                 <textarea class="w-full rounded border border-blue-200 bg-gray-100"
