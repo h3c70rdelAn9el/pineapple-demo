@@ -34,18 +34,26 @@
         type="text"
         required
         placeholder="Preferred name" />
-    {{-- </x-form_input_div> --}}
+
+        {{-- Status --}}
+        <x-form_label for="status">
+            Status
+        </x-form_label>
+        {{-- make a boolean --}}
+        <select class="peer mt-2 w-full rounded-md border-b-2 border-blue-200 p-3 ring-0"
+            id="status"
+            name="status"
+            type="text">
+            <option value=""
+                disabled
+                selected
+                hidden>Select Status</option>
+            <option value="0">Active</option>
+            <option value="1">Inactive</option>
+        </select>
+
 
     {{-- Gender --}}
-    {{-- <x-multi-select id="gender"
-        name="$gender"
-        label="Gender"
-        value="gender"
-        :options="$genders"
-
-
-        ></x-multi-select> --}}
-
     <div class="my-4 flex flex-col"
         x-data="{ openGender: false }">
         <x-jet-label>Gender</x-jet-label>
