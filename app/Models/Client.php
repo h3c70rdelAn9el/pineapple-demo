@@ -39,7 +39,8 @@ class Client extends Model
         'contact_method',
         'status',
         'max_sessions',
-        'gender'
+        'gender',
+        'status'
     ];
 
     public function user()
