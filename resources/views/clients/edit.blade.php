@@ -322,6 +322,47 @@
                 {{ $client->client_contribution }}
             </x-form-field>
 
+             {{-- Therapist --}}
+    <x-form_label for="therapist">
+        Therapist
+    </x-form_label>
+    <select class="peer mt-2 w-full rounded-md border-b-2 border-blue-200 p-3 capitalize ring-0 bg-gray-100"
+        id="user_id"
+        name="user_id"
+        required>
+        <option value=""
+            disabled
+            selected
+            hidden>Previous: {{ $therapist->name }}</option>
+
+        @php
+            $groupedTherapists = $therapists->groupBy('state')->sortKeys();
+        @endphp
+
+        @foreach ($groupedTherapists as $state => $therapistsInState)
+            @php
+                $activeTherapistsInState = $therapistsInState->filter(function ($therapist) {
+                    return $therapist->active_status == 0;
+                });
+            @endphp
+
+            @if ($activeTherapistsInState->isNotEmpty())
+                <optgroup label="{{ $state }}">
+                    @foreach ($activeTherapistsInState as $therapist)
+                        <option value="{{ $therapist->id }}">
+                            {{ $therapist->name }}
+                            @if (!empty($therapist->state))
+                                (State: {{ $therapist->state }})
+                            @else
+                                (No state available)
+                            @endif
+                        </option>
+                    @endforeach
+                </optgroup>
+            @endif
+        @endforeach
+    </select>
+
             {{-- additional_notes --}}
             <div class="w-full">
                 <x-jet-label for="notes"
