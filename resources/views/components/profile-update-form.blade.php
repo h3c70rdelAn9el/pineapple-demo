@@ -15,7 +15,7 @@
     <div>
         Profile Information
     </div>
-    <form class="col-span-2 mb-4 rounded-md bg-white p-4 shadow-sm"
+    <form class="col-span-2 mb-4 rounded-md bg-white p-4 pb-0 shadow-sm"
         method="POST"
         action="{{ route('profile.update') }}"
         x-on:submit.prevent="submitForm"
@@ -309,6 +309,20 @@
                 for="number_of_potential_clients" />
         </div>
 
+        {{-- session_cost --}}
+{{-- session_cost --}}
+<div class="input-div">
+    <x-jet-label value="Session Cost:" />
+    <x-jet-input class="mt-1 block border border-blue-200 p-2"
+        id="session_cost"
+        name="session_cost"
+        type="text"
+        value="{{ number_format($user->session_cost, 2) }}"
+        autocomplete="session_cost" />
+    <x-jet-input-error class="mt-2" for="session_cost" />
+</div>
+
+
         {{-- intern --}}
         <div class="input-div">
             <x-jet-label value="Intern" />
@@ -400,8 +414,8 @@
                 for="routing_number" />
         </div>
 
-        <div class="flex h-10 w-full justify-end bg-gray-700">
-            <x-jet-button class="mr-1 mt-2 md:mr-4"
+        <div class="flex w-[105%] mx-auto justify-end bg-gray-50 p-2 -ml-4 border border-t-none border-gray-200">
+            <x-jet-button class="mr-10 mt-2 "
                 type="submit"
                 {{-- wire:loading.attr="disabled" --}}
                 {{-- wire:target="photo" --}}>

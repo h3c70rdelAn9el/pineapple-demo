@@ -20,12 +20,14 @@
             id="session_cost"
             name="session_cost"
             type="text"
+            value="{{ $therapist->session_cost }}"
             x-data
             required
             x-mask:dynamic="$money($input)"
             placeholder="0.00"
-            value="{{ $therapist->session_cost }}">
+            readonly>
     </div>
+
     <div class="my-2 text-xs font-light">
         <p>
             Original Client Contribution - ${{ $client->client_contribution }}
@@ -35,18 +37,6 @@
             ${{ $client->client_contribution - $client->therapySessions->sum('session_cost') }}
         </p>
     </div>
-
-    {{-- <div>
-        <label for="client_contribution">Client Contribution</label>
-        <input type="text"
-            x-data
-            id="client_contribution"
-            name="client_contribution"
-            class="form-input"
-            required
-            x-mask:dynamic="$money($input)"
-            placeholder="0.00">
-    </div> --}}
 
     <div>
         <label for="attendance">Attendance</label>
