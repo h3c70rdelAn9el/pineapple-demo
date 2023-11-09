@@ -236,45 +236,87 @@ class ClientController extends Controller
      * @param  \App\Models\Client  $client
      * @return \Illuminate\Http\Response
      */
+    // public function update(Request $request, $id)
+    // {
+    //     $client = Client::find($id);
+
+    //     $countries = $this->getCountries();
+
+    //     $client->client_code = $request->client_code;
+    //     $client->legal_name = $request->legal_name;
+    //     $client->preferred_name = $request->preferred_name;
+    //     $client->sexual_orientation = $request->sexual_orientation ?? null;
+    //     $client->ethnic_group = $request->ethnic_group;
+    //     // $client->home_address_line_1 = $request->home_address_line_1;
+    //     // $client->home_address_line_2 = $request->home_address_line_2;
+    //     // $client->home_address_city = $request->home_address_city;
+    //     $client->home_address_state = $request->home_address_state;
+    //     // $client->home_address_zip = $request->home_address_zip;
+    //     $client->home_address_country = $request->home_address_country;
+    //     // $client->health_coverage_provider = $request->health_coverage_provider;
+    //     // $client->health_coverage_number = $request->health_coverage_number;
+    //     // $client->health_coverage_expiration = $request->health_coverage_expiration;
+    //     $client->previous_therapy = $request->previous_therapy;
+    //     $client->possible_support_needed = $request->possible_support_needed;
+    //     // $client->preferred_language = $request->preferred_language;
+    //     $client->additional_notes = $request->additional_notes;
+    //     $client->pronouns = $request->pronouns ?? null;
+    //     $client->email = $request->email;
+    //     $client->phone = $request->phone;
+    //     // $client->contact_method = $request->contact_method ?? null;
+    //     $client->client_contribution = $request->client_contribution;
+    //     $client->user_id = $request->user_id;
+    //     $client->gender = $request->gender;
+    //     $selectedContactMethods = $request->input('contact_method');
+    //     $contactMethodString = implode(', ', $selectedContactMethods);
+    //     $client->contact_method = $contactMethodString;
+    //     $client->save();
+
+    //     $therapist = User::find($request->user_id);
+    //     $therapist->notify(new NewClientNotification());
+    //     // return redirect()->route('clients.show', $client->id)->with('success', 'Client updated successfully');
+    //     return redirect()->route('dashboard');
+    // }
+
+
     public function update(Request $request, $id)
     {
         $client = Client::find($id);
 
-        $countries = $this->getCountries();
+        $selectedGenders = $request->input('gender');
+        $genderString = is_array($selectedGenders) && !empty($selectedGenders) ? implode(', ', $selectedGenders) : '';
+
+        $selectedEthnicGroups = $request->input('ethnic_group');
+        $ethnicGroupString = is_array($selectedEthnicGroups) && !empty($selectedEthnicGroups) ? implode(', ', $selectedEthnicGroups) : '';
+
+        $selectedContactMethods = $request->input('contact_method');
+        $contactMethodString = is_array($selectedContactMethods) && !empty($selectedContactMethods) ? implode(', ', $selectedContactMethods) : '';
 
         $client->client_code = $request->client_code;
         $client->legal_name = $request->legal_name;
         $client->preferred_name = $request->preferred_name;
         $client->sexual_orientation = $request->sexual_orientation ?? null;
-        $client->ethnic_group = $request->ethnic_group;
-        // $client->home_address_line_1 = $request->home_address_line_1;
-        // $client->home_address_line_2 = $request->home_address_line_2;
-        // $client->home_address_city = $request->home_address_city;
+        $client->ethnic_group = $ethnicGroupString;
         $client->home_address_state = $request->home_address_state;
-        // $client->home_address_zip = $request->home_address_zip;
         $client->home_address_country = $request->home_address_country;
-        // $client->health_coverage_provider = $request->health_coverage_provider;
-        // $client->health_coverage_number = $request->health_coverage_number;
-        // $client->health_coverage_expiration = $request->health_coverage_expiration;
         $client->previous_therapy = $request->previous_therapy;
         $client->possible_support_needed = $request->possible_support_needed;
-        // $client->preferred_language = $request->preferred_language;
         $client->additional_notes = $request->additional_notes;
         $client->pronouns = $request->pronouns ?? null;
         $client->email = $request->email;
         $client->phone = $request->phone;
-        // $client->contact_method = $request->contact_method ?? null;
         $client->client_contribution = $request->client_contribution;
         $client->user_id = $request->user_id;
-        $client->gender = $request->gender;
-        $selectedContactMethods = $request->input('contact_method');
-        $contactMethodString = implode(', ', $selectedContactMethods);
+        $client->gender = $genderString;
         $client->contact_method = $contactMethodString;
-        $client->save();
+        $client->max_sessions = $request->max_sessions;
+
+
+        $client->update();
 
         $therapist = User::find($request->user_id);
         $therapist->notify(new NewClientNotification());
-        // return redirect()->route('clients.show', $client->id)->with('success', 'Client updated successfully');
+
         return redirect()->route('dashboard');
     }
 

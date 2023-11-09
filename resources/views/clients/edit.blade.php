@@ -34,11 +34,43 @@
             </x-form-field>
 
             {{-- preferred_name --}}
-            <x-form-field name="preferred_name"
+            {{-- <x-form-field name="preferred_name"
                 type="text"
                 label="Preferred Name">
                 {{ $client->preferred_name }}
+            </x-form-field> --}}
+
+            <x-form-field name="preferred_name"
+                type="text"
+                label="Preferred Name"
+                value="{{ old('preferred_name', $client->preferred_name) }}"
+                >
+                {{ old('preferred_name', $client->preferred_name) }}
             </x-form-field>
+
+            {{-- <label for="max_sessions">Maximum Therapy Sessions:</label>
+<div class="flex items-center">
+    <input type="number" id="max_sessions" name="max_sessions" x-model="maxSessions" class="mx-2 w-16 text-center">
+    <button type="button" x-on:click="maxSessions += 2" class="p-1 bg-blue-500 text-white rounded hover:bg-blue-700">+2</button>
+
+</div> --}}
+
+            <label for="max_sessions">Maximum Therapy Sessions:</label>
+            <div class="flex items-center"
+                x-data="{ maxSessions: {{ $client->max_sessions }} }"
+                x-init="maxSessions = {{ $client->max_sessions }}">
+                <button class="rounded bg-red-500 p-1 text-white hover:bg-red-700"
+                    type="button"
+                    x-on:click="maxSessions -= 2">-2</button>
+                <input class="mx-2 w-16 text-center"
+                    id="max_sessions"
+                    name="max_sessions"
+                    type="number"
+                    x-model="maxSessions">
+                <button class="rounded bg-blue-500 p-1 text-white hover:bg-blue-700"
+                    type="button"
+                    x-on:click="maxSessions += 2">+2</button>
+            </div>
 
             {{-- legal_name --}}
             <x-form-field name="legal_name"
@@ -336,8 +368,7 @@
             </x-form_label>
             <select class="peer mt-2 w-full rounded-md border-blue-200 bg-gray-100 p-2 capitalize ring-0"
                 id="user_id"
-                name="user_id"
-                required>
+                name="user_id">
                 <option value=""
                     disabled
                     selected
@@ -420,3 +451,16 @@
     // Get the country data used by intlTelInput
     const countryData = window.intlTelInputGlobals.getCountryData();
 </script>
+
+<style>
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    /* Firefox */
+    input[type=number] {
+        -moz-appearance: textfield;
+    }
+</style>
