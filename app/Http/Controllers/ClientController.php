@@ -96,6 +96,25 @@ class ClientController extends Controller
         }
     }
 
+    private function getGenders()
+    {
+        $genders = [
+            'Male',
+            'Female',
+            'Transgender',
+            'Genderqueer',
+            'Genderfluid',
+            'Agender',
+            'Bigender',
+            'Cisgender',
+            'Non-Binary',
+            'Prefer Not To Say',
+
+        ];
+
+        return $genders;
+    }
+
     private function getCountries()
     {
         // $path = resource_path('/json/countries.json');
@@ -365,9 +384,10 @@ class ClientController extends Controller
             $therapist = User::find($client->user_id);
             $therapists = User::where('admin', 0)->orderBy('name', 'asc')->get();
             $user_id = $client->user_id;
+            $genders = $this->getGenders();
 
 
-            return view('clients.edit')->with(['client' => $client, 'countries' => $countries, 'categories' => $categories, 'states' => $states, 'id' => $id, 'therapist' => $therapist, 'therapists' => $therapists, 'user_id' => $user_id]);
+            return view('clients.edit')->with(['client' => $client, 'countries' => $countries, 'categories' => $categories, 'states' => $states, 'id' => $id, 'therapist' => $therapist, 'therapists' => $therapists, 'user_id' => $user_id, 'genders' => $genders]);
         } else {
             return redirect()->route('dashboard')->with('error', '**You do not have permission to access that page**');
         }
