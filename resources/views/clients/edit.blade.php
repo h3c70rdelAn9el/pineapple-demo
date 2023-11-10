@@ -17,10 +17,10 @@
             action="{{ route('clients.update', $client->id) }}"
             method="POST">
             @csrf
-            @method('PUT')
+            @method('POST')
             <input name="_method"
                 type="hidden"
-                value="PUT">
+                value="POST">
 
             <input name="user_id"
                 type="hidden"

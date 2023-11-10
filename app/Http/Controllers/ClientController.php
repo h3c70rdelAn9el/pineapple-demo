@@ -279,9 +279,9 @@ class ClientController extends Controller
     // }
 
 
-    public function update(Request $request, $id)
+    public function update(Request $request, Client $client)
     {
-        $client = Client::find($id);
+        // $client = Client::find($id);
 
         $selectedGenders = $request->input('gender');
         $genderString = is_array($selectedGenders) && !empty($selectedGenders) ? implode(', ', $selectedGenders) : '';
