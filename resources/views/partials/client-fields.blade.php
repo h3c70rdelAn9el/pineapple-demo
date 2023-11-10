@@ -11,6 +11,7 @@
         'Status' => $client->status === 1 ? 'Inactive' : 'Active',
         'Therapist' => $client->user->name,
         'Client Code' => $client->client_code ?: 'Client Code needed',
+        'Max Sessions' => $client->max_sessions ?: 'Max Sessions needed',
         'Phone' => $client->phone ?: 'Phone needed',
         'Contact by' => $client->contact_method ?: 'Contact method needed',
         'Client Status' => $client->status === 1 ? 'Inactive' : 'Active',
