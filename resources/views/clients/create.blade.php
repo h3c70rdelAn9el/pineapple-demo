@@ -12,6 +12,7 @@
             :genders="$genders"
             :activeTherapists="$activeTherapists"
             :inactiveTherapists="$inactiveTherapists"
+            :maxSessions="$maxSessions"
             />
     </x-main-container>
 </x-app-layout>
