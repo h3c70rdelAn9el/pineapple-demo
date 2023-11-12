@@ -88,9 +88,11 @@ class ClientController extends Controller
                 'Prefer Not To Say',
             ];
             $optionKey = 'id';
+            // $maxSessions = Client::all()->max('max_sessions');
+            $maxSessions = Client::max('max_sessions');
 
 
-            return view('clients.create')->with(['therapists' => $therapists, 'therapist' => $therapist, 'countries' => $countries, 'categories' => $categories, 'states' => $states, 'ethnicGroups' => $ethnicGroups, 'pronouns' => $pronouns, 'genders' => $genders, 'optionKey' => $optionKey, 'activeTherapists' => $activeTherapists, 'inactiveTherapists' => $inactiveTherapists]);
+            return view('clients.create')->with(['therapists' => $therapists, 'therapist' => $therapist, 'countries' => $countries, 'categories' => $categories, 'states' => $states, 'ethnicGroups' => $ethnicGroups, 'pronouns' => $pronouns, 'genders' => $genders, 'optionKey' => $optionKey, 'activeTherapists' => $activeTherapists, 'inactiveTherapists' => $inactiveTherapists, 'maxSessions' => $maxSessions]);
         } else {
             return redirect()->route('dashboard')->with('error', '**You do not have permission to access that page**');
         }
@@ -237,6 +239,7 @@ class ClientController extends Controller
         $c->client_contribution = $request->client_contribution;
         $c->gender = $genderString;
         $c->ethnic_group = $ethnicGroupString;
+        $c->max_sessions = $request->max_sessions;
         $therapist = User::find($request->user_id);
         $therapist->notify(new NewClientNotification());
         // $c->ethnic_group = json_encode($ethnicGroupArray);
