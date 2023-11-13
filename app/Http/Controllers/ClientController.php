@@ -160,10 +160,6 @@ class ClientController extends Controller
         $categories = $this->getCategories();
 
         $selectedGenders = $request->input('gender');
-
-        // $genderString = implode(', ', $selectedGenders);
-        // $genderString = implode(', ', $request->input('gender'));
-
         if (is_array($selectedGenders) && !empty($selectedGenders)) {
             $genderString = implode(', ', $selectedGenders);
         } else {
@@ -171,7 +167,6 @@ class ClientController extends Controller
         }
 
         $selectedEthnicGroups = $request->input('ethnic_group');
-
         if (is_array($selectedEthnicGroups) && !empty($selectedEthnicGroups)) {
             $ethnicGroupString = implode(', ', $selectedEthnicGroups);
         } else {
@@ -186,6 +181,14 @@ class ClientController extends Controller
         } else {
             $contactMethodString = '';
         }
+
+        $selectedPossibleSupportNeeded = $request->input('possible_support_needed');
+        if (is_array($selectedPossibleSupportNeeded) && !empty($selectedPossibleSupportNeeded)) {
+            $possibleSupportNeededString = implode(', ', $selectedPossibleSupportNeeded);
+        } else {
+            $possibleSupportNeededString = '';
+        }
+
 
         // $selectedEthnicGroups = $request->input('ethnic_group');
 
@@ -217,24 +220,13 @@ class ClientController extends Controller
         $c->health_coverage_number = $request->health_coverage_number;
         $c->health_coverage_expiration = $request->health_coverage_expiration;
         $c->previous_therapy = $request->previous_therapy;
-        // $selectedContactMethods = $request->input('contact_method');
-        // $contactMethodString = implode(', ', $selectedContactMethods);
         $c->contact_method = $contactMethodString;
-
-        // $c->possible_support_needed = implode(', ', $request->possible_support_needed);
-        // if (is_array($request->possible_support_needed) && !empty($request->possible_support_needed)) {
-        //     // $c->possible_support_needed = implode(', ', $request->possible_support_needed);
-        //     $c->possible_support_needed = $request->possible_support_needed;
-        // } else {
-        //     $c->possible_support_needed = '';
-        // }
-        $c->possible_support_needed = $request->possible_support_needed;
+        $c->possible_support_needed = $possibleSupportNeededString;
         $c->preferred_language = $request->preferred_language;
         $c->additional_notes = $request->additional_notes;
         $c->pronouns = $request->pronouns;
         $c->email = $request->email;
         $c->phone = $request->phone;
-        // $c->contact_method = $request->contact_method;
         $c->user_id = $request->user_id;
         $c->client_contribution = $request->client_contribution;
         $c->gender = $genderString;
@@ -258,49 +250,6 @@ class ClientController extends Controller
      * @param  \App\Models\Client  $client
      * @return \Illuminate\Http\Response
      */
-    // public function update(Request $request, $id)
-    // {
-    //     $client = Client::find($id);
-
-    //     $countries = $this->getCountries();
-
-    //     $client->client_code = $request->client_code;
-    //     $client->legal_name = $request->legal_name;
-    //     $client->preferred_name = $request->preferred_name;
-    //     $client->sexual_orientation = $request->sexual_orientation ?? null;
-    //     $client->ethnic_group = $request->ethnic_group;
-    //     // $client->home_address_line_1 = $request->home_address_line_1;
-    //     // $client->home_address_line_2 = $request->home_address_line_2;
-    //     // $client->home_address_city = $request->home_address_city;
-    //     $client->home_address_state = $request->home_address_state;
-    //     // $client->home_address_zip = $request->home_address_zip;
-    //     $client->home_address_country = $request->home_address_country;
-    //     // $client->health_coverage_provider = $request->health_coverage_provider;
-    //     // $client->health_coverage_number = $request->health_coverage_number;
-    //     // $client->health_coverage_expiration = $request->health_coverage_expiration;
-    //     $client->previous_therapy = $request->previous_therapy;
-    //     $client->possible_support_needed = $request->possible_support_needed;
-    //     // $client->preferred_language = $request->preferred_language;
-    //     $client->additional_notes = $request->additional_notes;
-    //     $client->pronouns = $request->pronouns ?? null;
-    //     $client->email = $request->email;
-    //     $client->phone = $request->phone;
-    //     // $client->contact_method = $request->contact_method ?? null;
-    //     $client->client_contribution = $request->client_contribution;
-    //     $client->user_id = $request->user_id;
-    //     $client->gender = $request->gender;
-    //     $selectedContactMethods = $request->input('contact_method');
-    //     $contactMethodString = implode(', ', $selectedContactMethods);
-    //     $client->contact_method = $contactMethodString;
-    //     $client->save();
-
-    //     $therapist = User::find($request->user_id);
-    //     $therapist->notify(new NewClientNotification());
-    //     // return redirect()->route('clients.show', $client->id)->with('success', 'Client updated successfully');
-    //     return redirect()->route('dashboard');
-    // }
-
-
     public function update(Request $request, Client $client)
     {
         // $client = Client::find($id);
@@ -314,6 +263,9 @@ class ClientController extends Controller
         $selectedContactMethods = $request->input('contact_method');
         $contactMethodString = is_array($selectedContactMethods) && !empty($selectedContactMethods) ? implode(', ', $selectedContactMethods) : '';
 
+        $selectedPossibleSupportNeeded = $request->input('possible_support_needed');
+        $possibleSupportNeededString = is_array($selectedPossibleSupportNeeded) && !empty($selectedPossibleSupportNeeded) ? implode(', ', $selectedPossibleSupportNeeded) : '';
+
         $client->client_code = $request->client_code;
         $client->legal_name = $request->legal_name;
         $client->preferred_name = $request->preferred_name;
@@ -322,7 +274,7 @@ class ClientController extends Controller
         $client->home_address_state = $request->home_address_state;
         $client->home_address_country = $request->home_address_country;
         $client->previous_therapy = $request->previous_therapy;
-        $client->possible_support_needed = $request->possible_support_needed;
+        // $client->possible_support_needed = $request->possible_support_needed;
         $client->additional_notes = $request->additional_notes;
         $client->pronouns = $request->pronouns ?? null;
         $client->email = $request->email;
@@ -332,6 +284,7 @@ class ClientController extends Controller
         $client->gender = $genderString;
         $client->contact_method = $contactMethodString;
         $client->max_sessions = $request->max_sessions;
+        $client->possible_support_needed = $possibleSupportNeededString;
 
 
         $client->update();
