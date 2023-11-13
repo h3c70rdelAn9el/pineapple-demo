@@ -478,6 +478,50 @@
         label="Possible Support Needed"
         :options="$categories" />
 
+             <div class="col-span-6 mt-0 sm:col-span-4">
+                <div class="relative mb-4 mt-6 w-full"
+                    x-data="{ showDropdown: false }">
+                    <x-form_label for="possible_support_needed">
+                        <p>Possible Support Needed: <span class="ml-2 text-xs"></p>
+                    </x-form_label>
+                    <div class="rounded-md"
+                        @click.away="showDropdown = false">
+                        <div class="flex w-full justify-between rounded-md border border-blue-300 bg-gray-100 p-1.5">
+                            <button class="flex w-full flex-row justify-between"
+                                type="button"
+                                @click="showDropdown = !showDropdown">
+                                <p class="ml-1 p-1">Select Options</p>
+                                <svg class="mt-1 h-[18px] w-[18px] text-gray-700"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="rounded-md bg-gray-50 md:flex md:flex-wrap"
+                            x-show="showDropdown"
+                            x-transition.scale.origin.top
+                            x-cloak>
+                            @foreach ($categories as $category)
+                                <label class="items-center p-2">
+                                    <input class="mb-0.5 rounded-md transition-all duration-300 hover:bg-blue-300"
+                                        name="possible_support_needed[]"
+                                        type="checkbox"
+                                        value="{{ $category }}"
+                                        @if (is_array(old('possible_support_needed')) && in_array($category, old('possible_support_needed'))) checked @endif>
+                                    {{ $category }}
+                                </label><br>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+            </div>
+
     {{-- client_contribution --}}
     <x-form_label for="client_contribution">
         Client Contribution
