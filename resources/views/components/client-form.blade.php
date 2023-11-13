@@ -35,23 +35,23 @@
         required
         placeholder="Preferred name" />
 
-        {{-- Status --}}
-        <x-form_label for="status">
-            Status
-        </x-form_label>
-        <select class="peer mt-2 w-full rounded-md border-b-2 border-blue-200 p-3 ring-0"
-            id="status"
-            name="status"
-            type="text">
-            <option value=""
-                disabled
-                selected
-                hidden>Select Status</option>
-            <option value="0">Active</option>
-            <option value="1">Inactive</option>
-        </select>
+    {{-- Status --}}
+    <x-form_label for="status">
+        Status
+    </x-form_label>
+    <select class="peer mt-2 w-full rounded-md border-b-2 border-blue-200 p-3 ring-0"
+        id="status"
+        name="status"
+        type="text">
+        <option value=""
+            disabled
+            selected
+            hidden>Select Status</option>
+        <option value="0">Active</option>
+        <option value="1">Inactive</option>
+    </select>
 
-         {{-- email --}}
+    {{-- email --}}
     <x-form_label for="email">
         Email
     </x-form_label>
@@ -131,9 +131,8 @@
         </div>
     </div>
 
-
-   <div class="border-2 bg-blue-100 border-blue-300 rounded-lg p-2 my-4">
-    <h3>Optional Fields</h3>
+    <div class="my-4 rounded-lg border-2 border-blue-300 bg-blue-100 p-2">
+        <h3>Optional Fields</h3>
         {{-- Gender --}}
         <div class="my-4 flex flex-col"
             x-data="{ openGender: false }">
@@ -315,7 +314,6 @@
             <option>Other</option>
         </select>
 
-
         <div class="my-4 flex flex-col"
             x-data="{ openEthnicGroup: false, selectedEthnicGroups: [] }">
             <x-jet-label>Ethnic Group</x-jet-label>
@@ -433,6 +431,8 @@
                 disabled
                 selected
                 hidden>Select State</option>
+                <option value="">N/A</option>
+
             @foreach ($states as $state)
                 <option value="{{ $state }}">{{ $state }}</option>
             @endforeach
@@ -456,9 +456,7 @@
                 @endforeach
             @endif
         </select>
-   </div>
-
-
+    </div>
 
     {{-- Previous therapy --}}
     <x-form_label for="previous_therapy">Previous Therapy from Pineapple</x-form_label>
@@ -480,6 +478,50 @@
         label="Possible Support Needed"
         :options="$categories" />
 
+             <div class="col-span-6 mt-0 sm:col-span-4">
+                <div class="relative mb-4 mt-6 w-full"
+                    x-data="{ showDropdown: false }">
+                    <x-form_label for="possible_support_needed">
+                        <p>Possible Support Needed: <span class="ml-2 text-xs"></p>
+                    </x-form_label>
+                    <div class="rounded-md"
+                        @click.away="showDropdown = false">
+                        <div class="flex w-full justify-between rounded-md border border-blue-300 bg-gray-100 p-1.5">
+                            <button class="flex w-full flex-row justify-between"
+                                type="button"
+                                @click="showDropdown = !showDropdown">
+                                <p class="ml-1 p-1">Select Options</p>
+                                <svg class="mt-1 h-[18px] w-[18px] text-gray-700"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="rounded-md bg-gray-50 md:flex md:flex-wrap"
+                            x-show="showDropdown"
+                            x-transition.scale.origin.top
+                            x-cloak>
+                            @foreach ($categories as $category)
+                                <label class="items-center p-2">
+                                    <input class="mb-0.5 rounded-md transition-all duration-300 hover:bg-blue-300"
+                                        name="possible_support_needed[]"
+                                        type="checkbox"
+                                        value="{{ $category }}"
+                                        @if (is_array(old('possible_support_needed')) && in_array($category, old('possible_support_needed'))) checked @endif>
+                                    {{ $category }}
+                                </label><br>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+            </div>
+
     {{-- client_contribution --}}
     <x-form_label for="client_contribution">
         Client Contribution
@@ -492,6 +534,14 @@
         inputmode="numeric"
         pattern="[0-9]*" />
 
+    <x-form_label for="max_sessions">Maximum Therapy Sessions:</x-form_label>
+    <input class="mx-2 w-16 rounded-md border-blue-200 bg-gray-100 p-1 text-center ring-0"
+        id="max_sessions"
+        name="max_sessions"
+        type="number"
+        value="16"
+        >
+
     {{-- additional_notes --}}
     <x-form_label for="additional_notes">
         Additional Notes
@@ -499,8 +549,9 @@
     {{-- <x-form_input id="additional_notes"
         name="additional_notes"
         type="text" /> --}}
-    <textarea class="peer mt-2 w-full rounded-md border-b-2 border-blue-200 p-3 ring-0" name="addtional_notes"
+    <textarea class="peer mt-2 w-full rounded-md border-b-2 border-blue-200 p-3 ring-0"
         id="additional_notes"
+        name="addtional_notes"
         cols="30"
         rows="3"></textarea>
 
@@ -544,7 +595,6 @@
             @endif
         @endforeach
     </select>
-
 
     <div class="mt-2 flex">
         <button class="button-secondary mx-auto">Add</button>
