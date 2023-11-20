@@ -1,12 +1,13 @@
 <?php
 
-use App\Http\Controllers\SearchController;
 use App\Models\TherapySession;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\FileUploadController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\ClientController;
+use App\Http\Controllers\SearchController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\FileUploadController;
 use App\Http\Controllers\TherapistsController;
 use App\Http\Controllers\TherapySessionController;
 
@@ -77,17 +78,20 @@ Route::middleware([
     // Route::put('file-update/{id}', 'App\Http\Controllers\FileUploadController@update')->name('fileUpdate');
     // Route::get('file-edit/{id}', [FileUploadController::class, 'edit'])->name('fileEdit');
 
+    Route::put('/profile/update', [UserController::class, 'updateUserProfile'])->name('profile.update');
+    // Route::post('/update-gender', 'UserController@updateGender')->name('update.gender');
+    Route::post('update-gender', [UserController::class, 'updateGender'])->name('update.gender');
 
     Route::get('/therapist/{id}/forms/', [FileUploadController::class, 'index'])->name('therapist.forms');
     Route::get('/therapist/forms/{therapist}', [FileUploadController::class, 'index'])->name('therapist.forms');
 
     Route::get('/therapist/{id}/edit', [TherapistsController::class, 'edit'])->name('therapist.edit');
-    Route::put('/therapist/{id}', [TherapistsController::class, 'update'])->name('therapist.update');
+    Route::put('/therapist/{id}/update', [TherapistsController::class, 'update'])->name('therapist.update');
     Route::get('/clients/create', [ClientController::class, 'create'])->name('clients.create');
     Route::get('/clients/{client_id}', [ClientController::class, 'show'])->name('clients.show');
     Route::post('/clients/store', [ClientController::class, 'store'])->name('clients.store');
     Route::get('/clients/{client_id}/edit', [ClientController::class, 'edit'])->name('clients.edit');
-    Route::put('/clients/{client_id}', [ClientController::class, 'update'])->name('clients.update');
+    Route::post('/clients/{client}/update', [ClientController::class, 'update'])->name('clients.update');
     Route::get('/search', SearchController::class)->name('search');
     Route::get('/file-upload/search/{therapist}', [FileUploadController::class, 'search'])->name('file-upload.search');
 });

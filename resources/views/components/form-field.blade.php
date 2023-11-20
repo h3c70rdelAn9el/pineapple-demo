@@ -12,16 +12,6 @@
         type="{{ $type }}"
         value="{{ old($name, $value) }}"
         placeholder='{{ $slot }}'
-        {{-- placeholder="{{ ($slot) ?? '' : 'not provided' }}" --}}
-        {{-- placeholder="{{ ($slot) ?? '' : 'not provided' }}" --}}
-             {{-- @if(empty($name)) --}}
-            {{-- placeholder="Not provided" --}}
-
-        {{-- placeholder="{{ ($slot) ?? '' : 'not provided' }}" --}}
-        {{-- placeholder="{{ ($slot) ?? '' : 'not provided' }}" --}}
-             {{-- @if(empty($name)) --}}
-            {{-- placeholder="Not provided" --}}
-        @endif
         >
     </x-edit-form-input>
 {{-- {{ $slot }}!! --}}

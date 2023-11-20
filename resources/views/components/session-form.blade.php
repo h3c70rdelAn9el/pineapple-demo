@@ -1,6 +1,7 @@
 <form class="capitalize"
     action="{{ route('session.store') }}"
     method="POST"
+
     x-data="{ showSessionMaxModal: false }">
     @csrf
     {{-- <div>
@@ -27,18 +28,22 @@
             x-mask:dynamic="$money($input)"
             placeholder="0.00">
     </div> --}}
+
     <div>
         <label for="created_at">Session Date</label>
         <input class="form-input"
             id="created_at"
             name="created_at"
             type="date"
+
             max="{{ now()->format('Y-m-d') }}">
         <p class="text-xs text-red-500">Cannot add a future date</p>
+
     </div>
 
     <div>
         <label for="session_cost">Session Cost</label>
+
         <div class="flex items-center">
             <input class="form-input"
                 id="session_cost_display"
@@ -52,6 +57,7 @@
     </div>
 
     </div>
+
     <div class="my-2 text-xs font-light">
         <p>
             Original Client Contribution - ${{ $client->client_contribution }}

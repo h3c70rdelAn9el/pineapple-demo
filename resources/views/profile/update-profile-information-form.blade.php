@@ -8,7 +8,8 @@
     $countries = json_decode($countriesJson, true);
 @endphp
 
-<x-jet-form-section submit="updateProfileInformation">
+<x-jet-form-section submit="updateProfileInformation" wire:submit='submitForm'>
+{{-- Todo:  add the submitForm? --}}
     <x-slot name="title">
         {{ __('Profile Information') }}
     </x-slot>
@@ -75,28 +76,69 @@
             </div>
         @endif
 
+             {{-- title --}}
+        {{-- <x-user-text-input name="title"
+            type="text"
+            label="Title"
+            model="state.title"
+            autocomplete="title" /> --}}
+        <div class="col-span-6 sm:col-span-4">
+            <x-jet-label for="title"
+                value="{{ __('title') }}" />
+            <x-jet-input class="mt-1 block w-full"
+                id="title"
+                type="text"
+                wire:model.defer="state.title"
+                autocomplete="title" />
+            <x-jet-input-error class="mt-2"
+                for="title" />
+        </div>
+
         {{-- name --}}
-        <x-user-text-input name="name"
+        {{-- <x-user-text-input name="name"
             type="text"
             label="Name"
             model="state.name"
-            autocomplete="name" />
+            autocomplete="name" /> --}}
+
+                   <!-- Name -->
+        <div class="col-span-6 sm:col-span-4">
+            <x-jet-label for="name" value="{{ __('Name') }}" />
+            <x-jet-input id="name" type="text" class="mt-1 block w-full" wire:model.defer="state.name" autocomplete="name" />
+            <x-jet-input-error for="name" class="mt-2" />
+        </div>
+
+
+
 
         {{-- preferred name --}}
-        <x-user-text-input name="preferred_name"
+        {{-- <x-user-text-input name="preferred_name"
             type="text"
             label="Preferred Name"
             model="state.preferred_name"
-            autocomplete="preferred_name" />
+            autocomplete="preferred_name" /> --}}
 
+        <div class="col-span-6 sm:col-span-4">
+            <x-jet-label for="preferred_name"
+                value="{{ __('preferred_name') }}" />
+            <x-jet-input class="mt-1 block w-full"
+                id="preferred_name"
+                type="text"
+                wire:model.defer="state.preferred_name"
+                autocomplete="preferred_name" />
+            <x-jet-input-error class="mt-2"
+                for="preferred_name" />
+        </div>
         {{-- gender --}}
-        <div class="col-span-6 mt-0 sm:col-span-4">
+        {{-- <div class="col-span-6 mt-0 sm:col-span-4">
             <x-multi-select id="gender"
                 name="gender"
                 value="{{ $this->user->gender }}"
                 label="Gender"
-                :options="['Male', 'Female', 'Non-binary', 'Prefer Not To Say']"></x-multi-select>
-        </div>
+                :options="['Male', 'Female', 'Non-binary', 'Prefer Not To Say']"
+                wire:model="selectedOptions"
+                ></x-multi-select>
+        </div> --}}
 
         <!-- Email -->
         <div class="col-span-6 sm:col-span-4">
@@ -131,25 +173,40 @@
         </div>
 
         {{-- License --}}
-        <x-user-text-input name="license"
+        {{-- <x-user-text-input id="license"
+            name="license"
             type="text"
+            id="license"
             label="License"
-            model="state.license"
-            autocomplete="license" />
+            wire:model.defer="state.license"
+            autocomplete="license" /> --}}
+
+                 <div class="col-span-6 sm:col-span-4">
+            <x-jet-label for="license" value="{{ __('License') }}" />
+            <x-jet-input id="license" type="text" class="mt-1 block w-full" wire:model.defer="state.license" autocomplete="license" />
+            <x-jet-input-error for="license" class="mt-2" />
+        </div>
 
         {{-- Expires at --}}
-        <x-user-text-input name="expires_at"
+        {{-- <x-user-text-input id="expires_at"
+            name="expires_at"
             type="date"
+            id="expires_at"
             label="Expires at"
-            model="state.expires_at"
-            autocomplete="expires_at" />
+            wire:model.defer="state.expires_at"
+            autocomplete="expires_at" /> --}}
+        <div class="col-span-6 sm:col-span-4">
+            <x-jet-label for="expires_at" value="{{ __('Expires at') }}" />
+            <x-jet-input id="expires_at" type="date" class="mt-1 block w-full" wire:model.defer="state.expires_at" autocomplete="expires_at" />
+            <x-jet-input-error for="expires_at" class="mt-2" />
+        </div>
 
         {{-- Bank Information --}}
         {{-- <div class="border border-purple-400">
             <h2 class="mb-1 mt-6 text-lg leading-tight text-gray-600">
                 {{ __('Enter Payment Details') }}
             </h2>
-    </div> --}}
+        </div> --}}
 
         {{-- Intern --}}
         {{-- make a boolean input --}}
@@ -166,27 +223,63 @@
         </div>
 
         {{-- supervisor name --}}
-        <x-user-text-input name="supervisor_name"
+        {{-- <x-user-text-input id="supervisor_name"
+            name="supervisor_name"
             type="text"
+            id="supervisor_name"
             label="Supervisor name"
-            model="state.supervisor_name"
-            autocomplete="supervisor_name" />
+            wire:model.defer="state.supervisor_name"
+            autocomplete="supervisor_name" /> --}}
+        <div class="col-span-6 sm:col-span-4">
+            <x-jet-label for="supervisor_name"
+                value="{{ __('supervisor_name') }}" />
+            <x-jet-input class="mt-1 block w-full"
+                id="supervisor_name"
+                type="text"
+                wire:model.defer="state.supervisor_name"
+                autocomplete="supervisor_name" />
+            <x-jet-input-error class="mt-2"
+                for="supervisor_name" />
+        </div>
 
         {{-- street address --}}
-        <x-user-text-input name="street_address"
+        {{-- <x-user-text-input id="street_address"
+            name="street_address"
             type="text"
+            wire:model.defer="state.street_address"
             label="Street address"
-            model="state.street_address"
-            autocomplete="street_address" />
+            autocomplete="street_address" /> --}}
+        <div class="col-span-6 sm:col-span-4">
+            <x-jet-label for="street_address"
+                value="{{ __('street_address') }}" />
+            <x-jet-input class="mt-1 block w-full"
+                id="street_address"
+                type="text"
+                wire:model.defer="state.street_address"
+                autocomplete="street_address" />
+            <x-jet-input-error class="mt-2"
+                for="street_address" />
+        </div>
 
-        {{-- county/town --}}
-        <x-user-text-input name="county_town"
+        {{-- county_town/town --}}
+        {{-- <x-user-text-input id="county_town"
+            name="county_town"
             type="text"
+            wire:model.defer="state.county_town"
             label="County/Town"
             model="state.county_town"
-            autocomplete="county_town" />
-
-
+            autocomplete="county_town" /> --}}
+        <div class="col-span-6 sm:col-span-4">
+            <x-jet-label for="county_town"
+                value="{{ __('county_town') }}" />
+            <x-jet-input class="mt-1 block w-full"
+                id="county_town"
+                type="text"
+                wire:model.defer="state.county_town"
+                autocomplete="county_town" />
+            <x-jet-input-error class="mt-2"
+                for="county_town" />
+        </div>
 
         {{-- States --}}
         <div class="relative col-span-6 mb-4 w-full sm:col-span-4">
@@ -195,8 +288,10 @@
             </x-form_label>
             <select class="peer mt-2 w-full rounded-md border-b-2 border-blue-200 bg-gray-100 p-3 ring-0"
                 id="state"
+                wire:model.defer="state.state"
                 name="state"
-                type="text">
+                type="text"
+                wire:model.defer="state.state">
                 <option value=""
                     disabled
                     selected
@@ -271,47 +366,85 @@
             </select>
         </div>
 
-
-
-
-
         {{-- zip code --}}
-        <x-user-text-input name="zip_code_postal_code"
+        {{-- <x-user-text-input id="zip_code_postal_code"
+            name="zip_code_postal_code"
             type="text"
+            id="zip_code_postal_code"
             label="Zip code/Postal code"
-            model="state.zip_code_postal_code"
-            autocomplete="zip_code_postal_code" />
+            wore:model.defer="state.zip_code_postal_code"
+            autocomplete="zip_code_postal_code" /> --}}
+        <div class="col-span-6 sm:col-span-4">
+            <x-jet-label for="zip_code_postal_code"
+                value="{{ __('zip_code_postal_code') }}" />
+            <x-jet-input class="mt-1 block w-full"
+                id="zip_code_postal_code"
+                type="text"
+                wire:model.defer="state.zip_code_postal_code"
+                autocomplete="zip_code_postal_code" />
+            <x-jet-input-error class="mt-2"
+                for="zip_code_postal_code" />
+        </div>
 
         {{-- country --}}
-        <div class="col-span-6 sm:col-span-4">
+        {{-- <div class="col-span-6 sm:col-span-4">
             <x-single-select id="country"
                 name="country"
                 label="Country"
                 :options="$countries"
-                :selected="$this->user->country"></x-single-select>
-        </div>
+                :selected="$this->user->country"
+                wire:model.defer="state.country"
+                ></x-single-select>
+        </div> --}}
 
         {{-- time_zone --}}
-        <div class="col-span-6 sm:col-span-4">
+        {{-- <div class="col-span-6 sm:col-span-4">
             <x-single-select id="time_zone"
                 name="time_zone"
                 label="Time Zone"
-                :options="$timeZones"></x-single-select>
-        </div>
+                :options="$timeZones"
+                :selected="$this->user->time_zone"
+                wire:model.defer="state.time_zone"
+                ></x-single-select>
+        </div> --}}
 
         {{-- IBAN/Swift Code --}}
-        <x-user-text-input name="iban_swift_code"
+        {{-- <x-user-text-input name="iban_swift_code"
             type="text"
             label="IBAN/Swift Code"
             model="state.iban_swift_code"
-            autocomplete="iban_swift_code" />
+            autocomplete="iban_swift_code" /> --}}
+        <div class="col-span-6 mt-4 sm:col-span-4">
+            <x-jet-label for="iban_swift_code"
+                value="{{ __('iban_swift_code') }}" />
+            <input class="rounded"
+                id="iban_swift_code"
+                type="text"
+                wire:model.defer="state.iban_swift_code"
+                autocomplete="iban_swift_code" />
+            <x-jet-input-error class="mt-2"
+                for="iban_swift_code" />
+        </div>
 
         {{-- Out of State coaching --}}
-        <x-user-text-input name="out_of_state_coaching"
+        {{-- <x-user-text-input name="out_of_state_coaching"
             type="text"
             label="Out of State coaching"
             model="state.out_of_state_coaching"
-            autocomplete="out_of_state_coaching" />
+            autocomplete="out_of_state_coaching" /> --}}
+
+        {{-- Out of state coaching --}}
+        <div class="col-span-6 mt-4 sm:col-span-4">
+            <x-jet-label for="out_of_state_coaching"
+                value="{{ __('out_of_state_coaching') }}" />
+            <input class="rounded"
+                id="out_of_state_coaching"
+                type="checkbox"
+                wire:model.defer="state.out_of_state_coaching"
+                autocomplete="out_of_state_coaching" />
+            <x-jet-input-error class="mt-2"
+                for="out_of_state_coaching" />
+        </div>
 
         {{-- contact_for_promotionals --}}
         <div class="col-span-6 mt-4 sm:col-span-4">
@@ -327,7 +460,7 @@
         </div>
 
         {{-- on_vacation --}}
-        <div class="col-span-6 mt-4 sm:col-span-4">
+        {{-- <div class="col-span-6 mt-4 sm:col-span-4">
             <x-jet-label for="on_vacation"
                 value="{{ __('On Vacation') }}" />
             <input class="rounded"
@@ -337,7 +470,7 @@
                 autocomplete="on_vacation" />
             <x-jet-input-error class="mt-2"
                 for="on_vacation" />
-        </div>
+        </div> --}}
 
         <div class="col-span-6 mt-4 sm:col-span-4">
             <p>Bank Information</p>
@@ -346,25 +479,62 @@
         </div>
 
         {{-- Account name --}}
-        <x-user-text-input name="account_name"
+        {{-- <x-user-text-input id="account_name"
+            name="account_name"
             type="text"
+            id="account_name"
             label="Account name"
-            model="state.account_name"
-            autocomplete="account_name" />
+            wire:model.defer="state.account_name"
+            autocomplete="account_name" /> --}}
+        <div class="col-span-6 sm:col-span-4">
+            <x-jet-label for="account_name"
+                value="{{ __('account_name') }}" />
+            <x-jet-input class="mt-1 block w-full"
+                id="account_name"
+                type="text"
+                wire:model.defer="state.account_name"
+                autocomplete="account_name" />
+            <x-jet-input-error class="mt-2"
+                for="account_name" />
+        </div>
 
         {{-- Account Number --}}
-        <x-user-text-input name="account_number"
+        {{-- <x-user-text-input id="account_number"
+            name="account_number"
             type="text"
+            id="account_number"
             label="Account Number"
-            model="state.account_number"
-            autocomplete="account_number" />
+            wire:model.state="state.account_number"
+            autocomplete="account_number" /> --}}
+        <div class="col-span-6 sm:col-span-4">
+            <x-jet-label for="account_number"
+                value="{{ __('account_number') }}" />
+            <x-jet-input class="mt-1 block w-full"
+                id="account_number"
+                type="text"
+                wire:model.defer="state.account_number"
+                autocomplete="account_number" />
+            <x-jet-input-error class="mt-2"
+                for="account_number" />
+        </div>
 
         {{-- Routing Number --}}
-        <x-user-text-input name="routing_number"
+        {{-- <x-user-text-input name="routing_number"
             type="text"
             label="Routing Number"
             model="state.routing_number"
-            autocomplete="routing_number" />
+            autocomplete="routing_number" /> --}}
+        <div class="col-span-6 sm:col-span-4">
+            <x-jet-label for="routing_number"
+                value="{{ __('routing_number') }}" />
+            <x-jet-input class="mt-1 block w-full"
+                id="routing_number"
+                type="text"
+                wire:model.defer="state.routing_number"
+                autocomplete="routing_number" />
+            <x-jet-input-error class="mt-2"
+                for="routing_number" />
+        </div>
     </x-slot>
 
     <x-slot name="actions">
@@ -373,9 +543,11 @@
             {{ __('Saved.') }}
         </x-jet-action-message>
 
-        <x-jet-button wire:loading.attr="disabled"
+        {{-- <x-jet-button wire:loading.attr="disabled"
             wire:target="photo">
             {{ __('Save') }}
         </x-jet-button>
+
+
     </x-slot>
 </x-jet-form-section>

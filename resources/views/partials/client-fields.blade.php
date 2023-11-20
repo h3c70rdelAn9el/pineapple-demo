@@ -1,15 +1,17 @@
  <div class="p-1 px-3 mt-2 overflow-x-scroll border border-green-500 rounded-md shadow-md h-[500px] bg-blue-50 shadow-blue-100">
      <h2 class="text-lg font-bold text-center">Client: {{ $client->preferred_name }}</h2>
-        @if (auth()->user()->admin === 1)
+        @if (auth()->user()->admin == 1)
         <div class="flex flex-row justify-end">
-            <a href="{{ route('clients.edit', $client) }}" class="button">Edit</a>
+            <a href="{{ route('clients.edit', $id) }}" class="button">Edit</a>
         </div>
         @endif
      @foreach ([
         'Preferred Name' => $client->preferred_name ?: 'Preferred Name needed',
         'Legal Name' => $client->legal_name ?: 'Legal Name needed',
+        'Status' => $client->status === 1 ? 'Inactive' : 'Active',
         'Therapist' => $client->user->name,
         'Client Code' => $client->client_code ?: 'Client Code needed',
+        'Max Sessions' => $client->max_sessions ?: 'Max Sessions needed',
         'Phone' => $client->phone ?: 'Phone needed',
         'Contact by' => $client->contact_method ?: 'Contact method needed',
         'Client Status' => $client->status === 1 ? 'Inactive' : 'Active',
