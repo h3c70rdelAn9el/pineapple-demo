@@ -13,10 +13,10 @@
                             <p>{{ $therapist->name }}</p>
                             <p class="text-sm">{{ $therapist->gender }}</p>
                         </div>
-                        @if (auth()->user()->admin === 1)
+                        @if (auth()->user()->admin == 1)
                             <div class="flex flex-row justify-end">
                                 <a class="button mt-1"
-                                    href="{{ route('therapist.edit', $therapist) }}">Edit</a>
+                                    href="{{ route('therapist.edit', $therapist->id) }}">Edit</a>
                             </div>
                         @endif
                     </div>
@@ -35,6 +35,7 @@
                                 'Supervisor Name' => $therapist->supervisor_name ?: 'Supervisor Name n/a',
                                 'Clients' => $therapist->clients->count(),
                                 'Space for New Clients' => $space_for_new_clients,
+                                'session cost' => $therapist->session_cost ?: 'Session Cost needed',
                                 'Email' => $therapist->email ?: 'Email n/a',
                                 'Timezone' => $therapist->timezone ?: 'Timezone n/a',
                                 'Home County/Town' => $therapist->county_town ?: 'County/Town n/a',
@@ -47,7 +48,6 @@
                                 'All documents Recieved' => $therapist->all_documents ?: 'All Documents needed',
                                 'website' => $therapist->website ?: 'Website n/a',
                                 'quickbooks' => $therapist->quickbooks ?: 'Quickbooks needed',
-                                'session cost' => $therapist->session_cost ?: 'Session Cost needed',
                                 'contact for promotionals' => $therapist->contact_for_promotionals ?: 'Contact for Promotionals n/a',
                                 'notes' => $therapist->notes ?: 'Notes needed',
                             ] as $label => $value)

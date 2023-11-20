@@ -47,7 +47,7 @@ class TherapistsController extends Controller
     public function edit($id)
     {
         $user = auth()->user();
-        if ($user && $user->admin === 1) {
+        if ($user && $user->admin == 1) {
 
 
             $therapist = User::find($id);
@@ -57,15 +57,16 @@ class TherapistsController extends Controller
                 'therapist' => $therapist,
                 'user' => $user,
                 'form' => $form,
+                'id' => $id,
             ]);
         } else {
             return redirect()->route('dashboard')->with('error', 'You are not authorized to edit this therapist');
         }
     }
 
-
     public function update(Request $request, $id)
     {
+        // Validate the request data
         $validatedData = $request->validate([
             'title' => 'nullable|string|max:255',
             'name' => 'nullable|string|max:255',
@@ -75,7 +76,7 @@ class TherapistsController extends Controller
             'intern' => 'nullable|string|max:255',
             'supervisor_name' => 'nullable|string|max:255',
             'street_address' => 'nullable|string|max:255',
-            'county/town' => 'nullable|string|max:255',
+            'county' => 'nullable|string|max:255',
             'state' => 'nullable|string|max:255',
             'zip_code_postcode' => 'nullable|string|max:255',
             'country' => 'nullable|string|max:255',
@@ -85,24 +86,34 @@ class TherapistsController extends Controller
             'routing_number' => 'nullable|string|max:255',
             'iban_swift_code' => 'nullable|string|max:255',
             'client_spaces' => 'nullable|string|max:255',
-            'full' => 'nullable|string|max:255',
-            'out_of_state_coaching' => 'nullable|string|max:255',
-            'contact_for_promotionals' => 'nullable|string|max:255',
-            'active_status' => 'nullable|string|max:255',
-            'contract_signed' => 'nullable|string|max:255',
+            // 'full' => 'nullable|string|max:255',
+            // full is  abloolean
+            'full' => 'nullable|boolean',
+            // 'out_of_state_coaching' => 'nullable|string|max:255'
+            'out_of_state_coaching' => 'nullable|boolean',
+            // 'contact_for_promotionals' => 'nullable|string|max:255',
+            'contact_for_promotionals' => 'nullable|boolean',
+            // 'active_status' => 'nullable|string|max:255',
+            'active_status' => 'nullable|boolean',
+            // 'contract_signed' => 'nullable|string|max:255',
+            'contract_signed' => 'nullable|boolean',
             'all_documents' => 'nullable|string|max:255',
-            'website' => 'nullable|string|max:255',
-            'quickbooks' => 'nullable|string|max:255',
-            'session_cost' => 'nullable|string|max:255',
-            'client_extensions' => 'nullable|string|max:255',
+            // 'website' => 'nullable|string|max:255',
+            'website' => 'nullable|url|max:255',
+            // 'quickbooks' => 'nullable|string|max:255',
+            'quickbooks' => 'nullable|url|max:255',
+            // 'session_cost' => 'nullable|string|max:255',
+            'session_cost' => 'nullable|numeric',
+            // 'client_extensions' => 'nullable|string|max:255',
+            // 'client_extensions' => 'nullable|boolean',
             'notes' => 'nullable|string|max:255',
         ]);
 
+        // Retrieve the existing therapist from the database
         // $therapist = User::find($id);
-        // $form = $therapist->therapist;
         $user = User::find($id);
 
-        if ($user == 1) {
+        if ($user->admin == 1) {
             unset($validatedData['full']);
         } else {
             if ($validatedData['space_for_new_clients'] == 0) {
@@ -110,11 +121,16 @@ class TherapistsController extends Controller
             }
         }
 
-        // User::find($id)->update($validatedData);
 
-        $user->update($validatedData);
+        if (!$user) {
+            return redirect()->route('therapist.show', $id)->with('error', 'User not found');
+        }
 
-        return redirect()->route('therapist.show', $id)->with('success', 'Therapist updated successfully');
+        $user->save();
+
+        // return redirect()->route('therapist.show', $id)->with('success', 'Therapist updated successfully');
+        return redirect()->back()->with('success', 'Profile updated!');
+
     }
 
 }

@@ -59,7 +59,32 @@ class User extends Authenticatable
         'session_cost',
         'contact_for_promotionals',
         'number_of_potential_clients',
+        'out_of_state_coaching',
+        'file_upload',
+        'w9',
+        'headshot',
+        'voided_cheque',
+        'bio',
+        'website',
+        'quickbooks',
+        'dropbox',
+        'client_extensions',
+        'notes',
+        'covid_fundraise',
+        'insurance',
+        'signed_documents',
+        'leah_signed',
+        'space_for_new_clients',
+        'admin',
+        'county_town',
+        'country',
+        'state',
+        'gender',
+        'time_zone'
     ];
+
+    // tried guarded and it didn't work
+    // protected $guarded = [];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -80,6 +105,19 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'contact_for_promotionals' => 'boolean',
+        'out_of_state_coaching' => 'boolean',
+        'contract_signed' => 'boolean',
+        'full' => 'boolean',
+        'intern' => 'boolean',
+        'client_extensions' => 'boolean',
+        'covid_fundraise' => 'boolean',
+        'insurance' => 'boolean',
+        'signed_documents' => 'boolean',
+        'leah_signed' => 'boolean',
+        'admin' => 'boolean',
+        'on_vacation' => 'boolean',
+        'gender' => 'array',
     ];
 
     /**

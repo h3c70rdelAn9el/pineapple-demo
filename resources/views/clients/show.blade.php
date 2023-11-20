@@ -3,9 +3,11 @@
         <div class="relative">
             <div class="fixed inset-0 z-50 flex items-center justify-center overflow-auto bg-gray-800 bg-opacity-50"
                 x-show="showLimitModal"
-                x-cloak>
-                <div
-                    class="fixed z-50 flex flex-col rounded-lg border-2 border-blue-700 bg-gray-200 p-8 text-center shadow-md">
+                x-transition.duration.300ms
+                x-cloak
+                >
+                <div class="fixed z-50 rounded-lg bg-gray-200 p-8 shadow-md flex flex-col text-center border-2 border-blue-700">
+
                     <h2 class="mb-4 text-2xl font-bold">Client Reached 16 Sessions</h2>
                     <p>Client has completed 16 sessions.</p>
                     <button class="button-secondary mx-auto mt-4"
@@ -21,11 +23,14 @@
         </x-container-header>
         <div class="mx-auto grid w-full grid-cols-1 gap-3 rounded-lg p-2 px-6 md:grid-cols-2">
             {{-- left side --}}
+
             <div class="col-span-1">@include('partials.client-fields')</div>
+
 
             {{-- right side --}}
             <div class="mt-2 flex flex-col rounded-md border border-purple-500 p-1 shadow-md shadow-blue-100">
                 <h2 class="text-center text-lg font-bold">Client Sessions</h2>
+                <p class="text-xs ml-2">Assigned Sessions: {{ $client->max_sessions }}</p>
                 <div class="mx-auto flex w-2/3 flex-row">
                     @include('partials.sessions-attended')
                     <div class="mx-auto mb-2 mt-2 rounded-md bg-blue-50 p-2 shadow-md shadow-blue-100 lg:w-1/2">
