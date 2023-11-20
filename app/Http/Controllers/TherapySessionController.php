@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Client;
 use App\Models\Patient;
-use App\Notifications\MissedTherapySessions;
 use Illuminate\Http\Request;
 use App\Models\TherapySession;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
+use App\Notifications\MissedTherapySessions;
 use App\Notifications\SessionLimitNotification;
 use App\Http\Requests\StoreTherapySessionRequest;
 use App\Http\Requests\UpdateTherapySessionRequest;
@@ -56,11 +57,24 @@ class TherapySessionController extends Controller
         $client_id = $request->client_id;
         $client = Client::find($client_id);
 
+        $therapist = User::find($user->id);
+        $therapist_session_cost = $therapist->session_cost;
+        // $currentDate = Carbon::now();
+        // $sessionDate = $request->created_at;
+
+
+        // if (strtotime($sessionDate) > strtotime($currentDate)) {
+        //     Session::flash('error', 'Cannot schedule a session for a future date.');
+        //     return redirect()->back();
+        // }
+
         if ($client->therapySessions()->whereIn('attendance', ['attended', 'no-show'])->count() < $client->max_sessions) {
 
             $ts = new TherapySession();
             $ts->client_id = $request->client_id;
-            $ts->session_cost = $request->session_cost;
+            // $ts->session_cost = $request->session_cost;
+            $ts->session_cost = $therapist_session_cost;
+
             $clientContribution = DB::table('clients')
                 ->where('id', $request->client_id)
                 ->value('client_contribution');
@@ -68,6 +82,8 @@ class TherapySessionController extends Controller
             $ts->remaining_client_contribution = $clientContribution - $request->session_cost;
             $ts->client_contribution = $request->client_contribution;
             $ts->created_at = $request->created_at;
+            // $ts->created_at = $currentDate;
+
             $ts->user_id = $user->id;
             $ts->attendance = $request->attendance;
             $ts->notes = $request->notes;
