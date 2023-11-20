@@ -1,8 +1,33 @@
 <form class="capitalize"
     action="{{ route('session.store') }}"
     method="POST"
-    x-data="{ showModal: false }">
+
+    x-data="{ showSessionMaxModal: false }">
     @csrf
+    {{-- <div>
+        <label for="created_at">Session Date</label>
+        <input class="form-input"
+            id="created_at"
+            name="created_at"
+            type="date"
+            required>
+    </div> --}}
+    {{-- <div>
+        <label for="created_at">Session Date</label>
+        <input class="form-input" id="created_at" name="created_at" type="date" value="{{ now()->format('Y-m-d') }}">
+        <p class="text-xs text-red-500">Cannot add a future date</p>
+    </div> --}}
+    {{-- <div>
+        <label for="session_cost">Session Cost</label>
+        <input class="form-input"
+            id="session_cost"
+            name="session_cost"
+            type="text"
+            x-data
+            required
+            x-mask:dynamic="$money($input)"
+            placeholder="0.00">
+    </div> --}}
 
     <div>
         <label for="created_at">Session Date</label>
@@ -10,22 +35,27 @@
             id="created_at"
             name="created_at"
             type="date"
-            required
-            max="{{ date('Y-m-d') }}">
+
+            max="{{ now()->format('Y-m-d') }}">
+        <p class="text-xs text-red-500">Cannot add a future date</p>
+
     </div>
 
     <div>
         <label for="session_cost">Session Cost</label>
-        <input class="form-input"
-            id="session_cost"
-            name="session_cost"
-            type="text"
-            value="{{ $therapist->session_cost }}"
-            x-data
-            required
-            x-mask:dynamic="$money($input)"
-            placeholder="0.00"
-            readonly>
+
+        <div class="flex items-center">
+            <input class="form-input"
+                id="session_cost_display"
+                type="text"
+                value="{{ $therapist->session_cost }}"
+                readonly>
+            <input name="session_cost"
+                type="hidden"
+                value="{{ $therapist->session_cost }}">
+        </div>
+    </div>
+
     </div>
 
     <div class="my-2 text-xs font-light">
@@ -72,7 +102,6 @@
             name="client_id"
             type="text"
             value="{{ $client->id }}"
-            {{-- value="{{ $client->id }}" --}}
             readonly>
     </div>
     <div class="mt-2">
@@ -84,7 +113,7 @@
     </div>
 
     <div class="fixed inset-0 z-50 flex items-center justify-center"
-        x-show="showModal"
+        x-show="showSessionMaxModal && $refs.attendance.value === 'no-show'"
         x-cloak
         x-transition.duration.300ms>
         <div
@@ -94,8 +123,9 @@
             <p>It is the client’s responsibility to pay for a 'no show' in full.</p>
             <p>As a reminder, Pineapple Support will no longer provide subsidised therapy after three missed sessions.
             </p>
+            <button x-on:click="showSessionMaxModal = false" class="button">Close</button> <!-- Update this line -->
             <button class="mt-4 rounded-md border border-red-600 bg-blue-300 px-2 py-1 duration-300 hover:scale-110"
-                x-on:click="showModal = false">OK</button>
+                x-on:click="showSessionMaxModal = !showSessionModal">OK</button>
         </div>
     </div>
 </form>
