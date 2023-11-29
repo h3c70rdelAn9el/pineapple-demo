@@ -285,9 +285,10 @@ class ClientController extends Controller
         $client->contact_method = $contactMethodString;
         $client->max_sessions = $request->max_sessions;
         $client->possible_support_needed = $possibleSupportNeededString;
+        // $client->therapist = $request->therapist;
 
 
-        $client->update();
+        $client->save();
 
         $therapist = User::find($request->user_id);
         $therapist->notify(new NewClientNotification());
