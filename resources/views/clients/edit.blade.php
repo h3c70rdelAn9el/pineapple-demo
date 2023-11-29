@@ -27,19 +27,44 @@
                 value="{{ $client->user_id }}">
 
             {{-- client_code --}}
-            <x-form-field name="client_code"
+            {{-- <x-form-field name="client_code"
                 type="text"
                 label="Client Code">
                 {{ $client->client_code }}
-            </x-form-field>
+            </x-form-field> --}}
+            <div class="mb-2 mt-4 w-full">
+                <x-jet-label for="client_code"
+                    value="{{ __('Client Code') }}" />
+                <input class="w-full rounded border border-blue-200 bg-gray-100"
+                    id="client_code"
+                    name="client_code"
+                    type="text"
+                    value="{{ old('client_code', $client->client_code) }}"
+                    placeholder="{{ old('client_code', $client->client_code) }}"
+                    autocomplete="client_code" />
+                <x-jet-input-error class="mt-2"
+                    for="client_code" />
+            </div>
 
-            <x-form-field name="preferred_name"
+            {{-- <x-form-field name="preferred_name"
                 type="text"
                 value="{{ old('preferred_name', $client->preferred_name) }}"
                 label="Preferred Name">
                 {{ old('preferred_name', $client->preferred_name) }}
-            </x-form-field>
-
+            </x-form-field> --}}
+            <div class="mb-2 mt-4 w-full">
+                <x-jet-label for="preferred_name"
+                    value="{{ __('Preferred Name') }}" />
+                <input class="w-full rounded border border-blue-200 bg-gray-100"
+                    id="preferred_name"
+                    name="preferred_name"
+                    type="text"
+                    value="{{ old('preferred_name', $client->preferred_name) }}"
+                    placeholder="{{ old('preferred_name', $client->preferred_name) }}"
+                    autocomplete="preferred_name" />
+                <x-jet-input-error class="mt-2"
+                    for="preferred_name" />
+            </div>
 
             {{-- max_sessions --}}
             <label for="max_sessions">Maximum Therapy Sessions:</label>
@@ -50,11 +75,24 @@
                 value="{{ $client->max_sessions }}">
 
             {{-- legal_name --}}
-            <x-form-field name="legal_name"
+            {{-- <x-form-field name="legal_name"
                 type="text"
                 label="Legal Name">
                 {{ $client->legal_name }}
-            </x-form-field>
+            </x-form-field> --}}
+            <div class="mb-2 mt-4 w-full">
+                <x-jet-label for="legal_name"
+                    value="{{ __('Legal Name') }}" />
+                <input class="w-full rounded border border-blue-200 bg-gray-100"
+                    id="legal_name"
+                    name="legal_name"
+                    type="text"
+                    value="{{ old('legal_name', $client->legal_name) }}"
+                    placeholder="{{ old('legal_name', $client->legal_name) }}"
+                    autocomplete="legal_name" />
+                <x-jet-input-error class="mt-2"
+                    for="legal_name" />
+            </div>
 
             {{-- Status --}}
             <x-form_label for="status">
@@ -73,18 +111,44 @@
             </select>
 
             {{-- email --}}
-            <x-form-field name="email"
+            {{-- <x-form-field name="email"
                 type="text"
                 label="Email">
                 {{ $client->email }}
-            </x-form-field>
+            </x-form-field> --}}
+            <div class="mb-2 mt-4 w-full">
+                <x-jet-label for="email"
+                    value="{{ __('Email') }}" />
+                <input class="w-full rounded border border-blue-200 bg-gray-100"
+                    id="email"
+                    name="email"
+                    type="text"
+                    value="{{ old('email', $client->email) }}"
+                    placeholder="{{ old('email', $client->email) }}"
+                    autocomplete="email" />
+                <x-jet-input-error class="mt-2"
+                    for="email" />
+            </div>
 
             {{-- phone --}}
-            <x-form-field name="phone"
+            {{-- <x-form-field name="phone"
                 type="text"
                 label="Phone">
                 {{ $client->phone }}
-            </x-form-field>
+            </x-form-field> --}}
+            <div class="mb-2 mt-4 w-full">
+                <x-jet-label for="phone"
+                    value="{{ __('Phone') }}" />
+                <input class="w-full rounded border border-blue-200 bg-gray-100"
+                    id="phone"
+                    name="phone"
+                    type="text"
+                    value="{{ old('phone', $client->phone) }}"
+                    placeholder="{{ old('phone', $client->phone) }}"
+                    autocomplete="phone" />
+                <x-jet-input-error class="mt-2"
+                    for="phone" />
+            </div>
 
             <div class="relative mb-4 mt-6 w-full"
                 x-data='{
@@ -371,21 +435,61 @@
                 </div>
 
                 {{-- home_address_state --}}
-                <x-single-select id="home_address_state"
+                {{-- <x-single-select id="home_address_state"
                     name="home_address_state"
                     value="{{ $client->home_address_state }}"
                     label="State:   (previous selection: {{ $client->home_address_state }}) "
                     placeholder="{{ $client->home_address_state }}"
-                    :options="$states"></x-single-select>
+                    :options="$states"></x-single-select> --}}
+                <div class="relative mb-4 mt-6 w-full">
+                    <x-form_label for="home_address_state">
+                        State: (previous selection: {{ $client->home_address_state }})
+                    </x-form_label>
+                    <select id="home_address_state"
+                        name="home_address_state"
+                        class="peer mt-2 w-full rounded-md border-blue-200 bg-gray-100 p-2 ring-0"
+                        >
+                        <option value=""
+                            disabled
+                            selected
+                            hidden>Previous: {{ $client->home_address_state }}</option>
+                        @foreach ($states as $state)
+                            <option value="{{ $state }}"
+                                @if ($state == $client->home_address_state) selected @endif>
+                                {{ $state }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
 
                 {{-- home_address_country --}}
-                <x-single-select id="home_address_country"
+                {{-- <x-single-select id="home_address_country"
                     name="home_address_country"
                     value="{{ $client->home_address_country }}"
                     label="Country: (previous selection: {{ $client->home_address_country }})"
                     placeholder="{{ $client->home_address_country }}"
-                    :options="$clientCountries"></x-single-select>
+                    :options="$clientCountries"></x-single-select> --}}
+                <div class="relative mb-4 mt-6 w-full">
+                    <x-form_label for="home_address_country">
+                        Country: (previous selection: {{ $client->home_address_country }})
+                    </x-form_label>
+                    <select id=""
+                        name=""
+                        class="peer mt-2 w-full rounded-md border-blue-200 bg-gray-100 p-2 ring-0"
+                        >
+                        <option value=""
+                            disabled
+                            selected
+                            hidden>Previous: {{ $client->home_address_country }}</option>
+                        @foreach ($clientCountries as $country)
+                            <option value="{{ $country }}"
+                                @if ($country == $client->home_address_country) selected @endif>
+                                {{ $country }}
+                            </option>
+                        @endforeach
+                    </select>
 
+                </div>
             </div>
 
             {{-- previous therapy --}}
@@ -448,51 +552,67 @@
             </div>
 
             {{-- client_contribution --}}
-            <x-form-field name="client_contribution"
+            {{-- <x-form-field name="client_contribution"
                 type="text"
                 label="Client Contribution">
                 {{ $client->client_contribution }}
-            </x-form-field>
+            </x-form-field> --}}
+            <div class="col-span-6 mt-0 sm:col-span-4">
+                <x-jet-label for="client_contribution"
+                    value="Client Contribution:  previous: {{ $client->client_contribution }}" />
+                <input class="rounded"
+                    id="client_contribution"
+                    type="checkbox"
+                    wire:model.defer="state.client_contribution"
+                    autocomplete="client_contribution" />
+                <x-jet-input-error class="mt-2"
+                    for="client_contribution" />
+            </div>
 
             {{-- Therapist --}}
-            <x-form_label for="therapist">
+            {{-- <x-form_label for="therapist">
                 Therapist
-            </x-form_label>
-            <select class="peer mt-2 w-full rounded-md border-blue-200 bg-gray-100 p-2 capitalize ring-0"
-                id="user_id"
-                name="user_id">
-                <option value=""
-                    disabled
-                    selected
-                    hidden>Previous: {{ $therapist->name }}</option>
+            </x-form_label> --}}
 
-                @php
-                    $groupedTherapists = $therapists->groupBy('state')->sortKeys();
-                @endphp
+            <div class="col-span-6 mt-0 sm:col-span-4">
+                <x-jet-label for="therapist"
+                    value="Therapist:  previous: {{ $therapist->name }}" />
+                <select class="peer mt-2 w-full rounded-md border-blue-200 bg-gray-100 p-2 capitalize ring-0"
+                    id="user_id"
+                    name="user_id">
+                    <option value=""
+                        disabled
+                        selected
+                        hidden>Previous: {{ $therapist->name }}</option>
 
-                @foreach ($groupedTherapists as $state => $therapistsInState)
                     @php
-                        $activeTherapistsInState = $therapistsInState->filter(function ($therapist) {
-                            return $therapist->active_status == 0;
-                        });
+                        $groupedTherapists = $therapists->groupBy('state')->sortKeys();
                     @endphp
 
-                    @if ($activeTherapistsInState->isNotEmpty())
-                        <optgroup label="{{ $state }}">
-                            @foreach ($activeTherapistsInState as $therapist)
-                                <option value="{{ $therapist->id }}">
-                                    {{ $therapist->name }}
-                                    @if (!empty($therapist->state))
-                                        (State: {{ $therapist->state }})
-                                    @else
-                                        (No state available)
-                                    @endif
-                                </option>
-                            @endforeach
-                        </optgroup>
-                    @endif
-                @endforeach
-            </select>
+                    @foreach ($groupedTherapists as $state => $therapistsInState)
+                        @php
+                            $activeTherapistsInState = $therapistsInState->filter(function ($therapist) {
+                                return $therapist->active_status == 0;
+                            });
+                        @endphp
+
+                        @if ($activeTherapistsInState->isNotEmpty())
+                            <optgroup label="{{ $state }}">
+                                @foreach ($activeTherapistsInState as $therapist)
+                                    <option value="{{ $therapist->id }}">
+                                        {{ $therapist->name }}
+                                        @if (!empty($therapist->state))
+                                            (State: {{ $therapist->state }})
+                                        @else
+                                            (No state available)
+                                        @endif
+                                    </option>
+                                @endforeach
+                            </optgroup>
+                        @endif
+                    @endforeach
+                </select>
+            </div>
 
             {{-- additional_notes --}}
             <div class="mb-2 mt-4 w-full">
