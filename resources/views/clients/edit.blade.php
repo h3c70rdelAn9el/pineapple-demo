@@ -446,7 +446,9 @@
                         State: (previous selection: {{ $client->home_address_state }})
                     </x-form_label>
                     <select id="home_address_state"
-                        name="home_address_state">
+                        name="home_address_state"
+                        class="peer mt-2 w-full rounded-md border-blue-200 bg-gray-100 p-2 ring-0"
+                        >
                         <option value=""
                             disabled
                             selected
@@ -472,7 +474,9 @@
                         Country: (previous selection: {{ $client->home_address_country }})
                     </x-form_label>
                     <select id=""
-                        name="">
+                        name=""
+                        class="peer mt-2 w-full rounded-md border-blue-200 bg-gray-100 p-2 ring-0"
+                        >
                         <option value=""
                             disabled
                             selected
