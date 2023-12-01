@@ -7,7 +7,7 @@
     @endif
     <x-main-container>
         <x-container-header :user="$user">
-            {{ $user->name }}
+            {{ $user->preferred_name ? $user->preferred_name : $user->name }}
         </x-container-header>
         <div class="flex flex-row pt-2 ml-7">
             {{-- <p>
