@@ -40,7 +40,7 @@
                 <x-slot name="title">
                     {{-- Therapists: --}}
 
-                    <div class="flex w-1/4 flex-col text-base">
+                    <div class="flex lg:w-1/2 w-2/3 flex-col text-base">
                         <div class="flex justify-between font-bold">
                             <p>Therapists:</p>
                             <p>{{ $therapists->count() }}</p>
@@ -51,7 +51,11 @@
                         </div>
                         <div class="flex justify-between">
                             <p>Inactive:</p>
-                            <p class="text-orange-500">{{ $inactiveTherapists->count() }}</p>
+                            <p class="text-orange-400">{{ $inactiveTherapists->count() }}</p>
+                        </div>
+                        <div class="flex justify-between">
+                            <p>Incomplete Profiles:</p>
+                            <p class="text-red-600">{{ $incompleteTherapists->count() }}</p>
                         </div>
                     </div>
                 </x-slot>
@@ -68,7 +72,7 @@
                 </x-slot>
                 <x-slot name="content">
                     @foreach ($therapists as $therapist)
-                        <x-therapists-card :therapist="$therapist"></x-therapists-card>
+                        <x-therapists-card :therapist="$therapist" incompleteTherapist="$incompleteTherapist"></x-therapists-card>
                     @endforeach
                 </x-slot>
             </x-container-content>
