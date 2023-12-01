@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-main-container>
         <x-container-header :user="$user">
-            {{ $user->name }}
+            {{ $user->preferred_name ? $user->preferred_name : $user->name }}
         </x-container-header>
 
         @if($user->admin==1)
