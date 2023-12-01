@@ -10,12 +10,13 @@
             {{ $user->preferred_name ? $user->preferred_name : $user->name }}
         </x-container-header>
         <div class="flex flex-row pt-2 ml-7">
-            {{-- <p>
-                On Vacation:
-            </p> --}}
-            <p class="ml-2">
-                {{ $user->on_vacation ? 'On Vacation' : 'Available' }}
-            </p>
+            @if ($incompleteTherapist)
+            <div class="text-red-600 text-xs flex flex-col">
+                <p >Your Profile Is Incomplete</p>
+                <p>Before clients are assigned, you must visit your profile page and complete it.</p>
+            </div>
+
+            @endif
         </div>
         {{-- search form --}}
         <div class="w-1/2 mx-auto mt-2">

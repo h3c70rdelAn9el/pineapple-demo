@@ -23,12 +23,12 @@ class DashboardController extends Controller
         $activeClients = Client::where('status', '0')->get()->sortBy('client_code');
         $inactiveClients = Client::where('status', '1')->get()->sortBy('client_code');
         $therapySessions = TherapySession::where('user_id', $user->id)
-            ->orderBy('id', 'DESC')
+            ->orderBy('created_at', 'desc')
             ->get();
         $therapists = User::where('admin', 0)->get()->sortBy('name');
         // $therapist = User::find($user_id);
         $therapist = Client::find($user_id)?->therapist;
-        $attendedSessions = TherapySession::whereIn('client_id', $clients->pluck('id'))->whereIn('attendance', ['attended', 'no-show'])->get();
+        $attendedSessions = TherapySession::whereIn('client_id', $clients->pluck('id'))->whereIn('attendance', ['attended', 'no-show'])->orderBy('created_at', 'desc')->get();
 
         $inactiveTherapists = User::where('admin', 0)->where('active_status', 1)->get();
         $activeTherapists = User::where('admin', 0)->where('active_status', 0)->get();
@@ -39,10 +39,45 @@ class DashboardController extends Controller
         $jsonFile = file_get_contents(resource_path('json/categories.json'));
         $categories = json_decode($jsonFile, true);
 
-        if ($user->admin) {
-            return view('dashboard_admin', ['user' => $user, 'therapists' => $therapists, 'allClients' => $allClients, 'therapist' => $therapist, 'therapySessions' => '$therapySessions', 'states' => $states, 'categories' => $categories, 'activeClients' => $activeClients, 'inactiveClients' => $inactiveClients, 'attendedSessions' => $attendedSessions, 'inactiveTherapists' => $inactiveTherapists, 'activeTherapists' => $activeTherapists]);
+        // Check if any field is null or empty
+        if ($therapists) {
+            $incompleteTherapists = $therapists->filter(function ($therapist) {
+                // Exclude 'state' and 'country' from the check
+                $fieldsToCheck = array_diff_key((array) $therapist, ['state' => '', 'country' => '']);
+
+                foreach ($fieldsToCheck as $field) {
+                    if (is_null($field) || $field === '') {
+                        return true;
+                    }
+                }
+
+                return false;
+            });
         } else {
-            return view('dashboard', ['user' => $user, 'clients' => $clients, 'client' => $client, 'therapySessions' => $therapySessions, 'therapist' => $therapist, 'states' => $states, 'categories' => $categories, 'activeClients' => $activeClients, 'inactiveClients' => $inactiveClients]);
+            $incompleteTherapists = collect();
+        }
+
+        if ($therapist) {
+            $incompleteTherapist = $therapist->filter(function ($therapist) {
+                // Exclude 'state' and 'country' from the check
+                $fieldsToCheck = array_diff_key((array) $therapist, ['state' => '', 'country' => '']);
+
+                foreach ($fieldsToCheck as $field) {
+                    if (is_null($field) || $field === '') {
+                        return true;
+                    }
+                }
+
+                return false;
+            });
+        } else {
+            $incompleteTherapist = collect();
+        }
+
+        if ($user->admin) {
+            return view('dashboard_admin', ['user' => $user, 'therapists' => $therapists, 'allClients' => $allClients, 'therapist' => $therapist, 'therapySessions' => '$therapySessions', 'states' => $states, 'categories' => $categories, 'activeClients' => $activeClients, 'inactiveClients' => $inactiveClients, 'attendedSessions' => $attendedSessions, 'inactiveTherapists' => $inactiveTherapists, 'activeTherapists' => $activeTherapists, 'incompleteTherapists' => $incompleteTherapists]);
+        } else {
+            return view('dashboard', ['user' => $user, 'clients' => $clients, 'client' => $client, 'therapySessions' => $therapySessions, 'therapist' => $therapist, 'states' => $states, 'categories' => $categories, 'activeClients' => $activeClients, 'inactiveClients' => $inactiveClients, 'attendedSessions' => $attendedSessions, 'incompleteTherapist' => $incompleteTherapist]);
         }
     }
 }
