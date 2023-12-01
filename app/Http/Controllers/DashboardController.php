@@ -15,11 +15,11 @@ class DashboardController extends Controller
     {
         $user = auth()->user();
         $user_id = $user->id;
-        $clients = User::find($user_id)->clients;
+        $clients = User::find($user_id)->clients()->orderBy('preferred_name')->get();
         $client = Client::find($user_id);
         $allClients = Client::all()->sortBy('preferred_name');
-        $activeClients = Client::where('status', '0')->get();
-        $inactiveClients = Client::where('status', '1')->get();
+        $activeClients = Client::where('status', '0')->get()->sortBy('preferred_name');
+        $inactiveClients = Client::where('status', '1')->get()->sortBy('preferred_name');
         $therapySessions = TherapySession::where('user_id', $user->id)
             ->orderBy('id', 'DESC')
             ->get();
