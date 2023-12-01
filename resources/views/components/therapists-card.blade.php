@@ -4,9 +4,14 @@
     :class="{ 'bg-blue-200 border-blue-400 hover:border-blue-600 border hover:bg-blue-300 transition-all duration-200': isActive, 'bg-red-200 border-red-400 border hover:bg-red-300  transition-all ease-in-out duration-200':
             !isActive }">
     <div class="ml-1 flex w-full flex-row justify-between">
-        <p class="ml-2 capitalize">
-            {{ $therapist->preferred_name ? $therapist->preferred_name : $therapist->name }}
-        </p>
+        <div class="ml-2">
+            <p class=" capitalize">
+                {{ $therapist->preferred_name ? $therapist->preferred_name : $therapist->name }}
+            </p>
+            @if( $incompleteTherapist)
+                <p class="text-red-600 text-xs">Incomplete</p>
+        </div>
+        @endif
         <p class="mr-2 inline-block">
             Clients:
             <span class="">{{ $therapist->clients->count() }}</span>
