@@ -28,7 +28,7 @@ class DashboardController extends Controller
         $therapists = User::where('admin', 0)->get()->sortBy('name');
         // $therapist = User::find($user_id);
         $therapist = Client::find($user_id)?->therapist;
-        $attendedSessions = TherapySession::whereIn('client_id', $clients->pluck('id'))->whereIn('attendance', ['attended', 'no-show'])->get();
+        $attendedSessions = TherapySession::whereIn('client_id', $clients->pluck('id'))->whereIn('attendance', ['attended', 'no-show'])->orderBy('created_at', 'desc')->get();
 
         $inactiveTherapists = User::where('admin', 0)->where('active_status', 1)->get();
         $activeTherapists = User::where('admin', 0)->where('active_status', 0)->get();
