@@ -41,7 +41,7 @@
                                 'Home County/Town' => $therapist->county_town ?: 'County/Town n/a',
                                 'Home State' => $therapist->home_address_state ?: 'State n/a',
                                 'Home Country' => $therapist->home_address_country ?: 'Country n/a',
-                                'Out of State Coaching' => $therapist->out_of_state_coaching ?: 'Out of State Coaching n/a',
+                                'Out of State Coaching' => $therapist->out_of_state_coaching == 1 ? 'Yes' : 'No',
                                 'Client Extensions' => $therapist->client_extensions ?: 'Client Extensions n/a',
                                 'active status' => $therapist->active_status ? 'Active' : 'Inactive',
                                 'contract signed' => $therapist->contract_signed ?: 'Contract Signed needed',
