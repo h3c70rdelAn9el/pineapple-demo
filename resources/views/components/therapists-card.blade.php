@@ -5,7 +5,7 @@
             !isActive }">
     <div class="ml-1 flex w-full flex-row justify-between">
         <p class="ml-2 capitalize">
-            {{ $therapist->name }}
+            {{ $therapist->preferred_name ? $therapist->preferred_name : $therapist->name }}
         </p>
         <p class="mr-2 inline-block">
             Clients:
