@@ -254,6 +254,14 @@ class ClientController extends Controller
     {
         // $client = Client::find($id);
 
+        $data = $request->only([
+            'sexual_orientation',
+            'gender',
+            'pronouns',
+            'ethnic_group',
+        ]);
+
+
         $selectedGenders = $request->input('gender');
         $genderString = is_array($selectedGenders) && !empty($selectedGenders) ? implode(', ', $selectedGenders) : '';
 
@@ -287,8 +295,26 @@ class ClientController extends Controller
         $client->possible_support_needed = $possibleSupportNeededString;
         // $client->therapist = $request->therapist;
 
+        if ($request->has('sexual_orientation')) {
+            $client->sexual_orientation = $request->input('sexual_orientation');
+        }
 
-        $client->save();
+        // do the same as above for gender, pronouns, ethnic_group
+        if ($request->has('gender')) {
+            $client->gender = $request->input('gender');
+        }
+
+        if ($request->has('pronouns')) {
+            $client->pronouns = $request->input('pronouns');
+        }
+
+        if ($request->has('ethnic_group')) {
+            $client->ethnic_group = $request->input('ethnic_group');
+        }
+
+
+
+        $client->update($data);
 
         $therapist = User::find($request->user_id);
         $therapist->notify(new NewClientNotification());
