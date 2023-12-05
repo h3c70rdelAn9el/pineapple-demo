@@ -152,9 +152,9 @@
                 }'
                 x-init="alpine.watch('showOptions', value => { if (!value) showOptions = false; })">
 
-                <x-form_label>
-                    Preferred Contact Method
-                </x-form_label>
+                   <x-form_label>
+                        Contact Method(s): (previous selection: {{ str_replace(['[', ']', '"'], '', $client->contact_method) }})
+                    </x-form_label>
                 <div class="rounded-md"
                     @click.away="showOptions = false">
                     <div class="flex w-full justify-between rounded-md border border-blue-300 bg-gray-100 p-3">
@@ -664,9 +664,12 @@
             <div class="col-span-6 mt-0 sm:col-span-4">
                 <div class="relative mb-4 mt-6 w-full"
                     x-data="{ showDropdown: false }">
-                    <x-form_label for="possible_support_needed">
+                    {{-- <x-form_label for="possible_support_needed">
                         <p>Possible Support Needed <span class="ml-2 text-xs">Previous selection:
                                 {{ $client->possible_support_needed }}</span></p>
+                    </x-form_label> --}}
+                        <x-form_label>
+                        Possible Support Needed: (previous selection: {{ str_replace(['[', ']', '"'], '', $client->possible_support_needed) }})
                     </x-form_label>
                     <div class="rounded-md"
                         @click.away="showDropdown = false">

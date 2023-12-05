@@ -310,7 +310,12 @@ class ClientController extends Controller
         }
 
         $selectedContactMethods = $request->input('contact_method');
-        $contactMethodString = is_array($selectedContactMethods) && !empty($selectedContactMethods) ? implode(', ', $selectedContactMethods) : $client->contact_method;
+        // $contactMethodString = is_array($selectedContactMethods) && !empty($selectedContactMethods) ? implode(', ', $selectedContactMethods) : $client->contact_method;
+        if (is_array($selectedContactMethods) && !empty($selectedContactMethods)) {
+            $contactMethodString = implode(', ', $selectedContactMethods);
+        } else {
+            $contactMethodString = $client->contact_method;
+        }
 
         $selectedPossibleSupportNeeded = $request->input('possible_support_needed');
         $possibleSupportNeededString = is_array($selectedPossibleSupportNeeded) && !empty($selectedPossibleSupportNeeded) ? implode(', ', $selectedPossibleSupportNeeded) : $client->possible_support_needed;
