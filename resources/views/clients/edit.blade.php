@@ -110,12 +110,6 @@
                 <option value="1">Inactive</option>
             </select>
 
-            {{-- email --}}
-            {{-- <x-form-field name="email"
-                type="text"
-                label="Email">
-                {{ $client->email }}
-            </x-form-field> --}}
             <div class="mb-2 mt-4 w-full">
                 <x-jet-label for="email"
                     value="{{ __('Email') }}" />
@@ -130,12 +124,6 @@
                     for="email" />
             </div>
 
-            {{-- phone --}}
-            {{-- <x-form-field name="phone"
-                type="text"
-                label="Phone">
-                {{ $client->phone }}
-            </x-form-field> --}}
             <div class="mb-2 mt-4 w-full">
                 <x-jet-label for="phone"
                     value="{{ __('Phone') }}" />
@@ -335,7 +323,6 @@
                                 <label class="ml-2"
                                     for="he-him">He</label>
                             </div>
-                            {{-- him --}}
                             <div class="select-input-div">
                                 <input class="select-input"
                                     id="him"
@@ -344,7 +331,6 @@
                                     value="Him">
                                 <label class="ml-2">Him</label>
                             </div>
-                            {{-- her --}}
                             <div class="select-input-div">
                                 <input class="select-input"
                                     id="her"
@@ -354,7 +340,6 @@
                                 <label class="ml-2"
                                     for="her">Her</label>
                             </div>
-                            {{-- his --}}
                             <div class="select-input-div">
                                 <input class="select-input"
                                     id="his"
@@ -364,8 +349,6 @@
                                 <label class="ml-2"
                                     for="his">His</label>
                             </div>
-
-                            {{-- her --}}
                             <div class="select-input-div">
                                 <input class="select-input"
                                     id="hers"
@@ -375,8 +358,6 @@
                                 <label class="ml-2"
                                     for="hers">Hers</label>
                             </div>
-
-                            {{-- ze --}}
                             <div class="select-input-div">
                                 <input class="select-input"
                                     id="ze"
@@ -386,8 +367,6 @@
                                 <label class="ml-2"
                                     for="ze">Ze</label>
                             </div>
-
-                            {{-- zir --}}
                             <div class="select-input-div">
                                 <input class="select-input"
                                     id="zir"
@@ -397,7 +376,6 @@
                                 <label class="ml-2"
                                     for="zir">Zir</label>
                             </div>
-
                             <div class="select-input-div">
                                 <input class="select-input"
                                     id="they"
@@ -418,17 +396,6 @@
                             </div>
                             <div class="select-input-div">
                                 <input class="select-input"
-                                    id="other-pronouns"
-                                    name="pronouns[]"
-                                    type="checkbox"
-                                    value="Other">
-                                <label class="ml-2"
-                                    for="other-pronouns">Other</label>
-                            </div>
-
-                            {{-- prefer not to say --}}
-                            <div class="select-input-div">
-                                <input class="select-input"
                                     id="prefer-not-to-say-pronouns"
                                     name="pronouns[]"
                                     type="checkbox"
@@ -436,13 +403,19 @@
                                 <label class="ml-2"
                                     for="prefer-not-to-say-pronouns">Prefer Not To Say</label>
                             </div>
-
-                            <!-- Add similar blocks for other pronoun options -->
+                            <div class="select-input-div">
+                                <input class="select-input"
+                                    id="other-pronouns"
+                                    name="pronouns[]"
+                                    type="checkbox"
+                                    value="Other">
+                                <label class="ml-2"
+                                    for="other-pronouns">Other</label>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                {{-- sexual_orientation --}}
                 <div class="col-span-6 mt-0 sm:col-span-4">
                     <div class="my-4 flex flex-col"
                         x-data="{ openSexualOrientation: false, selectedSexualOrientation: [] }">
@@ -483,8 +456,6 @@
                                 <label class="ml-2"
                                     for="heterosexual">Heterosexual</label>
                             </div>
-                            {{-- add the above for bisexual, queer, prefer not to say, other --}}
-
                             <div class="select-input-div">
                                 <input class="select-input"
                                     id="bisexual"
@@ -494,7 +465,6 @@
                                 <label class="ml-2"
                                     for="bisexual">Bisexual</label>
                             </div>
-
                             <div class="select-input-div">
                                 <input class="select-input"
                                     id="queer"
@@ -504,7 +474,6 @@
                                 <label class="ml-2"
                                     for="queer">Queer</label>
                             </div>
-
                             <div class="select-input-div">
                                 <input class="select-input"
                                     id="prefer-not-to-say-orientation"
@@ -514,7 +483,6 @@
                                 <label class="ml-2"
                                     for="prefer-not-to-say-orientation">Prefer Not To Say</label>
                             </div>
-
                             <div class="select-input-div">
                                 <input class="select-input"
                                     id="other-orientation"
@@ -524,28 +492,13 @@
                                 <label class="ml-2"
                                     for="other-orientation">Other</label>
                             </div>
-{{--
-                               "He",
-            "She",
-            "They",
-            "Ze",
-            "Per",
-            "Him",
-            "Her",
-            "Them",
-            "Zir",
-            "Prefer Not To Say",
-            "Other" --}}
-
-                            <!-- Add similar blocks for other sexual orientation options -->
                         </div>
                     </div>
                 </div>
 
-                {{-- Ethnic groups --}}
                 <div class="my-4 flex flex-col"
                     x-data="{ openEthnicGroup: false, selectedEthnicGroups: [] }">
-                    <x-jet-label>Ethnic Group  (previous: {{ $client->ethnic_group }})</x-jet-label>
+                    <x-jet-label>Ethnic Group (previous: {{ $client->ethnic_group }})</x-jet-label>
                     <button
                         class="-m-0.5 flex w-full justify-between rounded-md border border-blue-300 bg-gray-100 p-2 text-gray-700 focus:border-blue-500"
                         type="button"
@@ -648,13 +601,6 @@
                     </div>
                 </div>
 
-                {{-- home_address_state --}}
-                {{-- <x-single-select id="home_address_state"
-                    name="home_address_state"
-                    value="{{ $client->home_address_state }}"
-                    label="State:   (previous selection: {{ $client->home_address_state }}) "
-                    placeholder="{{ $client->home_address_state }}"
-                    :options="$states"></x-single-select> --}}
                 <div class="relative mb-4 mt-6 w-full">
                     <x-form_label for="home_address_state">
                         State: (previous selection: {{ $client->home_address_state }})
@@ -675,13 +621,6 @@
                     </select>
                 </div>
 
-                {{-- home_address_country --}}
-                {{-- <x-single-select id="home_address_country"
-                    name="home_address_country"
-                    value="{{ $client->home_address_country }}"
-                    label="Country: (previous selection: {{ $client->home_address_country }})"
-                    placeholder="{{ $client->home_address_country }}"
-                    :options="$clientCountries"></x-single-select> --}}
                 <div class="relative mb-4 mt-6 w-full">
                     <x-form_label for="home_address_country">
                         Country: (previous selection: {{ $client->home_address_country }})
@@ -763,12 +702,6 @@
                 </div>
             </div>
 
-            {{-- client_contribution --}}
-            {{-- <x-form-field name="client_contribution"
-                type="text"
-                label="Client Contribution">
-                {{ $client->client_contribution }}
-            </x-form-field> --}}
             <div class="col-span-6 mt-0 sm:col-span-4">
                 <x-jet-label for="client_contribution"
                     value="Client Contribution:  previous: {{ $client->client_contribution }}" />
@@ -780,11 +713,6 @@
                 <x-jet-input-error class="mt-2"
                     for="client_contribution" />
             </div>
-
-            {{-- Therapist --}}
-            {{-- <x-form_label for="therapist">
-                Therapist
-            </x-form_label> --}}
 
             <div class="col-span-6 mt-0 sm:col-span-4">
                 <x-jet-label for="therapist"
@@ -826,7 +754,6 @@
                 </select>
             </div>
 
-            {{-- additional_notes --}}
             <div class="mb-2 mt-4 w-full">
                 <x-jet-label for="notes"
                     value="{{ __('Notes') }}" />
