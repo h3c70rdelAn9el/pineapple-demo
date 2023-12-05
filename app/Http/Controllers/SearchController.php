@@ -16,7 +16,7 @@ class SearchController extends Controller
         $results = null;
 
         if ($query) {
-            if ($user->admin === 1) {
+            if ($user->admin == 1) {
                 $clientResults = Client::search($query)->get();
                 $userResults = User::search($query)->get();
             } else {
