@@ -35,10 +35,6 @@ class ClientController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    // public function create()
-    // {
-    //     return view('clients.create');
-    // }
     public function create(Request $request)
     {
         if (auth()->user() && auth()->user()->admin == 1) {
@@ -111,10 +107,43 @@ class ClientController extends Controller
             'Cisgender',
             'Non-Binary',
             'Prefer Not To Say',
-
         ];
-
         return $genders;
+    }
+
+    private function getPronouns()
+    {
+        $pronouns = [
+            "He",
+            "She",
+            "They",
+            "Ze",
+            "Per",
+            "Him",
+            "Her",
+            "Them",
+            "Zir",
+            "Prefer Not To Say",
+            "Other"
+        ];
+        return $pronouns;
+    }
+
+    private function getSexualOrientations()
+    {
+        $sexual_orientation = [
+            "Heterosexual",
+            "Homosexual",
+            "Bisexual",
+            "Pansexual",
+            "Asexual",
+            "Demisexual",
+            "Queer",
+            "Questioning",
+            "Prefer Not To Say",
+            "Other"
+        ];
+        return $sexual_orientation;
     }
 
     private function getCountries()
@@ -189,20 +218,6 @@ class ClientController extends Controller
             $possibleSupportNeededString = '';
         }
 
-
-        // $selectedEthnicGroups = $request->input('ethnic_group');
-
-        // if (is_array($selectedEthnicGroups) && !empty($selectedEthnicGroups)) {
-        //     $ethnicGroupArray = $selectedEthnicGroups;
-        // } else {
-        //     $ethnicGroupArray = [];
-        // }
-
-        // $c->ethnic_group = json_encode($ethnicGroupArray);
-
-
-
-
         $c = new Client();
         $c->client_code = $request->client_code;
         $c->legal_name = $request->legal_name;
@@ -254,29 +269,68 @@ class ClientController extends Controller
     {
         // $client = Client::find($id);
 
+        $data = $request->only([
+            'sexual_orientation',
+            'gender',
+            'pronouns',
+            'ethnic_group',
+            'contact_method',
+            'possible_support_needed',
+        ]);
+
+        $selectedOrientations = $request->input('sexual_orientation');
+        if (is_array($selectedOrientations) && !empty($selectedOrientations)) {
+            $orientationString = implode(', ', $selectedOrientations);
+        } else {
+            $orientationString = $client->sexual_orientation;
+        }
+
+        $selectedPronouns = $request->input('pronouns');
+        if (is_array($selectedPronouns) && !empty($selectedPronouns)) {
+            $pronounsString = implode(', ', $selectedPronouns);
+        } else {
+            $pronounsString = $client->pronouns;
+        }
+
+
+        // $selectedGenders = $request->input('gender');
+        // $genderString = is_array($selectedGenders) && !empty($selectedGenders) ? implode(', ', $selectedGenders) : $client->sexual_orientation;
         $selectedGenders = $request->input('gender');
-        $genderString = is_array($selectedGenders) && !empty($selectedGenders) ? implode(', ', $selectedGenders) : '';
+        if (is_array($selectedGenders) && !empty($selectedGenders)) {
+            $genderString = implode(', ', $selectedGenders);
+        } else {
+            $genderString = $client->gender;
+        }
 
         $selectedEthnicGroups = $request->input('ethnic_group');
-        $ethnicGroupString = is_array($selectedEthnicGroups) && !empty($selectedEthnicGroups) ? implode(', ', $selectedEthnicGroups) : '';
+        if (is_array($selectedEthnicGroups) && !empty($selectedEthnicGroups)) {
+            $ethnicGroupString = implode(', ', $selectedEthnicGroups);
+        } else {
+            $ethnicGroupString = $client->ethnic_group;
+        }
 
         $selectedContactMethods = $request->input('contact_method');
-        $contactMethodString = is_array($selectedContactMethods) && !empty($selectedContactMethods) ? implode(', ', $selectedContactMethods) : '';
+        // $contactMethodString = is_array($selectedContactMethods) && !empty($selectedContactMethods) ? implode(', ', $selectedContactMethods) : $client->contact_method;
+        if (is_array($selectedContactMethods) && !empty($selectedContactMethods)) {
+            $contactMethodString = implode(', ', $selectedContactMethods);
+        } else {
+            $contactMethodString = $client->contact_method;
+        }
 
         $selectedPossibleSupportNeeded = $request->input('possible_support_needed');
-        $possibleSupportNeededString = is_array($selectedPossibleSupportNeeded) && !empty($selectedPossibleSupportNeeded) ? implode(', ', $selectedPossibleSupportNeeded) : '';
+        $possibleSupportNeededString = is_array($selectedPossibleSupportNeeded) && !empty($selectedPossibleSupportNeeded) ? implode(', ', $selectedPossibleSupportNeeded) : $client->possible_support_needed;
 
         $client->client_code = $request->client_code;
         $client->legal_name = $request->legal_name;
         $client->preferred_name = $request->preferred_name;
-        $client->sexual_orientation = $request->sexual_orientation ?? null;
+        // $client->sexual_orientation = $request->sexual_orientation ?? null;
         $client->ethnic_group = $ethnicGroupString;
         $client->home_address_state = $request->home_address_state;
         $client->home_address_country = $request->home_address_country;
         $client->previous_therapy = $request->previous_therapy;
         // $client->possible_support_needed = $request->possible_support_needed;
         $client->additional_notes = $request->additional_notes;
-        $client->pronouns = $request->pronouns ?? null;
+        // $client->pronouns = $request->pronouns ?? null;
         $client->email = $request->email;
         $client->phone = $request->phone;
         $client->client_contribution = $request->client_contribution;
@@ -285,10 +339,46 @@ class ClientController extends Controller
         $client->contact_method = $contactMethodString;
         $client->max_sessions = $request->max_sessions;
         $client->possible_support_needed = $possibleSupportNeededString;
-        // $client->therapist = $request->therapist;
+        $client->sexual_orientation = $orientationString;
+        $client->pronouns = $pronounsString;
 
 
-        $client->save();
+        if ($request->has('gender')) {
+            $genderString = implode(', ', $request->input('gender'));
+            $client->gender = $genderString;
+        } else {
+            $client->gender = $client->gender;
+        }
+
+        if ($request->has('pronouns')) {
+            $pronounsString = json_encode($request->input('pronouns'));
+            $client->pronouns = str_replace('"', '', trim($pronounsString, '[]'));
+        } else {
+            $client->pronouns = $client->pronouns;
+        }
+
+        if ($request->has('ethnic_group')) {
+            $ethnicGroupString = json_encode($request->input('ethnic_group'));
+            $client->ethnic_group = str_replace('"', '', trim($ethnicGroupString, '[]'));
+        } else {
+            $client->ethnic_group = $client->ethnic_group;
+        }
+
+        if ($request->has('contact_method')) {
+            $contactMethodString = json_encode($request->input('contact_method'));
+            $client->contact_method = str_replace('"', '', trim($contactMethodString, '[]'));
+        } else {
+            $client->contact_method = $client->contact_method;
+        }
+
+        if ($request->has('possible_support_needed')) {
+            $possibleSupportNeededString = json_encode($request->input('possible_support_needed'));
+            $client->possible_support_needed = str_replace('"', '', trim($possibleSupportNeededString, '[]'));
+        } else {
+            $client->possible_support_needed = $client->possible_support_needed;
+        }
+
+        $client->update($data);
 
         $therapist = User::find($request->user_id);
         $therapist->notify(new NewClientNotification());
@@ -342,9 +432,11 @@ class ClientController extends Controller
             $therapists = User::where('admin', 0)->orderBy('name', 'asc')->get();
             $user_id = $client->user_id;
             $genders = $this->getGenders();
+            $sexualOrientations = $this->getSexualOrientations();
+            $pronouns = $this->getPronouns();
 
 
-            return view('clients.edit')->with(['client' => $client, 'countries' => $countries, 'categories' => $categories, 'states' => $states, 'id' => $id, 'therapist' => $therapist, 'therapists' => $therapists, 'user_id' => $user_id, 'genders' => $genders]);
+            return view('clients.edit')->with(['client' => $client, 'countries' => $countries, 'categories' => $categories, 'states' => $states, 'id' => $id, 'therapist' => $therapist, 'therapists' => $therapists, 'user_id' => $user_id, 'genders' => $genders, 'sexualOrientations' => $sexualOrientations, 'pronouns' => $pronouns]);
         } else {
             return redirect()->route('dashboard')->with('error', '**You do not have permission to access that page**');
         }
