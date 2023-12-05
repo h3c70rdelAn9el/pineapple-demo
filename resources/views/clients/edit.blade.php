@@ -228,9 +228,8 @@
                     }
                 }'
                     x-init="alpine.watch('showOptions', value => { if (!value) showOptions = false; })">
-
                     <x-form_label>
-                        Gender(s): (previous selection: {{ $client->gender }})
+                        Gender(s): (previous selection: {{ str_replace(['[', ']', '"'], '', $client->gender) }})
                     </x-form_label>
                     <div class="rounded-md"
                         @click.away="showGender = false">
@@ -277,9 +276,12 @@
                 <div class="col-span-6 mt-0 sm:col-span-4">
                     <div class="my-4 flex flex-col"
                         x-data="{ openPronouns: false, selectedPronouns: [] }">
-                        <x-form_label for="pronouns">
+                        {{-- <x-form_label for="pronouns">
                             Pronoun(s): (previous selection: {{ $client->pronouns }})
-                        </x-form_label>
+                        </x-form_label> --}}
+                            <x-form_label>
+                        Pronoun(s): (previous selection: {{ str_replace(['[', ']', '"'], '', $client->pronouns) }})
+                    </x-form_label>
                         <button
                             class="-m-0.5 flex w-full justify-between rounded-md border border-blue-300 bg-gray-100 p-2 text-gray-700 focus:border-blue-500"
                             type="button"
@@ -419,16 +421,9 @@
                 <div class="col-span-6 mt-0 sm:col-span-4">
                     <div class="my-4 flex flex-col"
                         x-data="{ openSexualOrientation: false, selectedSexualOrientation: [] }">
-                        <x-form_label for="sexual_orientation">
-                            Sexual Orientation:
-                            (previous selection:
-                            @if (is_array($client->sexual_orientation))
-                                {{ implode(', ', $client->sexual_orientation) }}
-                            @else
-                                {{ $client->sexual_orientation }}
-                            @endif
-                            )
-                        </x-form_label>
+                       <x-form_label>
+                        Sexual Orientation(s): (previous selection: {{ str_replace(['[', ']', '"'], '', $client->sexual_orientation) }})
+                    </x-form_label>
                         <button
                             class="-m-0.5 flex w-full justify-between rounded-md border border-blue-300 bg-gray-100 p-2 text-gray-700 focus:border-blue-500"
                             type="button"
@@ -505,7 +500,9 @@
 
                 <div class="my-4 flex flex-col"
                     x-data="{ openEthnicGroup: false, selectedEthnicGroups: [] }">
-                    <x-jet-label>Ethnic Group (previous: {{ $client->ethnic_group }})</x-jet-label>
+                       <x-form_label>
+                        Ethnic Group(s): (previous selection: {{ str_replace(['[', ']', '"'], '', $client->ethnic_group) }})
+                    </x-form_label>
                     <button
                         class="-m-0.5 flex w-full justify-between rounded-md border border-blue-300 bg-gray-100 p-2 text-gray-700 focus:border-blue-500"
                         type="button"
