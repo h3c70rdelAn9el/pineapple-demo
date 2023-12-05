@@ -545,7 +545,7 @@
                 {{-- Ethnic groups --}}
                 <div class="my-4 flex flex-col"
                     x-data="{ openEthnicGroup: false, selectedEthnicGroups: [] }">
-                    <x-jet-label>Ethnic Group</x-jet-label>
+                    <x-jet-label>Ethnic Group  (previous: {{ $client->ethnic_group }})</x-jet-label>
                     <button
                         class="-m-0.5 flex w-full justify-between rounded-md border border-blue-300 bg-gray-100 p-2 text-gray-700 focus:border-blue-500"
                         type="button"
