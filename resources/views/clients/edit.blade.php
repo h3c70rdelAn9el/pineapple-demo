@@ -420,7 +420,14 @@
                     <div class="my-4 flex flex-col"
                         x-data="{ openSexualOrientation: false, selectedSexualOrientation: [] }">
                         <x-form_label for="sexual_orientation">
-                            Sexual Orientation: (previous selection: {{ $client->sexual_orientation }})
+                            Sexual Orientation:
+                            (previous selection:
+                            @if (is_array($client->sexual_orientation))
+                                {{ implode(', ', $client->sexual_orientation) }}
+                            @else
+                                {{ $client->sexual_orientation }}
+                            @endif
+                            )
                         </x-form_label>
                         <button
                             class="-m-0.5 flex w-full justify-between rounded-md border border-blue-300 bg-gray-100 p-2 text-gray-700 focus:border-blue-500"

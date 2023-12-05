@@ -280,6 +280,8 @@ class ClientController extends Controller
             'gender',
             'pronouns',
             'ethnic_group',
+            'contact_method',
+            'possible_support_needed',
         ]);
 
         $selectedOrientations = $request->input('sexual_orientation');
