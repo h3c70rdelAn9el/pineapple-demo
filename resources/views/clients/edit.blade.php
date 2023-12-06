@@ -306,95 +306,52 @@
                             x-transition:leave.duration.300ms
                             x-transition:ease-in-out
                             x-cloak>
+                                 <div class="select-input-div">
+                                <input class="select-input"
+                                    id="they/them/theirs"
+                                    name="pronouns[]"
+                                    type="checkbox"
+                                    value="They/Them/Theirs">
+                                <label class="ml-2"
+                                    for="they-them">They/Them/Theirs</label>
+                            </div>
                             <div class="select-input-div">
                                 <input class="select-input"
                                     id="she-her"
                                     name="pronouns[]"
                                     type="checkbox"
-                                    value="She">
+                                    value="she/her/hers">
                                 <label class="ml-2"
-                                    for="she-her">She</label>
+                                    for="she-her">she/her/hers</label>
+                            </div>
+                             <div class="select-input-div">
+                                <input class="select-input"
+                                    id="him"
+                                    name="pronouns[]"
+                                    type="checkbox"
+                                    value="per/per/pers">
+                                <label class="ml-2">per/per/pers</label>
                             </div>
                             <div class="select-input-div">
                                 <input class="select-input"
                                     id="he-him"
                                     name="pronouns[]"
                                     type="checkbox"
-                                    value="He">
+                                    value="he/him/his">
                                 <label class="ml-2"
-                                    for="he-him">He</label>
+                                    for="he-him">he/him/his</label>
                             </div>
-                            <div class="select-input-div">
-                                <input class="select-input"
-                                    id="him"
-                                    name="pronouns[]"
-                                    type="checkbox"
-                                    value="Him">
-                                <label class="ml-2">Him</label>
-                            </div>
+
                             <div class="select-input-div">
                                 <input class="select-input"
                                     id="her"
                                     name="pronouns[]"
                                     type="checkbox"
-                                    value="Her">
+                                    value="ze/hir/hirs">
                                 <label class="ml-2"
-                                    for="her">Her</label>
+                                    for="her">ze/hir/hirs</label>
                             </div>
-                            <div class="select-input-div">
-                                <input class="select-input"
-                                    id="his"
-                                    name="pronouns[]"
-                                    type="checkbox"
-                                    value="His">
-                                <label class="ml-2"
-                                    for="his">His</label>
-                            </div>
-                            <div class="select-input-div">
-                                <input class="select-input"
-                                    id="hers"
-                                    name="pronouns[]"
-                                    type="checkbox"
-                                    value="Hers">
-                                <label class="ml-2"
-                                    for="hers">Hers</label>
-                            </div>
-                            <div class="select-input-div">
-                                <input class="select-input"
-                                    id="ze"
-                                    name="pronouns[]"
-                                    type="checkbox"
-                                    value="Ze">
-                                <label class="ml-2"
-                                    for="ze">Ze</label>
-                            </div>
-                            <div class="select-input-div">
-                                <input class="select-input"
-                                    id="zir"
-                                    name="pronouns[]"
-                                    type="checkbox"
-                                    value="Zir">
-                                <label class="ml-2"
-                                    for="zir">Zir</label>
-                            </div>
-                            <div class="select-input-div">
-                                <input class="select-input"
-                                    id="they"
-                                    name="pronouns[]"
-                                    type="checkbox"
-                                    value="They">
-                                <label class="ml-2"
-                                    for="they-them">They</label>
-                            </div>
-                            <div class="select-input-div">
-                                <input class="select-input"
-                                    id="them"
-                                    name="pronouns[]"
-                                    type="checkbox"
-                                    value="Them">
-                                <label class="ml-2"
-                                    for="ze-zir">Them</label>
-                            </div>
+
                             <div class="select-input-div">
                                 <input class="select-input"
                                     id="prefer-not-to-say-pronouns"
