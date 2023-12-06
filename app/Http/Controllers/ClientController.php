@@ -301,7 +301,20 @@ class ClientController extends Controller
         } else {
             $client->pronouns = $client->pronouns;
         }
+        $selectedGenders = $request->input('gender');
+        $otherGender = $request->input('otherGender');
+        $genderString = "";
 
+        if (is_array($selectedGenders)) {
+            if (($key = array_search('Other', $selectedGenders)) !== false && $otherGender) {
+                $selectedGenders[$key] = $otherGender;
+            }
+            $client->gender = implode(', ', $selectedGenders);
+        } else {
+            $client->gender = $client->gender;
+        }
+
+        $client->save();
 
         $selectedEthnicGroup = $request->input('ethnic_group');
         $otherEthnicGroup = $request->input('otherEthnicGroup');
@@ -315,6 +328,7 @@ class ClientController extends Controller
         } else {
             $client->ethnic_group = $client->ethnic_group;
         }
+        // gender
 
 
         $client->save();
