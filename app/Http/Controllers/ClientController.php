@@ -279,35 +279,45 @@ class ClientController extends Controller
         ]);
 
         $selectedOrientations = $request->input('sexual_orientation');
-        if (is_array($selectedOrientations) && !empty($selectedOrientations)) {
-            $orientationString = implode(', ', $selectedOrientations);
+        $otherSexualOrientation = $request->input('otherSexualOrientation');
+        $orientationString = "";
+        if (is_array($selectedOrientations)) {
+            if (($key = array_search('Other', $selectedOrientations)) !== false && $otherSexualOrientation) {
+                $selectedOrientations[$key] = $otherSexualOrientation;
+            }
+            $client->sexual_orientation = implode(', ', $selectedOrientations);
         } else {
-            $orientationString = $client->sexual_orientation;
+            $client->sexual_orientation = $client->sexual_orientation;
         }
 
         $selectedPronouns = $request->input('pronouns');
-        if (is_array($selectedPronouns) && !empty($selectedPronouns)) {
-            $pronounsString = implode(', ', $selectedPronouns);
+        $otherPronoun = $request->input('otherPronoun');
+        $pronounsString = "";
+        if (is_array($selectedPronouns)) {
+            if (($key = array_search('Other', $selectedPronouns)) !== false && $otherPronoun) {
+                $selectedPronouns[$key] = $otherPronoun;
+            }
+            $client->pronouns = implode(', ', $selectedPronouns);
         } else {
-            $pronounsString = $client->pronouns;
+            $client->pronouns = $client->pronouns;
         }
 
 
-        // $selectedGenders = $request->input('gender');
-        // $genderString = is_array($selectedGenders) && !empty($selectedGenders) ? implode(', ', $selectedGenders) : $client->sexual_orientation;
-        $selectedGenders = $request->input('gender');
-        if (is_array($selectedGenders) && !empty($selectedGenders)) {
-            $genderString = implode(', ', $selectedGenders);
+        $selectedEthnicGroup = $request->input('ethnic_group');
+        $otherEthnicGroup = $request->input('otherEthnicGroup');
+        $ethnicGroupString = "";
+
+        if (is_array($selectedEthnicGroup)) {
+            if (($key = array_search('Other', $selectedEthnicGroup)) !== false && $otherEthnicGroup) {
+                $selectedEthnicGroup[$key] = $otherEthnicGroup;
+            }
+            $client->ethnic_group = implode(', ', $selectedEthnicGroup);
         } else {
-            $genderString = $client->gender;
+            $client->ethnic_group = $client->ethnic_group;
         }
 
-        $selectedEthnicGroups = $request->input('ethnic_group');
-        if (is_array($selectedEthnicGroups) && !empty($selectedEthnicGroups)) {
-            $ethnicGroupString = implode(', ', $selectedEthnicGroups);
-        } else {
-            $ethnicGroupString = $client->ethnic_group;
-        }
+
+        $client->save();
 
         $selectedContactMethods = $request->input('contact_method');
         // $contactMethodString = is_array($selectedContactMethods) && !empty($selectedContactMethods) ? implode(', ', $selectedContactMethods) : $client->contact_method;

@@ -26,12 +26,6 @@
                 type="hidden"
                 value="{{ $client->user_id }}">
 
-            {{-- client_code --}}
-            {{-- <x-form-field name="client_code"
-                type="text"
-                label="Client Code">
-                {{ $client->client_code }}
-            </x-form-field> --}}
             <div class="mb-2 mt-4 w-full">
                 <x-jet-label for="client_code"
                     value="{{ __('Client Code') }}" />
@@ -46,12 +40,6 @@
                     for="client_code" />
             </div>
 
-            {{-- <x-form-field name="preferred_name"
-                type="text"
-                value="{{ old('preferred_name', $client->preferred_name) }}"
-                label="Preferred Name">
-                {{ old('preferred_name', $client->preferred_name) }}
-            </x-form-field> --}}
             <div class="mb-2 mt-4 w-full">
                 <x-jet-label for="preferred_name"
                     value="{{ __('Preferred Name') }}" />
@@ -75,11 +63,6 @@
                 value="{{ $client->max_sessions }}">
 
             {{-- legal_name --}}
-            {{-- <x-form-field name="legal_name"
-                type="text"
-                label="Legal Name">
-                {{ $client->legal_name }}
-            </x-form-field> --}}
             <div class="mb-2 mt-4 w-full">
                 <x-jet-label for="legal_name"
                     value="{{ __('Legal Name') }}" />
@@ -152,9 +135,10 @@
                 }'
                 x-init="alpine.watch('showOptions', value => { if (!value) showOptions = false; })">
 
-                   <x-form_label>
-                        Contact Method(s): (previous selection: {{ str_replace(['[', ']', '"'], '', $client->contact_method) }})
-                    </x-form_label>
+                <x-form_label>
+                    Contact Method(s): (previous selection:
+                    {{ str_replace(['[', ']', '"'], '', $client->contact_method) }})
+                </x-form_label>
                 <div class="rounded-md"
                     @click.away="showOptions = false">
                     <div class="flex w-full justify-between rounded-md border border-blue-300 bg-gray-100 p-3">
@@ -268,6 +252,24 @@
                                         for="{{ $gender }}">{{ $gender }}</label>
                                 </div>
                             @endforeach
+                            <div class="select-input-div">
+                                <input class="select-input"
+                                    id="otherGenderCheckbox"
+                                    name="gender[]"
+                                    type="checkbox"
+                                    value="Other">
+                                <label class="ml-2"
+                                    for="otherGender">OtherGender</label>
+                            </div>
+
+                            <div class="m-3 flex flex-row">
+                                <input
+                                    class="mr-0.5 mt-1 rounded-full transition duration-200 ease-in-out hover:bg-blue-500"
+                                    id="otherGenderInput"
+                                    name="otherGender"
+                                    type="text"
+                                    style="display: none;">
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -276,12 +278,9 @@
                 <div class="col-span-6 mt-0 sm:col-span-4">
                     <div class="my-4 flex flex-col"
                         x-data="{ openPronouns: false, selectedPronouns: [] }">
-                        {{-- <x-form_label for="pronouns">
-                            Pronoun(s): (previous selection: {{ $client->pronouns }})
-                        </x-form_label> --}}
-                            <x-form_label>
-                        Pronoun(s): (previous selection: {{ str_replace(['[', ']', '"'], '', $client->pronouns) }})
-                    </x-form_label>
+                        <x-form_label>
+                            Pronoun(s): (previous selection: {{ str_replace(['[', ']', '"'], '', $client->pronouns) }})
+                        </x-form_label>
                         <button
                             class="-m-0.5 flex w-full justify-between rounded-md border border-blue-300 bg-gray-100 p-2 text-gray-700 focus:border-blue-500"
                             type="button"
@@ -307,95 +306,52 @@
                             x-transition:leave.duration.300ms
                             x-transition:ease-in-out
                             x-cloak>
+                                 <div class="select-input-div">
+                                <input class="select-input"
+                                    id="they/them/theirs"
+                                    name="pronouns[]"
+                                    type="checkbox"
+                                    value="They/Them/Theirs">
+                                <label class="ml-2"
+                                    for="they-them">They/Them/Theirs</label>
+                            </div>
                             <div class="select-input-div">
                                 <input class="select-input"
                                     id="she-her"
                                     name="pronouns[]"
                                     type="checkbox"
-                                    value="She">
+                                    value="she/her/hers">
                                 <label class="ml-2"
-                                    for="she-her">She</label>
+                                    for="she-her">she/her/hers</label>
+                            </div>
+                             <div class="select-input-div">
+                                <input class="select-input"
+                                    id="him"
+                                    name="pronouns[]"
+                                    type="checkbox"
+                                    value="per/per/pers">
+                                <label class="ml-2">per/per/pers</label>
                             </div>
                             <div class="select-input-div">
                                 <input class="select-input"
                                     id="he-him"
                                     name="pronouns[]"
                                     type="checkbox"
-                                    value="He">
+                                    value="he/him/his">
                                 <label class="ml-2"
-                                    for="he-him">He</label>
+                                    for="he-him">he/him/his</label>
                             </div>
-                            <div class="select-input-div">
-                                <input class="select-input"
-                                    id="him"
-                                    name="pronouns[]"
-                                    type="checkbox"
-                                    value="Him">
-                                <label class="ml-2">Him</label>
-                            </div>
+
                             <div class="select-input-div">
                                 <input class="select-input"
                                     id="her"
                                     name="pronouns[]"
                                     type="checkbox"
-                                    value="Her">
+                                    value="ze/hir/hirs">
                                 <label class="ml-2"
-                                    for="her">Her</label>
+                                    for="her">ze/hir/hirs</label>
                             </div>
-                            <div class="select-input-div">
-                                <input class="select-input"
-                                    id="his"
-                                    name="pronouns[]"
-                                    type="checkbox"
-                                    value="His">
-                                <label class="ml-2"
-                                    for="his">His</label>
-                            </div>
-                            <div class="select-input-div">
-                                <input class="select-input"
-                                    id="hers"
-                                    name="pronouns[]"
-                                    type="checkbox"
-                                    value="Hers">
-                                <label class="ml-2"
-                                    for="hers">Hers</label>
-                            </div>
-                            <div class="select-input-div">
-                                <input class="select-input"
-                                    id="ze"
-                                    name="pronouns[]"
-                                    type="checkbox"
-                                    value="Ze">
-                                <label class="ml-2"
-                                    for="ze">Ze</label>
-                            </div>
-                            <div class="select-input-div">
-                                <input class="select-input"
-                                    id="zir"
-                                    name="pronouns[]"
-                                    type="checkbox"
-                                    value="Zir">
-                                <label class="ml-2"
-                                    for="zir">Zir</label>
-                            </div>
-                            <div class="select-input-div">
-                                <input class="select-input"
-                                    id="they"
-                                    name="pronouns[]"
-                                    type="checkbox"
-                                    value="They">
-                                <label class="ml-2"
-                                    for="they-them">They</label>
-                            </div>
-                            <div class="select-input-div">
-                                <input class="select-input"
-                                    id="them"
-                                    name="pronouns[]"
-                                    type="checkbox"
-                                    value="Them">
-                                <label class="ml-2"
-                                    for="ze-zir">Them</label>
-                            </div>
+
                             <div class="select-input-div">
                                 <input class="select-input"
                                     id="prefer-not-to-say-pronouns"
@@ -407,12 +363,21 @@
                             </div>
                             <div class="select-input-div">
                                 <input class="select-input"
-                                    id="other-pronouns"
+                                    id="otherPronounCheckbox"
                                     name="pronouns[]"
                                     type="checkbox"
                                     value="Other">
                                 <label class="ml-2"
-                                    for="other-pronouns">Other</label>
+                                    for="otherPronoun">Other</label>
+                            </div>
+
+                            <div class="m-3 flex flex-row">
+                                <input
+                                    class="mr-0.5 mt-1 rounded-full transition duration-200 ease-in-out hover:bg-blue-500"
+                                    id="otherPronounInput"
+                                    name="otherPronoun"
+                                    type="text"
+                                    style="display: none;">
                             </div>
                         </div>
                     </div>
@@ -421,9 +386,10 @@
                 <div class="col-span-6 mt-0 sm:col-span-4">
                     <div class="my-4 flex flex-col"
                         x-data="{ openSexualOrientation: false, selectedSexualOrientation: [] }">
-                       <x-form_label>
-                        Sexual Orientation(s): (previous selection: {{ str_replace(['[', ']', '"'], '', $client->sexual_orientation) }})
-                    </x-form_label>
+                        <x-form_label>
+                            Sexual Orientation(s): (previous selection:
+                            {{ str_replace(['[', ']', '"'], '', $client->sexual_orientation) }})
+                        </x-form_label>
                         <button
                             class="-m-0.5 flex w-full justify-between rounded-md border border-blue-300 bg-gray-100 p-2 text-gray-700 focus:border-blue-500"
                             type="button"
@@ -458,6 +424,17 @@
                                 <label class="ml-2"
                                     for="heterosexual">Heterosexual</label>
                             </div>
+                            {{-- homosexual --}}
+                             <div class="select-input-div">
+                                <input class="select-input"
+                                    id="homosexual"
+                                    name="sexual_orientation[]"
+                                    type="checkbox"
+                                    value="Homosexual">
+                                <label class="ml-2"
+                                    for="homosexual">Homosexual</label>
+                            </div>
+
                             <div class="select-input-div">
                                 <input class="select-input"
                                     id="bisexual"
@@ -466,6 +443,36 @@
                                     value="Bisexual">
                                 <label class="ml-2"
                                     for="bisexual">Bisexual</label>
+                            </div>
+                            {{-- pansexual --}}
+                            <div class="select-input-div">
+                                <input class="select-input"
+                                    id="pansexual"
+                                    name="sexual_orientation[]"
+                                    type="checkbox"
+                                    value="Pansexual">
+                                <label class="ml-2"
+                                    for="pansexual">Pansexual</label>
+                            </div>
+                            {{-- asexual --}}
+                            <div class="select-input-div">
+                                <input class="select-input"
+                                    id="asexual"
+                                    name="sexual_orientation[]"
+                                    type="checkbox"
+                                    value="Asexual">
+                                <label class="ml-2"
+                                    for="asexual">Asexual</label>
+                            </div>
+                            {{-- demisexual --}}
+                            <div class="select-input-div">
+                                <input class="select-input"
+                                    id="demisexual"
+                                    name="sexual_orientation[]"
+                                    type="checkbox"
+                                    value="Demisexual">
+                                <label class="ml-2"
+                                    for="demisexual">Demisexual</label>
                             </div>
                             <div class="select-input-div">
                                 <input class="select-input"
@@ -476,6 +483,16 @@
                                 <label class="ml-2"
                                     for="queer">Queer</label>
                             </div>
+                            {{-- questioning --}}
+                            <div class="select-input-div">
+                                <input class="select-input"
+                                    id="questioning"
+                                    name="sexual_orientation[]"
+                                    type="checkbox"
+                                    value="Questioning">
+                                <label class="ml-2"
+                                    for="questioning">Questioning</label>
+                            </div>
                             <div class="select-input-div">
                                 <input class="select-input"
                                     id="prefer-not-to-say-orientation"
@@ -485,14 +502,23 @@
                                 <label class="ml-2"
                                     for="prefer-not-to-say-orientation">Prefer Not To Say</label>
                             </div>
-                            <div class="select-input-div">
+                             <div class="select-input-div">
                                 <input class="select-input"
-                                    id="other-orientation"
+                                    id="otherSexualOrientationCheckbox"
                                     name="sexual_orientation[]"
                                     type="checkbox"
                                     value="Other">
                                 <label class="ml-2"
-                                    for="other-orientation">Other</label>
+                                    for="otherSexualOrientation">Other</label>
+                            </div>
+
+                            <div class="m-3 flex flex-row">
+                                <input
+                                    class="mr-0.5 mt-1 rounded-full transition duration-200 ease-in-out hover:bg-blue-500"
+                                    id="otherSexualOrientationInput"
+                                    name="otherSexualOrientation"
+                                    type="text"
+                                    style="display: none;">
                             </div>
                         </div>
                     </div>
@@ -500,8 +526,9 @@
 
                 <div class="my-4 flex flex-col"
                     x-data="{ openEthnicGroup: false, selectedEthnicGroups: [] }">
-                       <x-form_label>
-                        Ethnic Group(s): (previous selection: {{ str_replace(['[', ']', '"'], '', $client->ethnic_group) }})
+                    <x-form_label>
+                        Ethnic Group(s): (previous selection:
+                        {{ str_replace(['[', ']', '"'], '', $client->ethnic_group) }})
                     </x-form_label>
                     <button
                         class="-m-0.5 flex w-full justify-between rounded-md border border-blue-300 bg-gray-100 p-2 text-gray-700 focus:border-blue-500"
@@ -592,7 +619,7 @@
                             <label class="ml-2"
                                 for="prefer-not-to-say-ethnic">Prefer Not To Say</label>
                         </div>
-                        <div class="select-input-div">
+                        {{-- <div class="select-input-div">
                             <input class="select-input"
                                 id="other-ethnic"
                                 name="ethnic_group[]"
@@ -600,8 +627,25 @@
                                 value="Other">
                             <label class="ml-2"
                                 for="other-ethnic">Other</label>
-                        </div>
+                        </div> --}}
+                            <div class="select-input-div">
+                                <input class="select-input"
+                                    id="otherEthnicGroupCheckbox"
+                                    name="ethnic_group[]"
+                                    type="checkbox"
+                                    value="Other">
+                                <label class="ml-2"
+                                    for="otherEthnicGroup">Other</label>
+                            </div>
 
+                            <div class="m-3 flex flex-row">
+                                <input
+                                    class="mr-0.5 mt-1 rounded-full transition duration-200 ease-in-out hover:bg-blue-500"
+                                    id="otherEthnicGroupInput"
+                                    name="otherEthnicGroup"
+                                    type="text"
+                                    style="display: none;">
+                            </div>
                     </div>
                 </div>
 
@@ -643,7 +687,6 @@
                             </option>
                         @endforeach
                     </select>
-
                 </div>
             </div>
 
@@ -664,12 +707,9 @@
             <div class="col-span-6 mt-0 sm:col-span-4">
                 <div class="relative mb-4 mt-6 w-full"
                     x-data="{ showDropdown: false }">
-                    {{-- <x-form_label for="possible_support_needed">
-                        <p>Possible Support Needed <span class="ml-2 text-xs">Previous selection:
-                                {{ $client->possible_support_needed }}</span></p>
-                    </x-form_label> --}}
-                        <x-form_label>
-                        Possible Support Needed: (previous selection: {{ str_replace(['[', ']', '"'], '', $client->possible_support_needed) }})
+                    <x-form_label>
+                        Possible Support Needed: (previous selection:
+                        {{ str_replace(['[', ']', '"'], '', $client->possible_support_needed) }})
                     </x-form_label>
                     <div class="rounded-md"
                         @click.away="showDropdown = false">
@@ -808,4 +848,43 @@
 
     // Get the country data used by intlTelInput
     const countryData = window.intlTelInputGlobals.getCountryData();
+</script>
+
+<script>
+    document.getElementById('otherGenderCheckbox').addEventListener('change', function() {
+        var otherGenderInput = document.getElementById('otherGenderInput');
+        if (this.checked) {
+            otherGenderInput.style.display = 'block';
+        } else {
+            otherGenderInput.style.display = 'none';
+        }
+    });
+
+    document.getElementById('otherPronounCheckbox').addEventListener('change', function() {
+        var otherPronounInput = document.getElementById('otherPronounInput');
+        if (this.checked) {
+            otherPronounInput.style.display = 'block';
+        } else {
+            otherPronounInput.style.display = 'none';
+        }
+    });
+
+    document.getElementById('otherSexualOrientationCheckbox').addEventListener('change', function() {
+        var otherSexualOrientationInput = document.getElementById('otherSexualOrientationInput');
+        if (this.checked) {
+            otherSexualOrientationInput.style.display = 'block';
+        } else {
+            otherSexualOrientationInput.style.display = 'none';
+        }
+    });
+
+    document.getElementById('otherEthnicGroupCheckbox').addEventListener('change', function() {
+        var otherEthnicGroupInput = document.getElementById('otherEthnicGroupInput');
+        if (this.checked) {
+            otherEthnicGroupInput.style.display = 'block';
+        } else {
+            otherEthnicGroupInput.style.display = 'none';
+        }
+    });
+
 </script>
