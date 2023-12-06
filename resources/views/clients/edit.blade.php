@@ -259,7 +259,7 @@
                                     type="checkbox"
                                     value="Other">
                                 <label class="ml-2"
-                                    for="otherGender">OtherGender</label>
+                                    for="otherGender">Other</label>
                             </div>
 
                             <div class="m-3 flex flex-row">
