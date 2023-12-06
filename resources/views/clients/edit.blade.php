@@ -306,7 +306,7 @@
                             x-transition:leave.duration.300ms
                             x-transition:ease-in-out
                             x-cloak>
-                                 <div class="select-input-div">
+                            <div class="select-input-div">
                                 <input class="select-input"
                                     id="they/them/theirs"
                                     name="pronouns[]"
@@ -324,7 +324,7 @@
                                 <label class="ml-2"
                                     for="she-her">she/her/hers</label>
                             </div>
-                             <div class="select-input-div">
+                            <div class="select-input-div">
                                 <input class="select-input"
                                     id="him"
                                     name="pronouns[]"
@@ -425,7 +425,7 @@
                                     for="heterosexual">Heterosexual</label>
                             </div>
                             {{-- homosexual --}}
-                             <div class="select-input-div">
+                            <div class="select-input-div">
                                 <input class="select-input"
                                     id="homosexual"
                                     name="sexual_orientation[]"
@@ -502,7 +502,7 @@
                                 <label class="ml-2"
                                     for="prefer-not-to-say-orientation">Prefer Not To Say</label>
                             </div>
-                             <div class="select-input-div">
+                            <div class="select-input-div">
                                 <input class="select-input"
                                     id="otherSexualOrientationCheckbox"
                                     name="sexual_orientation[]"
@@ -619,33 +619,24 @@
                             <label class="ml-2"
                                 for="prefer-not-to-say-ethnic">Prefer Not To Say</label>
                         </div>
-                        {{-- <div class="select-input-div">
+                        <div class="select-input-div">
                             <input class="select-input"
-                                id="other-ethnic"
+                                id="otherEthnicGroupCheckbox"
                                 name="ethnic_group[]"
                                 type="checkbox"
                                 value="Other">
                             <label class="ml-2"
-                                for="other-ethnic">Other</label>
-                        </div> --}}
-                            <div class="select-input-div">
-                                <input class="select-input"
-                                    id="otherEthnicGroupCheckbox"
-                                    name="ethnic_group[]"
-                                    type="checkbox"
-                                    value="Other">
-                                <label class="ml-2"
-                                    for="otherEthnicGroup">Other</label>
-                            </div>
+                                for="otherEthnicGroup">Other</label>
+                        </div>
 
-                            <div class="m-3 flex flex-row">
-                                <input
-                                    class="mr-0.5 mt-1 rounded-full transition duration-200 ease-in-out hover:bg-blue-500"
-                                    id="otherEthnicGroupInput"
-                                    name="otherEthnicGroup"
-                                    type="text"
-                                    style="display: none;">
-                            </div>
+                        <div class="m-3 flex flex-row">
+                            <input
+                                class="mr-0.5 mt-1 rounded-full transition duration-200 ease-in-out hover:bg-blue-500"
+                                id="otherEthnicGroupInput"
+                                name="otherEthnicGroup"
+                                type="text"
+                                style="display: none;">
+                        </div>
                     </div>
                 </div>
 
@@ -886,5 +877,4 @@
             otherEthnicGroupInput.style.display = 'none';
         }
     });
-
 </script>
