@@ -424,6 +424,17 @@
                                 <label class="ml-2"
                                     for="heterosexual">Heterosexual</label>
                             </div>
+                            {{-- homosexual --}}
+                             <div class="select-input-div">
+                                <input class="select-input"
+                                    id="homosexual"
+                                    name="sexual_orientation[]"
+                                    type="checkbox"
+                                    value="Homosexual">
+                                <label class="ml-2"
+                                    for="homosexual">Homosexual</label>
+                            </div>
+
                             <div class="select-input-div">
                                 <input class="select-input"
                                     id="bisexual"
@@ -432,6 +443,36 @@
                                     value="Bisexual">
                                 <label class="ml-2"
                                     for="bisexual">Bisexual</label>
+                            </div>
+                            {{-- pansexual --}}
+                            <div class="select-input-div">
+                                <input class="select-input"
+                                    id="pansexual"
+                                    name="sexual_orientation[]"
+                                    type="checkbox"
+                                    value="Pansexual">
+                                <label class="ml-2"
+                                    for="pansexual">Pansexual</label>
+                            </div>
+                            {{-- asexual --}}
+                            <div class="select-input-div">
+                                <input class="select-input"
+                                    id="asexual"
+                                    name="sexual_orientation[]"
+                                    type="checkbox"
+                                    value="Asexual">
+                                <label class="ml-2"
+                                    for="asexual">Asexual</label>
+                            </div>
+                            {{-- demisexual --}}
+                            <div class="select-input-div">
+                                <input class="select-input"
+                                    id="demisexual"
+                                    name="sexual_orientation[]"
+                                    type="checkbox"
+                                    value="Demisexual">
+                                <label class="ml-2"
+                                    for="demisexual">Demisexual</label>
                             </div>
                             <div class="select-input-div">
                                 <input class="select-input"
@@ -442,6 +483,16 @@
                                 <label class="ml-2"
                                     for="queer">Queer</label>
                             </div>
+                            {{-- questioning --}}
+                            <div class="select-input-div">
+                                <input class="select-input"
+                                    id="questioning"
+                                    name="sexual_orientation[]"
+                                    type="checkbox"
+                                    value="Questioning">
+                                <label class="ml-2"
+                                    for="questioning">Questioning</label>
+                            </div>
                             <div class="select-input-div">
                                 <input class="select-input"
                                     id="prefer-not-to-say-orientation"
@@ -451,14 +502,23 @@
                                 <label class="ml-2"
                                     for="prefer-not-to-say-orientation">Prefer Not To Say</label>
                             </div>
-                            <div class="select-input-div">
+                             <div class="select-input-div">
                                 <input class="select-input"
-                                    id="other-orientation"
+                                    id="otherSexualOrientationCheckbox"
                                     name="sexual_orientation[]"
                                     type="checkbox"
                                     value="Other">
                                 <label class="ml-2"
-                                    for="other-orientation">Other</label>
+                                    for="otherSexualOrientation">Other</label>
+                            </div>
+
+                            <div class="m-3 flex flex-row">
+                                <input
+                                    class="mr-0.5 mt-1 rounded-full transition duration-200 ease-in-out hover:bg-blue-500"
+                                    id="otherSexualOrientationInput"
+                                    name="otherSexualOrientation"
+                                    type="text"
+                                    style="display: none;">
                             </div>
                         </div>
                     </div>
@@ -788,6 +848,15 @@
             otherPronounInput.style.display = 'block';
         } else {
             otherPronounInput.style.display = 'none';
+        }
+    });
+
+    document.getElementById('otherSexualOrientationCheckbox').addEventListener('change', function() {
+        var otherSexualOrientationInput = document.getElementById('otherSexualOrientationInput');
+        if (this.checked) {
+            otherSexualOrientationInput.style.display = 'block';
+        } else {
+            otherSexualOrientationInput.style.display = 'none';
         }
     });
 </script>
