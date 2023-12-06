@@ -220,15 +220,6 @@
                 </div>
                 <div class="select-input-div">
                     <input class="select-input"
-                        id="other"
-                        name="gender[]"
-                        type="checkbox"
-                        value="other">
-                    <label class="ml-2"
-                        for="other">Other</label>
-                </div>
-                <div class="select-input-div">
-                    <input class="select-input"
                         id="prefer-not-to-say"
                         name="gender[]"
                         type="checkbox"
@@ -236,6 +227,24 @@
                     <label class="ml-2"
                         for="prefer-not-to-say">Prefer Not To Say</label>
                 </div>
+                  <div class="select-input-div">
+                                <input class="select-input"
+                                    id="otherGenderCheckbox"
+                                    name="gender[]"
+                                    type="checkbox"
+                                    value="Other">
+                                <label class="ml-2"
+                                    for="otherGender">Other</label>
+                            </div>
+
+                            <div class="m-3 flex flex-row">
+                                <input
+                                    class="mr-0.5 mt-1 rounded-full transition duration-200 ease-in-out hover:bg-blue-500"
+                                    id="otherGenderInput"
+                                    name="otherGender"
+                                    type="text"
+                                    style="display: none;">
+                            </div>
 
                 {{-- i need the above for Trnasgender, Cisgender, Bigender, Non-Binary, Other, Prefer Not To Say --}}
 
@@ -256,168 +265,372 @@
             </div>
         </div>
 
-        {{-- Pronouns --}}
-        {{-- <x-multi-select id="pronouns"
-            name="pronouns"
-            label="Pronouns"
-            :options="$pronouns"></x-multi-select> --}}
 
-        {{-- make a mulitple selecte field --}}
-        <x-form_label for="pronouns">
-            Pronouns
-        </x-form_label>
-        <select class="peer mt-2 w-full rounded-md border-b-2 border-blue-200 p-3 ring-0"
-            id="pronouns"
-            name="pronouns"
-            type="text">
-            <option value=""
-                disabled
-                selected
-                hidden>Select Pronouns</option>
-            <option value="She/Her/Her/Hers/Herself">She/Her/Her/Hers/Herself
-            </option>
-            <option value="He/Him/His/His/Himself">He/Him/His/His/Himself</option>
-            <option value="They/Them/Their/Theirs/Themselves">They/Them/Their/Theirs/Themselves</option>
-            <option value="Ze/Hir/Hir/Hirs/Hirself">Ze/Hir/Hir/Hirs/Hirself</option>
-            <option value="Ey/Em/Eir/Eirs/Eirself">Ey/Em/Eir/Eirs/Eirself
-            </option value="Per/Per/Pers/Perself/Perse">
-            <option>Per/Per/Pers/Perself/Perse
-            </option>
-            <option value="Ve/Ver/Vis/Verself/Veself">Ve/Ver/Vis/Verself/Veself
-            </option>
-            <option value="Xe/Xem/Xyr/Xyrs/Xemself">Xe/Xem/Xyr/Xyrs/Xemself
-            </option>
-            <option value="Zie/Zim/Zir/Zirs/Zirself">Zie/Zim/Zir/Zirs/Zirself
-            </option>
-            <option value="Other">Other</option>
-            <option value="Prefer Not To Say">Prefer Not to Say</option>
-        </select>
+        {{-- Pronouns --}}
+                <div class="col-span-6 mt-0 sm:col-span-4">
+                    <div class="my-4 flex flex-col"
+                        x-data="{ openPronouns: false, selectedPronouns: [] }">
+                        <x-form_label>
+                            Pronoun(s):
+                        </x-form_label>
+                        <button
+                            class="-m-0.5 flex w-full justify-between rounded-md border border-blue-300 bg-gray-100 p-2 text-gray-700 focus:border-blue-500"
+                            type="button"
+                            @click="openPronouns = !openPronouns">
+                            <span class="ml-0"
+                                x-text="selectedPronouns.length > 0 ? selectedPronouns.join(', ') : 'Select Options'"></span>
+                            <svg class="mt-0.5 h-[18px] w-[18px] text-gray-800"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                        <div class="-ml-[2px] -mt-2 mr-[2px] rounded-md rounded-t-none border border-b border-r border-t-0 border-blue-500 bg-gray-100 py-4 md:flex md:flex-wrap"
+                            x-show="openPronouns"
+                            x-transition.scale.origin.top
+                            x-transition:enter.duration.300ms
+                            x-transition:enter.ease-in-out
+                            x-transition:leave.duration.300ms
+                            x-transition:ease-in-out
+                            x-cloak>
+                            <div class="select-input-div">
+                                <input class="select-input"
+                                    id="they/them/theirs"
+                                    name="pronouns[]"
+                                    type="checkbox"
+                                    value="They/Them/Theirs">
+                                <label class="ml-2"
+                                    for="they-them">They/Them/Theirs</label>
+                            </div>
+                            <div class="select-input-div">
+                                <input class="select-input"
+                                    id="she-her"
+                                    name="pronouns[]"
+                                    type="checkbox"
+                                    value="she/her/hers">
+                                <label class="ml-2"
+                                    for="she-her">she/her/hers</label>
+                            </div>
+                            <div class="select-input-div">
+                                <input class="select-input"
+                                    id="him"
+                                    name="pronouns[]"
+                                    type="checkbox"
+                                    value="per/per/pers">
+                                <label class="ml-2">per/per/pers</label>
+                            </div>
+                            <div class="select-input-div">
+                                <input class="select-input"
+                                    id="he-him"
+                                    name="pronouns[]"
+                                    type="checkbox"
+                                    value="he/him/his">
+                                <label class="ml-2"
+                                    for="he-him">he/him/his</label>
+                            </div>
+
+                            <div class="select-input-div">
+                                <input class="select-input"
+                                    id="her"
+                                    name="pronouns[]"
+                                    type="checkbox"
+                                    value="ze/hir/hirs">
+                                <label class="ml-2"
+                                    for="her">ze/hir/hirs</label>
+                            </div>
+
+                            <div class="select-input-div">
+                                <input class="select-input"
+                                    id="prefer-not-to-say-pronouns"
+                                    name="pronouns[]"
+                                    type="checkbox"
+                                    value="Prefer Not To Say">
+                                <label class="ml-2"
+                                    for="prefer-not-to-say-pronouns">Prefer Not To Say</label>
+                            </div>
+                            <div class="select-input-div">
+                                <input class="select-input"
+                                    id="otherPronounCheckbox"
+                                    name="pronouns[]"
+                                    type="checkbox"
+                                    value="Other">
+                                <label class="ml-2"
+                                    for="otherPronoun">Other</label>
+                            </div>
+
+                            <div class="m-3 flex flex-row">
+                                <input
+                                    class="mr-0.5 mt-1 rounded-full transition duration-200 ease-in-out hover:bg-blue-500"
+                                    id="otherPronounInput"
+                                    name="otherPronoun"
+                                    type="text"
+                                    style="display: none;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
         {{-- Sexual Orientation --}}
-        <x-form_label for="sexual_orientation">
-            Sexual Orientation
-        </x-form_label>
-        <select class="peer mt-2 w-full rounded-md border-b-2 border-blue-200 p-3 capitalize ring-0"
-            id="sexual_orientation"
-            name="sexual_orientation"
-            type="text">
-            <option class="text-gray-600"
-                value=""
-                disabled
-                selected
-                hidden>Select Orientation</option>
-            <option>bisexual</option>
-            <option>gay/lesbian</option>
-            <option>heterosexaul/straight</option>
-            <option>don't know</option>
-            <option>prefer not to say</option>
-            <option>Other</option>
-        </select>
+            <div class="col-span-6 mt-0 sm:col-span-4">
+                    <div class="my-4 flex flex-col"
+                        x-data="{ openSexualOrientation: false, selectedSexualOrientation: [] }">
+                        <x-form_label>
+                            Sexual Orientation(s):
+                        </x-form_label>
+                        <button
+                            class="-m-0.5 flex w-full justify-between rounded-md border border-blue-300 bg-gray-100 p-2 text-gray-700 focus:border-blue-500"
+                            type="button"
+                            @click="openSexualOrientation = !openSexualOrientation">
+                            <span class="ml-0"
+                                x-text="selectedSexualOrientation.length > 0 ? selectedSexualOrientation.join(', ') : 'Select Options'"></span>
+                            <svg class="mt-0.5 h-[18px] w-[18px] text-gray-800"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                        <div class="-ml-[2px] -mt-2 mr-[2px] rounded-md rounded-t-none border border-b border-r border-t-0 border-blue-500 bg-gray-100 py-4 md:flex md:flex-wrap"
+                            x-show="openSexualOrientation"
+                            x-transition.scale.origin.top
+                            x-transition:enter.duration.300ms
+                            x-transition:enter.ease-in-out
+                            x-transition:leave.duration.300ms
+                            x-transition:ease-in-out
+                            x-cloak>
+                            <div class="select-input-div">
+                                <input class="select-input"
+                                    id="heterosexual"
+                                    name="sexual_orientation[]"
+                                    type="checkbox"
+                                    value="Heterosexual">
+                                <label class="ml-2"
+                                    for="heterosexual">Heterosexual</label>
+                            </div>
+                            {{-- homosexual --}}
+                            <div class="select-input-div">
+                                <input class="select-input"
+                                    id="homosexual"
+                                    name="sexual_orientation[]"
+                                    type="checkbox"
+                                    value="Homosexual">
+                                <label class="ml-2"
+                                    for="homosexual">Homosexual</label>
+                            </div>
 
-        <div class="my-4 flex flex-col"
-            x-data="{ openEthnicGroup: false, selectedEthnicGroups: [] }">
-            <x-jet-label>Ethnic Group</x-jet-label>
-            <button
-                class="-m-0.5 flex w-full justify-between rounded-md border border-blue-300 bg-gray-100 p-3 text-gray-700 focus:border-blue-500"
-                type="button"
-                @click="openEthnicGroup = !openEthnicGroup">
-                <span class="ml-0"
-                    x-text="selectedEthnicGroups.length > 0 ? selectedEthnicGroups.join(', ') : 'Select Options'"></span>
-                <svg class="mt-0.5 h-[18px] w-[18px] text-gray-800"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M19 9l-7 7-7-7"></path>
-                </svg>
-            </button>
-            <div class="-ml-[2px] -mt-2 mr-[2px] rounded-md rounded-t-none border border-b border-r border-t-0 border-blue-500 bg-gray-100 py-4 md:flex md:flex-wrap"
-                x-show="openEthnicGroup"
-                x-transition.scale.origin.top
-                x-transition:enter.duration.300ms
-                x-transition:enter.ease-in-out
-                x-transition:leave.duration.300ms
-                x-transition:ease-in-out
-                x-cloak>
+                            <div class="select-input-div">
+                                <input class="select-input"
+                                    id="bisexual"
+                                    name="sexual_orientation[]"
+                                    type="checkbox"
+                                    value="Bisexual">
+                                <label class="ml-2"
+                                    for="bisexual">Bisexual</label>
+                            </div>
+                            {{-- pansexual --}}
+                            <div class="select-input-div">
+                                <input class="select-input"
+                                    id="pansexual"
+                                    name="sexual_orientation[]"
+                                    type="checkbox"
+                                    value="Pansexual">
+                                <label class="ml-2"
+                                    for="pansexual">Pansexual</label>
+                            </div>
+                            {{-- asexual --}}
+                            <div class="select-input-div">
+                                <input class="select-input"
+                                    id="asexual"
+                                    name="sexual_orientation[]"
+                                    type="checkbox"
+                                    value="Asexual">
+                                <label class="ml-2"
+                                    for="asexual">Asexual</label>
+                            </div>
+                            {{-- demisexual --}}
+                            <div class="select-input-div">
+                                <input class="select-input"
+                                    id="demisexual"
+                                    name="sexual_orientation[]"
+                                    type="checkbox"
+                                    value="Demisexual">
+                                <label class="ml-2"
+                                    for="demisexual">Demisexual</label>
+                            </div>
+                            <div class="select-input-div">
+                                <input class="select-input"
+                                    id="queer"
+                                    name="sexual_orientation[]"
+                                    type="checkbox"
+                                    value="Queer">
+                                <label class="ml-2"
+                                    for="queer">Queer</label>
+                            </div>
+                            {{-- questioning --}}
+                            <div class="select-input-div">
+                                <input class="select-input"
+                                    id="questioning"
+                                    name="sexual_orientation[]"
+                                    type="checkbox"
+                                    value="Questioning">
+                                <label class="ml-2"
+                                    for="questioning">Questioning</label>
+                            </div>
+                            <div class="select-input-div">
+                                <input class="select-input"
+                                    id="prefer-not-to-say-orientation"
+                                    name="sexual_orientation[]"
+                                    type="checkbox"
+                                    value="Prefer Not To Say">
+                                <label class="ml-2"
+                                    for="prefer-not-to-say-orientation">Prefer Not To Say</label>
+                            </div>
+                            <div class="select-input-div">
+                                <input class="select-input"
+                                    id="otherSexualOrientationCheckbox"
+                                    name="sexual_orientation[]"
+                                    type="checkbox"
+                                    value="Other">
+                                <label class="ml-2"
+                                    for="otherSexualOrientation">Other</label>
+                            </div>
 
-                <div class="select-input-div">
-                    <input class="select-input"
-                        id="american-indian"
-                        name="ethnic_group[]"
-                        type="checkbox"
-                        value="American Indian or Alaska Native">
-                    <label class="ml-2"
-                        for="american-indian">American Indian or Alaska Native</label>
-                </div>
-                <div class="select-input-div">
-                    <input class="select-input"
-                        id="asian"
-                        name="ethnic_group[]"
-                        type="checkbox"
-                        value="Asian">
-                    <label class="ml-2"
-                        for="asian">Asian</label>
-                </div>
-                <div class="select-input-div">
-                    <input class="select-input"
-                        id="black"
-                        name="ethnic_group[]"
-                        type="checkbox"
-                        value="Black or African American">
-                    <label class="ml-2"
-                        for="black">Black or African American</label>
-                </div>
-                <div class="select-input-div">
-                    <input class="select-input"
-                        id="hispanic"
-                        name="ethnic_group[]"
-                        type="checkbox"
-                        value="Hispanic or Latino">
-                    <label class="ml-2"
-                        for="hispanic">Hispanic or Latino</label>
-                </div>
-                <div class="select-input-div">
-                    <input class="select-input"
-                        id="pacific-islander"
-                        name="ethnic_group[]"
-                        type="checkbox"
-                        value="Native Hawaiian or Other Pacific Islander">
-                    <label class="ml-2"
-                        for="pacific-islander">Native Hawaiian or Other Pacific Islander</label>
-                </div>
-                <div class="select-input-div">
-                    <input class="select-input"
-                        id="white"
-                        name="ethnic_group[]"
-                        type="checkbox"
-                        value="White">
-                    <label class="ml-2"
-                        for="white">White</label>
-                </div>
-                <div class="select-input-div">
-                    <input class="select-input"
-                        id="prefer-not-to-say-ethnic"
-                        name="ethnic_group[]"
-                        type="checkbox"
-                        value="prefer not to say">
-                    <label class="ml-2"
-                        for="prefer-not-to-say-ethnic">Prefer Not To Say</label>
-                </div>
-                <div class="select-input-div">
-                    <input class="select-input"
-                        id="other-ethnic"
-                        name="ethnic_group[]"
-                        type="checkbox"
-                        value="Other">
-                    <label class="ml-2"
-                        for="other-ethnic">Other</label>
+                            <div class="m-3 flex flex-row">
+                                <input
+                                    class="mr-0.5 mt-1 rounded-full transition duration-200 ease-in-out hover:bg-blue-500"
+                                    id="otherSexualOrientationInput"
+                                    name="otherSexualOrientation"
+                                    type="text"
+                                    style="display: none;">
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
-            </div>
-        </div>
+
+         <div class="my-4 flex flex-col"
+                    x-data="{ openEthnicGroup: false, selectedEthnicGroups: [] }">
+                    <x-form_label>
+                        Ethnic Group(s):
+                    </x-form_label>
+                    <button
+                        class="-m-0.5 flex w-full justify-between rounded-md border border-blue-300 bg-gray-100 p-2 text-gray-700 focus:border-blue-500"
+                        type="button"
+                        @click="openEthnicGroup = !openEthnicGroup">
+                        <span class="ml-0"
+                            x-text="selectedEthnicGroups.length > 0 ? selectedEthnicGroups.join(', ') : 'Select Options'"></span>
+                        <svg class="mt-0.5 h-[18px] w-[18px] text-gray-800"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                    <div class="-ml-[2px] -mt-2 mr-[2px] rounded-md rounded-t-none border border-b border-r border-t-0 border-blue-500 bg-gray-100 py-4 md:flex md:flex-wrap"
+                        x-show="openEthnicGroup"
+                        x-transition.scale.origin.top
+                        x-transition:enter.duration.300ms
+                        x-transition:enter.ease-in-out
+                        x-transition:leave.duration.300ms
+                        x-transition:ease-in-out
+                        x-cloak>
+
+                        <div class="select-input-div">
+                            <input class="select-input"
+                                id="american-indian"
+                                name="ethnic_group[]"
+                                type="checkbox"
+                                value="American Indian or Alaska Native">
+                            <label class="ml-2"
+                                for="american-indian">American Indian or Alaska Native</label>
+                        </div>
+                        <div class="select-input-div">
+                            <input class="select-input"
+                                id="asian"
+                                name="ethnic_group[]"
+                                type="checkbox"
+                                value="Asian">
+                            <label class="ml-2"
+                                for="asian">Asian</label>
+                        </div>
+                        <div class="select-input-div">
+                            <input class="select-input"
+                                id="black"
+                                name="ethnic_group[]"
+                                type="checkbox"
+                                value="Black or African American">
+                            <label class="ml-2"
+                                for="black">Black or African American</label>
+                        </div>
+                        <div class="select-input-div">
+                            <input class="select-input"
+                                id="hispanic"
+                                name="ethnic_group[]"
+                                type="checkbox"
+                                value="Hispanic or Latino">
+                            <label class="ml-2"
+                                for="hispanic">Hispanic or Latino</label>
+                        </div>
+                        <div class="select-input-div">
+                            <input class="select-input"
+                                id="pacific-islander"
+                                name="ethnic_group[]"
+                                type="checkbox"
+                                value="Native Hawaiian or Other Pacific Islander">
+                            <label class="ml-2"
+                                for="pacific-islander">Native Hawaiian or Other Pacific Islander</label>
+                        </div>
+                        <div class="select-input-div">
+                            <input class="select-input"
+                                id="white"
+                                name="ethnic_group[]"
+                                type="checkbox"
+                                value="White">
+                            <label class="ml-2"
+                                for="white">White</label>
+                        </div>
+                        <div class="select-input-div">
+                            <input class="select-input"
+                                id="prefer-not-to-say-ethnic"
+                                name="ethnic_group[]"
+                                type="checkbox"
+                                value="prefer not to say">
+                            <label class="ml-2"
+                                for="prefer-not-to-say-ethnic">Prefer Not To Say</label>
+                        </div>
+                        <div class="select-input-div">
+                            <input class="select-input"
+                                id="otherEthnicGroupCheckbox"
+                                name="ethnic_group[]"
+                                type="checkbox"
+                                value="Other">
+                            <label class="ml-2"
+                                for="otherEthnicGroup">Other</label>
+                        </div>
+
+                        <div class="m-3 flex flex-row">
+                            <input
+                                class="mr-0.5 mt-1 rounded-full transition duration-200 ease-in-out hover:bg-blue-500"
+                                id="otherEthnicGroupInput"
+                                name="otherEthnicGroup"
+                                type="text"
+                                style="display: none;">
+                        </div>
+                    </div>
+                </div>
 
         {{-- home_address_state --}}
         <x-form_label for="home_address_state">
@@ -624,3 +837,42 @@
         color: black;
     }
 </style>
+
+<script>
+    document.getElementById('otherGenderCheckbox').addEventListener('change', function() {
+        var otherGenderInput = document.getElementById('otherGenderInput');
+        if (this.checked) {
+            otherGenderInput.style.display = 'block';
+        } else {
+            otherGenderInput.style.display = 'none';
+        }
+    });
+
+    document.getElementById('otherPronounCheckbox').addEventListener('change', function() {
+        var otherPronounInput = document.getElementById('otherPronounInput');
+        if (this.checked) {
+            otherPronounInput.style.display = 'block';
+        } else {
+            otherPronounInput.style.display = 'none';
+        }
+    });
+
+    document.getElementById('otherSexualOrientationCheckbox').addEventListener('change', function() {
+        var otherSexualOrientationInput = document.getElementById('otherSexualOrientationInput');
+        if (this.checked) {
+            otherSexualOrientationInput.style.display = 'block';
+        } else {
+            otherSexualOrientationInput.style.display = 'none';
+        }
+    });
+
+    document.getElementById('otherEthnicGroupCheckbox').addEventListener('change', function() {
+        var otherEthnicGroupInput = document.getElementById('otherEthnicGroupInput');
+        if (this.checked) {
+            otherEthnicGroupInput.style.display = 'block';
+        } else {
+            otherEthnicGroupInput.style.display = 'none';
+        }
+    });
+
+</script>
