@@ -285,21 +285,100 @@ class ClientController extends Controller
             $orientationString = $client->sexual_orientation;
         }
 
+        // $selectedOrientations = $request->input('sexual_orientation');
+        // $orientationString = '';
+
+        // if (is_array($selectedOrientations) && !empty($selectedOrientations)) {
+        //     $orientationString = implode(', ', $selectedOrientations);
+
+        //     // Check if 'other' is selected and add it to the string
+        //     if (in_array('other', $selectedOrientations) && $request->has('sexual_orientation_other')) {
+        //         $orientationString .= ', ' . $request->input('sexual_orientation_other');
+        //     }
+        // } elseif ($request->has('sexual_orientation_other')) {
+        //     // 'Other' is selected without any other options
+        //     $orientationString = $request->input('sexual_orientation_other');
+        // }
+
+
+
+        // if (in_array('other', $selectedOrientations) && $request->has('sexual_orientation_other')) {
+        //     $orientationString .= ', ' . $request->input('sexual_orientation_other');
+        // }
+
+
+        // $selectedPronouns = $request->input('pronouns');
+        // $pronounsString = "";
+        // if (in_array('other', $selectedPronouns) && $request->has('pronouns_other')) {
+        //     // $pronounsString = implode(', ', $selectedPronouns);
+        //     $pronounsString .= ', ' . $request->input('pronouns_other');
+        // } else {
+        //     $pronounsString = $client->pronouns;
+        // }
+
         $selectedPronouns = $request->input('pronouns');
-        if (is_array($selectedPronouns) && !empty($selectedPronouns)) {
-            $pronounsString = implode(', ', $selectedPronouns);
+        $otherPronoun = $request->input('otherPronoun');
+        $pronounsString = "";
+        if (is_array($selectedPronouns)) {
+            if (($key = array_search('Other', $selectedPronouns)) !== false && $otherPronoun) {
+                $selectedPronouns[$key] = $otherPronoun;
+            }
+            $client->pronouns = implode(', ', $selectedPronouns);
         } else {
-            $pronounsString = $client->pronouns;
+            $client->pronouns = $client->pronouns;
         }
+        // $client->save();
+
+        $selectedGender = $request->input('gender');
+        $otherGender = $request->input('otherGender');
+        $genderString = "";
+
+        if (is_array($selectedGender)) {
+            if (($key = array_search('Other', $selectedGender)) !== false && $otherGender) {
+                $selectedGender[$key] = $otherGender;
+            }
+            $client->gender = implode(', ', $selectedGender);
+        } else {
+            $client->gender = $client->gender;
+        }
+
+        $client->save();
+
+
+        // $client->save();
+        // $client->pronouns = implode(', ', $selectedPronouns);
+
+        // if ($request->input('otherCheckbox')) {
+        //     $pronounsString = ', ' . $request->input('otherInput');
+        // }
+
+
+
+
+
 
 
         // $selectedGenders = $request->input('gender');
         // $genderString = is_array($selectedGenders) && !empty($selectedGenders) ? implode(', ', $selectedGenders) : $client->sexual_orientation;
+        // $selectedGenders = $request->input('gender');
+        // if (is_array($selectedGenders) && !empty($selectedGenders)) {
+        //     $genderString = implode(', ', $selectedGenders);
+        // } else {
+        //     $genderString = $client->gender;
+        // }
+
+        // if ($request->input('otherPronounCheckbox')) {
+        //     $pronounsString = ', ' . $request->input('pronounsOther');
+        // }
         $selectedGenders = $request->input('gender');
         if (is_array($selectedGenders) && !empty($selectedGenders)) {
             $genderString = implode(', ', $selectedGenders);
         } else {
             $genderString = $client->gender;
+        }
+
+        if ($request->input('otherCheckbox')) {
+            $genderString .= ', ' . $request->input('otherInput');
         }
 
         $selectedEthnicGroups = $request->input('ethnic_group');
