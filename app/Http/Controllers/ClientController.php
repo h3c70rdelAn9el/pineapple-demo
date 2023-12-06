@@ -293,67 +293,31 @@ class ClientController extends Controller
         $selectedPronouns = $request->input('pronouns');
         $otherPronoun = $request->input('otherPronoun');
         $pronounsString = "";
-
-        // $client->save();
-
-        $selectedGender = $request->input('gender');
-        $otherGender = $request->input('otherGender');
-        $genderString = "";
-
-        if (is_array($selectedGender)) {
-            if (($key = array_search('Other', $selectedGender)) !== false && $otherGender) {
-                $selectedGender[$key] = $otherGender;
+        if (is_array($selectedPronouns)) {
+            if (($key = array_search('Other', $selectedPronouns)) !== false && $otherPronoun) {
+                $selectedPronouns[$key] = $otherPronoun;
             }
-            $client->gender = implode(', ', $selectedGender);
+            $client->pronouns = implode(', ', $selectedPronouns);
         } else {
-            $client->gender = $client->gender;
+            $client->pronouns = $client->pronouns;
         }
+
+
+        $selectedEthnicGroup = $request->input('ethnic_group');
+        $otherEthnicGroup = $request->input('otherEthnicGroup');
+        $ethnicGroupString = "";
+
+        if (is_array($selectedEthnicGroup)) {
+            if (($key = array_search('Other', $selectedEthnicGroup)) !== false && $otherEthnicGroup) {
+                $selectedEthnicGroup[$key] = $otherEthnicGroup;
+            }
+            $client->ethnic_group = implode(', ', $selectedEthnicGroup);
+        } else {
+            $client->ethnic_group = $client->ethnic_group;
+        }
+
 
         $client->save();
-
-
-        // $client->save();
-        // $client->pronouns = implode(', ', $selectedPronouns);
-
-        // if ($request->input('otherCheckbox')) {
-        //     $pronounsString = ', ' . $request->input('otherInput');
-        // }
-
-
-
-
-
-
-
-        // $selectedGenders = $request->input('gender');
-        // $genderString = is_array($selectedGenders) && !empty($selectedGenders) ? implode(', ', $selectedGenders) : $client->sexual_orientation;
-        // $selectedGenders = $request->input('gender');
-        // if (is_array($selectedGenders) && !empty($selectedGenders)) {
-        //     $genderString = implode(', ', $selectedGenders);
-        // } else {
-        //     $genderString = $client->gender;
-        // }
-
-        // if ($request->input('otherPronounCheckbox')) {
-        //     $pronounsString = ', ' . $request->input('pronounsOther');
-        // }
-        $selectedGenders = $request->input('gender');
-        if (is_array($selectedGenders) && !empty($selectedGenders)) {
-            $genderString = implode(', ', $selectedGenders);
-        } else {
-            $genderString = $client->gender;
-        }
-
-        if ($request->input('otherCheckbox')) {
-            $genderString .= ', ' . $request->input('otherInput');
-        }
-
-        $selectedEthnicGroups = $request->input('ethnic_group');
-        if (is_array($selectedEthnicGroups) && !empty($selectedEthnicGroups)) {
-            $ethnicGroupString = implode(', ', $selectedEthnicGroups);
-        } else {
-            $ethnicGroupString = $client->ethnic_group;
-        }
 
         $selectedContactMethods = $request->input('contact_method');
         // $contactMethodString = is_array($selectedContactMethods) && !empty($selectedContactMethods) ? implode(', ', $selectedContactMethods) : $client->contact_method;

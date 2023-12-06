@@ -619,7 +619,7 @@
                             <label class="ml-2"
                                 for="prefer-not-to-say-ethnic">Prefer Not To Say</label>
                         </div>
-                        <div class="select-input-div">
+                        {{-- <div class="select-input-div">
                             <input class="select-input"
                                 id="other-ethnic"
                                 name="ethnic_group[]"
@@ -627,7 +627,25 @@
                                 value="Other">
                             <label class="ml-2"
                                 for="other-ethnic">Other</label>
-                        </div>
+                        </div> --}}
+                            <div class="select-input-div">
+                                <input class="select-input"
+                                    id="otherEthnicGroupCheckbox"
+                                    name="ethnic_group[]"
+                                    type="checkbox"
+                                    value="Other">
+                                <label class="ml-2"
+                                    for="otherEthnicGroup">Other</label>
+                            </div>
+
+                            <div class="m-3 flex flex-row">
+                                <input
+                                    class="mr-0.5 mt-1 rounded-full transition duration-200 ease-in-out hover:bg-blue-500"
+                                    id="otherEthnicGroupInput"
+                                    name="otherEthnicGroup"
+                                    type="text"
+                                    style="display: none;">
+                            </div>
                     </div>
                 </div>
 
@@ -859,4 +877,14 @@
             otherSexualOrientationInput.style.display = 'none';
         }
     });
+
+    document.getElementById('otherEthnicGroupCheckbox').addEventListener('change', function() {
+        var otherEthnicGroupInput = document.getElementById('otherEthnicGroupInput');
+        if (this.checked) {
+            otherEthnicGroupInput.style.display = 'block';
+        } else {
+            otherEthnicGroupInput.style.display = 'none';
+        }
+    });
+
 </script>
