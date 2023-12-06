@@ -26,12 +26,6 @@
                 type="hidden"
                 value="{{ $client->user_id }}">
 
-            {{-- client_code --}}
-            {{-- <x-form-field name="client_code"
-                type="text"
-                label="Client Code">
-                {{ $client->client_code }}
-            </x-form-field> --}}
             <div class="mb-2 mt-4 w-full">
                 <x-jet-label for="client_code"
                     value="{{ __('Client Code') }}" />
@@ -46,12 +40,6 @@
                     for="client_code" />
             </div>
 
-            {{-- <x-form-field name="preferred_name"
-                type="text"
-                value="{{ old('preferred_name', $client->preferred_name) }}"
-                label="Preferred Name">
-                {{ old('preferred_name', $client->preferred_name) }}
-            </x-form-field> --}}
             <div class="mb-2 mt-4 w-full">
                 <x-jet-label for="preferred_name"
                     value="{{ __('Preferred Name') }}" />
@@ -75,11 +63,6 @@
                 value="{{ $client->max_sessions }}">
 
             {{-- legal_name --}}
-            {{-- <x-form-field name="legal_name"
-                type="text"
-                label="Legal Name">
-                {{ $client->legal_name }}
-            </x-form-field> --}}
             <div class="mb-2 mt-4 w-full">
                 <x-jet-label for="legal_name"
                     value="{{ __('Legal Name') }}" />
@@ -152,9 +135,10 @@
                 }'
                 x-init="alpine.watch('showOptions', value => { if (!value) showOptions = false; })">
 
-                   <x-form_label>
-                        Contact Method(s): (previous selection: {{ str_replace(['[', ']', '"'], '', $client->contact_method) }})
-                    </x-form_label>
+                <x-form_label>
+                    Contact Method(s): (previous selection:
+                    {{ str_replace(['[', ']', '"'], '', $client->contact_method) }})
+                </x-form_label>
                 <div class="rounded-md"
                     @click.away="showOptions = false">
                     <div class="flex w-full justify-between rounded-md border border-blue-300 bg-gray-100 p-3">
@@ -268,6 +252,24 @@
                                         for="{{ $gender }}">{{ $gender }}</label>
                                 </div>
                             @endforeach
+                            <div class="select-input-div">
+                                <input class="select-input"
+                                    id="otherGenderCheckbox"
+                                    name="gender[]"
+                                    type="checkbox"
+                                    value="Other">
+                                <label class="ml-2"
+                                    for="otherGender">OtherGender</label>
+                            </div>
+
+                            <div class="m-3 flex flex-row">
+                                <input
+                                    class="mr-0.5 mt-1 rounded-full transition duration-200 ease-in-out hover:bg-blue-500"
+                                    id="otherGenderInput"
+                                    name="otherGender"
+                                    type="text"
+                                    style="display: none;">
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -276,12 +278,9 @@
                 <div class="col-span-6 mt-0 sm:col-span-4">
                     <div class="my-4 flex flex-col"
                         x-data="{ openPronouns: false, selectedPronouns: [] }">
-                        {{-- <x-form_label for="pronouns">
-                            Pronoun(s): (previous selection: {{ $client->pronouns }})
-                        </x-form_label> --}}
-                            <x-form_label>
-                        Pronoun(s): (previous selection: {{ str_replace(['[', ']', '"'], '', $client->pronouns) }})
-                    </x-form_label>
+                        <x-form_label>
+                            Pronoun(s): (previous selection: {{ str_replace(['[', ']', '"'], '', $client->pronouns) }})
+                        </x-form_label>
                         <button
                             class="-m-0.5 flex w-full justify-between rounded-md border border-blue-300 bg-gray-100 p-2 text-gray-700 focus:border-blue-500"
                             type="button"
@@ -407,12 +406,21 @@
                             </div>
                             <div class="select-input-div">
                                 <input class="select-input"
-                                    id="other-pronouns"
+                                    id="otherPronounCheckbox"
                                     name="pronouns[]"
                                     type="checkbox"
                                     value="Other">
                                 <label class="ml-2"
-                                    for="other-pronouns">Other</label>
+                                    for="otherPronoun">Other</label>
+                            </div>
+
+                            <div class="m-3 flex flex-row">
+                                <input
+                                    class="mr-0.5 mt-1 rounded-full transition duration-200 ease-in-out hover:bg-blue-500"
+                                    id="otherPronounInput"
+                                    name="otherPronoun"
+                                    type="text"
+                                    style="display: none;">
                             </div>
                         </div>
                     </div>
@@ -421,9 +429,10 @@
                 <div class="col-span-6 mt-0 sm:col-span-4">
                     <div class="my-4 flex flex-col"
                         x-data="{ openSexualOrientation: false, selectedSexualOrientation: [] }">
-                       <x-form_label>
-                        Sexual Orientation(s): (previous selection: {{ str_replace(['[', ']', '"'], '', $client->sexual_orientation) }})
-                    </x-form_label>
+                        <x-form_label>
+                            Sexual Orientation(s): (previous selection:
+                            {{ str_replace(['[', ']', '"'], '', $client->sexual_orientation) }})
+                        </x-form_label>
                         <button
                             class="-m-0.5 flex w-full justify-between rounded-md border border-blue-300 bg-gray-100 p-2 text-gray-700 focus:border-blue-500"
                             type="button"
@@ -500,8 +509,9 @@
 
                 <div class="my-4 flex flex-col"
                     x-data="{ openEthnicGroup: false, selectedEthnicGroups: [] }">
-                       <x-form_label>
-                        Ethnic Group(s): (previous selection: {{ str_replace(['[', ']', '"'], '', $client->ethnic_group) }})
+                    <x-form_label>
+                        Ethnic Group(s): (previous selection:
+                        {{ str_replace(['[', ']', '"'], '', $client->ethnic_group) }})
                     </x-form_label>
                     <button
                         class="-m-0.5 flex w-full justify-between rounded-md border border-blue-300 bg-gray-100 p-2 text-gray-700 focus:border-blue-500"
@@ -601,7 +611,6 @@
                             <label class="ml-2"
                                 for="other-ethnic">Other</label>
                         </div>
-
                     </div>
                 </div>
 
@@ -643,7 +652,6 @@
                             </option>
                         @endforeach
                     </select>
-
                 </div>
             </div>
 
@@ -664,12 +672,9 @@
             <div class="col-span-6 mt-0 sm:col-span-4">
                 <div class="relative mb-4 mt-6 w-full"
                     x-data="{ showDropdown: false }">
-                    {{-- <x-form_label for="possible_support_needed">
-                        <p>Possible Support Needed <span class="ml-2 text-xs">Previous selection:
-                                {{ $client->possible_support_needed }}</span></p>
-                    </x-form_label> --}}
-                        <x-form_label>
-                        Possible Support Needed: (previous selection: {{ str_replace(['[', ']', '"'], '', $client->possible_support_needed) }})
+                    <x-form_label>
+                        Possible Support Needed: (previous selection:
+                        {{ str_replace(['[', ']', '"'], '', $client->possible_support_needed) }})
                     </x-form_label>
                     <div class="rounded-md"
                         @click.away="showDropdown = false">
@@ -808,4 +813,24 @@
 
     // Get the country data used by intlTelInput
     const countryData = window.intlTelInputGlobals.getCountryData();
+</script>
+
+<script>
+    document.getElementById('otherGenderCheckbox').addEventListener('change', function() {
+        var otherGenderInput = document.getElementById('otherGenderInput');
+        if (this.checked) {
+            otherGenderInput.style.display = 'block';
+        } else {
+            otherGenderInput.style.display = 'none';
+        }
+    });
+
+    document.getElementById('otherPronounCheckbox').addEventListener('change', function() {
+        var otherPronounInput = document.getElementById('otherPronounInput');
+        if (this.checked) {
+            otherPronounInput.style.display = 'block';
+        } else {
+            otherPronounInput.style.display = 'none';
+        }
+    });
 </script>
