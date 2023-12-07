@@ -10,12 +10,14 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Scout\Searchable;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Activitylog\LogOptions;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Client extends Model
 {
     use Searchable;
     use HasFactory;
     use Notifiable;
+    use SoftDeletes;
     use LogsActivity;
     protected $fillable = [
         'client_code',
