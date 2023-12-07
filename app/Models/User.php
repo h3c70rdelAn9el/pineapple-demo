@@ -29,7 +29,7 @@ class User extends Authenticatable
     use TwoFactorAuthenticatable;
     use Searchable;
     use LogsActivity;
-    use SoftDeletes
+    use SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
