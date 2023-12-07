@@ -116,7 +116,7 @@ class TherapistsController extends Controller
         if ($user->admin == 1) {
             unset($validatedData['full']);
         } else {
-            if ($validatedData['space_for_new_clients'] == 0) {
+            if ($user->space_for_new_clients == 0) {
                 $validatedData['full'] = 1;
             }
         }
