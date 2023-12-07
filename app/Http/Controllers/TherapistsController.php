@@ -32,7 +32,7 @@ class TherapistsController extends Controller
 
         $totalClients = $clients->count();
 
-        $space_for_new_clients = $therapist->number_of_potential_clients - $totalClients;
+        $space_for_new_clients = (int)$therapist->number_of_potential_clients - $totalClients;
 
         return view('therapist.show', [
             'therapist' => $therapist,
