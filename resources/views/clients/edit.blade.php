@@ -306,7 +306,7 @@
                             x-transition:leave.duration.300ms
                             x-transition:ease-in-out
                             x-cloak>
-                                 <div class="select-input-div">
+                            <div class="select-input-div">
                                 <input class="select-input"
                                     id="they/them/theirs"
                                     name="pronouns[]"
@@ -324,7 +324,7 @@
                                 <label class="ml-2"
                                     for="she-her">she/her/hers</label>
                             </div>
-                             <div class="select-input-div">
+                            <div class="select-input-div">
                                 <input class="select-input"
                                     id="him"
                                     name="pronouns[]"
@@ -425,7 +425,7 @@
                                     for="heterosexual">Heterosexual</label>
                             </div>
                             {{-- homosexual --}}
-                             <div class="select-input-div">
+                            <div class="select-input-div">
                                 <input class="select-input"
                                     id="homosexual"
                                     name="sexual_orientation[]"
@@ -502,7 +502,7 @@
                                 <label class="ml-2"
                                     for="prefer-not-to-say-orientation">Prefer Not To Say</label>
                             </div>
-                             <div class="select-input-div">
+                            <div class="select-input-div">
                                 <input class="select-input"
                                     id="otherSexualOrientationCheckbox"
                                     name="sexual_orientation[]"
@@ -619,33 +619,24 @@
                             <label class="ml-2"
                                 for="prefer-not-to-say-ethnic">Prefer Not To Say</label>
                         </div>
-                        {{-- <div class="select-input-div">
+                        <div class="select-input-div">
                             <input class="select-input"
-                                id="other-ethnic"
+                                id="otherEthnicGroupCheckbox"
                                 name="ethnic_group[]"
                                 type="checkbox"
                                 value="Other">
                             <label class="ml-2"
-                                for="other-ethnic">Other</label>
-                        </div> --}}
-                            <div class="select-input-div">
-                                <input class="select-input"
-                                    id="otherEthnicGroupCheckbox"
-                                    name="ethnic_group[]"
-                                    type="checkbox"
-                                    value="Other">
-                                <label class="ml-2"
-                                    for="otherEthnicGroup">Other</label>
-                            </div>
+                                for="otherEthnicGroup">Other</label>
+                        </div>
 
-                            <div class="m-3 flex flex-row">
-                                <input
-                                    class="mr-0.5 mt-1 rounded-full transition duration-200 ease-in-out hover:bg-blue-500"
-                                    id="otherEthnicGroupInput"
-                                    name="otherEthnicGroup"
-                                    type="text"
-                                    style="display: none;">
-                            </div>
+                        <div class="m-3 flex flex-row">
+                            <input
+                                class="mr-0.5 mt-1 rounded-full transition duration-200 ease-in-out hover:bg-blue-500"
+                                id="otherEthnicGroupInput"
+                                name="otherEthnicGroup"
+                                type="text"
+                                style="display: none;">
+                        </div>
                     </div>
                 </div>
 
@@ -734,16 +725,71 @@
                             x-show="showDropdown"
                             x-transition.scale.origin.top
                             x-cloak>
-                            @foreach ($categories as $category)
-                                <label class="items-center p-2">
-                                    <input class="mb-0.5 rounded-md transition-all duration-300 hover:bg-blue-300"
+                            <div class="items-center p-2 flex flex-wrap">
+                                @foreach ($categories as $category)
+                                    <div class="m-2 mr-0.5 mt-1 rounded-full p-2">
+                                        <input
+                                            class="m-2 mr-0.5 mt-1 rounded-full p-2 transition duration-200 ease-in-out hover:cursor-pointer hover:bg-blue-400"
+                                            name="possible_support_needed[]"
+                                            type="checkbox"
+                                            value="{{ $category }}"
+                                            @if (is_array(old('possible_support_needed')) && in_array($category, old('possible_support_needed'))) checked @endif>
+                                        <label class=""
+                                            for="possible_support_needed">{{ $category }}</label>
+                                    </div>
+                                @endforeach
+
+                                <div class="select-input-div m-2 mr-0.5 mt-0.5 rounded-full p-2 ">
+                                    <input
+                                            class="m-2 mr-0.5 mt-1 rounded-full p-2 transition duration-200 ease-in-out hover:cursor-pointer hover:bg-blue-400"
+                                        id="otherPossibleSupportCheckbox"
                                         name="possible_support_needed[]"
                                         type="checkbox"
-                                        value="{{ $category }}"
-                                        @if (is_array(old('possible_support_needed')) && in_array($category, old('possible_support_needed'))) checked @endif>
-                                    {{ $category }}
-                                </label><br>
+                                        value="Other">
+                                    <label class="mb-0.5 ml-0.5"
+                                        for="otherPossibleSupport">Other</label>
+                                </div>
+
+                                <div class="m-3 flex flex-row">
+                                    <input
+                                        class="mr-0.5 mt-1 rounded-full "
+                                        id="otherPossibleSupportInput"
+                                        name="otherPossibleSupport"
+                                        type="text"
+                                        style="display: none;">
+                                </div>
+
+                            </div>
+                            {{-- @endforeach --}}
+                            {{-- @foreach ($categories as $category)
+                                <div class="m-3 flex flex-row">
+                                    <input
+                                        class="mr-0.5 mt-1 rounded-full transition duration-200 ease-in-out hover:bg-blue-500"
+                                        name="possible_support_needed[]"
+                                        type="checkbox"
+                                        value="{{ $category }}">
+                                    <label class=""
+                                        for="{{ $category }}">{{ $category }}</label>
+                                </div>
                             @endforeach
+                            <div class="select-input-div">
+                                <input class="select-input"
+                                    id="otherPossibleSupportCheckbox"
+                                    name="possible_support_needed[]"
+                                    type="checkbox"
+                                    value="Other">
+                                <label class="ml-2"
+                                    for="otherPossibleSupport">Other</label>
+                            </div>
+
+                            <div class="m-3 flex flex-row">
+                                <input
+                                    class="mr-0.5 mt-1 rounded-full transition duration-200 ease-in-out hover:bg-blue-500"
+                                    id="otherPossibleSupportInput"
+                                    name="otherPossibleSupport"
+                                    type="text"
+                                    style="display: none;">
+                            </div> --}}
                         </div>
                     </div>
                 </div>
@@ -887,4 +933,12 @@
         }
     });
 
+    document.getElementById('otherPossibleSupportCheckbox').addEventListener('change', function() {
+        var otherPossibleSupportInput = document.getElementById('otherPossibleSupportInput');
+        if (this.checked) {
+            otherPossibleSupportInput.style.display = 'block';
+        } else {
+            otherPossibleSupportInput.style.display = 'none';
+        }
+    });
 </script>
