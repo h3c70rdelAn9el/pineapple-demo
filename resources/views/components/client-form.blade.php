@@ -663,7 +663,7 @@
     </select>
 
     {{-- possible_support_needed --}}
-    <div class="col-span-6 mt-0 sm:col-span-4">
+    {{-- <div class="col-span-6 mt-0 sm:col-span-4">
         <div class="relative mb-4 mt-6 w-full"
             x-data="{ showDropdown: false }">
             <x-form_label for="possible_support_needed">
@@ -705,7 +705,105 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
+        <div class="col-span-6 mt-0 sm:col-span-4">
+                <div class="relative mb-4 mt-6 w-full"
+                    x-data="{ showDropdown: false }">
+                    <x-form_label>
+                        Possible Support Needed:
+                    </x-form_label>
+                    <div class="rounded-md"
+                        @click.away="showDropdown = false">
+                        <div class="flex w-full justify-between rounded-md border border-blue-300 bg-gray-100 p-1.5">
+                            <button class="flex w-full flex-row justify-between"
+                                type="button"
+                                @click="showDropdown = !showDropdown">
+                                <p class="ml-1 p-1">Select Options</p>
+                                <svg class="mt-1 h-[18px] w-[18px] text-gray-700"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="rounded-md bg-gray-50 md:flex md:flex-wrap"
+                            x-show="showDropdown"
+                            x-transition.scale.origin.top
+                            x-cloak>
+                            <div class="items-center p-2 flex flex-wrap">
+                                @foreach ($categories as $category)
+                                    <div class="m-2 mr-0.5 mt-1 rounded-full p-2">
+                                        <input
+                                            class="m-2 mr-0.5 mt-1 rounded-full p-2 transition duration-200 ease-in-out hover:cursor-pointer hover:bg-blue-400"
+                                            name="possible_support_needed[]"
+                                            type="checkbox"
+                                            value="{{ $category }}"
+                                            @if (is_array(old('possible_support_needed')) && in_array($category, old('possible_support_needed'))) checked @endif>
+                                        <label class=""
+                                            for="possible_support_needed">{{ $category }}</label>
+                                    </div>
+                                @endforeach
+
+                                <div class="select-input-div m-2 mr-0.5 mt-0.5 rounded-full p-2 ">
+                                    <input
+                                            class="m-2 mr-0.5 mt-1 rounded-full p-2 transition duration-200 ease-in-out hover:cursor-pointer hover:bg-blue-400"
+                                        id="otherPossibleSupportCheckbox"
+                                        name="possible_support_needed[]"
+                                        type="checkbox"
+                                        value="Other">
+                                    <label class="mb-0.5 ml-0.5"
+                                        for="otherPossibleSupport">Other</label>
+                                </div>
+
+                                <div class="m-3 flex flex-row">
+                                    <input
+                                        class="mr-0.5 mt-1 rounded-full "
+                                        id="otherPossibleSupportInput"
+                                        name="otherPossibleSupport"
+                                        type="text"
+                                        style="display: none;">
+                                </div>
+
+                            </div>
+                            {{-- @endforeach --}}
+                            {{-- @foreach ($categories as $category)
+                                <div class="m-3 flex flex-row">
+                                    <input
+                                        class="mr-0.5 mt-1 rounded-full transition duration-200 ease-in-out hover:bg-blue-500"
+                                        name="possible_support_needed[]"
+                                        type="checkbox"
+                                        value="{{ $category }}">
+                                    <label class=""
+                                        for="{{ $category }}">{{ $category }}</label>
+                                </div>
+                            @endforeach
+                            <div class="select-input-div">
+                                <input class="select-input"
+                                    id="otherPossibleSupportCheckbox"
+                                    name="possible_support_needed[]"
+                                    type="checkbox"
+                                    value="Other">
+                                <label class="ml-2"
+                                    for="otherPossibleSupport">Other</label>
+                            </div>
+
+                            <div class="m-3 flex flex-row">
+                                <input
+                                    class="mr-0.5 mt-1 rounded-full transition duration-200 ease-in-out hover:bg-blue-500"
+                                    id="otherPossibleSupportInput"
+                                    name="otherPossibleSupport"
+                                    type="text"
+                                    style="display: none;">
+                            </div> --}}
+                        </div>
+                    </div>
+                </div>
+            </div>
 
     {{-- client_contribution --}}
     <x-form_label for="client_contribution">
@@ -843,6 +941,15 @@
             otherEthnicGroupInput.style.display = 'block';
         } else {
             otherEthnicGroupInput.style.display = 'none';
+        }
+    });
+
+        document.getElementById('otherPossibleSupportCheckbox').addEventListener('change', function() {
+        var otherPossibleSupportInput = document.getElementById('otherPossibleSupportInput');
+        if (this.checked) {
+            otherPossibleSupportInput.style.display = 'block';
+        } else {
+            otherPossibleSupportInput.style.display = 'none';
         }
     });
 </script>
