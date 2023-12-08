@@ -189,73 +189,69 @@ class ClientController extends Controller
         $categories = $this->getCategories();
         $client = new Client();
 
-        // $selectedGenders = $request->input('gender');
-        // if (is_array($selectedGenders) && !empty($selectedGenders)) {
-        //     $genderString = implode(', ', $selectedGenders);
-        // } else {
-        //     $genderString = '';
-        // }
+        $selectedOrientations = $request->input('sexual_orientation');
+        $otherSexualOrientation = $request->input('otherSexualOrientation');
+        $orientationString = "";
+        if (is_array($selectedOrientations)) {
+            if (in_array('Other', $selectedOrientations) && $otherSexualOrientation) {
+                $orientationString = implode(', ', array_map(function ($value) use ($otherSexualOrientation) {
+                    return $value == 'Other' ? $otherSexualOrientation : $value;
+                }, $selectedOrientations));
+            } else {
+                $orientationString = implode(', ', $selectedOrientations);
+            }
+        } else {
+            $orientationString = $selectedOrientations;
+        }
+
         $selectedPronouns = $request->input('pronouns');
         $otherPronoun = $request->input('otherPronoun');
         $pronounsString = "";
-
         if (is_array($selectedPronouns)) {
-            if (($key = array_search('Other', $selectedPronouns)) !== false && $otherPronoun) {
-                $selectedPronouns[$key] = $otherPronoun;
+            if (in_array('Other', $selectedPronouns) && $otherPronoun) {
+                $pronounsString = implode(', ', array_map(function ($value) use ($otherPronoun) {
+                    return $value == 'Other' ? $otherPronoun : $value;
+                }, $selectedPronouns));
+            } else {
+                $pronounsString = implode(', ', $selectedPronouns);
             }
-            $client->pronouns = implode(', ', $selectedPronouns);
         } else {
-            $client->pronouns = $client->pronouns;
+            $pronounsString = $selectedPronouns;
         }
 
         $selectedGenders = $request->input('gender');
         $otherGender = $request->input('otherGender');
         $genderString = "";
-
         if (is_array($selectedGenders)) {
-            if (($key = array_search('Other', $selectedGenders)) !== false && $otherGender) {
-                $selectedGenders[$key] = $otherGender;
+            if (in_array('Other', $selectedGenders) && $otherGender) {
+                $genderString = implode(', ', array_map(function ($value) use ($otherGender) {
+                    return $value == 'Other' ? $otherGender : $value;
+                }, $selectedGenders));
+            } else {
+                $genderString = implode(', ', $selectedGenders);
             }
-            $client->gender = implode(', ', $selectedGenders);
         } else {
-            $client->gender = $client->gender;
+            $genderString = $selectedGenders;
         }
 
-        $selectedOrientations = $request->input('sexual_orientation');
-        $otherSexualOrientation = $request->input('otherSexualOrientation');
-        $orientationString = "";
-        if (is_array($selectedOrientations)) {
-            if (($key = array_search('Other', $selectedOrientations)) !== false && $otherSexualOrientation) {
-                $selectedOrientations[$key] = $otherSexualOrientation;
-            }
-            $client->sexual_orientation = implode(', ', $selectedOrientations);
-        } else {
-            $client->sexual_orientation = $client->sexual_orientation;
-        }
-
-        $selectedEthnicGroup = $request->input('ethnic_group');
+        $selectedEthnicGroups = $request->input('ethnic_group');
         $otherEthnicGroup = $request->input('otherEthnicGroup');
         $ethnicGroupString = "";
 
-        if (is_array($selectedEthnicGroup)) {
-            if (($key = array_search('Other', $selectedEthnicGroup)) !== false && $otherEthnicGroup) {
-                $selectedEthnicGroup[$key] = $otherEthnicGroup;
+        if (is_array($selectedEthnicGroups)) {
+            if (in_array('Other', $selectedEthnicGroups) && $otherEthnicGroup) {
+                $ethnicGroupString = implode(', ', array_map(function ($value) use ($otherEthnicGroup) {
+                    return $value == 'Other' ? $otherEthnicGroup : $value;
+                }, $selectedEthnicGroups));
+            } else {
+                $ethnicGroupString = implode(', ', $selectedEthnicGroups);
             }
-            $client->ethnic_group = implode(', ', $selectedEthnicGroup);
         } else {
-            $client->ethnic_group = $client->ethnic_group;
-        }
-
-        // $client->save();
-
-        $selectedEthnicGroups = $request->input('ethnic_group');
-        if (is_array($selectedEthnicGroups) && !empty($selectedEthnicGroups)) {
-            $ethnicGroupString = implode(', ', $selectedEthnicGroups);
-        } else {
-            $ethnicGroupString = '';
+            $ethnicGroupString = $selectedEthnicGroups;
         }
 
         // do the same as above for contact_method
+
         $selectedContactMethods = $request->input('contact_method');
         $contactMethodString = implode(', ', $selectedContactMethods);
         if (is_array($request->contact_method) && !empty($request->contact_method)) {
@@ -271,45 +267,46 @@ class ClientController extends Controller
             $possibleSupportNeededString = '';
         }
 
-        $c = new Client();
-        $c->client_code = $request->client_code;
-        $c->legal_name = $request->legal_name;
-        $c->preferred_name = $request->preferred_name;
-        $c->sexual_orientation = $request->sexual_orientation;
+        // $c = new Client();
+        $client->client_code = $request->client_code;
+        $client->legal_name = $request->legal_name;
+        $client->preferred_name = $request->preferred_name;
+        // $c->sexual_orientation = $request->sexual_orientation;
         // $c->ethnic_group = $request->ethnic_group;
 
-        $c->home_address_line_1 = $request->home_address_line_1;
-        $c->home_address_line_2 = $request->home_address_line_2;
-        $c->home_address_city = $request->home_address_city;
-        $c->home_address_state = $request->home_address_state;
-        $c->home_address_zip = $request->home_address_zip;
-        $c->home_address_country = $request->home_address_country;
-        $c->health_coverage_provider = $request->health_coverage_provider;
-        $c->health_coverage_number = $request->health_coverage_number;
-        $c->health_coverage_expiration = $request->health_coverage_expiration;
-        $c->previous_therapy = $request->previous_therapy;
-        $c->contact_method = $contactMethodString;
-        $c->possible_support_needed = $possibleSupportNeededString;
-        $c->preferred_language = $request->preferred_language;
-        $c->additional_notes = $request->additional_notes;
-        // $c->pronouns = $request->pronouns;
+        $client->home_address_line_1 = $request->home_address_line_1;
+        $client->home_address_line_2 = $request->home_address_line_2;
+        $client->home_address_city = $request->home_address_city;
+        $client->home_address_state = $request->home_address_state;
+        $client->home_address_zip = $request->home_address_zip;
+        $client->home_address_country = $request->home_address_country;
+        $client->health_coverage_provider = $request->health_coverage_provider;
+        $client->health_coverage_number = $request->health_coverage_number;
+        $client->health_coverage_expiration = $request->health_coverage_expiration;
+        $client->previous_therapy = $request->previous_therapy;
 
-        $c->email = $request->email;
-        $c->phone = $request->phone;
-        $c->user_id = $request->user_id;
-        $c->client_contribution = $request->client_contribution;
-        $c->gender = $genderString;
-        $c->ethnic_group = $ethnicGroupString;
-        $c->pronouns = $pronounsString;
-        $c->max_sessions = $request->max_sessions;
+        $client->preferred_language = $request->preferred_language;
+        $client->additional_notes = $request->additional_notes;
+        // $c->pronouns = $request->pronouns;
+        $client->email = $request->email;
+        $client->phone = $request->phone;
+        $client->user_id = $request->user_id;
+        $client->client_contribution = $request->client_contribution;
+        $client->gender = $genderString;
+        $client->ethnic_group = $ethnicGroupString;
+        $client->pronouns = $pronounsString;
+        $client->contact_method = $contactMethodString;
+        $client->possible_support_needed = $possibleSupportNeededString;
+        $client->sexual_orientation = $orientationString;
+        $client->max_sessions = $request->max_sessions;
         $therapist = User::find($request->user_id);
         $therapist->notify(new NewClientNotification());
-        $c->previous_therapy = $request->previous_therapy ?? 0;
+        $client->previous_therapy = $request->previous_therapy ?? 0;
         // $c->ethnic_group = json_encode($ethnicGroupArray);
 
         // $c->user_id = $user->id;
-
-        $c->save();
+        // dd($client->gender);
+        $client->save();
         return redirect()->route('dashboard');
     }
 
