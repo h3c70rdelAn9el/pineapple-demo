@@ -261,11 +261,27 @@ class ClientController extends Controller
         }
 
         $selectedPossibleSupportNeeded = $request->input('possible_support_needed');
-        if (is_array($selectedPossibleSupportNeeded) && !empty($selectedPossibleSupportNeeded)) {
-            $possibleSupportNeededString = implode(', ', $selectedPossibleSupportNeeded);
+        $otherPossibleSupport = $request->input('otherPossibleSupport');
+        $possibleSupportNeededString = "";
+
+        if (is_array($selectedPossibleSupportNeeded)) {
+            if (in_array('Other', $selectedPossibleSupportNeeded) && $otherPossibleSupport) {
+                $possibleSupportNeededString = implode(', ', array_map(function ($value) use ($otherPossibleSupport) {
+                    return $value == 'Other' ? $otherPossibleSupport : $value;
+                }, $selectedPossibleSupportNeeded));
+            } else {
+                $possibleSupportNeededString = implode(', ', $selectedPossibleSupportNeeded);
+            }
         } else {
-            $possibleSupportNeededString = '';
+            $possibleSupportNeededString = $selectedPossibleSupportNeeded;
         }
+
+
+        // if (is_array($selectedPossibleSupportNeeded) && !empty($selectedPossibleSupportNeeded)) {
+        //     $possibleSupportNeededString = implode(', ', $selectedPossibleSupportNeeded);
+        // } else {
+        //     $possibleSupportNeededString = '';
+        // }
 
         // $c = new Client();
         $client->client_code = $request->client_code;
@@ -354,6 +370,7 @@ class ClientController extends Controller
         } else {
             $client->pronouns = $client->pronouns;
         }
+
         $selectedGenders = $request->input('gender');
         $otherGender = $request->input('otherGender');
         $genderString = "";
@@ -365,6 +382,19 @@ class ClientController extends Controller
             $client->gender = implode(', ', $selectedGenders);
         } else {
             $client->gender = $client->gender;
+        }
+
+        $selectedPossibleSupportNeeded = $request->input('possible_support_needed');
+        $otherPossibleSupport = $request->input('otherPossibleSupport');
+        $possibleSupportNeededString = "";
+
+        if (is_array($selectedPossibleSupportNeeded)) {
+            if (($key = array_search('Other', $selectedPossibleSupportNeeded)) !== false && $otherPossibleSupport) {
+                $selectedPossibleSupportNeeded[$key] = $otherPossibleSupport;
+            }
+            $client->possible_support_needed = implode(', ', $selectedPossibleSupportNeeded);
+        } else {
+            $client->possible_support_needed = $client->possible_support_needed;
         }
 
         $client->save();
@@ -381,8 +411,6 @@ class ClientController extends Controller
         } else {
             $client->ethnic_group = $client->ethnic_group;
         }
-        // gender
-
 
         $client->save();
 
@@ -394,8 +422,8 @@ class ClientController extends Controller
             $contactMethodString = $client->contact_method;
         }
 
-        $selectedPossibleSupportNeeded = $request->input('possible_support_needed');
-        $possibleSupportNeededString = is_array($selectedPossibleSupportNeeded) && !empty($selectedPossibleSupportNeeded) ? implode(', ', $selectedPossibleSupportNeeded) : $client->possible_support_needed;
+        // $selectedPossibleSupportNeeded = $request->input('possible_support_needed');
+        // $possibleSupportNeededString = is_array($selectedPossibleSupportNeeded) && !empty($selectedPossibleSupportNeeded) ? implode(', ', $selectedPossibleSupportNeeded) : $client->possible_support_needed;
 
         $client->client_code = $request->client_code;
         $client->legal_name = $request->legal_name;
@@ -511,6 +539,7 @@ class ClientController extends Controller
             $genders = $this->getGenders();
             $sexualOrientations = $this->getSexualOrientations();
             $pronouns = $this->getPronouns();
+            // dd($client);
 
 
             return view('clients.edit')->with(['client' => $client, 'countries' => $countries, 'categories' => $categories, 'states' => $states, 'id' => $id, 'therapist' => $therapist, 'therapists' => $therapists, 'user_id' => $user_id, 'genders' => $genders, 'sexualOrientations' => $sexualOrientations, 'pronouns' => $pronouns]);
