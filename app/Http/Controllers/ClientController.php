@@ -318,7 +318,9 @@ class ClientController extends Controller
         $client->max_sessions = $request->max_sessions;
         $therapist = User::find($request->user_id);
         $therapist->notify(new NewClientNotification());
+
         $client->previous_therapy = $request->previous_therapy ?? 0;
+
         // $c->ethnic_group = json_encode($ethnicGroupArray);
 
         // $c->user_id = $user->id;
