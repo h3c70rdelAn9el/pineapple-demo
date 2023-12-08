@@ -250,16 +250,6 @@ class ClientController extends Controller
             $ethnicGroupString = $selectedEthnicGroups;
         }
 
-        // do the same as above for contact_method
-
-        $selectedContactMethods = $request->input('contact_method');
-        $contactMethodString = implode(', ', $selectedContactMethods);
-        if (is_array($request->contact_method) && !empty($request->contact_method)) {
-            $contactMethodString = implode(', ', $request->contact_method);
-        } else {
-            $contactMethodString = '';
-        }
-
         $selectedPossibleSupportNeeded = $request->input('possible_support_needed');
         $otherPossibleSupport = $request->input('otherPossibleSupport');
         $possibleSupportNeededString = "";
@@ -275,6 +265,17 @@ class ClientController extends Controller
         } else {
             $possibleSupportNeededString = $selectedPossibleSupportNeeded;
         }
+
+        // do the same as above for contact_method
+
+        $selectedContactMethods = $request->input('contact_method');
+        $contactMethodString = implode(', ', $selectedContactMethods);
+        if (is_array($request->contact_method) && !empty($request->contact_method)) {
+            $contactMethodString = implode(', ', $request->contact_method);
+        } else {
+            $contactMethodString = '';
+        }
+
 
 
         // if (is_array($selectedPossibleSupportNeeded) && !empty($selectedPossibleSupportNeeded)) {
