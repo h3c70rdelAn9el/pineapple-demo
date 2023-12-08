@@ -220,15 +220,6 @@
                 </div>
                 <div class="select-input-div">
                     <input class="select-input"
-                        id="other"
-                        name="gender[]"
-                        type="checkbox"
-                        value="other">
-                    <label class="ml-2"
-                        for="other">Other</label>
-                </div>
-                <div class="select-input-div">
-                    <input class="select-input"
                         id="prefer-not-to-say"
                         name="gender[]"
                         type="checkbox"
@@ -236,89 +227,281 @@
                     <label class="ml-2"
                         for="prefer-not-to-say">Prefer Not To Say</label>
                 </div>
+                <div class="select-input-div">
+                    <input class="select-input"
+                        id="otherGenderCheckbox"
+                        name="gender[]"
+                        type="checkbox"
+                        value="Other">
+                    <label class="ml-2"
+                        for="otherGender">Other</label>
+                </div>
 
-                {{-- i need the above for Trnasgender, Cisgender, Bigender, Non-Binary, Other, Prefer Not To Say --}}
-
-                {{-- TODO: MAKE THIS WORK: --}}
-                {{-- @foreach ($genders as $gender)
-                    <div class="p-1">
-                        <input type="checkbox"
-                        class="rounded  ml-5 hover:bg-blue-400 hover:cursor-pointer"
-                            :id="$gender"
-                            :name="$gender[]"
-                            :value="$gender"
-                            x-on:click="('{{ $gender }}')">
-                        <label class="ml-[2px] mt-1"
-                            for="$gender">{{ $gender }}
-                        </label>
-                    </div>
-                @endforeach --}}
+                <div class="m-3 flex flex-row">
+                    <input class="mr-0.5 mt-1 rounded-full transition duration-200 ease-in-out hover:bg-blue-500"
+                        id="otherGenderInput"
+                        name="otherGender"
+                        type="text"
+                        style="display: none;">
+                </div>
             </div>
         </div>
 
         {{-- Pronouns --}}
-        {{-- <x-multi-select id="pronouns"
-            name="pronouns"
-            label="Pronouns"
-            :options="$pronouns"></x-multi-select> --}}
+        <div class="col-span-6 mt-0 sm:col-span-4">
+            <div class="my-4 flex flex-col"
+                x-data="{ openPronouns: false, selectedPronouns: [] }">
+                <x-form_label>
+                    Pronoun(s):
+                </x-form_label>
+                <button
+                    class="-m-0.5 flex w-full justify-between rounded-md border border-blue-300 bg-gray-100 p-2 text-gray-700 focus:border-blue-500"
+                    type="button"
+                    @click="openPronouns = !openPronouns">
+                    <span class="ml-0"
+                        x-text="selectedPronouns.length > 0 ? selectedPronouns.join(', ') : 'Select Options'"></span>
+                    <svg class="mt-0.5 h-[18px] w-[18px] text-gray-800"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                </button>
+                <div class="-ml-[2px] -mt-2 mr-[2px] rounded-md rounded-t-none border border-b border-r border-t-0 border-blue-500 bg-gray-100 py-4 md:flex md:flex-wrap"
+                    x-show="openPronouns"
+                    x-transition.scale.origin.top
+                    x-transition:enter.duration.300ms
+                    x-transition:enter.ease-in-out
+                    x-transition:leave.duration.300ms
+                    x-transition:ease-in-out
+                    x-cloak>
+                    <div class="select-input-div">
+                        <input class="select-input"
+                            id="they/them/theirs"
+                            name="pronouns[]"
+                            type="checkbox"
+                            value="They/Them/Theirs">
+                        <label class="ml-2"
+                            for="they-them">They/Them/Theirs</label>
+                    </div>
+                    <div class="select-input-div">
+                        <input class="select-input"
+                            id="she-her"
+                            name="pronouns[]"
+                            type="checkbox"
+                            value="she/her/hers">
+                        <label class="ml-2"
+                            for="she-her">she/her/hers</label>
+                    </div>
+                    <div class="select-input-div">
+                        <input class="select-input"
+                            id="him"
+                            name="pronouns[]"
+                            type="checkbox"
+                            value="per/per/pers">
+                        <label class="ml-2">per/per/pers</label>
+                    </div>
+                    <div class="select-input-div">
+                        <input class="select-input"
+                            id="he-him"
+                            name="pronouns[]"
+                            type="checkbox"
+                            value="he/him/his">
+                        <label class="ml-2"
+                            for="he-him">he/him/his</label>
+                    </div>
 
-        {{-- make a mulitple selecte field --}}
-        <x-form_label for="pronouns">
-            Pronouns
-        </x-form_label>
-        <select class="peer mt-2 w-full rounded-md border-b-2 border-blue-200 p-3 ring-0"
-            id="pronouns"
-            name="pronouns"
-            type="text">
-            <option value=""
-                disabled
-                selected
-                hidden>Select Pronouns</option>
-            <option value="She/Her/Her/Hers/Herself">She/Her/Her/Hers/Herself
-            </option>
-            <option value="He/Him/His/His/Himself">He/Him/His/His/Himself</option>
-            <option value="They/Them/Their/Theirs/Themselves">They/Them/Their/Theirs/Themselves</option>
-            <option value="Ze/Hir/Hir/Hirs/Hirself">Ze/Hir/Hir/Hirs/Hirself</option>
-            <option value="Ey/Em/Eir/Eirs/Eirself">Ey/Em/Eir/Eirs/Eirself
-            </option value="Per/Per/Pers/Perself/Perse">
-            <option>Per/Per/Pers/Perself/Perse
-            </option>
-            <option value="Ve/Ver/Vis/Verself/Veself">Ve/Ver/Vis/Verself/Veself
-            </option>
-            <option value="Xe/Xem/Xyr/Xyrs/Xemself">Xe/Xem/Xyr/Xyrs/Xemself
-            </option>
-            <option value="Zie/Zim/Zir/Zirs/Zirself">Zie/Zim/Zir/Zirs/Zirself
-            </option>
-            <option value="Other">Other</option>
-            <option value="Prefer Not To Say">Prefer Not to Say</option>
-        </select>
+                    <div class="select-input-div">
+                        <input class="select-input"
+                            id="her"
+                            name="pronouns[]"
+                            type="checkbox"
+                            value="ze/hir/hirs">
+                        <label class="ml-2"
+                            for="her">ze/hir/hirs</label>
+                    </div>
+
+                    <div class="select-input-div">
+                        <input class="select-input"
+                            id="prefer-not-to-say-pronouns"
+                            name="pronouns[]"
+                            type="checkbox"
+                            value="Prefer Not To Say">
+                        <label class="ml-2"
+                            for="prefer-not-to-say-pronouns">Prefer Not To Say</label>
+                    </div>
+                    <div class="select-input-div">
+                        <input class="select-input"
+                            id="otherPronounCheckbox"
+                            name="pronouns[]"
+                            type="checkbox"
+                            value="Other">
+                        <label class="ml-2"
+                            for="otherPronoun">Other</label>
+                    </div>
+
+                    <div class="m-3 flex flex-row">
+                        <input class="mr-0.5 mt-1 rounded-full transition duration-200 ease-in-out hover:bg-blue-500"
+                            id="otherPronounInput"
+                            name="otherPronoun"
+                            type="text"
+                            style="display: none;">
+                    </div>
+                </div>
+            </div>
+        </div>
 
         {{-- Sexual Orientation --}}
-        <x-form_label for="sexual_orientation">
-            Sexual Orientation
-        </x-form_label>
-        <select class="peer mt-2 w-full rounded-md border-b-2 border-blue-200 p-3 capitalize ring-0"
-            id="sexual_orientation"
-            name="sexual_orientation"
-            type="text">
-            <option class="text-gray-600"
-                value=""
-                disabled
-                selected
-                hidden>Select Orientation</option>
-            <option>bisexual</option>
-            <option>gay/lesbian</option>
-            <option>heterosexaul/straight</option>
-            <option>don't know</option>
-            <option>prefer not to say</option>
-            <option>Other</option>
-        </select>
+        <div class="col-span-6 mt-0 sm:col-span-4">
+            <div class="my-4 flex flex-col"
+                x-data="{ openSexualOrientation: false, selectedSexualOrientation: [] }">
+                <x-form_label>
+                    Sexual Orientation(s):
+                </x-form_label>
+                <button
+                    class="-m-0.5 flex w-full justify-between rounded-md border border-blue-300 bg-gray-100 p-2 text-gray-700 focus:border-blue-500"
+                    type="button"
+                    @click="openSexualOrientation = !openSexualOrientation">
+                    <span class="ml-0"
+                        x-text="selectedSexualOrientation.length > 0 ? selectedSexualOrientation.join(', ') : 'Select Options'"></span>
+                    <svg class="mt-0.5 h-[18px] w-[18px] text-gray-800"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                </button>
+                <div class="-ml-[2px] -mt-2 mr-[2px] rounded-md rounded-t-none border border-b border-r border-t-0 border-blue-500 bg-gray-100 py-4 md:flex md:flex-wrap"
+                    x-show="openSexualOrientation"
+                    x-transition.scale.origin.top
+                    x-transition:enter.duration.300ms
+                    x-transition:enter.ease-in-out
+                    x-transition:leave.duration.300ms
+                    x-transition:ease-in-out
+                    x-cloak>
+                    <div class="select-input-div">
+                        <input class="select-input"
+                            id="heterosexual"
+                            name="sexual_orientation[]"
+                            type="checkbox"
+                            value="Heterosexual">
+                        <label class="ml-2"
+                            for="heterosexual">Heterosexual</label>
+                    </div>
+                    {{-- homosexual --}}
+                    <div class="select-input-div">
+                        <input class="select-input"
+                            id="homosexual"
+                            name="sexual_orientation[]"
+                            type="checkbox"
+                            value="Homosexual">
+                        <label class="ml-2"
+                            for="homosexual">Homosexual</label>
+                    </div>
+
+                    <div class="select-input-div">
+                        <input class="select-input"
+                            id="bisexual"
+                            name="sexual_orientation[]"
+                            type="checkbox"
+                            value="Bisexual">
+                        <label class="ml-2"
+                            for="bisexual">Bisexual</label>
+                    </div>
+                    {{-- pansexual --}}
+                    <div class="select-input-div">
+                        <input class="select-input"
+                            id="pansexual"
+                            name="sexual_orientation[]"
+                            type="checkbox"
+                            value="Pansexual">
+                        <label class="ml-2"
+                            for="pansexual">Pansexual</label>
+                    </div>
+                    {{-- asexual --}}
+                    <div class="select-input-div">
+                        <input class="select-input"
+                            id="asexual"
+                            name="sexual_orientation[]"
+                            type="checkbox"
+                            value="Asexual">
+                        <label class="ml-2"
+                            for="asexual">Asexual</label>
+                    </div>
+                    {{-- demisexual --}}
+                    <div class="select-input-div">
+                        <input class="select-input"
+                            id="demisexual"
+                            name="sexual_orientation[]"
+                            type="checkbox"
+                            value="Demisexual">
+                        <label class="ml-2"
+                            for="demisexual">Demisexual</label>
+                    </div>
+                    <div class="select-input-div">
+                        <input class="select-input"
+                            id="queer"
+                            name="sexual_orientation[]"
+                            type="checkbox"
+                            value="Queer">
+                        <label class="ml-2"
+                            for="queer">Queer</label>
+                    </div>
+                    {{-- questioning --}}
+                    <div class="select-input-div">
+                        <input class="select-input"
+                            id="questioning"
+                            name="sexual_orientation[]"
+                            type="checkbox"
+                            value="Questioning">
+                        <label class="ml-2"
+                            for="questioning">Questioning</label>
+                    </div>
+                    <div class="select-input-div">
+                        <input class="select-input"
+                            id="prefer-not-to-say-orientation"
+                            name="sexual_orientation[]"
+                            type="checkbox"
+                            value="Prefer Not To Say">
+                        <label class="ml-2"
+                            for="prefer-not-to-say-orientation">Prefer Not To Say</label>
+                    </div>
+                    <div class="select-input-div">
+                        <input class="select-input"
+                            id="otherSexualOrientationCheckbox"
+                            name="sexual_orientation[]"
+                            type="checkbox"
+                            value="Other">
+                        <label class="ml-2"
+                            for="otherSexualOrientation">Other</label>
+                    </div>
+
+                    <div class="m-3 flex flex-row">
+                        <input class="mr-0.5 mt-1 rounded-full transition duration-200 ease-in-out hover:bg-blue-500"
+                            id="otherSexualOrientationInput"
+                            name="otherSexualOrientation"
+                            type="text"
+                            style="display: none;">
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <div class="my-4 flex flex-col"
             x-data="{ openEthnicGroup: false, selectedEthnicGroups: [] }">
-            <x-jet-label>Ethnic Group</x-jet-label>
+            <x-form_label>
+                Ethnic Group(s):
+            </x-form_label>
             <button
-                class="-m-0.5 flex w-full justify-between rounded-md border border-blue-300 bg-gray-100 p-3 text-gray-700 focus:border-blue-500"
+                class="-m-0.5 flex w-full justify-between rounded-md border border-blue-300 bg-gray-100 p-2 text-gray-700 focus:border-blue-500"
                 type="button"
                 @click="openEthnicGroup = !openEthnicGroup">
                 <span class="ml-0"
@@ -408,14 +591,21 @@
                 </div>
                 <div class="select-input-div">
                     <input class="select-input"
-                        id="other-ethnic"
+                        id="otherEthnicGroupCheckbox"
                         name="ethnic_group[]"
                         type="checkbox"
                         value="Other">
                     <label class="ml-2"
-                        for="other-ethnic">Other</label>
+                        for="otherEthnicGroup">Other</label>
                 </div>
 
+                <div class="m-3 flex flex-row">
+                    <input class="mr-0.5 mt-1 rounded-full transition duration-200 ease-in-out hover:bg-blue-500"
+                        id="otherEthnicGroupInput"
+                        name="otherEthnicGroup"
+                        type="text"
+                        style="display: none;">
+                </div>
             </div>
         </div>
 
@@ -431,7 +621,7 @@
                 disabled
                 selected
                 hidden>Select State</option>
-                <option value="">N/A</option>
+            <option value="">N/A</option>
 
             @foreach ($states as $state)
                 <option value="{{ $state }}">{{ $state }}</option>
@@ -473,16 +663,54 @@
     </select>
 
     {{-- possible_support_needed --}}
-    <x-multi-select id="possible_support_needed"
-        name="Possible Support Needed"
-        label="Possible Support Needed"
-        :options="$categories" />
-
-             <div class="col-span-6 mt-0 sm:col-span-4">
+    {{-- <div class="col-span-6 mt-0 sm:col-span-4">
+        <div class="relative mb-4 mt-6 w-full"
+            x-data="{ showDropdown: false }">
+            <x-form_label for="possible_support_needed">
+                <p>Possible Support Needed: <span class="ml-2 text-xs"></p>
+            </x-form_label>
+            <div class="rounded-md"
+                @click.away="showDropdown = false">
+                <div class="flex w-full justify-between rounded-md border border-blue-300 bg-gray-100 p-1.5">
+                    <button class="flex w-full flex-row justify-between"
+                        type="button"
+                        @click="showDropdown = !showDropdown">
+                        <p class="ml-1 p-1">Select Options</p>
+                        <svg class="mt-1 h-[18px] w-[18px] text-gray-700"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                </div>
+                <div class="rounded-md bg-gray-50 md:flex md:flex-wrap"
+                    x-show="showDropdown"
+                    x-transition.scale.origin.top
+                    x-cloak>
+                    @foreach ($categories as $category)
+                        <label class="items-center p-2">
+                            <input class="mb-0.5 rounded-md transition-all duration-300 hover:bg-blue-300"
+                                name="possible_support_needed[]"
+                                type="checkbox"
+                                value="{{ $category }}"
+                                @if (is_array(old('possible_support_needed')) && in_array($category, old('possible_support_needed'))) checked @endif>
+                            {{ $category }}
+                        </label><br>
+                    @endforeach
+                </div>
+            </div>
+        </div>
+    </div> --}}
+        <div class="col-span-6 mt-0 sm:col-span-4">
                 <div class="relative mb-4 mt-6 w-full"
                     x-data="{ showDropdown: false }">
-                    <x-form_label for="possible_support_needed">
-                        <p>Possible Support Needed: <span class="ml-2 text-xs"></p>
+                    <x-form_label>
+                        Possible Support Needed:
                     </x-form_label>
                     <div class="rounded-md"
                         @click.away="showDropdown = false">
@@ -507,16 +735,71 @@
                             x-show="showDropdown"
                             x-transition.scale.origin.top
                             x-cloak>
-                            @foreach ($categories as $category)
-                                <label class="items-center p-2">
-                                    <input class="mb-0.5 rounded-md transition-all duration-300 hover:bg-blue-300"
+                            <div class="items-center p-2 flex flex-wrap">
+                                @foreach ($categories as $category)
+                                    <div class="m-2 mr-0.5 mt-1 rounded-full p-2">
+                                        <input
+                                            class="m-2 mr-0.5 mt-1 rounded-full p-2 transition duration-200 ease-in-out hover:cursor-pointer hover:bg-blue-400"
+                                            name="possible_support_needed[]"
+                                            type="checkbox"
+                                            value="{{ $category }}"
+                                            @if (is_array(old('possible_support_needed')) && in_array($category, old('possible_support_needed'))) checked @endif>
+                                        <label class=""
+                                            for="possible_support_needed">{{ $category }}</label>
+                                    </div>
+                                @endforeach
+
+                                <div class="select-input-div m-2 mr-0.5 mt-0.5 rounded-full p-2 ">
+                                    <input
+                                            class="m-2 mr-0.5 mt-1 rounded-full p-2 transition duration-200 ease-in-out hover:cursor-pointer hover:bg-blue-400"
+                                        id="otherPossibleSupportCheckbox"
                                         name="possible_support_needed[]"
                                         type="checkbox"
-                                        value="{{ $category }}"
-                                        @if (is_array(old('possible_support_needed')) && in_array($category, old('possible_support_needed'))) checked @endif>
-                                    {{ $category }}
-                                </label><br>
+                                        value="Other">
+                                    <label class="mb-0.5 ml-0.5"
+                                        for="otherPossibleSupport">Other</label>
+                                </div>
+
+                                <div class="m-3 flex flex-row">
+                                    <input
+                                        class="mr-0.5 mt-1 rounded-full "
+                                        id="otherPossibleSupportInput"
+                                        name="otherPossibleSupport"
+                                        type="text"
+                                        style="display: none;">
+                                </div>
+
+                            </div>
+                            {{-- @endforeach --}}
+                            {{-- @foreach ($categories as $category)
+                                <div class="m-3 flex flex-row">
+                                    <input
+                                        class="mr-0.5 mt-1 rounded-full transition duration-200 ease-in-out hover:bg-blue-500"
+                                        name="possible_support_needed[]"
+                                        type="checkbox"
+                                        value="{{ $category }}">
+                                    <label class=""
+                                        for="{{ $category }}">{{ $category }}</label>
+                                </div>
                             @endforeach
+                            <div class="select-input-div">
+                                <input class="select-input"
+                                    id="otherPossibleSupportCheckbox"
+                                    name="possible_support_needed[]"
+                                    type="checkbox"
+                                    value="Other">
+                                <label class="ml-2"
+                                    for="otherPossibleSupport">Other</label>
+                            </div>
+
+                            <div class="m-3 flex flex-row">
+                                <input
+                                    class="mr-0.5 mt-1 rounded-full transition duration-200 ease-in-out hover:bg-blue-500"
+                                    id="otherPossibleSupportInput"
+                                    name="otherPossibleSupport"
+                                    type="text"
+                                    style="display: none;">
+                            </div> --}}
                         </div>
                     </div>
                 </div>
@@ -539,8 +822,7 @@
         id="max_sessions"
         name="max_sessions"
         type="number"
-        value="16"
-        >
+        value="16">
 
     {{-- additional_notes --}}
     <x-form_label for="additional_notes">
@@ -624,3 +906,50 @@
         color: black;
     }
 </style>
+
+<script>
+    document.getElementById('otherGenderCheckbox').addEventListener('change', function() {
+        var otherGenderInput = document.getElementById('otherGenderInput');
+        if (this.checked) {
+            otherGenderInput.style.display = 'block';
+        } else {
+            otherGenderInput.style.display = 'none';
+        }
+    });
+
+    document.getElementById('otherPronounCheckbox').addEventListener('change', function() {
+        var otherPronounInput = document.getElementById('otherPronounInput');
+        if (this.checked) {
+            otherPronounInput.style.display = 'block';
+        } else {
+            otherPronounInput.style.display = 'none';
+        }
+    });
+
+    document.getElementById('otherSexualOrientationCheckbox').addEventListener('change', function() {
+        var otherSexualOrientationInput = document.getElementById('otherSexualOrientationInput');
+        if (this.checked) {
+            otherSexualOrientationInput.style.display = 'block';
+        } else {
+            otherSexualOrientationInput.style.display = 'none';
+        }
+    });
+
+    document.getElementById('otherEthnicGroupCheckbox').addEventListener('change', function() {
+        var otherEthnicGroupInput = document.getElementById('otherEthnicGroupInput');
+        if (this.checked) {
+            otherEthnicGroupInput.style.display = 'block';
+        } else {
+            otherEthnicGroupInput.style.display = 'none';
+        }
+    });
+
+        document.getElementById('otherPossibleSupportCheckbox').addEventListener('change', function() {
+        var otherPossibleSupportInput = document.getElementById('otherPossibleSupportInput');
+        if (this.checked) {
+            otherPossibleSupportInput.style.display = 'block';
+        } else {
+            otherPossibleSupportInput.style.display = 'none';
+        }
+    });
+</script>
