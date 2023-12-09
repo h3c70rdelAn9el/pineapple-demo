@@ -39,14 +39,19 @@ class DashboardController extends Controller
         $jsonFile = file_get_contents(resource_path('json/categories.json'));
         $categories = json_decode($jsonFile, true);
 
-        // Check if any field is null or empty
         if ($therapists) {
             $incompleteTherapists = $therapists->filter(function ($therapist) {
-                // Exclude 'state' and 'country' from the check
-                $fieldsToCheck = array_diff_key((array) $therapist, ['state' => '', 'country' => '']);
+
+                $fieldsToCheck = [
+                    'contract_signed' => $therapist->contract_signed,
+                    'public_liability_insurance' => $therapist->public_liability_insurance,
+                    'all_documents' => $therapist->all_documents,
+                    'signed_documents' => $therapist->signed_documents,
+                    'leah_signed' => $therapist->leah_signed,
+                ];
 
                 foreach ($fieldsToCheck as $field) {
-                    if (is_null($field) || $field === '') {
+                    if (is_null($field) || $field === false) {
                         return true;
                     }
                 }
@@ -58,20 +63,20 @@ class DashboardController extends Controller
         }
 
         if ($therapist) {
-            $incompleteTherapist = $therapist->filter(function ($therapist) {
-                // Exclude 'state' and 'country' from the check
-                $fieldsToCheck = array_diff_key((array) $therapist, ['state' => '', 'country' => '']);
+            $fieldsToCheck = [
+                'contract_signed' => $therapist->contract_signed,
+                'public_liability_insurance' => $therapist->public_liability_insurance,
+                'all_documents_received' => $therapist->all_documents_received,
+            ];
 
-                foreach ($fieldsToCheck as $field) {
-                    if (is_null($field) || $field === '') {
-                        return true;
-                    }
+            foreach ($fieldsToCheck as $field) {
+                if (is_null($field) || $field === false) {
+                    $incompleteTherapist = true;
+                    break;
                 }
-
-                return false;
-            });
+            }
         } else {
-            $incompleteTherapist = collect();
+            $incompleteTherapist = false;
         }
 
         if ($user->admin) {
