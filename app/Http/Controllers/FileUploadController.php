@@ -24,7 +24,8 @@ class FileUploadController extends Controller
     {
         $therapist = User::find($therapist);
         $user = auth()->user();
-        $file_name = FileUpload::where('user_id', $therapist->id)->get();
+        // $file_name = FileUpload::where('user_id', $therapist->id)->get();
+        $file_name = FileUpload::where('user_id', $therapist->id)->orderBy('created_at', 'desc')->get();
 
         return view('therapist.forms', [
             'file_name' => $file_name,
@@ -185,6 +186,6 @@ class FileUploadController extends Controller
             'user' => auth()->user(),
         ]);
     }
-    
+
 
 }
