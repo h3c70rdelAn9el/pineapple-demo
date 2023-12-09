@@ -1,4 +1,17 @@
 {{-- ! commented code out are fields they wanted ommitted. I kept them in place incase someone decides to put them back --}}
+{{-- give the merror message  --}}
+@if ($errors->any())
+    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4"
+        role="alert">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li class="text-sm">{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+
+@endif
+
 <form class="z-50 mx-auto mb-4 mt-2 h-full w-5/6 rounded-md border border-blue-600 bg-blue-200 p-4 shadow-lg md:w-2/3"
     style="z-index: 99999;"
     action="{{ route('client.store') }}"
@@ -12,7 +25,9 @@
         type="text"
         required
         placeholder="Client code" />
-    {{-- </x-form_input_div> --}}
+        @if ($errors->has('client_code'))
+    <span class="error">{{ $errors->first('client_code') }}</span>
+@endif
 
     {{-- Legal Name --}}
     <x-form_label for="legal_name">
