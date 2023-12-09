@@ -285,6 +285,9 @@ class ClientController extends Controller
         // }
 
         // $c = new Client();
+        $request->validate([
+            'client_code' => 'required|unique:clients,client_code',
+        ]);
         $client->client_code = $request->client_code;
         $client->legal_name = $request->legal_name;
         $client->preferred_name = $request->preferred_name;
