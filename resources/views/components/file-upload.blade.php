@@ -1,7 +1,6 @@
 <div class="flex h-full grid-cols-6 flex-col overflow-hidden md:grid">
     <div class="ml-3 mt-10 flex flex-col md:col-span-2 md:ml-0 md:mt-0">
         <h3 class="text-lg">Upload Documents</h3>
-        {{-- <p class="text-sm text-gray-600">Upload your documents here</p> --}}
         <div class="text-sm text-gray-600">
             <p class="font-medium">Required Documents:</p>
             <div class="ml-2 font-light">
@@ -11,13 +10,6 @@
                 <p>W9/W8BENE/W8BEN</p>
             </div>
         </div>
-        {{-- clinical_license_verification_portal --}}
-        {{-- <div class="flex flex-col mt-2">
-            <x-jet-label for="clinical_license_verification_portal" value="{{ __('Clinical License Verification Portal') }}" />
-            <input type="text" class="mt-0.5 mr-1 rounded" id="clinical_license_verification_portal" wire:model.defer="state.clinical_license_verification_portal" autocomplete="clinical_license_verification_portal" />
-            <p class="mt-[3px] ml-1 text-xs font-light">(Optional)</p>
-            <x-jet-input-error for="clinical_license_verification_portal" class="mt-2" />
-        </div> --}}
     </div>
     <div class="h-full overflow-hidden rounded-md border-b border-gray-300 bg-white shadow-md md:col-span-4 md:ml-3">
         <div class="relative -mb-5 flex p-3 pl-5"
@@ -65,12 +57,14 @@
                         </div>
 
                         {{-- document type --}}
-                        <div class="mb-5 flex flex-wrap">
+                        <div class="mt-5 flex flex-col"
+                            x-data="{ documentType: '' }">
                             <div class="relative">
                                 <select
                                     class="block w-full appearance-none rounded-md border border-blue-400 bg-white px-3 py-2 pr-8 leading-tight text-gray-700 focus:border-gray-500 focus:bg-white focus:outline-none"
                                     id="document_type"
-                                    name="document_type">
+                                    name="document_type"
+                                    x-model="documentType">
                                     <option value="">Select Document Type</option>
                                     <option value="photographic_id">Photographic ID</option>
                                     <option value="W9">W9</option>
@@ -85,10 +79,26 @@
                                     <option value="Other">Other</option>
                                 </select>
                             </div>
+                            <div class="relative mb-5 mt-4"
+                                x-show="['clinical_license', 'public_liability_insurance'].includes(documentType)">
+                                <x-jet-label for="date"
+                                    value="{{ __('Expiration Date') }}"
+                                    x-bind:required="documentType == 'clinical_license' || documentType ==
+                                        'public_liability_insurance'" />
+                                <div class="relative">
+                                    <x-jet-input class="mt-1 block w-[100%]"
+                                        id="date"
+                                        name="date"
+                                        type="date"
+                                        required
+                                        :value="old('date')"
+                                        placeholder="Date" />
+                                </div>
+                            </div>
                         </div>
 
                         <div class="mb-5 flex flex-col">
-                            <div class="relative mb-5">
+                            <div class="relative my-5">
                                 <x-jet-label for="file_title"
                                     value="File Title" />
                                 <div class="relative">
@@ -99,20 +109,7 @@
                                         :value="old('file_title')"
                                         placeholder="File Title" />
                                 </div>
-                            </div>
 
-                            {{-- date --}}
-                            <div class="relative mb-5">
-                                <x-jet-label for="date"
-                                    value="{{ __('Expiration Date (optional)') }}" />
-                                <div class="relative">
-                                    <x-jet-input class="mt-1 block w-[100%]"
-                                        id="date"
-                                        name="date"
-                                        type="date"
-                                        :value="old('date')"
-                                        placeholder="Date" />
-                                </div>
                             </div>
 
                             {{-- note --}}
@@ -127,20 +124,6 @@
                                     rows="2"
                                     placeholder="Note"></textarea>
                             </div>
-{{--
-                            <div class="relative mt-4">
-                                <x-jet-label for="clinical_license_verification_portal"
-                                    value="{{ __('Clinical License Verification Portal') }}" />
-                                <x-jet-input class="mr-1 mt-0.5 w-full"
-                                    name="clinical_license_verification_portal"
-                                    id="clinical_license_verification_portal"
-                                    type="text"
-                                    wire:model.defer="state.clinical_license_verification_portal"
-                                    autocomplete="clinical_license_verification_portal" />
-                                <p class="ml-1 mt-[3px] text-xs font-light">(Optional)</p>
-                                <x-jet-input-error class="mt-2"
-                                    for="clinical_license_verification_portal" />
-                            </div> --}}
                         </div>
 
                         <x-jet-button class="absolute right-0 mb-3 mr-6 mt-9"
