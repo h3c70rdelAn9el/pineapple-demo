@@ -27,10 +27,15 @@ class FileUploadController extends Controller
         // $file_name = FileUpload::where('user_id', $therapist->id)->get();
         $file_name = FileUpload::where('user_id', $therapist->id)->orderBy('created_at', 'desc')->get();
 
+        $expiredFiles = $file_name->filter(function ($file) {
+            return $file->date && $file->date < now();
+        });
+
         return view('therapist.forms', [
             'file_name' => $file_name,
             'therapist' => $therapist,
             'user' => $user,
+            'expiredFiles' => $expiredFiles,
         ]);
     }
 

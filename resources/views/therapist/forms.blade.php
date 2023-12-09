@@ -121,7 +121,14 @@
                                     </div>
                                     <div class="flex flex-row">
                                         <p class="text-xs font-light">Date:</p>
-                                        <p class="pl-2 text-xs font-light">{{ $form->date }}</p>
+                                        {{-- <p class="pl-2 text-xs font-light">{{ $form->date }}</p> --}}
+                                        @if ($form->date !== null)
+                                            <p class="pl-2 text-xs font-light{{ now() > $form->date ? ' text-red-500' : '' }}">
+                                                {{ $form->date->format('Y-m-d') }}
+                                            </p>
+                                        @else
+                                            <p class="pl-2 text-xs font-light">N/A</p>
+                                        @endif
                                     </div>
                                     <div class="flex flex-col flex-wrap">
                                         <p class="text-xs font-light">Document Type:</p>
@@ -141,26 +148,7 @@
         </div>
     </x-main-container>
 
-    {{-- <script>
-        function searchForm() {
-            const searchQuery = this.search.trim().toLowerCase();
-            const items = document.querySelectorAll('.searchable-item');
 
-            items.forEach(item => {
-                const text = item.textContent.trim().toLowerCase();
-                if (text.includes(searchQuery)) {
-                    item.style.display = 'block';
-                } else {
-                    item.style.display = 'none';
-                }
-            });
-        }
-
-        document.addEventListener('alpine:init', () => {
-            Alpine.data('searchForm', searchForm);
-        });
-
-    </script> --}}
 
     <script>
         function searchForm() {
@@ -190,45 +178,3 @@
     </script>
 
 </x-app-layout>
-
-{{-- <script>
-    function searchForm() {
-        const searchQuery = this.search.trim().toLowerCase();
-        const items = document.querySelectorAll('.searchable-item');
-
-        items.forEach(item => {
-            const text = item.textContent.trim().toLowerCase();
-            if (text.includes(searchQuery)) {
-                item.style.display = 'block';
-            } else {
-                item.style.display = 'none';
-            }
-        });
-    }
-
-    document.addEventListener('alpine:init', () => {
-        Alpine.data('searchForm', searchForm);
-    });
-
-</script> --}}
-
-{{-- <script>
-    function searchForm() {
-        const searchQuery = this.search.trim().toLowerCase();
-        const items = document.querySelectorAll('.searchable-item');
-
-        items.forEach(item => {
-            const text = item.textContent.trim().toLowerCase();
-            if (text.includes(searchQuery)) {
-                item.style.display = 'block';
-            } else {
-                item.style.display = 'none';
-            }
-        });
-    }
-
-    document.addEventListener('alpine:init', () => {
-        Alpine.data('searchForm', searchForm);
-    });
-
-</script> --}}
