@@ -45,7 +45,9 @@ class DashboardController extends Controller
                 $fieldsToCheck = [
                     'contract_signed' => $therapist->contract_signed,
                     'public_liability_insurance' => $therapist->public_liability_insurance,
-                    'all_documents_received' => $therapist->all_documents_received,
+                    'all_documents' => $therapist->all_documents,
+                    'signed_documents' => $therapist->signed_documents,
+                    'leah_signed' => $therapist->leah_signed,
                 ];
 
                 foreach ($fieldsToCheck as $field) {
