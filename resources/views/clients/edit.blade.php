@@ -415,27 +415,7 @@
                             x-transition:leave.duration.300ms
                             x-transition:ease-in-out
                             x-cloak>
-                            <div class="select-input-div">
-                                <input class="select-input"
-                                    id="heterosexual"
-                                    name="sexual_orientation[]"
-                                    type="checkbox"
-                                    value="Heterosexual">
-                                <label class="ml-2"
-                                    for="heterosexual">Heterosexual</label>
-                            </div>
-                            {{-- homosexual --}}
-                            <div class="select-input-div">
-                                <input class="select-input"
-                                    id="homosexual"
-                                    name="sexual_orientation[]"
-                                    type="checkbox"
-                                    value="Homosexual">
-                                <label class="ml-2"
-                                    for="homosexual">Homosexual</label>
-                            </div>
-
-                            <div class="select-input-div">
+                                 <div class="select-input-div">
                                 <input class="select-input"
                                     id="bisexual"
                                     name="sexual_orientation[]"
@@ -444,54 +424,37 @@
                                 <label class="ml-2"
                                     for="bisexual">Bisexual</label>
                             </div>
-                            {{-- pansexual --}}
                             <div class="select-input-div">
                                 <input class="select-input"
-                                    id="pansexual"
+                                    id="gay/lesbian"
                                     name="sexual_orientation[]"
                                     type="checkbox"
-                                    value="Pansexual">
+                                    value="Gay/Lesbian">
                                 <label class="ml-2"
-                                    for="pansexual">Pansexual</label>
+                                    for="heterosexual">Gay/Lesbian</label>
                             </div>
-                            {{-- asexual --}}
+                            {{-- homosexual --}}
                             <div class="select-input-div">
                                 <input class="select-input"
-                                    id="asexual"
+                                    id="heterosexual/straight"
                                     name="sexual_orientation[]"
                                     type="checkbox"
-                                    value="Asexual">
+                                    value="Heterosexual/Straight">
                                 <label class="ml-2"
-                                    for="asexual">Asexual</label>
+                                    for="homosexual">Heterosexual/Straight</label>
                             </div>
-                            {{-- demisexual --}}
+
+
+
+                            {{-- don't know --}}
                             <div class="select-input-div">
                                 <input class="select-input"
-                                    id="demisexual"
+                                    id="dont_know"
                                     name="sexual_orientation[]"
                                     type="checkbox"
-                                    value="Demisexual">
+                                    value="Don't Know">
                                 <label class="ml-2"
-                                    for="demisexual">Demisexual</label>
-                            </div>
-                            <div class="select-input-div">
-                                <input class="select-input"
-                                    id="queer"
-                                    name="sexual_orientation[]"
-                                    type="checkbox"
-                                    value="Queer">
-                                <label class="ml-2"
-                                    for="queer">Queer</label>
-                            </div>
-                            {{-- questioning --}}
-                            <div class="select-input-div">
-                                <input class="select-input"
-                                    id="questioning"
-                                    name="sexual_orientation[]"
-                                    type="checkbox"
-                                    value="Questioning">
-                                <label class="ml-2"
-                                    for="questioning">Questioning</label>
+                                    for="questioning">Don't Know</label>
                             </div>
                             <div class="select-input-div">
                                 <input class="select-input"
@@ -800,7 +763,7 @@
                     value="Client Contribution:  previous: {{ $client->client_contribution }}" />
                 <input class="rounded"
                     id="client_contribution"
-                    type="checkbox"
+                    type="number"
                     wire:model.defer="state.client_contribution"
                     autocomplete="client_contribution" />
                 <x-jet-input-error class="mt-2"
