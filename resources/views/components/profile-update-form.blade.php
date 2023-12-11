@@ -318,7 +318,9 @@
         name="session_cost"
         type="text"
         value="{{ number_format($user->session_cost, 2) }}"
-        autocomplete="session_cost" />
+        autocomplete="session_cost"
+        required
+        />
     <x-jet-input-error class="mt-2" for="session_cost" />
 </div>
 
