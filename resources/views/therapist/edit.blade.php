@@ -344,7 +344,7 @@
 
         <div class="flex mt-2">
             <button class="button-secondary mx-auto">
-                <a href="{{ route('therapist.forms', ['id' => $id]) }}">
+                <a href="{{ route('therapist.forms', ['therapist' => $therapist]) }}">
                     View Forms
                 </a>
             </button>
