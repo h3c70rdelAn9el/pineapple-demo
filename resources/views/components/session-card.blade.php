@@ -26,7 +26,7 @@
         </div>
         <div class="mr-1 font-light text-right">
             <div>
-                <p class="">Date:<span class="ml-2">{{ $therapySession->created_at->format('M d Y') }}</span></p>
+           <p class="">Date:<span class="ml-2">{{ $therapySession->created_at ? $therapySession->created_at->format('M d Y') : 'N/A' }}</span></p>
             </div>
 
             {{-- <div class="">
