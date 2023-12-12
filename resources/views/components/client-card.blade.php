@@ -6,7 +6,7 @@
     </div>
     @if ($user->admin)
     <div class="flex flex-row justify-between p-1">
-        <p class="text-sm text-left">Therapist: {{ $client->user->preferred_name ? $client->user->preferred_name : $client->user->name }}</p>
+        <p class="text-sm text-left">Therapist: {{ ($client && $client->user && $client->user->preferred_name) ? $client->user->preferred_name : ($client && $client->user ? $client->user->name : '') }}</p>
     </div>
     @endif
     <div class="p-1 -mb-1 text-xs">
