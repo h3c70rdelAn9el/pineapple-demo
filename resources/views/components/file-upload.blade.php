@@ -12,15 +12,13 @@
         </div>
     </div>
     <div class="h-full overflow-hidden rounded-md border-b border-gray-300 bg-white shadow-md md:col-span-4 md:ml-3">
-        <div class="relative -mb-5 flex p-3 pl-5"
-            x-data="imageViewer()">
+        <div class="relative -mb-5 flex p-3 pl-5" x-data="imageViewer()">
             <div class="mb-2 mt-2 flex">
                 <div class="mt-2">
                     <template x-if="imageUrl">
                         <div class="mr-3">
                             <img class="mr-3 rounded-md border border-gray-200 object-cover shadow-md"
-                                style="width: 100px; height: 100px;"
-                                :src="imageUrl">
+                                style="width: 100px; height: 100px;" :src="imageUrl">
                         </div>
                     </template>
 
@@ -36,20 +34,13 @@
                             <strong>{{ $message }}</strong>
                         </div>
                     @endif
-                    <form action="{{ route('fileStore') }}"
-                        method="POST"
-                        enctype="multipart/form-data">
+                    <form action="{{ route('fileStore') }}" method="POST" enctype="multipart/form-data">
                         @csrf
 
                         {{-- file input --}}
                         <div class="mb-3 flex flex-wrap">
-                            <input class="mt-2"
-                                class="@error('file') is-invalid @enderror"
-                                id="file_name"
-                                name="file"
-                                type="file"
-                                accept="image/*, application/pdf"
-                                @change="fileChosen"
+                            <input class="mt-2" class="@error('file') is-invalid @enderror" id="file_name"
+                                name="file" type="file" accept="image/*, application/pdf" @change="fileChosen"
                                 placeholder="">
                             @error('file')
                                 <span class="text-red-900">{{ $message }}</span>
@@ -57,14 +48,11 @@
                         </div>
 
                         {{-- document type --}}
-                        <div class="mt-5 flex flex-col"
-                            x-data="{ documentType: '' }">
+                        <div class="mt-5 flex flex-col" x-data="{ documentType: '' }">
                             <div class="relative">
                                 <select
                                     class="block w-full appearance-none rounded-md border border-blue-400 bg-white px-3 py-2 pr-8 leading-tight text-gray-700 focus:border-gray-500 focus:bg-white focus:outline-none"
-                                    id="document_type"
-                                    name="document_type"
-                                    x-model="documentType">
+                                    id="document_type" name="document_type" x-model="documentType">
                                     <option value="">Select Document Type</option>
                                     <option value="photographic_id">Photographic ID</option>
                                     <option value="W9">W9</option>
@@ -79,55 +67,39 @@
                                     <option value="Other">Other</option>
                                 </select>
                             </div>
-                            <div class="relative mb-5 mt-4"
-                                x-show="['clinical_license', 'public_liability_insurance'].includes(documentType)">
-                                <x-jet-label for="date"
-                                    value="{{ __('Expiration Date') }}"
+                            <div class="relative mb-5 mt-4">
+                                <x-jet-label for="date" value="{{ __('Expiration Date') }}"
                                     x-bind:required="documentType == 'clinical_license' || documentType ==
                                         'public_liability_insurance'" />
                                 <div class="relative">
-                                    <x-jet-input class="mt-1 block w-[100%]"
-                                        id="date"
-                                        name="date"
+                                    <x-jet-input class="mt-1 block w-[100%]" id="date" name="date"
                                         type="date"
-                                        required
-                                        :value="old('date')"
-                                        placeholder="Date" />
+                                        x-bind:required="['clinical_license', 'public_liability_insurance'].includes(documentType)"
+                                        :value="old('date')" placeholder="Date" />
                                 </div>
                             </div>
                         </div>
 
                         <div class="mb-5 flex flex-col">
                             <div class="relative my-5">
-                                <x-jet-label for="file_title"
-                                    value="File Title" />
+                                <x-jet-label for="file_title" value="File Title" />
                                 <div class="relative">
-                                    <x-jet-input class="mt-1 block w-[100%]"
-                                        id="file_title"
-                                        name="file_title"
-                                        type="text"
-                                        :value="old('file_title')"
-                                        placeholder="File Title" />
+                                    <x-jet-input class="mt-1 block w-[100%]" id="file_title" name="file_title"
+                                        type="text" :value="old('file_title')" placeholder="File Title" />
                                 </div>
 
                             </div>
 
                             {{-- note --}}
                             <div class="relative">
-                                <x-jet-label for="note"
-                                    value="{{ __('Note (optional)') }}" />
+                                <x-jet-label for="note" value="{{ __('Note (optional)') }}" />
                                 <textarea
                                     class="block w-full appearance-none rounded border border-blue-300 bg-white px-3 py-2 pr-8 leading-tight text-gray-700 focus:border-gray-500 focus:bg-white focus:outline-none"
-                                    id="note"
-                                    name="note"
-                                    cols="40"
-                                    rows="2"
-                                    placeholder="Note"></textarea>
+                                    id="note" name="note" cols="40" rows="2" placeholder="Note"></textarea>
                             </div>
                         </div>
 
-                        <x-jet-button class="absolute right-0 mb-3 mr-6 mt-9"
-                            type="submit">
+                        <x-jet-button class="absolute right-0 mb-3 mr-6 mt-9" type="submit">
                             Save
                         </x-jet-button>
                     </form>
