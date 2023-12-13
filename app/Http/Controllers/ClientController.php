@@ -268,7 +268,7 @@ class ClientController extends Controller
 
         // do the same as above for contact_method
 
-        $selectedContactMethods = $request->input('contact_method');
+        $selectedContactMethods = $request->input('contact_method') ?? [];
         $contactMethodString = implode(', ', $selectedContactMethods);
         if (is_array($request->contact_method) && !empty($request->contact_method)) {
             $contactMethodString = implode(', ', $request->contact_method);
@@ -314,7 +314,7 @@ class ClientController extends Controller
         $client->client_contribution = $request->client_contribution;
         $client->gender = $genderString;
         $client->ethnic_group = $ethnicGroupString;
-        $client->pronouns = $pronounsString;
+        $client->pronouns = $pronounsString ?? ' ';
         $client->contact_method = $contactMethodString;
         $client->possible_support_needed = $possibleSupportNeededString;
         $client->sexual_orientation = $orientationString;
@@ -561,15 +561,8 @@ class ClientController extends Controller
      * @param  \App\Models\Client  $client
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Client $client, $id)
+    public function destroy(Client $client)
     {
-        $client = Client::find($id);
-
-        if ($client) {
-            $client->delete();
-            return redirect()->route('dashboard')->with('success', 'Client deleted successfully');
-        } else {
-            return redirect()->route('dashboard')->with('error', 'Client not found');
-        }
+        //
     }
 }
