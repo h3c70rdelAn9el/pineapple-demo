@@ -122,7 +122,7 @@
                                     <div class="flex flex-row">
                                         <p class="text-xs font-light">Date:</p>
                                         {{-- <p class="pl-2 text-xs font-light">{{ $form->date }}</p> --}}
-                                        @if ($form->date !== null)
+                                        @if ($form->date != null)
                                             <p class="pl-2 text-xs font-light{{ now() > $form->date ? ' text-red-500' : '' }}">
                                                 {{ $form->date->format('Y-m-d') }}
                                             </p>
