@@ -56,8 +56,14 @@ class TherapySessionController extends Controller
         $user = auth()->user();
         $client_id = $request->client_id;
         $client = Client::find($client_id);
-        $therapist = User::find($user->id);
 
+        if($user->admin == 1){
+            $therapist = $client->user;
+        }
+        else
+        {
+            $therapist = User::find($user->id);
+        }
         //$therapist = User::find($user->id);
         if($therapist->session_cost == null || $therapist->session_cost == 0){
             Session::flash('error', 'This therapist has no session cost set.');
