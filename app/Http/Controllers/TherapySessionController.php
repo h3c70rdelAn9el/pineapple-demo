@@ -58,8 +58,12 @@ class TherapySessionController extends Controller
         $client = Client::find($client_id);
         $therapist = User::find($user->id);
 
-        $therapist = User::find($user->id);
-        $therapist_session_cost = $therapist->session_cost;
+        //$therapist = User::find($user->id);
+        if($therapist->session_cost == null || $therapist->session_cost == 0){
+            Session::flash('error', 'This therapist has no session cost set.');
+            return redirect()->back();
+        }
+        $therapist_session_cost = $therapist->session_cost ;
         // $currentDate = Carbon::now();
         // $sessionDate = $request->created_at;
 
