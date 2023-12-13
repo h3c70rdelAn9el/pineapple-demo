@@ -567,9 +567,9 @@ class ClientController extends Controller
 
         if ($client) {
             $client->delete();
-            return redirect()->route('clients.index')->with('success', 'Client deleted successfully');
+            return redirect()->route('dashboard')->with('success', 'Client deleted successfully');
         } else {
-            return redirect()->route('clients.index')->with('error', 'Client not found');
+            return redirect()->route('dashboard')->with('error', 'Client not found');
         }
     }
 }
