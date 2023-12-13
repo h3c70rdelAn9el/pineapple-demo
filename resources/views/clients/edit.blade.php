@@ -13,112 +13,69 @@
         <h2 class="mt-2 text-center text-lg font-normal">Edit client: {{ $client->preferred_name }}</h2>
         <div class="mx-auto w-1/2 border-b border-gray-400 bg-gray-400">
         </div>
-        <form class="mx-auto w-1/2"
-            action="{{ route('clients.update', $client->id) }}"
-            method="POST">
+        <form class="mx-auto w-1/2" action="{{ route('clients.update', $client->id) }}" method="POST">
             @csrf
             @method('POST')
-            <input name="_method"
-                type="hidden"
-                value="POST">
+            <input name="_method" type="hidden" value="POST">
 
-            <input name="user_id"
-                type="hidden"
-                value="{{ $client->user_id }}">
+            <input name="user_id" type="hidden" value="{{ $client->user_id }}">
 
             <div class="mb-2 mt-4 w-full">
-                <x-jet-label for="client_code"
-                    value="{{ __('Client Code') }}" />
-                <input class="w-full rounded border border-blue-200 bg-gray-100"
-                    id="client_code"
-                    name="client_code"
-                    type="text"
-                    value="{{ old('client_code', $client->client_code) }}"
-                    placeholder="{{ old('client_code', $client->client_code) }}"
-                    autocomplete="client_code" />
-                <x-jet-input-error class="mt-2"
-                    for="client_code" />
+                <x-jet-label for="client_code" value="{{ __('Client Code') }}" />
+                <input class="w-full rounded border border-blue-200 bg-gray-100" id="client_code" name="client_code"
+                    type="text" value="{{ old('client_code', $client->client_code) }}"
+                    placeholder="{{ old('client_code', $client->client_code) }}" autocomplete="client_code" />
+                <x-jet-input-error class="mt-2" for="client_code" />
             </div>
 
             <div class="mb-2 mt-4 w-full">
-                <x-jet-label for="preferred_name"
-                    value="{{ __('Preferred Name') }}" />
-                <input class="w-full rounded border border-blue-200 bg-gray-100"
-                    id="preferred_name"
-                    name="preferred_name"
-                    type="text"
-                    value="{{ old('preferred_name', $client->preferred_name) }}"
-                    placeholder="{{ old('preferred_name', $client->preferred_name) }}"
-                    autocomplete="preferred_name" />
-                <x-jet-input-error class="mt-2"
-                    for="preferred_name" />
+                <x-jet-label for="preferred_name" value="{{ __('Preferred Name') }}" />
+                <input class="w-full rounded border border-blue-200 bg-gray-100" id="preferred_name"
+                    name="preferred_name" type="text" value="{{ old('preferred_name', $client->preferred_name) }}"
+                    placeholder="{{ old('preferred_name', $client->preferred_name) }}" autocomplete="preferred_name" />
+                <x-jet-input-error class="mt-2" for="preferred_name" />
             </div>
 
             {{-- max_sessions --}}
             <label for="max_sessions">Maximum Therapy Sessions:</label>
-            <input class="mx-2 w-16 rounded-md border-blue-200 bg-gray-100 p-1 text-center ring-0"
-                id="max_sessions"
-                name="max_sessions"
-                type="number"
-                value="{{ $client->max_sessions }}">
+            <input class="mx-2 w-16 rounded-md border-blue-200 bg-gray-100 p-1 text-center ring-0" id="max_sessions"
+                name="max_sessions" type="number" value="{{ $client->max_sessions }}">
 
             {{-- legal_name --}}
             <div class="mb-2 mt-4 w-full">
-                <x-jet-label for="legal_name"
-                    value="{{ __('Legal Name') }}" />
-                <input class="w-full rounded border border-blue-200 bg-gray-100"
-                    id="legal_name"
-                    name="legal_name"
-                    type="text"
-                    value="{{ old('legal_name', $client->legal_name) }}"
-                    placeholder="{{ old('legal_name', $client->legal_name) }}"
-                    autocomplete="legal_name" />
-                <x-jet-input-error class="mt-2"
-                    for="legal_name" />
+                <x-jet-label for="legal_name" value="{{ __('Legal Name') }}" />
+                <input class="w-full rounded border border-blue-200 bg-gray-100" id="legal_name" name="legal_name"
+                    type="text" value="{{ old('legal_name', $client->legal_name) }}"
+                    placeholder="{{ old('legal_name', $client->legal_name) }}" autocomplete="legal_name" />
+                <x-jet-input-error class="mt-2" for="legal_name" />
             </div>
 
             {{-- Status --}}
             <x-form_label for="status">
                 Status
             </x-form_label>
-            <select class="peer mt-2 w-full rounded-md border-blue-200 bg-gray-100 p-2 ring-0"
-                id="status"
-                name="status"
-                type="text">
-                <option value=""
-                    disabled
-                    selected
-                    hidden>Previous: {{ $client->status == 0 ? 'Active' : 'Inactive' }}</option>
+            <select class="peer mt-2 w-full rounded-md border-blue-200 bg-gray-100 p-2 ring-0" id="status"
+                name="status" type="text">
+                <option value="" disabled selected hidden>Previous:
+                    {{ $client->status == 0 ? 'Active' : 'Inactive' }}</option>
                 <option value="0">Active</option>
                 <option value="1">Inactive</option>
             </select>
 
             <div class="mb-2 mt-4 w-full">
-                <x-jet-label for="email"
-                    value="{{ __('Email') }}" />
-                <input class="w-full rounded border border-blue-200 bg-gray-100"
-                    id="email"
-                    name="email"
-                    type="text"
-                    value="{{ old('email', $client->email) }}"
-                    placeholder="{{ old('email', $client->email) }}"
-                    autocomplete="email" />
-                <x-jet-input-error class="mt-2"
-                    for="email" />
+                <x-jet-label for="email" value="{{ __('Email') }}" />
+                <input class="w-full rounded border border-blue-200 bg-gray-100" id="email" name="email"
+                    type="text" value="{{ old('email', $client->email) }}"
+                    placeholder="{{ old('email', $client->email) }}" autocomplete="email" />
+                <x-jet-input-error class="mt-2" for="email" />
             </div>
 
             <div class="mb-2 mt-4 w-full">
-                <x-jet-label for="phone"
-                    value="{{ __('Phone') }}" />
-                <input class="w-full rounded border border-blue-200 bg-gray-100"
-                    id="phone"
-                    name="phone"
-                    type="text"
-                    value="{{ old('phone', $client->phone) }}"
-                    placeholder="{{ old('phone', $client->phone) }}"
-                    autocomplete="phone" />
-                <x-jet-input-error class="mt-2"
-                    for="phone" />
+                <x-jet-label for="phone" value="{{ __('Phone') }}" />
+                <input class="w-full rounded border border-blue-200 bg-gray-100" id="phone" name="phone"
+                    type="text" value="{{ old('phone', $client->phone) }}"
+                    placeholder="{{ old('phone', $client->phone) }}" autocomplete="phone" />
+                <x-jet-input-error class="mt-2" for="phone" />
             </div>
 
             <div class="relative mb-4 mt-6 w-full"
@@ -139,58 +96,36 @@
                     Contact Method(s): (previous selection:
                     {{ str_replace(['[', ']', '"'], '', $client->contact_method) }})
                 </x-form_label>
-                <div class="rounded-md"
-                    @click.away="showOptions = false">
+                <div class="rounded-md" @click.away="showOptions = false">
                     <div class="flex w-full justify-between rounded-md border border-blue-300 bg-gray-100 p-3">
-                        <button class="-m-0.5 flex w-full justify-between text-gray-700"
-                            type="button"
+                        <button class="-m-0.5 flex w-full justify-between text-gray-700" type="button"
                             @click="showOptions = !showOptions">
                             <span class="ml-0"
                                 x-text="selectedOptions.length > 0 ? selectedOptions.join(', ') : 'Select Options'"></span>
-                            <svg class="mt-0.5 h-[18px] w-[18px] text-gray-800"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="2"
+                            <svg class="mt-0.5 h-[18px] w-[18px] text-gray-800" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M19 9l-7 7-7-7"></path>
                             </svg>
                         </button>
                     </div>
                     <div class="-mt-1 w-full rounded-b-md rounded-t-none border-b border-l border-r border-blue-300 bg-gray-100 pt-1 text-gray-600 md:flex md:flex-wrap"
-                        x-show="showOptions"
-                        x-transition.scale.origin.top
-                        x-transition.duration.300ms
-                        x-transition.ease-in-out
-                        x-cloak>
+                        x-show="showOptions" x-transition.scale.origin.top x-transition.duration.300ms
+                        x-transition.ease-in-out x-cloak>
                         <div class="select-input-div">
-                            <input class="select-input"
-                                id="telephone-call"
-                                name="contact_method[]"
-                                type="checkbox"
+                            <input class="select-input" id="telephone-call" name="contact_method[]" type="checkbox"
                                 value="Telephone Call">
-                            <label class="ml-2"
-                                for="telephone-call">Telephone Call</label>
+                            <label class="ml-2" for="telephone-call">Telephone Call</label>
                         </div>
                         <div class="select-input-div">
-                            <input class="select-input"
-                                id="text-message"
-                                name="contact_method[]"
-                                type="checkbox"
+                            <input class="select-input" id="text-message" name="contact_method[]" type="checkbox"
                                 value="Text Message">
-                            <label class="ml-2"
-                                for="text-message">Text Message</label>
+                            <label class="ml-2" for="text-message">Text Message</label>
                         </div>
                         <div class="select-input-div">
-                            <input class="select-input"
-                                id="email"
-                                name="contact_method[]"
-                                type="checkbox"
+                            <input class="select-input" id="email" name="contact_method[]" type="checkbox"
                                 value="Email">
-                            <label class="ml-2"
-                                for="email">Email</label>
+                            <label class="ml-2" for="email">Email</label>
                         </div>
                     </div>
                 </div>
@@ -215,60 +150,40 @@
                     <x-form_label>
                         Gender(s): (previous selection: {{ str_replace(['[', ']', '"'], '', $client->gender) }})
                     </x-form_label>
-                    <div class="rounded-md"
-                        @click.away="showGender = false">
+                    <div class="rounded-md" @click.away="showGender = false">
                         <div class="flex w-full justify-between rounded-md border border-blue-300 bg-gray-100 p-3">
-                            <button class="-m-0.5 flex w-full justify-between text-gray-700"
-                                type="button"
+                            <button class="-m-0.5 flex w-full justify-between text-gray-700" type="button"
                                 @click="showGender = !showGender">
                                 <span class="ml-0"
                                     x-text="selectedOptions.length > 0 ? selectedOptions.join(', ') : 'Select Options'"></span>
-                                <svg class="mt-0.5 h-[18px] w-[18px] text-gray-800"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="2"
+                                <svg class="mt-0.5 h-[18px] w-[18px] text-gray-800" fill="none"
+                                    stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M19 9l-7 7-7-7"></path>
                                 </svg>
                             </button>
                         </div>
                         <div class="-mt-1 w-full rounded-b-md rounded-t-none border-b border-l border-r border-blue-300 bg-gray-100 pt-1 text-gray-600 md:flex md:flex-wrap"
-                            x-show="showGender"
-                            x-transition.scale.origin.top
-                            x-transition.duration.300ms
-                            x-transition.ease-in-out
-                            x-cloak>
+                            x-show="showGender" x-transition.scale.origin.top x-transition.duration.300ms
+                            x-transition.ease-in-out x-cloak>
                             @foreach ($genders as $gender)
                                 <div class="m-3 flex flex-row">
                                     <input
                                         class="mr-0.5 mt-1 rounded-full transition duration-200 ease-in-out hover:bg-blue-500"
-                                        name="gender[]"
-                                        type="checkbox"
-                                        value="{{ $gender }}">
-                                    <label class=""
-                                        for="{{ $gender }}">{{ $gender }}</label>
+                                        name="gender[]" type="checkbox" value="{{ $gender }}">
+                                    <label class="" for="{{ $gender }}">{{ $gender }}</label>
                                 </div>
                             @endforeach
                             <div class="select-input-div">
-                                <input class="select-input"
-                                    id="otherGenderCheckbox"
-                                    name="gender[]"
-                                    type="checkbox"
+                                <input class="select-input" id="otherGenderCheckbox" name="gender[]" type="checkbox"
                                     value="Other">
-                                <label class="ml-2"
-                                    for="otherGender">Other</label>
+                                <label class="ml-2" for="otherGender">Other</label>
                             </div>
 
                             <div class="m-3 flex flex-row">
                                 <input
                                     class="mr-0.5 mt-1 rounded-full transition duration-200 ease-in-out hover:bg-blue-500"
-                                    id="otherGenderInput"
-                                    name="otherGender"
-                                    type="text"
-                                    style="display: none;">
+                                    id="otherGenderInput" name="otherGender" type="text" style="display: none;">
                             </div>
                         </div>
                     </div>
@@ -276,107 +191,67 @@
 
                 {{-- Pronouns --}}
                 <div class="col-span-6 mt-0 sm:col-span-4">
-                    <div class="my-4 flex flex-col"
-                        x-data="{ openPronouns: false, selectedPronouns: [] }">
+                    <div class="my-4 flex flex-col" x-data="{ openPronouns: false, selectedPronouns: [] }">
                         <x-form_label>
                             Pronoun(s): (previous selection: {{ str_replace(['[', ']', '"'], '', $client->pronouns) }})
                         </x-form_label>
                         <button
                             class="-m-0.5 flex w-full justify-between rounded-md border border-blue-300 bg-gray-100 p-2 text-gray-700 focus:border-blue-500"
-                            type="button"
-                            @click="openPronouns = !openPronouns">
+                            type="button" @click="openPronouns = !openPronouns">
                             <span class="ml-0"
                                 x-text="selectedPronouns.length > 0 ? selectedPronouns.join(', ') : 'Select Options'"></span>
-                            <svg class="mt-0.5 h-[18px] w-[18px] text-gray-800"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="2"
+                            <svg class="mt-0.5 h-[18px] w-[18px] text-gray-800" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M19 9l-7 7-7-7"></path>
                             </svg>
                         </button>
                         <div class="-ml-[2px] -mt-2 mr-[2px] rounded-md rounded-t-none border border-b border-r border-t-0 border-blue-500 bg-gray-100 py-4 md:flex md:flex-wrap"
-                            x-show="openPronouns"
-                            x-transition.scale.origin.top
-                            x-transition:enter.duration.300ms
-                            x-transition:enter.ease-in-out
-                            x-transition:leave.duration.300ms
-                            x-transition:ease-in-out
+                            x-show="openPronouns" x-transition.scale.origin.top x-transition:enter.duration.300ms
+                            x-transition:enter.ease-in-out x-transition:leave.duration.300ms x-transition:ease-in-out
                             x-cloak>
                             <div class="select-input-div">
-                                <input class="select-input"
-                                    id="they/them/theirs"
-                                    name="pronouns[]"
-                                    type="checkbox"
+                                <input class="select-input" id="they/them/theirs" name="pronouns[]" type="checkbox"
                                     value="They/Them/Theirs">
-                                <label class="ml-2"
-                                    for="they-them">They/Them/Theirs</label>
+                                <label class="ml-2" for="they-them">They/Them/Theirs</label>
                             </div>
                             <div class="select-input-div">
-                                <input class="select-input"
-                                    id="she-her"
-                                    name="pronouns[]"
-                                    type="checkbox"
+                                <input class="select-input" id="she-her" name="pronouns[]" type="checkbox"
                                     value="she/her/hers">
-                                <label class="ml-2"
-                                    for="she-her">she/her/hers</label>
+                                <label class="ml-2" for="she-her">she/her/hers</label>
                             </div>
                             <div class="select-input-div">
-                                <input class="select-input"
-                                    id="him"
-                                    name="pronouns[]"
-                                    type="checkbox"
+                                <input class="select-input" id="him" name="pronouns[]" type="checkbox"
                                     value="per/per/pers">
                                 <label class="ml-2">per/per/pers</label>
                             </div>
                             <div class="select-input-div">
-                                <input class="select-input"
-                                    id="he-him"
-                                    name="pronouns[]"
-                                    type="checkbox"
+                                <input class="select-input" id="he-him" name="pronouns[]" type="checkbox"
                                     value="he/him/his">
-                                <label class="ml-2"
-                                    for="he-him">he/him/his</label>
+                                <label class="ml-2" for="he-him">he/him/his</label>
                             </div>
 
                             <div class="select-input-div">
-                                <input class="select-input"
-                                    id="her"
-                                    name="pronouns[]"
-                                    type="checkbox"
+                                <input class="select-input" id="her" name="pronouns[]" type="checkbox"
                                     value="ze/hir/hirs">
-                                <label class="ml-2"
-                                    for="her">ze/hir/hirs</label>
+                                <label class="ml-2" for="her">ze/hir/hirs</label>
                             </div>
 
                             <div class="select-input-div">
-                                <input class="select-input"
-                                    id="prefer-not-to-say-pronouns"
-                                    name="pronouns[]"
-                                    type="checkbox"
-                                    value="Prefer Not To Say">
-                                <label class="ml-2"
-                                    for="prefer-not-to-say-pronouns">Prefer Not To Say</label>
+                                <input class="select-input" id="prefer-not-to-say-pronouns" name="pronouns[]"
+                                    type="checkbox" value="Prefer Not To Say">
+                                <label class="ml-2" for="prefer-not-to-say-pronouns">Prefer Not To Say</label>
                             </div>
                             <div class="select-input-div">
-                                <input class="select-input"
-                                    id="otherPronounCheckbox"
-                                    name="pronouns[]"
-                                    type="checkbox"
-                                    value="Other">
-                                <label class="ml-2"
-                                    for="otherPronoun">Other</label>
+                                <input class="select-input" id="otherPronounCheckbox" name="pronouns[]"
+                                    type="checkbox" value="Other">
+                                <label class="ml-2" for="otherPronoun">Other</label>
                             </div>
 
                             <div class="m-3 flex flex-row">
                                 <input
                                     class="mr-0.5 mt-1 rounded-full transition duration-200 ease-in-out hover:bg-blue-500"
-                                    id="otherPronounInput"
-                                    name="otherPronoun"
-                                    type="text"
+                                    id="otherPronounInput" name="otherPronoun" type="text"
                                     style="display: none;">
                             </div>
                         </div>
@@ -384,220 +259,139 @@
                 </div>
 
                 <div class="col-span-6 mt-0 sm:col-span-4">
-                    <div class="my-4 flex flex-col"
-                        x-data="{ openSexualOrientation: false, selectedSexualOrientation: [] }">
+                    <div class="my-4 flex flex-col" x-data="{ openSexualOrientation: false, selectedSexualOrientation: [] }">
                         <x-form_label>
                             Sexual Orientation(s): (previous selection:
                             {{ str_replace(['[', ']', '"'], '', $client->sexual_orientation) }})
                         </x-form_label>
                         <button
                             class="-m-0.5 flex w-full justify-between rounded-md border border-blue-300 bg-gray-100 p-2 text-gray-700 focus:border-blue-500"
-                            type="button"
-                            @click="openSexualOrientation = !openSexualOrientation">
+                            type="button" @click="openSexualOrientation = !openSexualOrientation">
                             <span class="ml-0"
                                 x-text="selectedSexualOrientation.length > 0 ? selectedSexualOrientation.join(', ') : 'Select Options'"></span>
-                            <svg class="mt-0.5 h-[18px] w-[18px] text-gray-800"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="2"
+                            <svg class="mt-0.5 h-[18px] w-[18px] text-gray-800" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M19 9l-7 7-7-7"></path>
                             </svg>
                         </button>
                         <div class="-ml-[2px] -mt-2 mr-[2px] rounded-md rounded-t-none border border-b border-r border-t-0 border-blue-500 bg-gray-100 py-4 md:flex md:flex-wrap"
-                            x-show="openSexualOrientation"
-                            x-transition.scale.origin.top
-                            x-transition:enter.duration.300ms
-                            x-transition:enter.ease-in-out
-                            x-transition:leave.duration.300ms
-                            x-transition:ease-in-out
-                            x-cloak>
-                                 <div class="select-input-div">
-                                <input class="select-input"
-                                    id="bisexual"
-                                    name="sexual_orientation[]"
-                                    type="checkbox"
-                                    value="Bisexual">
-                                <label class="ml-2"
-                                    for="bisexual">Bisexual</label>
+                            x-show="openSexualOrientation" x-transition.scale.origin.top
+                            x-transition:enter.duration.300ms x-transition:enter.ease-in-out
+                            x-transition:leave.duration.300ms x-transition:ease-in-out x-cloak>
+                            <div class="select-input-div">
+                                <input class="select-input" id="bisexual" name="sexual_orientation[]"
+                                    type="checkbox" value="Bisexual">
+                                <label class="ml-2" for="bisexual">Bisexual</label>
                             </div>
                             <div class="select-input-div">
-                                <input class="select-input"
-                                    id="gay/lesbian"
-                                    name="sexual_orientation[]"
-                                    type="checkbox"
-                                    value="Gay/Lesbian">
-                                <label class="ml-2"
-                                    for="heterosexual">Gay/Lesbian</label>
+                                <input class="select-input" id="gay/lesbian" name="sexual_orientation[]"
+                                    type="checkbox" value="Gay/Lesbian">
+                                <label class="ml-2" for="heterosexual">Gay/Lesbian</label>
                             </div>
                             {{-- homosexual --}}
                             <div class="select-input-div">
-                                <input class="select-input"
-                                    id="heterosexual/straight"
-                                    name="sexual_orientation[]"
-                                    type="checkbox"
-                                    value="Heterosexual/Straight">
-                                <label class="ml-2"
-                                    for="homosexual">Heterosexual/Straight</label>
+                                <input class="select-input" id="heterosexual/straight" name="sexual_orientation[]"
+                                    type="checkbox" value="Heterosexual/Straight">
+                                <label class="ml-2" for="homosexual">Heterosexual/Straight</label>
                             </div>
 
 
 
                             {{-- don't know --}}
                             <div class="select-input-div">
-                                <input class="select-input"
-                                    id="dont_know"
-                                    name="sexual_orientation[]"
-                                    type="checkbox"
-                                    value="Don't Know">
-                                <label class="ml-2"
-                                    for="questioning">Don't Know</label>
+                                <input class="select-input" id="dont_know" name="sexual_orientation[]"
+                                    type="checkbox" value="Don't Know">
+                                <label class="ml-2" for="questioning">Don't Know</label>
                             </div>
                             <div class="select-input-div">
-                                <input class="select-input"
-                                    id="prefer-not-to-say-orientation"
-                                    name="sexual_orientation[]"
-                                    type="checkbox"
-                                    value="Prefer Not To Say">
-                                <label class="ml-2"
-                                    for="prefer-not-to-say-orientation">Prefer Not To Say</label>
+                                <input class="select-input" id="prefer-not-to-say-orientation"
+                                    name="sexual_orientation[]" type="checkbox" value="Prefer Not To Say">
+                                <label class="ml-2" for="prefer-not-to-say-orientation">Prefer Not To Say</label>
                             </div>
                             <div class="select-input-div">
-                                <input class="select-input"
-                                    id="otherSexualOrientationCheckbox"
-                                    name="sexual_orientation[]"
-                                    type="checkbox"
-                                    value="Other">
-                                <label class="ml-2"
-                                    for="otherSexualOrientation">Other</label>
+                                <input class="select-input" id="otherSexualOrientationCheckbox"
+                                    name="sexual_orientation[]" type="checkbox" value="Other">
+                                <label class="ml-2" for="otherSexualOrientation">Other</label>
                             </div>
 
                             <div class="m-3 flex flex-row">
                                 <input
                                     class="mr-0.5 mt-1 rounded-full transition duration-200 ease-in-out hover:bg-blue-500"
-                                    id="otherSexualOrientationInput"
-                                    name="otherSexualOrientation"
-                                    type="text"
+                                    id="otherSexualOrientationInput" name="otherSexualOrientation" type="text"
                                     style="display: none;">
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="my-4 flex flex-col"
-                    x-data="{ openEthnicGroup: false, selectedEthnicGroups: [] }">
+                <div class="my-4 flex flex-col" x-data="{ openEthnicGroup: false, selectedEthnicGroups: [] }">
                     <x-form_label>
                         Ethnic Group(s): (previous selection:
                         {{ str_replace(['[', ']', '"'], '', $client->ethnic_group) }})
                     </x-form_label>
                     <button
                         class="-m-0.5 flex w-full justify-between rounded-md border border-blue-300 bg-gray-100 p-2 text-gray-700 focus:border-blue-500"
-                        type="button"
-                        @click="openEthnicGroup = !openEthnicGroup">
+                        type="button" @click="openEthnicGroup = !openEthnicGroup">
                         <span class="ml-0"
                             x-text="selectedEthnicGroups.length > 0 ? selectedEthnicGroups.join(', ') : 'Select Options'"></span>
-                        <svg class="mt-0.5 h-[18px] w-[18px] text-gray-800"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M19 9l-7 7-7-7"></path>
+                        <svg class="mt-0.5 h-[18px] w-[18px] text-gray-800" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7">
+                            </path>
                         </svg>
                     </button>
                     <div class="-ml-[2px] -mt-2 mr-[2px] rounded-md rounded-t-none border border-b border-r border-t-0 border-blue-500 bg-gray-100 py-4 md:flex md:flex-wrap"
-                        x-show="openEthnicGroup"
-                        x-transition.scale.origin.top
-                        x-transition:enter.duration.300ms
-                        x-transition:enter.ease-in-out
-                        x-transition:leave.duration.300ms
-                        x-transition:ease-in-out
+                        x-show="openEthnicGroup" x-transition.scale.origin.top x-transition:enter.duration.300ms
+                        x-transition:enter.ease-in-out x-transition:leave.duration.300ms x-transition:ease-in-out
                         x-cloak>
 
                         <div class="select-input-div">
-                            <input class="select-input"
-                                id="american-indian"
-                                name="ethnic_group[]"
-                                type="checkbox"
+                            <input class="select-input" id="american-indian" name="ethnic_group[]" type="checkbox"
                                 value="American Indian or Alaska Native">
-                            <label class="ml-2"
-                                for="american-indian">American Indian or Alaska Native</label>
+                            <label class="ml-2" for="american-indian">American Indian or Alaska Native</label>
                         </div>
                         <div class="select-input-div">
-                            <input class="select-input"
-                                id="asian"
-                                name="ethnic_group[]"
-                                type="checkbox"
+                            <input class="select-input" id="asian" name="ethnic_group[]" type="checkbox"
                                 value="Asian">
-                            <label class="ml-2"
-                                for="asian">Asian</label>
+                            <label class="ml-2" for="asian">Asian</label>
                         </div>
                         <div class="select-input-div">
-                            <input class="select-input"
-                                id="black"
-                                name="ethnic_group[]"
-                                type="checkbox"
+                            <input class="select-input" id="black" name="ethnic_group[]" type="checkbox"
                                 value="Black or African American">
-                            <label class="ml-2"
-                                for="black">Black or African American</label>
+                            <label class="ml-2" for="black">Black or African American</label>
                         </div>
                         <div class="select-input-div">
-                            <input class="select-input"
-                                id="hispanic"
-                                name="ethnic_group[]"
-                                type="checkbox"
+                            <input class="select-input" id="hispanic" name="ethnic_group[]" type="checkbox"
                                 value="Hispanic or Latino">
-                            <label class="ml-2"
-                                for="hispanic">Hispanic or Latino</label>
+                            <label class="ml-2" for="hispanic">Hispanic or Latino</label>
                         </div>
                         <div class="select-input-div">
-                            <input class="select-input"
-                                id="pacific-islander"
-                                name="ethnic_group[]"
-                                type="checkbox"
+                            <input class="select-input" id="pacific-islander" name="ethnic_group[]" type="checkbox"
                                 value="Native Hawaiian or Other Pacific Islander">
-                            <label class="ml-2"
-                                for="pacific-islander">Native Hawaiian or Other Pacific Islander</label>
+                            <label class="ml-2" for="pacific-islander">Native Hawaiian or Other Pacific
+                                Islander</label>
                         </div>
                         <div class="select-input-div">
-                            <input class="select-input"
-                                id="white"
-                                name="ethnic_group[]"
-                                type="checkbox"
+                            <input class="select-input" id="white" name="ethnic_group[]" type="checkbox"
                                 value="White">
-                            <label class="ml-2"
-                                for="white">White</label>
+                            <label class="ml-2" for="white">White</label>
                         </div>
                         <div class="select-input-div">
-                            <input class="select-input"
-                                id="prefer-not-to-say-ethnic"
-                                name="ethnic_group[]"
-                                type="checkbox"
-                                value="prefer not to say">
-                            <label class="ml-2"
-                                for="prefer-not-to-say-ethnic">Prefer Not To Say</label>
+                            <input class="select-input" id="prefer-not-to-say-ethnic" name="ethnic_group[]"
+                                type="checkbox" value="prefer not to say">
+                            <label class="ml-2" for="prefer-not-to-say-ethnic">Prefer Not To Say</label>
                         </div>
                         <div class="select-input-div">
-                            <input class="select-input"
-                                id="otherEthnicGroupCheckbox"
-                                name="ethnic_group[]"
-                                type="checkbox"
-                                value="Other">
-                            <label class="ml-2"
-                                for="otherEthnicGroup">Other</label>
+                            <input class="select-input" id="otherEthnicGroupCheckbox" name="ethnic_group[]"
+                                type="checkbox" value="Other">
+                            <label class="ml-2" for="otherEthnicGroup">Other</label>
                         </div>
 
                         <div class="m-3 flex flex-row">
                             <input
                                 class="mr-0.5 mt-1 rounded-full transition duration-200 ease-in-out hover:bg-blue-500"
-                                id="otherEthnicGroupInput"
-                                name="otherEthnicGroup"
-                                type="text"
+                                id="otherEthnicGroupInput" name="otherEthnicGroup" type="text"
                                 style="display: none;">
                         </div>
                     </div>
@@ -608,15 +402,11 @@
                         State: (previous selection: {{ $client->home_address_state }})
                     </x-form_label>
                     <select class="peer mt-2 w-full rounded-md border-blue-200 bg-gray-100 p-2 ring-0"
-                        id="home_address_state"
-                        name="home_address_state">
-                        <option value=""
-                            disabled
-                            selected
-                            hidden>Previous: {{ $client->home_address_state }}</option>
+                        id="home_address_state" name="home_address_state">
+                        <option value="" disabled selected hidden>Previous: {{ $client->home_address_state }}
+                        </option>
                         @foreach ($states as $state)
-                            <option value="{{ $state }}"
-                                @if ($state == $client->home_address_state) selected @endif>
+                            <option value="{{ $state }}" @if ($state == $client->home_address_state) selected @endif>
                                 {{ $state }}
                             </option>
                         @endforeach
@@ -627,16 +417,12 @@
                     <x-form_label for="home_address_country">
                         Country: (previous selection: {{ $client->home_address_country }})
                     </x-form_label>
-                    <select class="peer mt-2 w-full rounded-md border-blue-200 bg-gray-100 p-2 ring-0"
-                        id=""
+                    <select class="peer mt-2 w-full rounded-md border-blue-200 bg-gray-100 p-2 ring-0" id=""
                         name="">
-                        <option value=""
-                            disabled
-                            selected
-                            hidden>Previous: {{ $client->home_address_country }}</option>
+                        <option value="" disabled selected hidden>Previous: {{ $client->home_address_country }}
+                        </option>
                         @foreach ($clientCountries as $country)
-                            <option value="{{ $country }}"
-                                @if ($country == $client->home_address_country) selected @endif>
+                            <option value="{{ $country }}" @if ($country == $client->home_address_country) selected @endif>
                                 {{ $country }}
                             </option>
                         @endforeach
@@ -648,53 +434,38 @@
             <div class="col-span-6 my-4 sm:col-span-4">
                 <x-jet-label for="Previous Therapy from Pineapple"
                     value="Previous Therapy from Pineapple:  previous: {{ $client->previous_therapy == 0 ? 'No' : 'Yes' }}" />
-                <input class="rounded"
-                    id="previous_therapy"
-                    type="checkbox"
-                    wire:model.defer="state.previous_therapy"
-                    autocomplete="previous_therapy" />
-                <x-jet-input-error class="mt-2"
-                    for="previous_therapy" />
+                <input class="rounded" id="previous_therapy" type="checkbox"
+                    wire:model.defer="state.previous_therapy" autocomplete="previous_therapy" />
+                <x-jet-input-error class="mt-2" for="previous_therapy" />
             </div>
 
             {{-- Possible Support Needed --}}
             <div class="col-span-6 mt-0 sm:col-span-4">
-                <div class="relative mb-4 mt-6 w-full"
-                    x-data="{ showDropdown: false }">
+                <div class="relative mb-4 mt-6 w-full" x-data="{ showDropdown: false }">
                     <x-form_label>
                         Possible Support Needed: (previous selection:
                         {{ str_replace(['[', ']', '"'], '', $client->possible_support_needed) }})
                     </x-form_label>
-                    <div class="rounded-md"
-                        @click.away="showDropdown = false">
+                    <div class="rounded-md" @click.away="showDropdown = false">
                         <div class="flex w-full justify-between rounded-md border border-blue-300 bg-gray-100 p-1.5">
-                            <button class="flex w-full flex-row justify-between"
-                                type="button"
+                            <button class="flex w-full flex-row justify-between" type="button"
                                 @click="showDropdown = !showDropdown">
                                 <p class="ml-1 p-1">Select Options</p>
-                                <svg class="mt-1 h-[18px] w-[18px] text-gray-700"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="2"
+                                <svg class="mt-1 h-[18px] w-[18px] text-gray-700" fill="none"
+                                    stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M19 9l-7 7-7-7"></path>
                                 </svg>
                             </button>
                         </div>
-                        <div class="rounded-md bg-gray-50 md:flex md:flex-wrap"
-                            x-show="showDropdown"
-                            x-transition.scale.origin.top
-                            x-cloak>
+                        <div class="rounded-md bg-gray-50 md:flex md:flex-wrap" x-show="showDropdown"
+                            x-transition.scale.origin.top x-cloak>
                             <div class="items-center p-2 flex flex-wrap">
                                 @foreach ($categories as $category)
                                     <div class="m-2 mr-0.5 mt-1 rounded-full p-2">
                                         <input
                                             class="m-2 mr-0.5 mt-1 rounded-full p-2 transition duration-200 ease-in-out hover:cursor-pointer hover:bg-blue-400"
-                                            name="possible_support_needed[]"
-                                            type="checkbox"
+                                            name="possible_support_needed[]" type="checkbox"
                                             value="{{ $category }}"
                                             @if (is_array(old('possible_support_needed')) && in_array($category, old('possible_support_needed'))) checked @endif>
                                         <label class=""
@@ -704,22 +475,15 @@
 
                                 <div class="select-input-div m-2 mr-0.5 mt-0.5 rounded-full p-2 ">
                                     <input
-                                            class="m-2 mr-0.5 mt-1 rounded-full p-2 transition duration-200 ease-in-out hover:cursor-pointer hover:bg-blue-400"
-                                        id="otherPossibleSupportCheckbox"
-                                        name="possible_support_needed[]"
-                                        type="checkbox"
-                                        value="Other">
-                                    <label class="mb-0.5 ml-0.5"
-                                        for="otherPossibleSupport">Other</label>
+                                        class="m-2 mr-0.5 mt-1 rounded-full p-2 transition duration-200 ease-in-out hover:cursor-pointer hover:bg-blue-400"
+                                        id="otherPossibleSupportCheckbox" name="possible_support_needed[]"
+                                        type="checkbox" value="Other">
+                                    <label class="mb-0.5 ml-0.5" for="otherPossibleSupport">Other</label>
                                 </div>
 
                                 <div class="m-3 flex flex-row">
-                                    <input
-                                        class="mr-0.5 mt-1 rounded-full "
-                                        id="otherPossibleSupportInput"
-                                        name="otherPossibleSupport"
-                                        type="text"
-                                        style="display: none;">
+                                    <input class="mr-0.5 mt-1 rounded-full " id="otherPossibleSupportInput"
+                                        name="otherPossibleSupport" type="text" style="display: none;">
                                 </div>
 
                             </div>
@@ -761,25 +525,16 @@
             <div class="col-span-6 mt-0 sm:col-span-4">
                 <x-jet-label for="client_contribution"
                     value="Client Contribution:  previous: {{ $client->client_contribution }}" />
-                <input class="rounded"
-                    id="client_contribution"
-                    type="number"
-                    wire:model.defer="state.client_contribution"
-                    autocomplete="client_contribution" />
-                <x-jet-input-error class="mt-2"
-                    for="client_contribution" />
+                <input class="rounded" id="client_contribution" type="number"
+                    wire:model.defer="state.client_contribution" autocomplete="client_contribution" />
+                <x-jet-input-error class="mt-2" for="client_contribution" />
             </div>
 
             <div class="col-span-6 mt-0 sm:col-span-4">
-                <x-jet-label for="therapist"
-                    value="Therapist:  previous: {{ $therapist->name }}" />
+                <x-jet-label for="therapist" value="Therapist:  previous: {{ $therapist->name }}" />
                 <select class="peer mt-2 w-full rounded-md border-blue-200 bg-gray-100 p-2 capitalize ring-0"
-                    id="user_id"
-                    name="user_id">
-                    <option value=""
-                        disabled
-                        selected
-                        hidden>Previous: {{ $therapist->name }}</option>
+                    id="user_id" name="user_id">
+                    <option value="" disabled selected hidden>Previous: {{ $therapist->name }}</option>
 
                     @php
                         $groupedTherapists = $therapists->groupBy('state')->sortKeys();
@@ -811,26 +566,65 @@
             </div>
 
             <div class="mb-2 mt-4 w-full">
-                <x-jet-label for="notes"
-                    value="{{ __('Notes') }}" />
-                <textarea class="w-full rounded border border-blue-200 bg-gray-100"
-                    id="notes"
-                    type="text"
-                    cols="30"
-                    width:
-                    100%;
-                    wire:model.defer="state.notes"
-                    placeholder="Enter notes here..."
-                    autocomplete="notes"></textarea>
-                <x-jet-input-error class="mt-2"
-                    for="notes" />
+                <x-jet-label for="notes" value="{{ __('Notes') }}" />
+                <textarea class="w-full rounded border border-blue-200 bg-gray-100" id="notes" type="text" cols="30"
+                    width: 100%; wire:model.defer="state.notes" placeholder="Enter notes here..." autocomplete="notes"></textarea>
+                <x-jet-input-error class="mt-2" for="notes" />
             </div>
 
-            <x-jet-button class="ml-4"
-                type="submit">
+            <x-jet-button class="ml-4" type="submit">
                 {{ __('Update') }}
             </x-jet-button>
+
         </form>
+        <div x-data="{ open: false }">
+            <div class="w-1/2 mt-2 mx-auto">
+                <x-jet-button class="ml-4 bg-red-500 hover:bg-red-700" @click="open = true">
+                    {{ __('Delete') }}
+                </x-jet-button>
+            </div>
+
+            <div class="fixed z-10 inset-0 overflow-y-auto" x-show="open" x-cloak>
+                <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+                    <div class="fixed inset-0 transition-opacity" aria-hidden="true" @click="open = false">
+                        <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
+                    </div>
+
+                    <div
+                        class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                        <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                            <div class="sm:flex sm:items-start">
+                                <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                                    <div class="flex flex-row justify-between items-center">
+                                        <h3 class="text-lg leading-6 font-medium text-gray-900">
+                                            Are you sure?
+                                        </h3>
+                                        <button type="button"
+                                            class="mt-3  inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm w-fit"
+                                            @click="open = false">
+                                            Cancel
+                                        </button>
+                                    </div>
+                                    <div class="mt-2">
+                                        <p class="text-sm text-gray-500">
+                                            Do you really want to delete this client? This action cannot be undone.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <form action="{{ route('clients.delete', $client->id) }}" method="POST"
+                            class="mx-auto w-1/2 flex my-4">
+                            @csrf
+                            @method('DELETE')
+                            <x-jet-button class="mx-auto bg-red-500 hover:bg-red-700" type="submit">
+                                {{ __('Delete') }}
+                            </x-jet-button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
     </x-main-container>
 </x-app-layout>
 

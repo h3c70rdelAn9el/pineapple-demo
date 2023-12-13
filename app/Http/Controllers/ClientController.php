@@ -561,8 +561,15 @@ class ClientController extends Controller
      * @param  \App\Models\Client  $client
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Client $client)
+    public function destroy(Client $client, $id)
     {
-        //
+        $client = Client::find($id);
+
+        if ($client) {
+            $client->delete();
+            return redirect()->route('dashboard')->with('success', 'Client deleted successfully');
+        } else {
+            return redirect()->route('dashboard')->with('error', 'Client not found');
+        }
     }
 }

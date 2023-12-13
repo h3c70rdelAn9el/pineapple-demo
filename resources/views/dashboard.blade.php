@@ -1,8 +1,13 @@
 <x-app-layout>
-    {{-- add the error --}}
     @if (session('error'))
         <div class="w-1/2 p-4 m-4 mx-auto text-center text-white bg-red-500 rounded-md shadow-sm">
             {{ session('error') }}
+        </div>
+    @endif
+
+    @if (session('success'))
+        <div class="w-1/2 p-4 m-4 mx-auto text-center text-white bg-green-500 rounded-md shadow-sm">
+            {{ session('success') }}
         </div>
     @endif
     <x-main-container>
