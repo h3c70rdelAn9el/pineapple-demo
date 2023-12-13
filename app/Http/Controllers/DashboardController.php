@@ -18,6 +18,9 @@ class DashboardController extends Controller
         // $clients = User::find($user_id)->clients()->orderBy('preferred_name')->get();
         $clients = User::find($user_id)->clients()->orderBy('client_code', 'asc')->get();
 
+        $totalSessionCost = TherapySession::sum('session_cost');
+        $totalClientContribution = Client::sum('client_contribution');
+
         $client = Client::find($user_id);
         $allClients = Client::all()->sortBy('client_code');
         $activeClients = Client::where('status', '0')->get()->sortBy('client_code');
@@ -80,9 +83,9 @@ class DashboardController extends Controller
         }
 
         if ($user->admin) {
-            return view('dashboard_admin', ['user' => $user, 'therapists' => $therapists, 'allClients' => $allClients, 'therapist' => $therapist, 'therapySessions' => '$therapySessions', 'states' => $states, 'categories' => $categories, 'activeClients' => $activeClients, 'inactiveClients' => $inactiveClients, 'attendedSessions' => $attendedSessions, 'inactiveTherapists' => $inactiveTherapists, 'activeTherapists' => $activeTherapists, 'incompleteTherapists' => $incompleteTherapists]);
+            return view('dashboard_admin', ['user' => $user, 'therapists' => $therapists, 'allClients' => $allClients, 'therapist' => $therapist, 'therapySessions' => '$therapySessions', 'states' => $states, 'categories' => $categories, 'activeClients' => $activeClients, 'inactiveClients' => $inactiveClients, 'attendedSessions' => $attendedSessions, 'inactiveTherapists' => $inactiveTherapists, 'activeTherapists' => $activeTherapists, 'incompleteTherapists' => $incompleteTherapists, 'incompleteTherapist' => $incompleteTherapist, 'totalSessionCost' => $totalSessionCost, 'totalClientContribution' => $totalClientContribution]);
         } else {
-            return view('dashboard', ['user' => $user, 'clients' => $clients, 'client' => $client, 'therapySessions' => $therapySessions, 'therapist' => $therapist, 'states' => $states, 'categories' => $categories, 'activeClients' => $activeClients, 'inactiveClients' => $inactiveClients, 'attendedSessions' => $attendedSessions, 'incompleteTherapist' => $incompleteTherapist]);
+            return view('dashboard', ['user' => $user, 'clients' => $clients, 'client' => $client, 'therapySessions' => $therapySessions, 'therapist' => $therapist, 'states' => $states, 'categories' => $categories, 'activeClients' => $activeClients, 'inactiveClients' => $inactiveClients, 'attendedSessions' => $attendedSessions, 'incompleteTherapist' => $incompleteTherapist, 'totalSessionCost' => $totalSessionCost, 'totalClientContribution' => $totalClientContribution]);
         }
     }
 }
