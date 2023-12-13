@@ -66,7 +66,7 @@ class TherapySessionController extends Controller
         }
         //$therapist = User::find($user->id);
         if($therapist->session_cost == null || $therapist->session_cost == 0){
-            Session::flash('error', 'This therapist has no session cost set.');
+            Session::flash('error', 'You have no session cost set. please set it in your profile.');
             return redirect()->back();
         }
         $therapist_session_cost = $therapist->session_cost ;
