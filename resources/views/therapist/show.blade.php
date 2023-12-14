@@ -4,6 +4,30 @@
             {{ $user->name }}
         </x-container-header>
 
+        <div class="ml-7 mt-2 w-fit ">
+            <table class="w-full ml-4">
+                <tbody class="text-sm">
+                    <tr>
+                        <td>Total Sessions' Cost:</td>
+                        <td><span class="font-bold ml-4">{{ $totalSessionCost }}</span></td>
+                    </tr>
+                    <tr>
+                        <td>Total Clients' Contribution:</td>
+                        <td><span class="font-bold ml-4 text-blue-500">{{ $totalClientContribution }}</span></td>
+                    </tr>
+
+                    <tr>
+                        <td>Total:</td>
+                        <td>
+                            <span class="font-bold ml-4 {{ $total < 0 ? 'text-red-500' : '' }}">
+                                {{ $total }}
+                            </span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
         <div class="mx-auto mt-3 flex h-full w-full max-w-6xl flex-col rounded-md p-4 md:flex-row">
             {{-- left/top --}}
             <x-container-content :user="$user">\
