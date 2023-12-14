@@ -30,6 +30,10 @@ class TherapistsController extends Controller
         $therapySessions = TherapySession::where("client_id", "=", $therapist->id)->get();
         $file_name = FileUpload::find($id);
 
+        $totalSessionCost = number_format($therapist->sum('session_cost'), 2, '.', '');
+        $totalClientContribution = number_format($clients->sum('client_contribution'), 2, '.', '');
+        $total = number_format($totalSessionCost - $totalClientContribution, 2, '.', '');
+
         $totalClients = $clients->count();
 
         $space_for_new_clients = (int)$therapist->number_of_potential_clients - $totalClients;
@@ -41,6 +45,9 @@ class TherapistsController extends Controller
             'user' => $user,
             'file_name' => $file_name,
             'space_for_new_clients' => $space_for_new_clients,
+            'total' => $total,
+            'totalSessionCost' => $totalSessionCost,
+            'totalClientContribution' => $totalClientContribution,
         ]);
     }
 
