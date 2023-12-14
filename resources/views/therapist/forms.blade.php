@@ -1,6 +1,5 @@
 <x-app-layout>
-    <x-main-container class="overflow-hidden pb-20"
-        style="height: 80vh;">
+    <x-main-container class="overflow-hidden pb-20" style="height: 80vh;">
         <x-container-header :user="$user">
         </x-container-header>
         <div class="h-full overflow-scroll">
@@ -13,16 +12,12 @@
             </div>
 
             <div class="flex">
-                <div class="mx-auto"
-                    x-data="{ search: '' }">
+                <div class="mx-auto" x-data="{ search: '' }">
                     <form x-on:submit.prevent="searchForm">
                         @csrf
-                        <input class="rounded-md p-2.5 text-sm"
-                            type="text"
-                            x-model="search"
+                        <input class="rounded-md p-2.5 text-sm" type="text" x-model="search"
                             placeholder="Search for filename">
-                        <button class="button"
-                            type="submit">Search</button>
+                        <button class="button" type="submit">Search</button>
                     </form>
                 </div>
             </div>
@@ -82,23 +77,19 @@
                         </div>
                         <div class="flex flex-row">
                             {{-- TODO: STYLE THIS --}}
-                            <a class="text-lg font-light"
-                                href="{{ route('fileEdit', $form->id) }}">View</a>
+                            <a class="text-lg font-light" href="{{ route('fileEdit', $form->id) }}">View</a>
                         </div>
 
                         <div class="items-center justify-center">
                             @if (Str::contains($form->file_name, '.pdf'))
                                 <embed class="h-64 w-full rounded-md object-cover md:h-[300px] md:w-full"
-                                    src="{{ $form->url() }}"
-                                    type="application/pdf"
-                                    alt="{{ $form->file_name }}" />
+                                    src="{{ $form->url() }}" type="application/pdf" alt="{{ $form->file_name }}" />
                             @elseif (Str::contains($form->file_name, '.jpg') ||
                                     Str::contains($form->file_name, '.png') ||
                                     Str::contains($form->file_name, '.jpeg') ||
                                     Str::contains($form->file_name, '.JPEG'))
                                 <img class="h-64 w-full rounded-md object-cover md:h-[300px] md:w-full"
-                                    src="{{ $form->url() }}"
-                                    alt="{{ $form->file_name }}" />
+                                    src="{{ $form->url() }}" alt="{{ $form->file_name }}" />
                             @endif
                         </div>
 
@@ -108,23 +99,20 @@
                                     <div class="flex flex-row">
                                         <p class="text-xs font-light">Verified:</p>
                                         <p class="pl-2 text-xs font-light">
-                                        <input name="verified_{{ $form->id }}}}"
-                                            type="radio"
-                                            value="1"
-                                            {{ $form->verified == 1 ? 'checked' : '' }}>
-                                        <label for="Yes">Yes</label>
-                                        <input name="verified_{{ $form->id }}"
-                                            type="radio"
-                                            value="0"
-                                            {{ $form->verified == 0 ? 'checked' : '' }}>
-                                        <label for="No">No</label>
+                                            <input name="verified_{{ $form->id }}}}" type="radio" value="1"
+                                                {{ $form->verified == 1 ? 'checked' : '' }}>
+                                            <label for="Yes">Yes</label>
+                                            <input name="verified_{{ $form->id }}" type="radio" value="0"
+                                                {{ $form->verified == 0 ? 'checked' : '' }}>
+                                            <label for="No">No</label>
                                     </div>
                                     <div class="flex flex-row">
                                         <p class="text-xs font-light">Date:</p>
                                         {{-- <p class="pl-2 text-xs font-light">{{ $form->date }}</p> --}}
                                         @if ($form->date != null)
-                                            <p class="pl-2 text-xs font-light{{ now() > $form->date ? ' text-red-500' : '' }}">
-                                                {{ $form->date->format('Y-m-d') }}
+                                            <p
+                                                class="pl-2 text-xs font-light{{ now() > Carbon\Carbon::parse($form->date)->format('Y-m-d') ? ' text-red-500' : '' }}">
+                                                {{ Carbon\Carbon::parse($form->date)->format('Y-m-d') }}
                                             </p>
                                         @else
                                             <p class="pl-2 text-xs font-light">N/A</p>
