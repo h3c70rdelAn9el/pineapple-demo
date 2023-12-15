@@ -92,9 +92,10 @@ class TherapistsController extends Controller
 
     public function update(Request $request, $id)
     {
+        $user = auth()->user();
         $selectedGenders = $request->input('gender');
         $otherGender = $request->input('otherGender');
-        $genderString = "";
+        // $genderString = "";
         if (is_array($selectedGenders)) {
             if (in_array('Other', $selectedGenders) && $otherGender) {
                 $genderString = implode(', ', array_map(function ($value) use ($otherGender) {
@@ -106,6 +107,8 @@ class TherapistsController extends Controller
         } else {
             $genderString = $selectedGenders;
         }
+        // $user->gender = is_array($selectedGenders) ? implode(', ', $selectedGenders) : $selectedGenders;
+
         // Validate the request data
         $validatedData = $request->validate([
             'title' => 'nullable|string|max:255',
@@ -126,38 +129,29 @@ class TherapistsController extends Controller
             'routing_number' => 'nullable|string|max:255',
             'iban_swift_code' => 'nullable|string|max:255',
             'client_spaces' => 'nullable|string|max:255',
-            // 'full' => 'nullable|string|max:255',
-            // full is  abloolean
             'full' => 'nullable|boolean',
-            // 'out_of_state_coaching' => 'nullable|string|max:255'
             'out_of_state_coaching' => 'nullable|boolean',
-            // 'contact_for_promotionals' => 'nullable|string|max:255',
             'contact_for_promotionals' => 'nullable|boolean',
-            // 'active_status' => 'nullable|string|max:255',
             'active_status' => 'nullable|boolean',
-            // 'contract_signed' => 'nullable|string|max:255',
             'contract_signed' => 'nullable|boolean',
             'all_documents' => 'nullable|string|max:255',
-            // 'website' => 'nullable|string|max:255',
-            // 'website' => 'nullable|string|max:255',
             'website' => 'nullable|boolean',
             'quickbooks' => 'nullable|string|max:255',
             'session_cost' => 'nullable|numeric',
-            // 'client_extensions' => 'nullable|string|max:255',
             // 'client_extensions' => 'nullable|boolean',
             'notes' => 'nullable|string|max:255',
             'number_of_potential_clients' => 'nullable|numeric',
-            'gender' => [
-                'nullable',
-                Rule::in($this->getGenders()), // Use the getGenders method to get allowed values
-            ],
+
+            // 'gender' => $genderString
+
 
         ]);
 
-        // Retrieve the existing therapist from the database
-        // $therapist = User::find($id);
         $user = User::find($id);
 
+        // $user->gender = is_array($selectedGenders) ? implode(', ', $selectedGenders) : $selectedGenders;
+        $validatedData['gender'] = $genderString;
+        // $user->update($validatedData);
         // if ($user->admin == 1) {
         //     unset($validatedData['full']);
         // } else {
