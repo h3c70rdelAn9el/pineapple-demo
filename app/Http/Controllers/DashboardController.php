@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Client;
 use Illuminate\Http\Request;
 use App\Models\TherapySession;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 
 class DashboardController extends Controller
@@ -28,7 +29,10 @@ class DashboardController extends Controller
         $therapySessions = TherapySession::where('user_id', $user->id)
             ->orderBy('created_at', 'desc')
             ->get();
-        $therapists = User::where('admin', 0)->get()->sortBy('name');
+        // $therapists = User::where('admin', 0)->get()->sortBy('preferred_name');
+        $therapists = User::where('admin', 0)
+        ->orderBy(DB::raw('COALESCE(preferred_name, name)'))
+        ->get();
         // $therapist = User::find($user_id);
         $therapist = Client::find($user_id)?->therapist;
         $attendedSessions = TherapySession::whereIn('client_id', $clients->pluck('id'))->whereIn('attendance', ['attended', 'no-show'])->orderBy('created_at', 'desc')->get();
