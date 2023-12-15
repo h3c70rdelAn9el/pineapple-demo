@@ -135,32 +135,25 @@
                     <div class="-mt-1 w-full rounded-b-md rounded-t-none border-b border-l border-r border-blue-300 bg-gray-100 pt-1 text-gray-600 md:flex md:flex-wrap"
                         x-show="showGender" x-transition.scale.origin.top x-transition.duration.300ms
                         x-transition.ease-in-out x-cloak>
-                        {{-- @foreach ($genders as $gender) --}}
-                        <div class="m-3 flex flex-row">
-                            {{-- <input
-                                        class="mr-0.5 mt-1 rounded-full transition duration-200 ease-in-out hover:bg-blue-500"
-                                        name="gender[]" type="checkbox" value="{{ $gender }}">
-                                    <label class="" for="{{ $gender }}">{{ $gender }}</label> --}}
-                            <select multiple name="gender[]">
-                                <option value="Male">Male</option>
-                                <option value="Female">Female</option>
-                                <option value="Non-binary">Non-binary</option>
-                                <option value="Prefer Not To Say">Prefer Not To Say</option>
-                            </select mu>
-
-                        </div>
-                        {{-- @endforeach --}}
-                        {{-- <div class="select-input-div">
-                                <input class="select-input" id="otherGenderCheckbox" name="gender[]" type="checkbox"
-                                    value="Other">
-                                <label class="ml-2" for="otherGender">Other</label>
-                            </div>
-
+                        @foreach ($genders as $gender)
                             <div class="m-3 flex flex-row">
                                 <input
                                     class="mr-0.5 mt-1 rounded-full transition duration-200 ease-in-out hover:bg-blue-500"
-                                    id="otherGenderInput" name="otherGender" type="text" style="display: none;">
-                            </div> --}}
+                                    name="gender[]" type="checkbox" value="{{ $gender }}">
+                                <label class="" for="{{ $gender }}">{{ $gender }}</label>
+                            </div>
+                        @endforeach
+                        <div class="select-input-div">
+                            <input class="select-input" id="otherGenderCheckbox" name="gender[]" type="checkbox"
+                                value="Other">
+                            <label class="ml-2" for="otherGender">Other</label>
+                        </div>
+
+                        <div class="m-3 flex flex-row">
+                            <input
+                                class="mr-0.5 mt-1 rounded-full transition duration-200 ease-in-out hover:bg-blue-500"
+                                id="otherGenderInput" name="otherGender" type="text" style="display: none;">
+                        </div>
                     </div>
                 </div>
             </div>
