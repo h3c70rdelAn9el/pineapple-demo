@@ -9,6 +9,7 @@ use App\Models\FileUpload;
 use Illuminate\Http\Request;
 use App\Models\TherapySession;
 // use Illuminate\Notifications\Notification;
+use Illuminate\Validation\Rule;
 use App\Notifications\TherapistFileUploaded;
 use Illuminate\Support\Facades\Notification;
 
@@ -51,6 +52,23 @@ class TherapistsController extends Controller
         ]);
     }
 
+    private function getGenders()
+    {
+        $genders = [
+            'Male',
+            'Female',
+            'Transgender',
+            'Genderqueer',
+            'Genderfluid',
+            'Agender',
+            'Bigender',
+            'Cisgender',
+            'Non-Binary',
+            'Prefer Not To Say',
+        ];
+        return $genders;
+    }
+
     public function edit($id)
     {
         $user = auth()->user();
@@ -65,6 +83,7 @@ class TherapistsController extends Controller
                 'user' => $user,
                 'form' => $form,
                 'id' => $id,
+                'genders' => $this->getGenders(),
             ]);
         } else {
             return redirect()->route('dashboard')->with('error', 'You are not authorized to edit this therapist');
@@ -73,19 +92,36 @@ class TherapistsController extends Controller
 
     public function update(Request $request, $id)
     {
+        $user = auth()->user();
+        $selectedGenders = $request->input('gender');
+        $otherGender = $request->input('otherGender');
+        // $genderString = "";
+        if (is_array($selectedGenders)) {
+            if (in_array('Other', $selectedGenders) && $otherGender) {
+                $genderString = implode(', ', array_map(function ($value) use ($otherGender) {
+                    return $value == 'Other' ? $otherGender : $value;
+                }, $selectedGenders));
+            } else {
+                $genderString = implode(', ', $selectedGenders);
+            }
+        } else {
+            $genderString = $selectedGenders;
+        }
+        // $user->gender = is_array($selectedGenders) ? implode(', ', $selectedGenders) : $selectedGenders;
+
         // Validate the request data
         $validatedData = $request->validate([
             'title' => 'nullable|string|max:255',
             'name' => 'nullable|string|max:255',
             'preferred_name' => 'nullable|string|max:255',
             'email' => 'nullable|string|email|max:255',
-            'gender' => 'nullable|string|max:255',
+            // 'gender' => 'nullable|string|max:255',
             'intern' => 'nullable|string|max:255',
             'supervisor_name' => 'nullable|string|max:255',
             'street_address' => 'nullable|string|max:255',
-            'county' => 'nullable|string|max:255',
+            'county_town' => 'nullable|string|max:255',
             'state' => 'nullable|string|max:255',
-            'zip_code_postcode' => 'nullable|string|max:255',
+            'zip_code_postal_code' => 'nullable|string|max:255',
             'country' => 'nullable|string|max:255',
             'time_zone' => 'nullable|string|max:255',
             'account_name' => 'nullable|string|max:255',
@@ -93,47 +129,56 @@ class TherapistsController extends Controller
             'routing_number' => 'nullable|string|max:255',
             'iban_swift_code' => 'nullable|string|max:255',
             'client_spaces' => 'nullable|string|max:255',
-            // 'full' => 'nullable|string|max:255',
-            // full is  abloolean
             'full' => 'nullable|boolean',
-            // 'out_of_state_coaching' => 'nullable|string|max:255'
             'out_of_state_coaching' => 'nullable|boolean',
-            // 'contact_for_promotionals' => 'nullable|string|max:255',
             'contact_for_promotionals' => 'nullable|boolean',
-            // 'active_status' => 'nullable|string|max:255',
             'active_status' => 'nullable|boolean',
-            // 'contract_signed' => 'nullable|string|max:255',
             'contract_signed' => 'nullable|boolean',
             'all_documents' => 'nullable|string|max:255',
-            // 'website' => 'nullable|string|max:255',
-            'website' => 'nullable|url|max:255',
-            // 'quickbooks' => 'nullable|string|max:255',
-            'quickbooks' => 'nullable|url|max:255',
-            // 'session_cost' => 'nullable|string|max:255',
+            'website' => 'nullable|boolean',
+            'quickbooks' => 'nullable|string|max:255',
             'session_cost' => 'nullable|numeric',
-            // 'client_extensions' => 'nullable|string|max:255',
             // 'client_extensions' => 'nullable|boolean',
             'notes' => 'nullable|string|max:255',
+            'number_of_potential_clients' => 'nullable|numeric',
+
+            // 'gender' => $genderString
+
+
         ]);
 
-        // Retrieve the existing therapist from the database
-        // $therapist = User::find($id);
         $user = User::find($id);
 
-        if ($user->admin == 1) {
-            unset($validatedData['full']);
-        } else {
-            if ($user->space_for_new_clients == 0) {
-                $validatedData['full'] = 1;
-            }
-        }
+        // $user->gender = is_array($selectedGenders) ? implode(', ', $selectedGenders) : $selectedGenders;
+        $validatedData['gender'] = $genderString;
+        // $user->update($validatedData);
+        // if ($user->admin == 1) {
+        //     unset($validatedData['full']);
+        // } else {
+        //     if ($user->space_for_new_clients == 0) {
+        //         $validatedData['full'] = 1;
+        //     }
+        // }
+// TODO: Check if we need to add this::
+        // if ($user->admin == 1) {
+        //     unset($validatedData['full']);
+        // } else {
+        //     // Check if the therapist has space for new clients
+        //     if ($user->space_for_new_clients > 0) {
+        //         $validatedData['full'] = 0;
+        //     } else {
+        //         $validatedData['full'] = 1;
+        //     }
+        // }
+
 
 
         if (!$user) {
             return redirect()->route('therapist.show', $id)->with('error', 'User not found');
         }
 
-        $user->save();
+        // $user->save();
+        $user->update($validatedData);
 
         // return redirect()->route('therapist.show', $id)->with('success', 'Therapist updated successfully');
         return redirect()->back()->with('success', 'Profile updated!');

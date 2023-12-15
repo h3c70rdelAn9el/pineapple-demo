@@ -1,3 +1,12 @@
+@php
+    // TODO:  IS THIS OKAY?
+    $timeZonesJson = file_get_contents(resource_path('json/time_zones.json'));
+    $timeZones = json_decode($timeZonesJson, true);
+    // $statesJson = file_get_contents(resource_path('json/states.json'));
+    // $states = json_decode($statesJson, true);
+    $countriesJson = file_get_contents(resource_path('json/countries.json'));
+    $clientCountries = json_decode($countriesJson, true);
+@endphp
 <x-app-layout>
     {{-- make a sample edit page and form from other client-form --}}
     <x-main-container>
@@ -7,9 +16,7 @@
         {{-- <form class="w-1/2 mx-auto" action="{{ route('clients.update', $client->id) }}" method="POST"> --}}
 
         {{-- <form action="{{ route('therapist.update', ['id' => $therapist->id]) }}" method="POST" class="w-1/2 mx-auto"> --}}
-        <form class="mx-auto w-1/2"
-            action="{{ route('therapist.update', $therapist->id) }}"
-            method="POST">
+        <form class="mx-auto w-1/2" action="{{ route('therapist.update', $therapist->id) }}" method="POST">
 
             @csrf
             @method('PUT')
@@ -23,27 +30,39 @@
                 {{ $therapist->title }}
             </x-form-field> --}}
 
-            <x-form-field id="title"
+            {{-- <x-form-field id="title"
                 name="title"
                 type="text"
                 label="Title"
                 :value="$therapist->title"
                 :placeholder="$therapist->title" />
-            <x-form-field id="name"
+            {{-- <x-form-field id="name"
                 name="name"
                 type="text"
                 label="Name"
                 :value="$therapist->name"
                 :placeholder="$therapist->name">
                 {{ $therapist->name }}
-            </x-form-field>
+            </x-form-field> --}}
+            <div>
+                <x-jet-label for="title" value="{{ __('Title') }}" />
+                <x-jet-input id="title" class="block mt-1 w-full" type="text" name="title" :value="old('title', $therapist->title)"
+                    :placeholder="$therapist->title" autofocus />
+                <x-jet-input-error for="title" class="mt-2" />
+            </div>
+            <div>
+                <x-jet-label for="name" value="{{ __('Name') }}" />
+                <x-jet-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name', $therapist->name)"
+                    :placeholder="$therapist->name" autofocus />
+                <x-jet-input-error for="name" class="mt-2" />
+            </div>
 
             {{-- <x-form-field id="preferred_name"
                 name="preferred_name"
                 type="text"
                 label="Preferred Name"
                 :value="$therapist->preferred_name" /> --}}
-
+            {{--
             <x-form-field
                 id="preferred_name"
                 name="preferred_name"
@@ -54,288 +73,370 @@
                 :placeholder="$therapist->preferred_name"
                 >
                 {{ $therapist->preferred_name }}
-            </x-form-field>
+            </x-form-field> --}}
+            <div>
+                <x-jet-label for="preferred_name" value="{{ __('Preferred Name') }}" />
+                <x-jet-input id="preferred_name" class="block mt-1 w-full" type="text" name="preferred_name"
+                    :value="old('preferred_name', $therapist->preferred_name)" :placeholder="$therapist->preferred_name" autofocus />
+                <x-jet-input-error for="preferred_name" class="mt-2" />
+            </div>
 
             {{-- email --}}
-            <x-form-field id="email"
+            {{-- <x-form-field id="email"
                 name="email"
                 type="text"
                 label="Email">
                 {{ $therapist->email }}
-            </x-form-field>
+            </x-form-field> --}}
+            <div>
+                <x-jet-label for="email" value="{{ __('Email') }}" />
+                <x-jet-input id="email" class="block mt-1 w-full" type="text" name="email" :value="old('email', $therapist->email)"
+                    :placeholder="$therapist->email" autofocus />
+                <x-jet-input-error for="email" class="mt-2" />
+            </div>
             {{-- gender --}}
-            <div class="col-span-6 mt-0 sm:col-span-4">
+            {{-- <div class="col-span-6 mt-0 sm:col-span-4">
                 <x-multi-select id="gender"
                     name="gender"
                     value="{{ $therapist->gender }}"
                     label="Gender:   (previous selection: {{ $therapist->gender }}) "
                     placeholder="{{ $therapist->gender }}"
                     :options="['Male', 'Female', 'Non-binary', 'Prefer Not To Say']"></x-multi-select>
+            </div> --}}
+            <div class="relative mb-4 mt-6 w-full"
+                x-data='{
+                    showGender: false,
+                    selectedOptions: [],
+                    toggleSelectedOption(option) {
+                        if (this.selectedOptions.includes(option)) {
+                            this.selectedOptions = this.selectedOptions.filter(item => item !== option);
+                        } else {
+                            this.selectedOptions.push(option);
+                        }
+                    }
+                }'
+                x-init="alpine.watch('showOptions', value => { if (!value) showOptions = false; })">
+                <x-form_label>
+                    Gender(s): (previous selection: {{ str_replace(['[', ']', '"'], '', $therapist->gender) }})
+                </x-form_label>
+                <div class="rounded-md" @click.away="showGender = false">
+                    <div class="flex w-full justify-between rounded-md border border-blue-300 bg-gray-100 p-3">
+                        <button class="-m-0.5 flex w-full justify-between text-gray-700" type="button"
+                            @click="showGender = !showGender">
+                            <span class="ml-0"
+                                x-text="selectedOptions.length > 0 ? selectedOptions.join(', ') : 'Select Options'"></span>
+                            <svg class="mt-0.5 h-[18px] w-[18px] text-gray-800" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="-mt-1 w-full rounded-b-md rounded-t-none border-b border-l border-r border-blue-300 bg-gray-100 pt-1 text-gray-600 md:flex md:flex-wrap"
+                        x-show="showGender" x-transition.scale.origin.top x-transition.duration.300ms
+                        x-transition.ease-in-out x-cloak>
+                        @foreach ($genders as $gender)
+                            <div class="m-3 flex flex-row">
+                                <input
+                                    class="mr-0.5 mt-1 rounded-full transition duration-200 ease-in-out hover:bg-blue-500"
+                                    name="gender[]" type="checkbox" value="{{ $gender }}">
+                                <label class="" for="{{ $gender }}">{{ $gender }}</label>
+                            </div>
+                        @endforeach
+                        <div class="select-input-div">
+                            <input class="select-input" id="otherGenderCheckbox" name="gender[]" type="checkbox"
+                                value="Other">
+                            <label class="ml-2" for="otherGender">Other</label>
+                        </div>
+
+                        <div class="m-3 flex flex-row">
+                            <input
+                                class="mr-0.5 mt-1 rounded-full transition duration-200 ease-in-out hover:bg-blue-500"
+                                id="otherGenderInput" name="otherGender" type="text" style="display: none;">
+                        </div>
+                    </div>
+                </div>
             </div>
 
             {{-- intern --}}
-            <div class="col-span-6 my-4 sm:col-span-4">
-                <x-jet-label for="intern"
-                    value="Intern:  previous: {{ $therapist->intern == 0 ? 'No' : 'Yes' }}" />
-                <input class="rounded"
-                    id="intern"
-                    type="checkbox"
-                    wire:model.defer="state.intern"
-                    autocomplete="intern" />
-                <x-jet-input-error class="mt-2"
-                    for="intern" />
+            <div class="col-span-6 mt-4 sm:col-span-4 mb-4">
+                <x-jet-label for="intern" value="{{ __('Intern') }}" />
+                <div class="flex items-center mt-1">
+                    <label for="intern_yes" class="mr-4">
+                        <input id="intern_yes" type="radio" name="intern" value="1"
+                            {{ $therapist->intern == 1 ? 'checked' : '' }} />
+                        <span class="ml-2 text-sm text-gray-600">Yes</span>
+                    </label>
+
+                    <label for="intern_no">
+                        <input id="intern_no" type="radio" name="intern" value="0"
+                            {{ $therapist->intern == 0 ? 'checked' : '' }} />
+                        <span class="ml-2 text-sm text-gray-600">No</span>
+                    </label>
+                </div>
+                <x-jet-input-error class="mt-2" for="intern" />
             </div>
 
+
             {{-- supervisor_name --}}
-            <x-form-field id="supervisor_name"
+            {{-- <x-form-field id="supervisor_name"
                 name="supervisor_name"
                 type="text"
                 label="Supervisor Name">
                 {{ $therapist->supervisor_name }}
-            </x-form-field>
+            </x-form-field> --}}
+            <div>
+                <x-jet-label for="supervisor_name" value="{{ __('Supervisor Name') }}" />
+                <x-jet-input id="supervisor_name" class="block mt-1 w-full" type="text" name="supervisor_name"
+                    :value="old('supervisor_name', $therapist->supervisor_name)" :placeholder="$therapist->supervisor_name" autofocus />
+                <x-jet-input-error for="supervisor_name" class="mt-2" />
+            </div>
 
             {{-- street_address --}}
-            <x-form-field id="street_address"
-                name="street_address"
-                type="text"
-                label="Street Address">
-                {{ $therapist->street_address }}
-            </x-form-field>
 
-            {{-- county_town --}}
-            <x-form-field id="county_town"
-                name="county_town"
-                type="text"
-                label="County/Town">
-                {{ $therapist->county_town }}
-            </x-form-field>
-
-            {{-- state --}}
-            <x-form-field id="state"
-                name="state"
-                type="text"
-                label="State">
-                {{ $therapist->state }}
-            </x-form-field>
-
-            {{-- zip_code --}}
-            <x-form-field id="zip_code_postal_code"
-                name="zip_code_postal_code"
-                type="text"
-                label="Zip Code">
-                {{ $therapist->zip_code_postal_code }}
-            </x-form-field>
-
-            {{-- country --}}
-            <x-form-field id="country"
-                name="country"
-                type="text"
-                label="Country">
-                {{ $therapist->country }}
-            </x-form-field>
-
-            {{-- time_zone --}}
-            <x-form-field id="time_zone"
-                name="time_zone"
-                type="text"
-                label="Time Zone">
-                {{ $therapist->time_zone }}
-            </x-form-field>
-
-            {{-- account_name --}}
-            <x-form-field id="account_name"
-                name="account_name"
-                type="text"
-                label="Account Name">
-                {{ $therapist->account_name }}
-
-            </x-form-field>
-
-            {{-- account_number --}}
-            <x-form-field id="account_number"
-                name="account_number"
-                type="text"
-                label="Account Number">
-                {{ $therapist->account_number }}
-            </x-form-field>
-
-            {{-- routing_number --}}
-            <x-form-field id="routing_number"
-                name="routing_number"
-                type="text"
-                label="Routing Number">
-                {{ $therapist->routing_number }}
-            </x-form-field>
-
-            {{-- iban_swift_code --}}
-            <x-form-field id="iban_swift_code"
-                name="iban_swift_code"
-                type="text"
-                label="IBAN/Swift Code">
-                {{ $therapist->iban_swift_code }}
-            </x-form-field>
-
-            {{-- client_spaces --}}
-            <x-form-field id="client_spaces"
-                name="client_spaces"
-                type="text"
-                label="Client Spaces">
-                {{ $therapist->client_spaces }}
-            </x-form-field>
-
-            {{-- full --}}
-            <div class="col-span-6 mt-4 sm:col-span-4">
-                <x-jet-label for="full"
-                    value="Therapist is Full/   previous: {{ $therapist->full == 1 ? 'Yes' : ($therapist->full == 0 ? 'No' : $therapist->full) }}" />
-                <input class="rounded"
-                    id="full"
-                    type="checkbox"
-                    wire:model.defer="state.full"
-                    autocomplete="full" />
-                <x-jet-input-error class="mt-2"
-                    for="full" />
+            <div>
+                <x-jet-label for="street_address" value="{{ __('Street Address') }}" />
+                <x-jet-input id="street_address" class="block mt-1 w-full" type="text" name="street_address"
+                    :value="old('street_address', $therapist->street_address)" :placeholder="$therapist->street_address" autofocus />
+                <x-jet-input-error for="street_address" class="mt-2" />
             </div>
 
-            {{-- out_of_state_coaching --}}
-            <x-form-field id="out_of_state_coaching"
-                name="out_of_state_coaching"
-                type="text"
-                label="Out of State Coaching">
-                {{ $therapist->out_of_state_coaching }}
-            </x-form-field>
 
-            {{-- promotional_content --}}
-            <div class="col-span-6 mt-4 sm:col-span-4">
-                <x-jet-label for="contact_for_promotionals"
-                    value="{{ __('Contact for promotionals') }}" />
-                <input class="rounded"
-                    id="contact_for_promotionals"
-                    type="checkbox"
-                    wire:model.defer="state.contact_for_promotionals"
-                    autocomplete="contact_for_promotionals" />
-                <x-jet-input-error class="mt-2"
-                    for="contact_for_promotionals" />
+            <div>
+                <x-jet-label for="county_town" value="{{ __('County/Town') }}" />
+                <x-jet-input id="county_town" class="block mt-1 w-full" type="text" name="county_town"
+                    :value="old('county_town', $therapist->county_town)" :placeholder="$therapist->county_town" autofocus />
+                <x-jet-input-error for="county_town" class="mt-2" />
             </div>
 
-            {{-- active_status --}}
-            {{-- boolean --}}
-            <div class="col-span-6 mt-4 sm:col-span-4">
-                <x-jet-label for="active_status"
-                    value="{{ __('Active Status') }}" />
-                <input class="rounded"
-                    id="active_status"
-                    type="checkbox"
-                    wire:model.defer="state.active_status"
-                    autocomplete="active_status" />
-                <x-jet-input-error class="mt-2"
-                    for="active_status" />
+            <div class="relative mb-4 mt-6 w-full">
+                <x-form_label for="country">
+                    Country: (previous selection: {{ $therapist->country }})
+                </x-form_label>
+                <select class="peer mt-2 w-full rounded-md border-blue-200 bg-gray-100 p-2 ring-0" id=""
+                    name="country">
+                    <option value="" disabled selected hidden>Previous: {{ $therapist->country }}
+                    </option>
+                    @foreach ($clientCountries as $country)
+                        <option value="{{ $country }}" @if ($country == $therapist->country) selected @endif>
+                            {{ $country }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+            <div>
+                <x-jet-label for="zip_code_postal_code" value="{{ __('Zip Code') }}" />
+                <x-jet-input id="zip_code_postal_code" class="block mt-1 w-full" type="text"
+                    name="zip_code_postal_code" :value="old('zip_code_postal_code', $therapist->zip_code_postal_code)" :placeholder="$therapist->zip_code_postal_code" autofocus />
+                <x-jet-input-error for="zip_code_postal_code" class="mt-2" />
             </div>
 
-            {{-- contract_signed --}}
-            {{-- boolean --}}
-            <div class="col-span-6 mt-4 sm:col-span-4">
-                <x-jet-label for="contract_signed"
-                    value="{{ __('Contract Signed') }}" />
-                <input class="rounded"
-                    id="contract_signed"
-                    type="checkbox"
-                    wire:model.defer="state.contract_signed"
-                    autocomplete="contract_signed" />
-                <x-jet-input-error class="mt-2"
-                    for="contract_signed" />
+            <div class="relative mb-4 mt-6 w-full">
+                <x-form_label for="time_zone">
+                    Time Zone:
+                </x-form_label>
+                <select class="peer mt-2 w-full rounded-md border-blue-200 bg-gray-100 p-2 ring-0" id="time_zone"
+                    name="time_zone">
+                    <option value="" disabled selected hidden>Previous: {{ $therapist->time_zone }}
+                    </option>
+                    @foreach ($timeZones as $timeZone)
+                        <option value="{{ $timeZone }}" @if ($timeZone == $therapist->time_zone) selected @endif>
+                            {{ $timeZone }}
+                        </option>
+                    @endforeach
+                </select>
             </div>
 
-            {{-- all_documents --}}
-            {{-- boolean --}}
-            <div class="col-span-6 mt-4 sm:col-span-4">
-                <x-jet-label for="all_documents"
-                    value="{{ __('All Documents') }}" />
-                <input class="rounded"
-                    id="all_documents"
-                    type="checkbox"
-                    wire:model.defer="state.all_documents"
-                    autocomplete="all_documents" />
-                <x-jet-input-error class="mt-2"
-                    for="all_documents" />
+
+            <div>
+                <x-jet-label for="account_name" value="{{ __('Account Name') }}" />
+                <x-jet-input id="account_name" class="block mt-1 w-full" type="text" name="account_name"
+                    :value="old('account_name', $therapist->account_name)" :placeholder="$therapist->account_name" autofocus />
+                <x-jet-input-error for="account_name" class="mt-2" />
             </div>
 
-            {{-- website --}}
-            {{-- boolean --}}
-            <div class="col-span-6 mt-4 sm:col-span-4">
-                <x-jet-label for="website"
-                    value="{{ __('Website') }}" />
-                <input class="rounded"
-                    id="website"
-                    type="checkbox"
-                    wire:model.defer="state.website"
-                    autocomplete="website" />
-                <x-jet-input-error class="mt-2"
-                    for="website" />
+            <div>
+                <x-jet-label for="account_number" value="{{ __('Account Number') }}" />
+                <x-jet-input id="account_number" class="block mt-1 w-full" type="text" name="account_number"
+                    :value="old('account_number', $therapist->account_number)" :placeholder="$therapist->account_number" autofocus />
+                <x-jet-input-error for="account_number" class="mt-2" />
             </div>
 
-            {{-- quickbooks --}}
-            {{-- boolean --}}
-            <div class="col-span-6 mb-4 mt-4 sm:col-span-4">
-                <x-jet-label for="quickbooks"
-                    value="{{ __('Quickbooks') }}" />
-                <input class="rounded"
-                    id="quickbooks"
-                    type="checkbox"
-                    wire:model.defer="state.quickbooks"
-                    autocomplete="quickbooks" />
-                <x-jet-input-error class="mt-2"
-                    for="quickbooks" />
+            <div>
+                <x-jet-label for="routing_number" value="{{ __('Routing Number') }}" />
+                <x-jet-input id="routing_number" class="block mt-1 w-full" type="text" name="routing_number"
+                    :value="old('routing_number', $therapist->routing_number)" :placeholder="$therapist->routing_number" autofocus />
+                <x-jet-input-error for="routing_number" class="mt-2" />
             </div>
 
-            {{-- session_cost --}}
-            <x-form-field id="session_cost"
-                name="session_cost"
-                type="text"
-                label="Session Cost">
-                {{ $therapist->session_cost }}
-            </x-form-field>
-
-            {{-- client_extensions --}}
-            {{-- <x-form-field name="client_extensions"
-                type="text"
-                label="Client Extensions">
-                {{ $therapist->client_extensions }}
-            </x-form-field> --}}
-
-            {{-- notes --}}
-            {{-- make a text area for the notes!! --}}
-
-            <div class="w-full">
-                <x-jet-label for="notes"
-                    value="{{ __('Notes') }}" />
-                <textarea class="w-full rounded border border-blue-200 bg-gray-100"
-                    id="notes"
-                    type="text"
-                    cols="30"
-                    width:
-                    100%;
-                    wire:model.defer="state.notes"
-                    autocomplete="notes"></textarea>
-                <x-jet-input-error class="mt-2"
-                    for="notes" />
+            <div>
+                <x-jet-label for="iban_swift_code" value="{{ __('IBAN/Swift Code') }}" />
+                <x-jet-input id="iban_swift_code" class="block mt-1 w-full" type="text" name="iban_swift_code"
+                    :value="old('iban_swift_code', $therapist->iban_swift_code)" :placeholder="$therapist->iban_swift_code" autofocus />
+                <x-jet-input-error for="iban_swift_code" class="mt-2" />
             </div>
 
-            {{-- covid_fundraise --}}
-            {{-- boolean --}}
-            {{-- <div class="col-span-6 mt-4 sm:col-span-4">
-                <x-jet-label for="covid_fundraise"
-                    value="{{ __('Covid Fundraise') }}" />
-                <input class="rounded"
-                    id="covid_fundraise"
-                    type="checkbox"
-                    wire:model.defer="state.covid_fundraise"
-                    autocomplete="covid_fundraise" />
-                <x-jet-input-error class="mt-2"
-                    for="covid_fundraise" />
-            </div> --}}
+            <div>
+                <x-jet-label for="number_of_potential_clients" value="{{ __('Number of potential clients') }}" />
+                <x-jet-input id="number_of_potential_clients" class="block mt-1 w-full" type="number"
+                    name="number_of_potential_clients" :value="old('number_of_potential_clients', $therapist->number_of_potential_clients)" :placeholder="$therapist->number_of_potential_clients" autofocus />
+                <x-jet-input-error for="number_of_potential_clients" class="mt-2" />
+            </div>
 
-            <button class="button"
-                type="submit">Submit</button>
+            <div>
+                <x-jet-label for="out_of_state_coaching" value="{{ __('Out of State Coaching') }}" />
+                <div class="flex items-center mt-2">
+                    <label for="out_of_state_coaching_yes" class="mr-4">
+                        <input id="out_of_state_coaching_yes" type="radio" name="out_of_state_coaching"
+                            value="1" {{ $therapist->out_of_state_coaching == 1 ? 'checked' : '' }} autofocus />
+                        <span class="ml-2 text-sm text-gray-600">Yes</span>
+                    </label>
+
+                    <label for="out_of_state_coaching_no">
+                        <input id="out_of_state_coaching_no" type="radio" name="out_of_state_coaching"
+                            value="0" {{ $therapist->out_of_state_coaching == 0 ? 'checked' : '' }} />
+                        <span class="ml-2 text-sm text-gray-600">No</span>
+                    </label>
+                </div>
+                <x-jet-input-error for="out_of_state_coaching" class="mt-2" />
+
+                {{-- promotional_content --}}
+                <div class="col-span-6 mt-4 sm:col-span-4 mt-2">
+                    <x-jet-label for="contact_for_promotionals" value="{{ __('Contact for Promotionals') }}" />
+                    <div class="flex items-center mt-2">
+                        <label for="contact_for_promotionals_yes" class="mr-4">
+                            <input id="contact_for_promotionals_yes" type="radio" name="contact_for_promotionals"
+                                value="1" {{ $therapist->contact_for_promotionals == 1 ? 'checked' : '' }} />
+                            <span class="ml-2 text-sm text-gray-600">Yes</span>
+                        </label>
+
+                        <label for="contact_for_promotionals_no">
+                            <input id="contact_for_promotionals_no" type="radio" name="contact_for_promotionals"
+                                value="0" {{ $therapist->contact_for_promotionals == 0 ? 'checked' : '' }} />
+                            <span class="ml-2 text-sm text-gray-600">No</span>
+                        </label>
+                    </div>
+
+                    <x-jet-input-error for="contact_for_promotionals" class="mt-2" />
+                </div>
+
+                {{-- active_status --}}
+                <div class="col-span-6 mt-4 sm:col-span-4">
+                    <x-jet-label for="active_status" value="{{ __('Active Status') }}" />
+
+                    <div class="flex items-center mt-2">
+                        <label for="active_status_yes" class="mr-4">
+                            <input id="active_status_yes" type="radio" name="active_status" value="1"
+                                {{ $therapist->active_status == 1 ? 'checked' : '' }} />
+                            <span class="ml-2 text-sm text-gray-600">Yes</span>
+                        </label>
+
+                        <label for="active_status_no">
+                            <input id="active_status_no" type="radio" name="active_status" value="0"
+                                {{ $therapist->active_status == 0 ? 'checked' : '' }} />
+                            <span class="ml-2 text-sm text-gray-600">No</span>
+                        </label>
+                    </div>
+
+                    <x-jet-input-error for="active_status" class="mt-2" />
+                </div>
+
+                {{-- contract_signed --}}
+                <div class="col-span-6 mt-4 sm:col-span-4">
+                    <x-jet-label for="contract_signed" value="{{ __('Contract Signed') }}" />
+
+                    <div class="flex items-center mt-2">
+                        <label for="contract_signed_yes" class="mr-4">
+                            <input id="contract_signed_yes" type="radio" name="contract_signed" value="1"
+                                {{ $therapist->contract_signed == 1 ? 'checked' : '' }} />
+                            <span class="ml-2 text-sm text-gray-600">Yes</span>
+                        </label>
+
+                        <label for="contract_signed_no">
+                            <input id="contract_signed_no" type="radio" name="contract_signed" value="0"
+                                {{ $therapist->contract_signed == 0 ? 'checked' : '' }} />
+                            <span class="ml-2 text-sm text-gray-600">No</span>
+                        </label>
+                    </div>
+
+                    <x-jet-input-error for="contract_signed" class="mt-2" />
+                </div>
+
+                {{-- all_documents --}}
+                <div class="col-span-6 mt-4 sm:col-span-4">
+                    <x-jet-label for="all_documents" value="{{ __('All Documents') }}" />
+
+                    <div class="flex items-center mt-2">
+                        <label for="all_documents_yes" class="mr-4">
+                            <input id="all_documents_yes" type="radio" name="all_documents" value="1"
+                                {{ $therapist->all_documents == 1 ? 'checked' : '' }} />
+                            <span class="ml-2 text-sm text-gray-600">Yes</span>
+                        </label>
+
+                        <label for="all_documents_no">
+                            <input id="all_documents_no" type="radio" name="all_documents" value="0"
+                                {{ $therapist->all_documents == 0 ? 'checked' : '' }} />
+                            <span class="ml-2 text-sm text-gray-600">No</span>
+                        </label>
+                    </div>
+
+                    <x-jet-input-error for="all_documents" class="mt-2" />
+                </div>
+
+                <div class="col-span-6 mt-4 sm:col-span-4">
+                    <x-jet-label for="website" value="{{ __('Website') }}" />
+                    <div class="flex items-center mt-2">
+                        <label for="website_yes" class="mr-4">
+                            <input id="website_yes" type="radio" name="website" value="1"
+                                {{ $therapist->website == 1 ? 'checked' : '' }} />
+                            <span class="ml-2 text-sm text-gray-600">Yes</span>
+                        </label>
+
+                        <label for="website_no">
+                            <input id="website_no" type="radio" name="website" value="0"
+                                {{ $therapist->website == 0 ? 'checked' : '' }} />
+                            <span class="ml-2 text-sm text-gray-600">No</span>
+                        </label>
+                    </div>
+                    <x-jet-input-error for="website" class="mt-2" />
+                </div>
+
+                {{-- quickbooks --}}
+                <div class="col-span-6 mb-4 mt-4 sm:col-span-4">
+                    <x-jet-label for="quickbooks" value="{{ __('Quickbooks') }}" />
+                    <div class="flex items-center mt-2">
+                        <label for="quickbooks_yes" class="mr-4">
+                            <input id="quickbooks_yes" type="radio" name="quickbooks" value="1"
+                                {{ $therapist->quickbooks == 1 ? 'checked' : '' }} />
+                            <span class="ml-2 text-sm text-gray-600">Yes</span>
+                        </label>
+
+                        <label for="quickbooks_no">
+                            <input id="quickbooks_no" type="radio" name="quickbooks" value="0"
+                                {{ $therapist->quickbooks == 0 ? 'checked' : '' }} />
+                            <span class="ml-2 text-sm text-gray-600">No</span>
+                        </label>
+                    </div>
+                    <x-jet-input-error for="quickbooks" class="mt-2" />
+                </div>
+
+                <div>
+                    <x-jet-label for="session_cost" value="{{ __('Session Cost') }}" />
+                    <x-jet-input id="session_cost" class="block mt-1 w-full" type="number" name="session_cost"
+                        :value="old('session_cost', $therapist->session_cost)" :placeholder="$therapist->session_cost" autofocus />
+                    <x-jet-input-error for="session_cost" class="mt-2" />
+                </div>
+
+                {{-- notes --}}
+                <div class="w-full">
+                    <x-jet-label for="notes" value="{{ __('Notes') }}" />
+                    <textarea class="w-full rounded border border-blue-200 bg-gray-100" id="notes" type="text" cols="30"
+                        width: 100%; wire:model.defer="state.notes" autocomplete="notes"></textarea>
+                    <x-jet-input-error class="mt-2" for="notes" />
+                </div>
+
+
+                <button class="button" type="submit">Submit</button>
         </form>
 
         <div class="border border-b border-gray-300 w-2/3 mx-auto my-4">
