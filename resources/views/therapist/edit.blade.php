@@ -1,7 +1,7 @@
 @php
     // TODO:  IS THIS OKAY?
-    // $timeZonesJson = file_get_contents(resource_path('json/time_zones.json'));
-    // $timeZones = json_decode($timeZonesJson, true);
+    $timeZonesJson = file_get_contents(resource_path('json/time_zones.json'));
+    $timeZones = json_decode($timeZonesJson, true);
     // $statesJson = file_get_contents(resource_path('json/states.json'));
     // $states = json_decode($statesJson, true);
     $countriesJson = file_get_contents(resource_path('json/countries.json'));
@@ -191,13 +191,9 @@
                     :value="old('supervisor_name', $therapist->supervisor_name)" :placeholder="$therapist->supervisor_name" autofocus />
                 <x-jet-input-error for="supervisor_name" class="mt-2" />
             </div>
+
             {{-- street_address --}}
-            {{-- <x-form-field id="street_address"
-                name="street_address"
-                type="text"
-                label="Street Address">
-                {{ $therapist->street_address }}
-            </x-form-field> --}}
+
             <div>
                 <x-jet-label for="street_address" value="{{ __('Street Address') }}" />
                 <x-jet-input id="street_address" class="block mt-1 w-full" type="text" name="street_address"
@@ -205,13 +201,7 @@
                 <x-jet-input-error for="street_address" class="mt-2" />
             </div>
 
-            {{-- county_town --}}
-            {{-- <x-form-field id="county_town"
-                name="county_town"
-                type="text"
-                label="County/Town">
-                {{ $therapist->county_town }}
-            </x-form-field> --}}
+
             <div>
                 <x-jet-label for="county_town" value="{{ __('County/Town') }}" />
                 <x-jet-input id="county_town" class="block mt-1 w-full" type="text" name="county_town"
@@ -219,13 +209,6 @@
                 <x-jet-input-error for="county_town" class="mt-2" />
             </div>
 
-            {{-- state --}}
-            {{-- <x-form-field id="state"
-                name="state"
-                type="text"
-                label="State">
-                {{ $therapist->state }}
-            </x-form-field> --}}
             <div class="relative mb-4 mt-6 w-full">
                 <x-form_label for="country">
                     Country: (previous selection: {{ $therapist->country }})
@@ -248,18 +231,21 @@
                 <x-jet-input-error for="zip_code_postal_code" class="mt-2" />
             </div>
 
-            {{-- country --}}
-            {{-- <x-form-field id="country"
-                name="country"
-                type="text"
-                label="Country">
-                {{ $therapist->country }}
-            </x-form-field> --}}
-
-            {{-- time_zone --}}
-            <x-form-field id="time_zone" name="time_zone" type="text" label="Time Zone">
-                {{ $therapist->time_zone }}
-            </x-form-field>
+            <div class="relative mb-4 mt-6 w-full">
+                <x-form_label for="time_zone">
+                    Time Zone:
+                </x-form_label>
+                <select class="peer mt-2 w-full rounded-md border-blue-200 bg-gray-100 p-2 ring-0" id="time_zone"
+                    name="time_zone">
+                    <option value="" disabled selected hidden>Previous: {{ $therapist->time_zone }}
+                    </option>
+                    @foreach ($timeZones as $timeZone)
+                        <option value="{{ $timeZone }}" @if ($timeZone == $therapist->time_zone) selected @endif>
+                            {{ $timeZone }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
 
 
             <div>
