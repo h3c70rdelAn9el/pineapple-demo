@@ -30,7 +30,7 @@
         </div>
         <form class="mx-auto w-1/2" action="{{ route('clients.update', $client->id) }}" method="POST">
             @csrf
-            @method('POST')
+            @method('PUT')
             {{-- <input name="_method" type="hidden" value="POST"> --}}
 
             <input name="user_id" type="hidden" value="{{ $client->user_id }}">
@@ -56,14 +56,25 @@
             <input class="mx-2 w-16 rounded-md border-blue-200 bg-gray-100 p-1 text-center ring-0" id="max_sessions"
                 name="max_sessions" type="number" value="{{ $client->max_sessions }}">
 
-            {{-- legal_name --}}
-            <div class="mb-2 mt-4 w-full">
-                <x-jet-label for="legal_name" value="{{ __('Legal Name') }}" />
-                <input class="w-full rounded border border-blue-200 bg-gray-100" id="legal_name" name="legal_name"
-                    type="text" value="{{ old('legal_name', $client->legal_name) }}" {{-- value="{{ $client->legal_name }}" --}}
-                    placeholder="{{ old('legal_name', $client->legal_name) }}" autocomplete="off" />
-                <x-jet-input-error class="mt-2" for="legal_name" />
-            </div>
+       {{-- legal_name --}}
+<div class="mb-2 mt-4 w-full">
+    <x-jet-label for="legal_name" value="{{ __('Legal Name') }}" />
+    <input class="w-full rounded border border-blue-200 bg-gray-100" id="legal_name" name="legal_name" type="text"
+        :value="old('legal_name', $client->legal_name)" placeholder="{{ old('legal_name', $client->legal_name) }}"
+        autocomplete="legal_name" />
+    <x-jet-input-error class="mt-2" for="legal_name" />
+</div>
+
+
+     {{-- Status --}}
+{{-- <x-form_label for="status">
+    Status
+</x-form_label>
+<select class="peer mt-2 w-full rounded-md border-blue-200 bg-gray-100 p-2 ring-0" id="status" name="status" type="text">
+    <option value="" disabled hidden>Select Status</option>
+    <option value="0" {{ old('status', $client->status) == '0' ? 'selected' : '' }}>Active</option>
+    <option value="1" {{ old('status', $client->status) == '1' ? 'selected' : '' }}>Inactive</option>
+</select> --}}
 
             <div class="mb-2 mt-4 w-full">
                 <x-jet-label for="email" value="{{ __('Email') }}" />
@@ -362,13 +373,13 @@
                             <div class="select-input-div">
                                 <input class="select-input" id="{{ $group }}" name="ethnic_group[]"
                                     type="checkbox" value="{{ $group }}"
-                                   
-                            
+
+
                                     @if (in_array($group, $selectedEthnicGroups)) checked @endif
                                     @click="toggleSelectedEthnicGroup('{{ $group }}')">
                                 <label class="ml-2" for="{{ $group }}">{{ $group }}</label>
                             </div>
-                        @endforeach 
+                        @endforeach
                         {{--
                         @php
                             $selectedEthnicGroups = json_decode($client->ethnic_group);
@@ -598,24 +609,32 @@
                 </select>
             </div>
 
-            {{-- Status --}}
-            <div class="mb-2 mt-4 w-full">
-                <x-form_label for="status">
-                    Status
-                </x-form_label>
 
-                <div class="flex items-center mt-2">
-                    <input type="radio" id="status_active" name="status" value="0"
-                        {{ old('status', $client->status) == '0' ? 'checked' : '' }}>
-                    <label for="status_active" class="ml-2">Active</label>
+     {{-- Status --}}
+{{-- <x-form_label for="status">
+    Status
+</x-form_label>
+<select class="peer mt-2 w-full rounded-md border-blue-200 bg-gray-100 p-2 ring-0" id="status" name="status" type="text">
+    <option value="" disabled hidden>Select Status</option>
+    <option value="0" {{ old('status', $client->status) == '0' ? 'selected' : '' }}>Active</option>
+    <option value="1" {{ old('status', $client->status) == '1' ? 'selected' : '' }}>Inactive</option>
+</select> --}}
+{{-- Status --}}
+<div class="mb-2 mt-4 w-full">
+    <x-form_label for="status">
+        Status
+    </x-form_label>
 
-                    <input type="radio" id="status_inactive" name="status" value="1"
-                        {{ old('status', $client->status) == '1' ? 'checked' : '' }}>
-                    <label for="status_inactive" class="ml-2">Inactive</label>
-                </div>
+    <div class="flex items-center mt-2">
+        <input type="radio" id="status_active" name="status" value="0" {{ old('status', $client->status) == '0' ? 'checked' : '' }}>
+        <label for="status_active" class="ml-2">Active</label>
 
-                <x-jet-input-error class="mt-2" for="status" />
-            </div>
+        <input type="radio" id="status_inactive" name="status" value="1" {{ old('status', $client->status) == '1' ? 'checked' : '' }}>
+        <label for="status_inactive" class="ml-2">Inactive</label>
+    </div>
+
+    <x-jet-input-error class="mt-2" for="status" />
+</div>
 
             <div class="mb-2 mt-4 w-full">
                 <x-jet-label for="notes" value="{{ __('Notes') }}" />
@@ -629,7 +648,7 @@
             </x-jet-button>
 
         </form>
-        <div x-data="{ open: false }">
+        {{-- <div x-data="{ open: false }">
             <div class="w-1/2 mt-2 mx-auto">
                 <x-jet-button class="ml-4 bg-red-500 hover:bg-red-700" @click="open = true">
                     {{ __('Delete') }}
@@ -676,8 +695,7 @@
                     </div>
                 </div>
             </div>
-
-        </div>
+        </div> --}}
     </x-main-container>
 </x-app-layout>
 
