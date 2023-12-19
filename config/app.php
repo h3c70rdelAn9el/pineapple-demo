@@ -214,4 +214,7 @@ return [
         // 'ExampleClass' => App\Example\ExampleClass::class,
     ])->toArray(),
 
+    // maintenance mode
+    'maintenance_mode' => env('MAINTENANCE_MODE', false),
+
 ];
