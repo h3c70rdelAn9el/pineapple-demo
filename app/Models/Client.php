@@ -42,7 +42,7 @@ class Client extends Model
         'status',
         'max_sessions',
         'gender',
-        'status'
+        'therapist_id',
     ];
 
     public function user()
