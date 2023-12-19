@@ -533,6 +533,11 @@ class ClientController extends Controller
     // }
     public function edit(Request $request, $id)
     {
+
+        if (config('app.maintenance')) {
+            return redirect('/maintenance');
+        }
+
         if (auth()->user() && auth()->user()->admin == 1) {
             $client = Client::find($id);
             $countries = $this->getCountries();
