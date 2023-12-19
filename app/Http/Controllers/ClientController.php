@@ -4,10 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Client;
+use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
 use App\Models\TherapySession;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use App\Notifications\NewClientNotification;
+
 
 
 class ClientController extends Controller
@@ -340,162 +343,274 @@ class ClientController extends Controller
      * @param  \App\Models\Client  $client
      * @return \Illuminate\Http\Response
      */
+    // public function update(Request $request, Client $client)
+    // {
+    //     // $client = Client::find($id);
+
+    //     $data = $request->only([
+    //         'sexual_orientation',
+    //         'gender',
+    //         'pronouns',
+    //         'ethnic_group',
+    //         'contact_method',
+    //         'possible_support_needed',
+    //     ]);
+
+    //     $selectedOrientations = $request->input('sexual_orientation');
+    //     $otherSexualOrientation = $request->input('otherSexualOrientation');
+    //     $orientationString = "";
+    //     if (is_array($selectedOrientations)) {
+    //         if (($key = array_search('Other', $selectedOrientations)) !== false && $otherSexualOrientation) {
+    //             $selectedOrientations[$key] = $otherSexualOrientation;
+    //         }
+    //         $client->sexual_orientation = implode(', ', $selectedOrientations);
+    //     } else {
+    //         $client->sexual_orientation = $client->sexual_orientation;
+    //     }
+
+    //     $selectedPronouns = $request->input('pronouns');
+    //     $otherPronoun = $request->input('otherPronoun');
+    //     $pronounsString = "";
+    //     if (is_array($selectedPronouns)) {
+    //         if (($key = array_search('Other', $selectedPronouns)) !== false && $otherPronoun) {
+    //             $selectedPronouns[$key] = $otherPronoun;
+    //         }
+    //         $client->pronouns = implode(', ', $selectedPronouns);
+    //     } else {
+    //         $client->pronouns = $client->pronouns;
+    //     }
+
+    //     $selectedGenders = $request->input('gender');
+    //     $otherGender = $request->input('otherGender');
+    //     $genderString = "";
+
+    //     if (is_array($selectedGenders)) {
+    //         if (($key = array_search('Other', $selectedGenders)) !== false && $otherGender) {
+    //             $selectedGenders[$key] = $otherGender;
+    //         }
+    //         $client->gender = implode(', ', $selectedGenders);
+    //     } else {
+    //         $client->gender = $client->gender;
+    //     }
+
+    //     $selectedPossibleSupportNeeded = $request->input('possible_support_needed');
+    //     $otherPossibleSupport = $request->input('otherPossibleSupport');
+    //     $possibleSupportNeededString = "";
+
+    //     if (is_array($selectedPossibleSupportNeeded)) {
+    //         if (($key = array_search('Other', $selectedPossibleSupportNeeded)) !== false && $otherPossibleSupport) {
+    //             $selectedPossibleSupportNeeded[$key] = $otherPossibleSupport;
+    //         }
+    //         $client->possible_support_needed = implode(', ', $selectedPossibleSupportNeeded);
+    //     } else {
+    //         $client->possible_support_needed = $client->possible_support_needed;
+    //     }
+
+    //     // $client->save();
+
+    //     $selectedEthnicGroup = $request->input('ethnic_group');
+    //     $otherEthnicGroup = $request->input('otherEthnicGroup');
+    //     $ethnicGroupString = "";
+
+    //     if (is_array($selectedEthnicGroup)) {
+    //         if (($key = array_search('Other', $selectedEthnicGroup)) !== false && $otherEthnicGroup) {
+    //             $selectedEthnicGroup[$key] = $otherEthnicGroup;
+    //         }
+    //         $client->ethnic_group = implode(', ', $selectedEthnicGroup);
+    //     } else {
+    //         $client->ethnic_group = $client->ethnic_group;
+    //     }
+
+    //     // $client->save();
+
+    //     $selectedContactMethods = $request->input('contact_method');
+    //     // $contactMethodString = is_array($selectedContactMethods) && !empty($selectedContactMethods) ? implode(', ', $selectedContactMethods) : $client->contact_method;
+    //     if (is_array($selectedContactMethods) && !empty($selectedContactMethods)) {
+    //         $contactMethodString = implode(', ', $selectedContactMethods);
+    //     } else {
+    //         $contactMethodString = $client->contact_method;
+    //     }
+
+    //     // $selectedPossibleSupportNeeded = $request->input('possible_support_needed');
+    //     // $possibleSupportNeededString = is_array($selectedPossibleSupportNeeded) && !empty($selectedPossibleSupportNeeded) ? implode(', ', $selectedPossibleSupportNeeded) : $client->possible_support_needed;
+
+    //     // $client->client_code = $request->client_code;
+    //     // $client->legal_name = $request->legal_name;
+    //     // $client->preferred_name = $request->preferred_name;
+    //     // // $client->sexual_orientation = $request->sexual_orientation ?? null;
+    //     // $client->ethnic_group = $ethnicGroupString;
+    //     // $client->home_address_state = $request->home_address_state;
+    //     // $client->home_address_country = $request->home_address_country;
+    //     // $client->previous_therapy = $request->previous_therapy;
+    //     // // $client->possible_support_needed = $request->possible_support_needed;
+    //     // $client->additional_notes = $request->additional_notes;
+    //     // // $client->pronouns = $request->pronouns ?? null;
+    //     // $client->email = $request->email;
+    //     // $client->phone = $request->phone;
+    //     // $client->client_contribution = $request->client_contribution;
+    //     // $client->user_id = $request->user_id;
+    //     // $client->gender = $genderString;
+    //     // $client->contact_method = $contactMethodString;
+    //     // $client->max_sessions = $request->max_sessions;
+    //     // $client->possible_support_needed = $possibleSupportNeededString;
+    //     // $client->sexual_orientation = $orientationString;
+    //     // $client->pronouns = $pronounsString;
+    //     $validatedData = $request->validate([
+    //         'client_code' =>'nullable',
+    //         'legal_name' => 'nullable',
+    //         'preferred_name' =>'nullable',
+    //         'sexual_orientation' =>'nullable',
+    //         'ethnic_group' =>'nullable',
+    //         'home_address_state' =>'nullable',
+    //         'home_address_country' =>'nullable',
+    //         'previous_therapy' =>'nullable',
+    //         'possible_support_needed' =>'nullable',
+    //         'additional_notes' =>'nullable',
+    //         'pronouns' =>'nullable',
+    //         'email' =>'nullable',
+    //         'phone' =>'nullable',
+    //         'client_contribution' =>'nullable',
+    //         'user_id' =>'nullable',
+    //         'gender' =>'nullable',
+    //         'contact_method' =>'nullable',
+    //         'max_sessions' =>'nullable',
+    //         'sexual_orientation' =>'nullable',
+    //         'pronouns' =>'nullable',
+    //         'therapist' =>'nullable',
+    //     ]);
+
+
+    //     $therapist = User::find($request->user_id);
+
+
+
+    //     if ($request->has('gender')) {
+    //         $genderString = implode(', ', $request->input('gender'));
+    //         $client->gender = $genderString;
+    //     } else {
+    //         $client->gender = $client->gender;
+    //     }
+
+    //     if ($request->has('pronouns')) {
+    //         $pronounsString = json_encode($request->input('pronouns'));
+    //         $client->pronouns = str_replace('"', '', trim($pronounsString, '[]'));
+    //     } else {
+    //         $client->pronouns = $client->pronouns;
+    //     }
+
+    //     if ($request->has('ethnic_group')) {
+    //         $ethnicGroupString = json_encode($request->input('ethnic_group'));
+    //         $client->ethnic_group = str_replace('"', '', trim($ethnicGroupString, '[]'));
+    //     } else {
+    //         $client->ethnic_group = $client->ethnic_group;
+    //     }
+
+    //     if ($request->has('contact_method')) {
+    //         $contactMethodString = json_encode($request->input('contact_method'));
+    //         $client->contact_method = str_replace('"', '', trim($contactMethodString, '[]'));
+    //     } else {
+    //         $client->contact_method = $client->contact_method;
+    //     }
+
+    //     if ($request->has('possible_support_needed')) {
+    //         $possibleSupportNeededString = json_encode($request->input('possible_support_needed'));
+    //         $client->possible_support_needed = str_replace('"', '', trim($possibleSupportNeededString, '[]'));
+    //     } else {
+    //         $client->possible_support_needed = $client->possible_support_needed;
+    //     }
+
+    //     // $client->update($data);
+    //     $client->update($validatedData);
+
+    //     $therapist = User::find($request->user_id);
+    //     $therapist->notify(new NewClientNotification());
+
+    //     return redirect()->route('dashboard');
+    // }
+
     public function update(Request $request, Client $client)
     {
-        // $client = Client::find($id);
 
-        $data = $request->only([
-            'sexual_orientation',
-            'gender',
-            'pronouns',
-            'ethnic_group',
-            'contact_method',
-            'possible_support_needed',
+        // Validate the request data
+        $validatedData = $request->validate([
+            'client_code' => 'nullable',
+            'legal_name' => 'nullable',
+            'preferred_name' => 'nullable',
+            'sexual_orientation' => 'nullable',
+            'ethnic_group' => 'nullable',
+            'home_address_state' => 'nullable',
+            'home_address_country' => 'nullable',
+            'previous_therapy' => 'nullable',
+            'possible_support_needed' => 'nullable',
+            'additional_notes' => 'nullable',
+            'pronouns' => 'nullable',
+            'email' => 'nullable',
+            'phone' => 'nullable',
+            'client_contribution' => 'nullable',
+            'user_id' => 'nullable',
+            'gender' => 'nullable',
+            'contact_method' => 'nullable',
+            'max_sessions' => 'nullable',
+            'therapist' => 'nullable',
+            'status' => 'nullable',
         ]);
 
-        $selectedOrientations = $request->input('sexual_orientation');
-        $otherSexualOrientation = $request->input('otherSexualOrientation');
-        $orientationString = "";
-        if (is_array($selectedOrientations)) {
-            if (($key = array_search('Other', $selectedOrientations)) !== false && $otherSexualOrientation) {
-                $selectedOrientations[$key] = $otherSexualOrientation;
-            }
-            $client->sexual_orientation = implode(', ', $selectedOrientations);
-        } else {
-            $client->sexual_orientation = $client->sexual_orientation;
+        // Process specific fields as strings
+        $client->gender = implode(', ', $request->input('gender', []));
+        $client->pronouns = json_encode($request->input('pronouns', []));
+        $client->ethnic_group = json_encode($request->input('ethnic_group', []));
+        $client->contact_method = json_encode($request->input('contact_method', []));
+        $client->possible_support_needed = json_encode($request->input('possible_support_needed', []));
+
+        // Remove quotes and brackets from encoded strings
+        $client->pronouns = str_replace(['"', '[', ']'], '', $client->pronouns);
+        $client->ethnic_group = str_replace(['"', '[', ']'], '', $client->ethnic_group);
+        $client->contact_method = str_replace(['"', '[', ']'], '', $client->contact_method);
+        $client->possible_support_needed = str_replace(['"', '[', ']'], '', $client->possible_support_needed);
+
+        // Update the client fields
+
+        $client->update([
+            'client_code' => $request->input('client_code'),
+            'legal_name' => $request->input('legal_name'),
+            // 'legal_name' => $client->legal_name,
+            'preferred_name' => $request->input('preferred_name'),
+            'sexual_orientation' => $request->input('sexual_orientation'),
+            'ethnic_group' => $client->ethnic_group,
+            'home_address_state' => $request->input('home_address_state'),
+            'home_address_country' => $request->input('home_address_country'),
+            'previous_therapy' => $request->input('previous_therapy'),
+            'possible_support_needed' => $client->possible_support_needed,
+            'additional_notes' => $request->input('additional_notes'),
+            'pronouns' => $client->pronouns,
+            'email' => $request->input('email'),
+            'phone' => $request->input('phone'),
+            'client_contribution' => $request->input('client_contribution'),
+            'user_id' => $request->input('user_id'),
+            'gender' => $client->gender,
+            'contact_method' => $client->contact_method,
+            'max_sessions' => $request->input('max_sessions'),
+            'therapist' => $request->input('therapist'),
+            'status' => $request->input('status'),
+        ]);
+
+        // $client->update($validatedData);
+        // Update the client fields (excluding 'status')
+        // unset($validatedData['status']);
+
+        // Update 'status' separately
+        if ($request->has('status')) {
+            $client->status = $request->input('status');
+            $client->save();
         }
-
-        $selectedPronouns = $request->input('pronouns');
-        $otherPronoun = $request->input('otherPronoun');
-        $pronounsString = "";
-        if (is_array($selectedPronouns)) {
-            if (($key = array_search('Other', $selectedPronouns)) !== false && $otherPronoun) {
-                $selectedPronouns[$key] = $otherPronoun;
-            }
-            $client->pronouns = implode(', ', $selectedPronouns);
-        } else {
-            $client->pronouns = $client->pronouns;
-        }
-
-        $selectedGenders = $request->input('gender');
-        $otherGender = $request->input('otherGender');
-        $genderString = "";
-
-        if (is_array($selectedGenders)) {
-            if (($key = array_search('Other', $selectedGenders)) !== false && $otherGender) {
-                $selectedGenders[$key] = $otherGender;
-            }
-            $client->gender = implode(', ', $selectedGenders);
-        } else {
-            $client->gender = $client->gender;
-        }
-
-        $selectedPossibleSupportNeeded = $request->input('possible_support_needed');
-        $otherPossibleSupport = $request->input('otherPossibleSupport');
-        $possibleSupportNeededString = "";
-
-        if (is_array($selectedPossibleSupportNeeded)) {
-            if (($key = array_search('Other', $selectedPossibleSupportNeeded)) !== false && $otherPossibleSupport) {
-                $selectedPossibleSupportNeeded[$key] = $otherPossibleSupport;
-            }
-            $client->possible_support_needed = implode(', ', $selectedPossibleSupportNeeded);
-        } else {
-            $client->possible_support_needed = $client->possible_support_needed;
-        }
-
-        $client->save();
-
-        $selectedEthnicGroup = $request->input('ethnic_group');
-        $otherEthnicGroup = $request->input('otherEthnicGroup');
-        $ethnicGroupString = "";
-
-        if (is_array($selectedEthnicGroup)) {
-            if (($key = array_search('Other', $selectedEthnicGroup)) !== false && $otherEthnicGroup) {
-                $selectedEthnicGroup[$key] = $otherEthnicGroup;
-            }
-            $client->ethnic_group = implode(', ', $selectedEthnicGroup);
-        } else {
-            $client->ethnic_group = $client->ethnic_group;
-        }
-
-        $client->save();
-
-        $selectedContactMethods = $request->input('contact_method');
-        // $contactMethodString = is_array($selectedContactMethods) && !empty($selectedContactMethods) ? implode(', ', $selectedContactMethods) : $client->contact_method;
-        if (is_array($selectedContactMethods) && !empty($selectedContactMethods)) {
-            $contactMethodString = implode(', ', $selectedContactMethods);
-        } else {
-            $contactMethodString = $client->contact_method;
-        }
-
-        // $selectedPossibleSupportNeeded = $request->input('possible_support_needed');
-        // $possibleSupportNeededString = is_array($selectedPossibleSupportNeeded) && !empty($selectedPossibleSupportNeeded) ? implode(', ', $selectedPossibleSupportNeeded) : $client->possible_support_needed;
-
-        $client->client_code = $request->client_code;
-        $client->legal_name = $request->legal_name;
-        $client->preferred_name = $request->preferred_name;
-        // $client->sexual_orientation = $request->sexual_orientation ?? null;
-        $client->ethnic_group = $ethnicGroupString;
-        $client->home_address_state = $request->home_address_state;
-        $client->home_address_country = $request->home_address_country;
-        $client->previous_therapy = $request->previous_therapy;
-        // $client->possible_support_needed = $request->possible_support_needed;
-        $client->additional_notes = $request->additional_notes;
-        // $client->pronouns = $request->pronouns ?? null;
-        $client->email = $request->email;
-        $client->phone = $request->phone;
-        $client->client_contribution = $request->client_contribution;
-        $client->user_id = $request->user_id;
-        $client->gender = $genderString;
-        $client->contact_method = $contactMethodString;
-        $client->max_sessions = $request->max_sessions;
-        $client->possible_support_needed = $possibleSupportNeededString;
-        $client->sexual_orientation = $orientationString;
-        $client->pronouns = $pronounsString;
-
-
-        if ($request->has('gender')) {
-            $genderString = implode(', ', $request->input('gender'));
-            $client->gender = $genderString;
-        } else {
-            $client->gender = $client->gender;
-        }
-
-        if ($request->has('pronouns')) {
-            $pronounsString = json_encode($request->input('pronouns'));
-            $client->pronouns = str_replace('"', '', trim($pronounsString, '[]'));
-        } else {
-            $client->pronouns = $client->pronouns;
-        }
-
-        if ($request->has('ethnic_group')) {
-            $ethnicGroupString = json_encode($request->input('ethnic_group'));
-            $client->ethnic_group = str_replace('"', '', trim($ethnicGroupString, '[]'));
-        } else {
-            $client->ethnic_group = $client->ethnic_group;
-        }
-
-        if ($request->has('contact_method')) {
-            $contactMethodString = json_encode($request->input('contact_method'));
-            $client->contact_method = str_replace('"', '', trim($contactMethodString, '[]'));
-        } else {
-            $client->contact_method = $client->contact_method;
-        }
-
-        if ($request->has('possible_support_needed')) {
-            $possibleSupportNeededString = json_encode($request->input('possible_support_needed'));
-            $client->possible_support_needed = str_replace('"', '', trim($possibleSupportNeededString, '[]'));
-        } else {
-            $client->possible_support_needed = $client->possible_support_needed;
-        }
-
-        $client->update($data);
-
+        // Notify the therapist
         $therapist = User::find($request->user_id);
         $therapist->notify(new NewClientNotification());
 
+
         return redirect()->route('dashboard');
     }
+
 
 
 
@@ -534,9 +649,9 @@ class ClientController extends Controller
     public function edit(Request $request, $id)
     {
 
-        if (config('app.maintenance')) {
-            return redirect('/maintenance');
-        }
+        // if (config('app.maintenance')) {
+        //     return redirect('/maintenance');
+        // }
 
         if (auth()->user() && auth()->user()->admin == 1) {
             $client = Client::find($id);
