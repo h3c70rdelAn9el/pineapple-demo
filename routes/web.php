@@ -95,6 +95,10 @@ Route::middleware([
     Route::delete('/clients/{client_id}/delete', [ClientController::class, 'destroy'])->name('clients.delete');
     Route::get('/search', SearchController::class)->name('search');
     Route::get('/file-upload/search/{therapist}', [FileUploadController::class, 'search'])->name('file-upload.search');
+    Route::get('/maintenance', function () {
+        return response()->view('errors.503', [], 503);
+    });
+
 });
 
 Route::middleware([
