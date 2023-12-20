@@ -25,12 +25,22 @@
             </div>
         @endif
 
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
         <h2 class="mt-2 text-center text-lg font-normal">Edit client: {{ $client->preferred_name }}</h2>
         <div class="mx-auto w-1/2 border-b border-gray-400 bg-gray-400">
         </div>
         <form class="mx-auto w-1/2" action="{{ route('clients.update', $client->id) }}" method="POST">
             @csrf
-            @method('PUT')
+            @method('POST')
             {{-- <input name="_method" type="hidden" value="POST"> --}}
 
             <input name="user_id" type="hidden" value="{{ $client->user_id }}">
@@ -82,8 +92,7 @@
                 <x-jet-label for="email" value="{{ __('Email') }}" />
                 <input class="w-full rounded border border-blue-200 bg-gray-100" id="email" name="email"
                     type="text" value="{{ old('email', $client->email) }}"
-                    placeholder="{{ old('email', $client->email) }}" autocomplete="off" />
-                    placeholder="{{ old('email', $client->email) }}" autocomplete="off" />
+                    placeholder="{{ old('email', $client->email) }}" autocomplete="true" />
                 <x-jet-input-error class="mt-2" for="email" />
             </div>
 
@@ -101,22 +110,14 @@
             <div class="relative mb-4 mt-6 w-full"
                 x-data='{
                     showOptions: false,
-                    {{-- selectedOptions: [],
-                    toggleSelectedOption(option) {
-                        if (this.selectedOptions.includes(option)) {
-                            this.selectedOptions = this.selectedOptions.filter(item => item !== option);
+                    selectedContactMethods: [],
+                    toggleSelectedContactMethod(option) {
+                        if (this.selectedContactMethods.includes(option)) {
+                            this.selectedContactMethods = this.selectedContactMethods.filter(item => item !== option);
                         } else {
-                            this.selectedOptions.push(option);
+                            this.selectedContactMethods.push(option);
                         }
-                    } --}}
-                     selectedContactMethods: [],
-    toggleSelectedContactMethod(option) {
-        if (this.selectedContactMethods.includes(option)) {
-            this.selectedContactMethods = this.selectedContactMethods.filter(item => item !== option);
-        } else {
-            this.selectedContactMethods.push(option);
-        }
-    }
+                    }
                 }'
                 x-init="alpine.watch('selectedContactMethods', value => { if (!value) selectedContactMethods = false; })">
 
@@ -143,7 +144,7 @@
                         x-transition.ease-in-out x-cloak>
                         <div class="select-input-div" x-data="{ selectedContactMethods: @json($client->contact_method ?? []) }">
                             <input class="select-input" id="telephone-call" name="contact_method[]" type="checkbox"
-                                value="Telephone Call" x-model="selectedOptions">
+                                value="Telephone Call">
                             <label class="ml-2" for="telephone-call">Telephone Call</label>
                         </div>
                         <div class="select-input-div">
@@ -262,15 +263,43 @@
                             x-show="openPronouns" x-transition.scale.origin.top x-transition:enter.duration.300ms
                             x-transition:enter.ease-in-out x-transition:leave.duration.300ms x-transition:ease-in-out
                             x-cloak>
-                            @foreach ($pronouns as $pronoun)
-                                <div class="select-input-div">
-                                    <input class="select-input" id="{{ $pronoun }}" name="pronouns[]"
-                                        type="checkbox" value="{{ $pronoun }}"
-                                        :checked="selectedPronouns.includes('{{ $pronoun }}')"
-                                        @click="toggleSelectedPronoun('{{ $pronoun }}')">
-                                    <label class="ml-2" for="{{ $pronoun }}">{{ $pronoun }}</label>
-                                </div>
-                            @endforeach
+                            <div class="select-input-div">
+                                <input class="select-input" id="they/them/theirs" name="pronouns[]" type="checkbox"
+                                    value="They/Them/Theirs">
+                                <label class="ml-2" for="they-them">They/Them/Theirs</label>
+                            </div>
+                            <div class="select-input-div">
+                                <input class="select-input" id="she/her/hers" name="pronouns[]" type="checkbox"
+                                    value="she/her/hers">
+                                <label class="ml-2" for="she-her">she/her/hers</label>
+                            </div>
+                            <div class="select-input-div">
+                                <input class="select-input" id="per/per/pers" name="pronouns[]" type="checkbox"
+                                    value="per/per/pers">
+                                <label class="ml-2">per/per/pers</label>
+                            </div>
+                            <div class="select-input-div">
+                                <input class="select-input" id="he/him/his" name="pronouns[]" type="checkbox"
+                                    value="he/him/his">
+                                <label class="ml-2" for="he-him">he/him/his</label>
+                            </div>
+
+                            <div class="select-input-div">
+                                <input class="select-input" id="ze/hir/hirs" name="pronouns[]" type="checkbox"
+                                    value="ze/hir/hirs">
+                                <label class="ml-2" for="her">ze/hir/hirs</label>
+                            </div>
+
+                            <div class="select-input-div">
+                                <input class="select-input" id="prefer-not-to-say-pronouns" name="pronouns[]"
+                                    type="checkbox" value="Prefer Not To Say">
+                                <label class="ml-2" for="prefer-not-to-say-pronouns">Prefer Not To Say</label>
+                            </div>
+                            <div class="select-input-div">
+                                <input class="select-input" id="otherPronounCheckbox" name="pronouns[]"
+                                    type="checkbox" value="Other">
+                                <label class="ml-2" for="otherPronoun">Other</label>
+                            </div>
 
                             <div class="m-3 flex flex-row">
                                 <input
@@ -474,13 +503,33 @@
             </div>
 
             {{-- previous therapy --}}
-            <div class="col-span-6 my-4 sm:col-span-4">
+            {{-- <div class="col-span-6 my-4 sm:col-span-4">
                 <x-jet-label for="Previous Therapy from Pineapple"
                     value="Previous Therapy from Pineapple:  previous: {{ $client->previous_therapy == 0 ? 'No' : 'Yes' }}" />
                 <input class="rounded" id="previous_therapy" type="checkbox"
                     wire:model.defer="state.previous_therapy" autocomplete="off" />
                 <x-jet-input-error class="mt-2" for="previous_therapy" />
+            </div> --}}
+            <div class="mb-2 mt-4 w-full">
+                <x-form_label for="previous_therapy">
+                    Previous Therapy
+                </x-form_label>
+
+                <div class="flex items-center mt-2">
+                    <input type="radio" id="previous_therapy_no" name="previous_therapy" value="0"
+                        {{ old('previous_therapy', $client->previous_therapy) == '0' ? 'checked' : '' }}>
+                    <label for="previous_therapy_no" class="ml-2">No</label>
+
+                    <input type="radio" id="previous_therapy_yes" name="previous_therapy" value="1"
+                        {{ old('previous_therapy', $client->previous_therapy) == '1' ? 'checked' : '' }}>
+                    <label for="previous_therapy_yes" class="ml-2">Yes</label>
+                </div>
+
+                <x-jet-input-error class="mt-2" for="previous_therapy" />
             </div>
+
+
+
 
 
 
@@ -614,16 +663,6 @@
                 </select>
             </div>
 
-
-            {{-- Status --}}
-            {{-- <x-form_label for="status">
-    Status
-</x-form_label>
-<select class="peer mt-2 w-full rounded-md border-blue-200 bg-gray-100 p-2 ring-0" id="status" name="status" type="text">
-    <option value="" disabled hidden>Select Status</option>
-    <option value="0" {{ old('status', $client->status) == '0' ? 'selected' : '' }}>Active</option>
-    <option value="1" {{ old('status', $client->status) == '1' ? 'selected' : '' }}>Inactive</option>
-</select> --}}
             {{-- Status --}}
             <div class="mb-2 mt-4 w-full">
                 <x-form_label for="status">
@@ -645,9 +684,9 @@
 
             <div class="mb-2 mt-4 w-full">
                 <x-jet-label for="notes" value="{{ __('Notes') }}" />
-                <textarea class="w-full rounded border border-blue-200 bg-gray-100" id="notes" type="text" cols="30"
-                    width: 100%; wire:model.defer="state.notes" placeholder="Enter notes here..." autocomplete="off" name="notes"
-                    rows="5"></textarea>
+                <textarea class="w-full rounded border border-blue-200 bg-gray-100" id="notes" cols="30" width: 100%;"
+                    placeholder="Enter notes here..." autocomplete="off" name="additional_notes" rows="5"
+                    value="{{ old('notes', $client->notes) }}">{{ $client->additional_notes }}</textarea>
                 <x-jet-input-error class="mt-2" for="notes" />
             </div>
             <x-jet-button class="ml-4" type="submit">
@@ -655,7 +694,7 @@
             </x-jet-button>
 
         </form>
-        {{-- <div x-data="{ open: false }">
+        <div x-data="{ open: false }">
             <div class="w-1/2 mt-2 mx-auto">
                 <x-jet-button class="ml-4 bg-red-500 hover:bg-red-700" @click="open = true">
                     {{ __('Delete') }}
@@ -702,7 +741,8 @@
                     </div>
                 </div>
             </div>
-        </div> --}}
+
+        </div>
     </x-main-container>
 </x-app-layout>
 

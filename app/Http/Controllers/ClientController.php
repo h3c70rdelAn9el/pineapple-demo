@@ -341,6 +341,7 @@ class ClientController extends Controller
 
 
     // ** THIS IS THE PREVIOUS UPDATE METHOD:
+    // ** THIS IS THE PREVIOUS UPDATE METHOD:
     /**
      * Update the specified resource in storage.
      *
@@ -766,7 +767,7 @@ class ClientController extends Controller
      */
     public function destroy(Client $client)
     {
-        $client->delete();
+       $client->delete();
         return redirect()->route('dashboard');
     }
 }
