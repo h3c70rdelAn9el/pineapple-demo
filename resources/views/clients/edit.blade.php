@@ -40,6 +40,7 @@
                 <input class="w-full rounded border border-blue-200 bg-gray-100" id="client_code" name="client_code"
                     type="text" value="{{ old('client_code', $client->client_code) }}"
                     placeholder="{{ old('client_code', $client->client_code) }}" autocomplete="off" />
+                    placeholder="{{ old('client_code', $client->client_code) }}" autocomplete="off" />
                 <x-jet-input-error class="mt-2" for="client_code" />
             </div>
 
@@ -47,6 +48,7 @@
                 <x-jet-label for="preferred_name" value="{{ __('Preferred Name') }}" />
                 <input class="w-full rounded border border-blue-200 bg-gray-100" id="preferred_name"
                     name="preferred_name" type="text" value="{{ old('preferred_name', $client->preferred_name) }}"
+                    placeholder="{{ old('preferred_name', $client->preferred_name) }}" autocomplete="off" />
                     placeholder="{{ old('preferred_name', $client->preferred_name) }}" autocomplete="off" />
                 <x-jet-input-error class="mt-2" for="preferred_name" />
             </div>
@@ -56,18 +58,18 @@
             <input class="mx-2 w-16 rounded-md border-blue-200 bg-gray-100 p-1 text-center ring-0" id="max_sessions"
                 name="max_sessions" type="number" value="{{ $client->max_sessions }}">
 
-       {{-- legal_name --}}
-<div class="mb-2 mt-4 w-full">
-    <x-jet-label for="legal_name" value="{{ __('Legal Name') }}" />
-    <input class="w-full rounded border border-blue-200 bg-gray-100" id="legal_name" name="legal_name" type="text"
-        :value="old('legal_name', $client->legal_name)" placeholder="{{ old('legal_name', $client->legal_name) }}"
-        autocomplete="legal_name" />
-    <x-jet-input-error class="mt-2" for="legal_name" />
-</div>
+            {{-- legal_name --}}
+            <div class="mb-2 mt-4 w-full">
+                <x-jet-label for="legal_name" value="{{ __('Legal Name') }}" />
+                <input class="w-full rounded border border-blue-200 bg-gray-100" id="legal_name" name="legal_name"
+                    type="text" value="{{ old('legal_name', $client->legal_name) }}" {{-- value="{{ $client->legal_name }}" --}}
+                    placeholder="{{ old('legal_name', $client->legal_name) }}" autocomplete="off" />
+                <x-jet-input-error class="mt-2" for="legal_name" />
+            </div>
 
 
-     {{-- Status --}}
-{{-- <x-form_label for="status">
+            {{-- Status --}}
+            {{-- <x-form_label for="status">
     Status
 </x-form_label>
 <select class="peer mt-2 w-full rounded-md border-blue-200 bg-gray-100 p-2 ring-0" id="status" name="status" type="text">
@@ -81,6 +83,7 @@
                 <input class="w-full rounded border border-blue-200 bg-gray-100" id="email" name="email"
                     type="text" value="{{ old('email', $client->email) }}"
                     placeholder="{{ old('email', $client->email) }}" autocomplete="off" />
+                    placeholder="{{ old('email', $client->email) }}" autocomplete="off" />
                 <x-jet-input-error class="mt-2" for="email" />
             </div>
 
@@ -89,6 +92,7 @@
                 <input class="w-full rounded border border-blue-200 bg-gray-100" id="phone" name="phone"
                     type="text" value="{{ old('phone', $client->phone) }}"
                     placeholder="{{ old('phone', $client->phone) }}" autocomplete="off" />
+                    placeholder="{{ old('phone', $client->phone) }}" autocomplete="off" />
                 <x-jet-input-error class="mt-2" for="phone" />
             </div>
 
@@ -96,17 +100,25 @@
 
             <div class="relative mb-4 mt-6 w-full"
                 x-data='{
-                    showContactMethods: false,
-                    selectedContactMethods: @json($client->contact_method ?? []),
-                    toggleSelectedContactMethod(option) {
-                        if (this.selectedContactMethods.includes(option)) {
-                            this.selectedContactMethods = this.selectedContactMethods.filter(item => item !== option);
+                    showOptions: false,
+                    {{-- selectedOptions: [],
+                    toggleSelectedOption(option) {
+                        if (this.selectedOptions.includes(option)) {
+                            this.selectedOptions = this.selectedOptions.filter(item => item !== option);
                         } else {
-                            this.selectedContactMethods.push(option);
+                            this.selectedOptions.push(option);
                         }
-                    }
+                    } --}}
+                     selectedContactMethods: [],
+    toggleSelectedContactMethod(option) {
+        if (this.selectedContactMethods.includes(option)) {
+            this.selectedContactMethods = this.selectedContactMethods.filter(item => item !== option);
+        } else {
+            this.selectedContactMethods.push(option);
+        }
+    }
                 }'
-                x-init="alpine.watch('showContactMethods', value => { if (!value) showContactMethods = false; })">
+                x-init="alpine.watch('selectedContactMethods', value => { if (!value) selectedContactMethods = false; })">
 
                 <x-form_label>
                     Contact Method(s): (previous selection:
@@ -118,6 +130,7 @@
                             @click="showContactMethods = !showContactMethods">
                             <span class="ml-0"
                                 x-text="selectedContactMethods.length > 0 ? selectedContactMethods.join(', ') : 'Select Options'"></span>
+                                x-text="selectedContactMethods.length > 0 ? selectedContactMethods.join(', ') : 'Select Options'"></span>
                             <svg class="mt-0.5 h-[18px] w-[18px] text-gray-800" fill="none" stroke="currentColor"
                                 viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -128,15 +141,11 @@
                     <div class="-mt-1 w-full rounded-b-md rounded-t-none border-b border-l border-r border-blue-300 bg-gray-100 pt-1 text-gray-600 md:flex md:flex-wrap"
                         x-show="showContactMethods" x-transition.scale.origin.top x-transition.duration.300ms
                         x-transition.ease-in-out x-cloak>
-                        @foreach ($contactMethods as $method)
-                            <div class="select-input-div">
-                                <input class="select-input" id="{{ $method }}" name="contact_method[]"
-                                    type="checkbox" value="{{ $method }}"
-                                    :checked="selectedContactMethods.includes('{{ $method }}')"
-                                    @click="toggleSelectedContactMethod('{{ $method }}')">
-                                <label class="ml-2" for="{{ $method }}">{{ $method }}</label>
-                            </div>
-                        @endforeach
+                        <div class="select-input-div" x-data="{ selectedContactMethods: @json($client->contact_method ?? []) }">
+                            <input class="select-input" id="telephone-call" name="contact_method[]" type="checkbox"
+                                value="Telephone Call" x-model="selectedOptions">
+                            <label class="ml-2" for="telephone-call">Telephone Call</label>
+                        </div>
                         <div class="select-input-div">
                             <input class="select-input" id="otherContactMethodCheckbox" name="contact_method[]"
                                 type="checkbox" value="Other" :checked="selectedContactMethods.includes('Other')"
@@ -152,6 +161,7 @@
                         </div>
                     </div>
                 </div>
+
             </div>
 
 
@@ -450,6 +460,8 @@
                     </x-form_label>
                     <select class="peer mt-2 w-full rounded-md border-blue-200 bg-gray-100 p-2 ring-0"
                         id="home_address_country" name="home_address_country">
+                    <select class="peer mt-2 w-full rounded-md border-blue-200 bg-gray-100 p-2 ring-0"
+                        id="home_address_country" name="home_address_country">
                         <option value="" disabled selected hidden>Previous: {{ $client->home_address_country }}
                         </option>
                         @foreach ($clientCountries as $country)
@@ -461,21 +473,12 @@
                 </div>
             </div>
 
-            <div class="mb-2 mt-4 w-full">
-                <x-form_label for="previous_therapy">
-                    Previous Therapy
-                </x-form_label>
-
-                <div class="flex items-center mt-2">
-                    <input type="radio" id="previous_therapy_no" name="previous_therapy" value="0"
-                        {{ old('previous_therapy', $client->previous_therapy) == '0' ? 'checked' : '' }}>
-                    <label for="previous_therapy_no" class="ml-2">No</label>
-
-                    <input type="radio" id="previous_therapy_yes" name="previous_therapy" value="1"
-                        {{ old('previous_therapy', $client->previous_therapy) == '1' ? 'checked' : '' }}>
-                    <label for="previous_therapy_yes" class="ml-2">Yes</label>
-                </div>
-
+            {{-- previous therapy --}}
+            <div class="col-span-6 my-4 sm:col-span-4">
+                <x-jet-label for="Previous Therapy from Pineapple"
+                    value="Previous Therapy from Pineapple:  previous: {{ $client->previous_therapy == 0 ? 'No' : 'Yes' }}" />
+                <input class="rounded" id="previous_therapy" type="checkbox"
+                    wire:model.defer="state.previous_therapy" autocomplete="off" />
                 <x-jet-input-error class="mt-2" for="previous_therapy" />
             </div>
 
@@ -571,6 +574,8 @@
                 <input class="rounded" id="client_contribution" type="number"
                     value="{{ $client->client_contribution }}" name="client_contribution" min="0"
                     step="1.00" autocomplete="off" />
+                    value="{{ $client->client_contribution }}" name="client_contribution" min="0"
+                    step="1.00" autocomplete="off" />
                 <x-jet-input-error class="mt-2" for="client_contribution" />
             </div>
 
@@ -610,8 +615,8 @@
             </div>
 
 
-     {{-- Status --}}
-{{-- <x-form_label for="status">
+            {{-- Status --}}
+            {{-- <x-form_label for="status">
     Status
 </x-form_label>
 <select class="peer mt-2 w-full rounded-md border-blue-200 bg-gray-100 p-2 ring-0" id="status" name="status" type="text">
@@ -619,28 +624,30 @@
     <option value="0" {{ old('status', $client->status) == '0' ? 'selected' : '' }}>Active</option>
     <option value="1" {{ old('status', $client->status) == '1' ? 'selected' : '' }}>Inactive</option>
 </select> --}}
-{{-- Status --}}
-<div class="mb-2 mt-4 w-full">
-    <x-form_label for="status">
-        Status
-    </x-form_label>
+            {{-- Status --}}
+            <div class="mb-2 mt-4 w-full">
+                <x-form_label for="status">
+                    Status
+                </x-form_label>
 
-    <div class="flex items-center mt-2">
-        <input type="radio" id="status_active" name="status" value="0" {{ old('status', $client->status) == '0' ? 'checked' : '' }}>
-        <label for="status_active" class="ml-2">Active</label>
+                <div class="flex items-center mt-2">
+                    <input type="radio" id="status_active" name="status" value="0"
+                        {{ old('status', $client->status) == '0' ? 'checked' : '' }}>
+                    <label for="status_active" class="ml-2">Active</label>
 
-        <input type="radio" id="status_inactive" name="status" value="1" {{ old('status', $client->status) == '1' ? 'checked' : '' }}>
-        <label for="status_inactive" class="ml-2">Inactive</label>
-    </div>
+                    <input type="radio" id="status_inactive" name="status" value="1"
+                        {{ old('status', $client->status) == '1' ? 'checked' : '' }}>
+                    <label for="status_inactive" class="ml-2">Inactive</label>
+                </div>
 
-    <x-jet-input-error class="mt-2" for="status" />
-</div>
+                <x-jet-input-error class="mt-2" for="status" />
+            </div>
 
             <div class="mb-2 mt-4 w-full">
                 <x-jet-label for="notes" value="{{ __('Notes') }}" />
-                <textarea class="w-full rounded border border-blue-200 bg-gray-100" id="notes" cols="30" width: 100%;"
-                    placeholder="Enter notes here..." autocomplete="off" name="additional_notes" rows="5"
-                    value="{{ old('notes', $client->notes) }}">{{ $client->additional_notes }}</textarea>
+                <textarea class="w-full rounded border border-blue-200 bg-gray-100" id="notes" type="text" cols="30"
+                    width: 100%; wire:model.defer="state.notes" placeholder="Enter notes here..." autocomplete="off" name="notes"
+                    rows="5"></textarea>
                 <x-jet-input-error class="mt-2" for="notes" />
             </div>
             <x-jet-button class="ml-4" type="submit">
