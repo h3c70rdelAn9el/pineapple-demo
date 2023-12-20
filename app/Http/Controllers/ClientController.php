@@ -534,7 +534,9 @@ class ClientController extends Controller
         // Validate the request data
         $validatedData = $request->validate([
             'client_code' => 'nullable',
-            'legal_name' => 'nullable',
+            // 'legal_name' => 'nullable',
+            // a=make legal name a string
+            'legal_name' =>'nullable|string',
             'preferred_name' => 'nullable',
             'sexual_orientation' => 'nullable',
             'ethnic_group' => 'nullable',
@@ -551,7 +553,7 @@ class ClientController extends Controller
             'gender' => 'nullable',
             'contact_method' => 'nullable',
             'max_sessions' => 'nullable',
-            'therapist' => 'nullable',
+            'user_id' => 'nullable',
             'status' => 'nullable',
         ]);
 
@@ -570,31 +572,35 @@ class ClientController extends Controller
 
         // Update the client fields
 
-        $client->update([
-            'client_code' => $request->input('client_code'),
-            'legal_name' => $request->input('legal_name'),
-            // 'legal_name' => $client->legal_name,
-            'preferred_name' => $request->input('preferred_name'),
-            'sexual_orientation' => $request->input('sexual_orientation'),
-            'ethnic_group' => $client->ethnic_group,
-            'home_address_state' => $request->input('home_address_state'),
-            'home_address_country' => $request->input('home_address_country'),
-            'previous_therapy' => $request->input('previous_therapy'),
-            'possible_support_needed' => $client->possible_support_needed,
-            'additional_notes' => $request->input('additional_notes'),
-            'pronouns' => $client->pronouns,
-            'email' => $request->input('email'),
-            'phone' => $request->input('phone'),
-            'client_contribution' => $request->input('client_contribution'),
-            'user_id' => $request->input('user_id'),
-            'gender' => $client->gender,
-            'contact_method' => $client->contact_method,
-            'max_sessions' => $request->input('max_sessions'),
-            'therapist' => $request->input('therapist'),
-            'status' => $request->input('status'),
-        ]);
+        // $client->update([
+        //     'client_code' => $request->input('client_code'),
+        //     // 'legal_name' => $request->input('legal_name'),
+        //     'legal_name' => $client->legal_name,
+        //     'preferred_name' => $request->input('preferred_name'),
+        //     'sexual_orientation' => $request->input('sexual_orientation'),
+        //     // 'ethnic_group' => $client->ethnic_group,
+        //     'ethnic_group' => json_encode($request->input('ethnic_group', [])),
+        //     'home_address_state' => $request->input('home_address_state'),
+        //     'home_address_country' => $request->input('home_address_country'),
+        //     'previous_therapy' => $request->input('previous_therapy'),
+        //     'possible_support_needed' => $client->possible_support_needed,
+        //     'additional_notes' => $request->input('additional_notes'),
+        //     // 'pronouns' => $client->pronouns,
+        //     'pronouns' => json_encode($request->input('pronouns', [])),
+        //     'email' => $request->input('email'),
+        //     'phone' => $request->input('phone'),
+        //     'client_contribution' => $request->input('client_contribution'),
+        //     'user_id' => $request->input('user_id'),
+        //     'gender' => $client->gender,
+        //     // 'contact_method' => $client->contact_method,
+        //     'contact_method' => json_encode($request->input('contact_method', [])),
+        //     'max_sessions' => $request->input('max_sessions'),
+        //     'user_id' => $request->input('user_id'),
+        //     // 'status' => $request->input('status'),
+        //     'status ' => $client->status,
+        // ]);
 
-        // $client->update($validatedData);
+        $client->update($validatedData);
         // Update the client fields (excluding 'status')
         // unset($validatedData['status']);
 
@@ -603,6 +609,18 @@ class ClientController extends Controller
             $client->status = $request->input('status');
             $client->save();
         }
+
+        if ($request->has('legal_name', 'contact_method', 'gender', 'pronouns', 'ethnic_group', 'sexual_orientation')) {
+            $client->legal_name = $request->input('legal_name');
+            $client->contact_method = $request->input('contact_method');
+            $client->gender = $request->input('gender');
+            $client->pronouns = $request->input('pronouns');
+            $client->ethnic_group = $request->input('ethnic_group');
+            $client->sexual_orientation = $request->input('sexual_orientation');
+            $client->save();
+        }
+
+
         // Notify the therapist
         $therapist = User::find($request->user_id);
         $therapist->notify(new NewClientNotification());

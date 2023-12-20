@@ -26,9 +26,7 @@ class Client extends Model
         'sexual_orientation',
         'ethnic_group',
         'home_address_state',
-        'health_coverage_provider',
-        'health_coverage_number',
-        'health_coverage_expiration',
+        'home_address_country',
         'previous_therapy',
         'possible_support_needed',
         'preferred_language',
@@ -43,6 +41,7 @@ class Client extends Model
         'max_sessions',
         'gender',
         'therapist_id',
+        'user_id'
     ];
 
     public function user()
