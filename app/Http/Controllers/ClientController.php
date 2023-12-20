@@ -336,6 +336,7 @@ class ClientController extends Controller
     }
 
 
+    // ** THIS IS THE PREVIOUS UPDATE METHOD:
     /**
      * Update the specified resource in storage.
      *
@@ -530,6 +531,95 @@ class ClientController extends Controller
 
     public function update(Request $request, Client $client)
     {
+        $selectedOrientations = $request->input('sexual_orientation');
+        $otherSexualOrientation = $request->input('otherSexualOrientation');
+        $orientationString = "";
+        if (is_array($selectedOrientations)) {
+            if (in_array('Other', $selectedOrientations) && $otherSexualOrientation) {
+                $orientationString = implode(', ', array_map(function ($value) use ($otherSexualOrientation) {
+                    return $value == 'Other' ? $otherSexualOrientation : $value;
+                }, $selectedOrientations));
+            } else {
+                $orientationString = implode(', ', $selectedOrientations);
+            }
+        } else {
+            $orientationString = $selectedOrientations;
+        }
+
+        $selectedPronouns = $request->input('pronouns');
+        $otherPronoun = $request->input('otherPronoun');
+        $pronounsString = "";
+        if (is_array($selectedPronouns)) {
+            if (in_array('Other', $selectedPronouns) && $otherPronoun) {
+                $pronounsString = implode(', ', array_map(function ($value) use ($otherPronoun) {
+                    return $value == 'Other' ? $otherPronoun : $value;
+                }, $selectedPronouns));
+            } else {
+                $pronounsString = implode(', ', $selectedPronouns);
+            }
+        } else {
+            $pronounsString = $selectedPronouns;
+        }
+
+        $selectedGenders = $request->input('gender');
+        $otherGender = $request->input('otherGender');
+        $genderString = "";
+        if (is_array($selectedGenders)) {
+            if (in_array('Other', $selectedGenders) && $otherGender) {
+                $genderString = implode(', ', array_map(function ($value) use ($otherGender) {
+                    return $value == 'Other' ? $otherGender : $value;
+                }, $selectedGenders));
+            } else {
+                $genderString = implode(', ', $selectedGenders);
+            }
+        } else {
+            $genderString = $selectedGenders;
+        }
+
+        $selectedEthnicGroups = $request->input('ethnic_group');
+        $otherEthnicGroup = $request->input('otherEthnicGroup');
+        $ethnicGroupString = "";
+
+        if (is_array($selectedEthnicGroups)) {
+            if (in_array('Other', $selectedEthnicGroups) && $otherEthnicGroup) {
+                $ethnicGroupString = implode(', ', array_map(function ($value) use ($otherEthnicGroup) {
+                    return $value == 'Other' ? $otherEthnicGroup : $value;
+                }, $selectedEthnicGroups));
+            } else {
+                $ethnicGroupString = implode(', ', $selectedEthnicGroups);
+            }
+        } else {
+            $ethnicGroupString = $selectedEthnicGroups;
+        }
+
+        $selectedPossibleSupportNeeded = $request->input('possible_support_needed');
+        $otherPossibleSupport = $request->input('otherPossibleSupport');
+        $possibleSupportNeededString = "";
+
+        if (is_array($selectedPossibleSupportNeeded)) {
+            if (in_array('Other', $selectedPossibleSupportNeeded) && $otherPossibleSupport) {
+                $possibleSupportNeededString = implode(', ', array_map(function ($value) use ($otherPossibleSupport) {
+                    return $value == 'Other' ? $otherPossibleSupport : $value;
+                }, $selectedPossibleSupportNeeded));
+            } else {
+                $possibleSupportNeededString = implode(', ', $selectedPossibleSupportNeeded);
+            }
+        } else {
+            $possibleSupportNeededString = $selectedPossibleSupportNeeded;
+        }
+
+        // do the same as above for contact_method
+
+        $selectedContactMethods = $request->input('contact_method') ?? [];
+        $contactMethodString = implode(', ', $selectedContactMethods);
+        if (is_array($request->contact_method) && !empty($request->contact_method)) {
+            $contactMethodString = implode(', ', $request->contact_method);
+        } else {
+            $contactMethodString = '';
+        }
+
+        $selectedGenders = $request->input('gender');
+
 
         // Validate the request data
         $validatedData = $request->validate([
@@ -557,74 +647,44 @@ class ClientController extends Controller
             'status' => 'nullable',
         ]);
 
-        // Process specific fields as strings
-        $client->gender = implode(', ', $request->input('gender', []));
-        $client->pronouns = json_encode($request->input('pronouns', []));
-        $client->ethnic_group = json_encode($request->input('ethnic_group', []));
-        $client->contact_method = json_encode($request->input('contact_method', []));
-        $client->possible_support_needed = json_encode($request->input('possible_support_needed', []));
+        $client->client_code = $request->input('client_code');
+        // $client->legal_name = $request->input('legal_name');
+        // $client->preferred_name = $request->input('preferred_name');
+
+        $client->sexual_orientation = $orientationString;
+        $client->pronouns = $pronounsString;
+        $client->ethnic_group = $ethnicGroupString;
+        $client->contact_method = $contactMethodString;
+        $client->possible_support_needed = $possibleSupportNeededString;
+        $client->gender = $genderString;
+
 
         // Remove quotes and brackets from encoded strings
-        $client->pronouns = str_replace(['"', '[', ']'], '', $client->pronouns);
-        $client->ethnic_group = str_replace(['"', '[', ']'], '', $client->ethnic_group);
-        $client->contact_method = str_replace(['"', '[', ']'], '', $client->contact_method);
-        $client->possible_support_needed = str_replace(['"', '[', ']'], '', $client->possible_support_needed);
+        // $client->pronouns = str_replace(['"', '[', ']'], '', $client->pronouns);
+        // $client->ethnic_group = str_replace(['"', '[', ']'], '', $client->ethnic_group);
+        // $client->contact_method = str_replace(['"', '[', ']'], '', $client->contact_method);
+        // $client->possible_support_needed = str_replace(['"', '[', ']'], '', $client->possible_support_needed);
 
-        // Update the client fields
 
-        // $client->update([
-        //     'client_code' => $request->input('client_code'),
-        //     // 'legal_name' => $request->input('legal_name'),
-        //     'legal_name' => $client->legal_name,
-        //     'preferred_name' => $request->input('preferred_name'),
-        //     'sexual_orientation' => $request->input('sexual_orientation'),
-        //     // 'ethnic_group' => $client->ethnic_group,
-        //     'ethnic_group' => json_encode($request->input('ethnic_group', [])),
-        //     'home_address_state' => $request->input('home_address_state'),
-        //     'home_address_country' => $request->input('home_address_country'),
-        //     'previous_therapy' => $request->input('previous_therapy'),
-        //     'possible_support_needed' => $client->possible_support_needed,
-        //     'additional_notes' => $request->input('additional_notes'),
-        //     // 'pronouns' => $client->pronouns,
-        //     'pronouns' => json_encode($request->input('pronouns', [])),
-        //     'email' => $request->input('email'),
-        //     'phone' => $request->input('phone'),
-        //     'client_contribution' => $request->input('client_contribution'),
-        //     'user_id' => $request->input('user_id'),
-        //     'gender' => $client->gender,
-        //     // 'contact_method' => $client->contact_method,
-        //     'contact_method' => json_encode($request->input('contact_method', [])),
-        //     'max_sessions' => $request->input('max_sessions'),
-        //     'user_id' => $request->input('user_id'),
-        //     // 'status' => $request->input('status'),
-        //     'status ' => $client->status,
-        // ]);
 
-        $client->update($validatedData);
-        // Update the client fields (excluding 'status')
-        // unset($validatedData['status']);
 
-        // Update 'status' separately
-        if ($request->has('status')) {
-            $client->status = $request->input('status');
-            $client->save();
+        $fieldsToUpdate = ['status', 'legal_name', 'contact_method', 'gender', 'pronouns', 'ethnic_group','sexual_orientation', 'possible_support_needed', 'preferred_name', 'contact_method', 'additional_notes', 'client_contribution','max_sessions', 'email', 'phone', 'gender', 'additional_notes'];
+
+        foreach ($fieldsToUpdate as $field) {
+            if ($request->has($field)) {
+                $client->$field = $request->input($field);
+            } else {
+                $client->$field = $client->$field;
+            }
+
         }
 
-        if ($request->has('legal_name', 'contact_method', 'gender', 'pronouns', 'ethnic_group', 'sexual_orientation')) {
-            $client->legal_name = $request->input('legal_name');
-            $client->contact_method = $request->input('contact_method');
-            $client->gender = $request->input('gender');
-            $client->pronouns = $request->input('pronouns');
-            $client->ethnic_group = $request->input('ethnic_group');
-            $client->sexual_orientation = $request->input('sexual_orientation');
-            $client->save();
-        }
-
+        $client->fill($validatedData);
+        $client->save();
 
         // Notify the therapist
         $therapist = User::find($request->user_id);
         $therapist->notify(new NewClientNotification());
-
 
         return redirect()->route('dashboard');
     }
@@ -701,6 +761,7 @@ class ClientController extends Controller
      */
     public function destroy(Client $client)
     {
-        //
+       $client->delete();
+        return redirect()->route('dashboard');
     }
 }
