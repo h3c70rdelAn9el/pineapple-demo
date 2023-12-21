@@ -668,18 +668,19 @@ class ClientController extends Controller
 
 
 
-        $fieldsToUpdate = ['status', 'legal_name', 'contact_method', 'gender', 'pronouns', 'ethnic_group','sexual_orientation', 'possible_support_needed', 'preferred_name', 'contact_method', 'additional_notes', 'client_contribution','max_sessions', 'email', 'phone', 'gender', 'additional_notes'];
+        $fieldsToUpdate = ['status', 'legal_name', 'contact_method', 'gender', 'pronouns', 'ethnic_group','sexual_orientation', 'possible_support_needed', 'preferred_name', 'contact_method', 'additional_notes', 'client_contribution','max_sessions', 'email', 'phone', 'gender', 'additional_notes', 'phone', 'client_contribution', 'user_id', 'home_address_line_1', 'home_address_line_2', 'home_address_city', 'home_address_state', 'home_address_zip', 'home_address_country', 'health_coverage_provider', 'health_coverage_number', 'health_coverage_expiration', 'previous_therapy'];
 
         foreach ($fieldsToUpdate as $field) {
             if ($request->has($field)) {
                 $client->$field = $request->input($field);
             } else {
-                $client->$field = $client->$field;
+
             }
 
         }
 
-        $client->fill($validatedData);
+        // $client->fill($validatedData);
+        $client->update($validatedData);
         $client->save();
 
         // Notify the therapist

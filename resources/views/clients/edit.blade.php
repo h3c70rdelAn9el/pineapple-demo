@@ -6,6 +6,8 @@
     // $states = json_decode($statesJson, true);
     $countriesJson = file_get_contents(resource_path('json/countries.json'));
     $clientCountries = json_decode($countriesJson, true);
+    $sexualOrientations = ['Heterosexual/Straigh', 'Gay/Lesbian', 'Bisexual', 'Don\'t Know', 'Prefer Not to Say', 'Other'];
+    $pronouns = ['He/Him/His', 'She/Her/Hers', 'They/Them/Theirs', 'Per/Per/Pers', 'Ze/Hir/Hirs', 'Prefer Not to Say', 'Other'];
 @endphp
 
 <x-app-layout>
@@ -75,7 +77,7 @@
                 <x-jet-label for="email" value="{{ __('Email') }}" />
                 <input class="w-full rounded border border-blue-200 bg-gray-100" id="email" name="email"
                     type="text" value="{{ old('email', $client->email) }}"
-                    placeholder="{{ old('email', $client->email) }}" autocomplete="true" />
+                    placeholder="{{ old('email', $client->email) }}" autocomplete="off" />
                 <x-jet-input-error class="mt-2" for="email" />
             </div>
 
@@ -147,7 +149,9 @@
                 <div class="relative mb-4 mt-6 w-full"
                     x-data='{
                     showGender: false,
-                    selectedOptions: [],
+                    {{-- selectedOptions: [], --}}
+                    selectedOptions: @json($client->gender ?? []),
+
                     toggleSelectedOption(option) {
                         if (this.selectedOptions.includes(option)) {
                             this.selectedOptions = this.selectedOptions.filter(item => item !== option);
@@ -176,17 +180,28 @@
                         <div class="-mt-1 w-full rounded-b-md rounded-t-none border-b border-l border-r border-blue-300 bg-gray-100 pt-1 text-gray-600 md:flex md:flex-wrap"
                             x-show="showGender" x-transition.scale.origin.top x-transition.duration.300ms
                             x-transition.ease-in-out x-cloak>
-                            @foreach ($genders as $gender)
+                            {{-- @foreach ($genders as $gender)
                                 <div class="m-3 flex flex-row">
                                     <input
                                         class="mr-0.5 mt-1 rounded-full transition duration-200 ease-in-out hover:bg-blue-500"
                                         name="gender[]" type="checkbox" value="{{ $gender }}">
                                     <label class="" for="{{ $gender }}">{{ $gender }}</label>
                                 </div>
+                            @endforeach --}}
+                            @foreach ($genders as $gender)
+                                <div class="m-3 flex flex-row">
+                                    <input
+                                        class="mr-0.5 mt-1 rounded-full transition duration-200 ease-in-out hover:bg-blue-500"
+                                        name="gender[]" type="checkbox" value="{{ $gender }}"
+                                        :checked="selectedOptions.includes('{{ $gender }}')"
+                                        @click="toggleSelectedOption('{{ $gender }}')">
+                                    <label class="" for="{{ $gender }}">{{ $gender }}</label>
+                                </div>
                             @endforeach
                             <div class="select-input-div">
                                 <input class="select-input" id="otherGenderCheckbox" name="gender[]" type="checkbox"
-                                    value="Other">
+                                    value="Other" :checked="selectedOptions.includes('Other')"
+                                    @click="toggleSelectedOption('Other')">
                                 <label class="ml-2" for="otherGender">Other</label>
                             </div>
 
@@ -199,7 +214,6 @@
                     </div>
                 </div>
 
-                {{-- Pronouns --}}
                 <div class="col-span-6 mt-0 sm:col-span-4">
                     <div class="my-4 flex flex-col" x-data="{ openPronouns: false, selectedPronouns: [] }">
                         <x-form_label>
@@ -220,7 +234,7 @@
                             x-show="openPronouns" x-transition.scale.origin.top x-transition:enter.duration.300ms
                             x-transition:enter.ease-in-out x-transition:leave.duration.300ms x-transition:ease-in-out
                             x-cloak>
-                            <div class="select-input-div">
+                            {{-- <div class="select-input-div">
                                 <input class="select-input" id="they/them/theirs" name="pronouns[]" type="checkbox"
                                     value="They/Them/Theirs">
                                 <label class="ml-2" for="they-them">They/Them/Theirs</label>
@@ -256,7 +270,16 @@
                                 <input class="select-input" id="otherPronounCheckbox" name="pronouns[]"
                                     type="checkbox" value="Other">
                                 <label class="ml-2" for="otherPronoun">Other</label>
-                            </div>
+                            </div> --}}
+                            @foreach ($pronouns as $pronoun)
+                                <div class="select-input-div">
+                                    <input class="select-input" id="{{ $pronoun }}" name="pronouns[]"
+                                        type="checkbox" value="{{ $pronoun }}"
+                                        :checked="selectedPronouns.includes('{{ $pronoun }}')"
+                                        @click="toggleSelectedPronouns('{{ $pronoun }}')">
+                                    <label class="ml-2" for="{{ $pronoun }}">{{ $pronoun }}</label>
+                                </div>
+                            @endforeach
 
                             <div class="m-3 flex flex-row">
                                 <input
@@ -268,7 +291,66 @@
                     </div>
                 </div>
 
-                <div class="col-span-6 mt-0 sm:col-span-4">
+                {{-- <div class="col-span-6 mt-0 sm:col-span-4">
+                    <div class="my-4 flex flex-col" x-data="{ openPronouns: false, selectedPronouns: @json($client->pronouns ?? []) }">
+                        <x-form_label>
+                            Pronoun(s): (previous selection: {{ str_replace(['[', ']', '"'], '', $client->pronouns) }})
+                        </x-form_label>
+                        <button
+                            class="-m-0.5 flex w-full justify-between rounded-md border border-blue-300 bg-gray-100 p-2 text-gray-700 focus:border-blue-500"
+                            type="button" @click="openPronouns = !openPronouns">
+                            <span class="ml-0"
+                                x-text="selectedPronouns.length > 0 ? selectedPronouns.join(', ') : 'Select Options'"></span>
+                            <svg class="mt-0.5 h-[18px] w-[18px] text-gray-800" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                        <div class="-ml-[2px] -mt-2 mr-[2px] rounded-md rounded-t-none border border-b border-r border-t-0 border-blue-500 bg-gray-100 py-4 md:flex md:flex-wrap"
+                            x-show="openPronouns" x-transition.scale.origin.top x-transition:enter.duration.300ms
+                            x-transition:enter.ease-in-out x-transition:leave.duration.300ms x-transition:ease-in-out
+                            x-cloak>
+                            <div class="select-input-div">
+                                <input class="select-input" id="they/them/theirs" name="pronouns[]" type="checkbox"
+                                    value="They/Them/Theirs" :checked="selectedPronouns.includes('They/Them/Theirs')"
+                                    @click="toggleSelectedPronouns('They/Them/Theirs')">
+                                <label class="ml-2" for="they-them">They/Them/Theirs</label>
+                            </div>
+                            <div class="select-input-div">
+                                <input class="select-input" id="she/her/hers" name="pronouns[]" type="checkbox"
+                                    value="she/her/hers" :checked="selectedPronouns.includes('she/her/hers')"
+                                    @click="toggleSelectedPronouns('she/her/hers')">
+                                <label class="ml-2" for="she-her">she/her/hers</label>
+                            </div>
+                            <!-- Add similar blocks for other pronouns -->
+
+                            <div class="select-input-div">
+                                <input class="select-input" id="prefer-not-to-say-pronouns" name="pronouns[]"
+                                    type="checkbox" value="Prefer Not To Say"
+                                    :checked="selectedPronouns.includes('Prefer Not To Say')"
+                                    @click="toggleSelectedPronouns('Prefer Not To Say')">
+                                <label class="ml-2" for="prefer-not-to-say-pronouns">Prefer Not To Say</label>
+                            </div>
+                            <div class="select-input-div">
+                                <input class="select-input" id="otherPronounCheckbox" name="pronouns[]"
+                                    type="checkbox" value="Other" :checked="selectedPronouns.includes('Other')"
+                                    @click="toggleSelectedPronouns('Other')">
+                                <label class="ml-2" for="otherPronoun">Other</label>
+                            </div>
+
+                            <div class="m-3 flex flex-row">
+                                <input
+                                    class="mr-0.5 mt-1 rounded-full transition duration-200 ease-in-out hover:bg-blue-500"
+                                    id="otherPronounInput" name="otherPronoun" type="text"
+                                    style="display: none;">
+                            </div>
+                        </div>
+                    </div>
+                </div> --}}
+
+
+                {{-- <div class="col-span-6 mt-0 sm:col-span-4">
                     <div class="my-4 flex flex-col" x-data="{ openSexualOrientation: false, selectedSexualOrientation: [] }">
                         <x-form_label>
                             Sexual Orientation(s): (previous selection:
@@ -299,16 +381,11 @@
                                     type="checkbox" value="Gay/Lesbian">
                                 <label class="ml-2" for="heterosexual">Gay/Lesbian</label>
                             </div>
-                            {{-- homosexual --}}
                             <div class="select-input-div">
                                 <input class="select-input" id="heterosexual/straight" name="sexual_orientation[]"
                                     type="checkbox" value="Heterosexual/Straight">
                                 <label class="ml-2" for="homosexual">Heterosexual/Straight</label>
                             </div>
-
-
-
-                            {{-- don't know --}}
                             <div class="select-input-div">
                                 <input class="select-input" id="dont_know" name="sexual_orientation[]"
                                     type="checkbox" value="Don't Know">
@@ -324,7 +401,53 @@
                                     name="sexual_orientation[]" type="checkbox" value="Other">
                                 <label class="ml-2" for="otherSexualOrientation">Other</label>
                             </div>
+                            <div class="m-3 flex flex-row">
+                                <input
+                                    class="mr-0.5 mt-1 rounded-full transition duration-200 ease-in-out hover:bg-blue-500"
+                                    id="otherSexualOrientationInput" name="otherSexualOrientation" type="text"
+                                    style="display: none;">
+                            </div>
+                        </div>
+                    </div>
+                </div> --}}
 
+                <div class="col-span-6 mt-0 sm:col-span-4">
+                    <div class="my-4 flex flex-col" x-data="{ openSexualOrientation: false, selectedSexualOrientation: @json($client->sexual_orientation ?? []) }">
+                        <x-form_label>
+                            Sexual Orientation(s): (previous selection:
+                            {{ str_replace(['[', ']', '"'], '', $client->sexual_orientation) }})
+                        </x-form_label>
+                        <button
+                            class="-m-0.5 flex w-full justify-between rounded-md border border-blue-300 bg-gray-100 p-2 text-gray-700 focus:border-blue-500"
+                            type="button" @click="openSexualOrientation = !openSexualOrientation">
+                            <span class="ml-0"
+                                x-text="selectedSexualOrientation.length > 0 ? selectedSexualOrientation.join(', ') : 'Select Options'"></span>
+                            <svg class="mt-0.5 h-[18px] w-[18px] text-gray-800" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                        <div class="-ml-[2px] -mt-2 mr-[2px] rounded-md rounded-t-none border border-b border-r border-t-0 border-blue-500 bg-gray-100 py-4 md:flex md:flex-wrap"
+                            x-show="openSexualOrientation" x-transition.scale.origin.top
+                            x-transition:enter.duration.300ms x-transition:enter.ease-in-out
+                            x-transition:leave.duration.300ms x-transition:ease-in-out x-cloak>
+                            @foreach ($sexualOrientations as $orientation)
+                                <div class="select-input-div">
+                                    <input class="select-input" id="{{ $orientation }}" name="sexual_orientation[]"
+                                        type="checkbox" value="{{ $orientation }}"
+                                        :checked="selectedSexualOrientation.includes('{{ $orientation }}')"
+                                        @click="toggleSelectedSexualOrientation('{{ $orientation }}')">
+                                    <label class="ml-2" for="{{ $orientation }}">{{ $orientation }}</label>
+                                </div>
+                            @endforeach
+                            <div class="select-input-div">
+                                <input class="select-input" id="otherSexualOrientationCheckbox"
+                                    name="sexual_orientation[]" type="checkbox" value="Other"
+                                    :checked="selectedSexualOrientation.includes('Other')"
+                                    @click="toggleSelectedSexualOrientation('Other')">
+                                <label class="ml-2" for="otherSexualOrientation">Other</label>
+                            </div>
                             <div class="m-3 flex flex-row">
                                 <input
                                     class="mr-0.5 mt-1 rounded-full transition duration-200 ease-in-out hover:bg-blue-500"
@@ -334,6 +457,7 @@
                         </div>
                     </div>
                 </div>
+
 
                 <div class="my-4 flex flex-col" x-data="{ openEthnicGroup: false, selectedEthnicGroups: [] }">
                     <x-form_label>
