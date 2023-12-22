@@ -142,7 +142,7 @@
                     </div>
                 </div>
             </div> --}}
-            <div class="relative mb-4 mt-6 w-full"
+            {{-- <div class="relative mb-4 mt-6 w-full"
                 x-data='{
                     showContactMethods: false,
                     selectedContactMethods: @json($client->contact_method ?? []),
@@ -193,7 +193,67 @@
                         </div>
                     </div>
                 </div>
+            </div> --}}
+
+            <div class="relative mb-4 mt-6 w-full"
+    x-data='{
+        showContactMethods: false,
+        selectedContactMethods: @json($client->contact_method ?? []),
+        toggleSelectedContactMethod(option) {
+            if (this.selectedContactMethods.includes(option)) {
+                this.selectedContactMethods = this.selectedContactMethods.filter(item => item !== option);
+            } else {
+                this.selectedContactMethods.push(option);
+            }
+        }
+    }'
+    x-init="alpine.watch('showContactMethods', value => { if (!value) showContactMethods = false; })">
+
+    <x-form_label>
+        Contact Method(s): (previous selection:
+        {{ str_replace(['[', ']', '"'], '', $client->contact_method) }})
+    </x-form_label>
+    <div class="rounded-md" @click.away="showContactMethods = false">
+        <div class="flex w-full justify-between rounded-md border border-blue-300 bg-gray-100 p-3">
+            <button class="-m-0.5 flex w-full justify-between text-gray-700" type="button"
+                @click="showContactMethods = !showContactMethods">
+                <span class="ml-0"
+                    x-text="selectedContactMethods.length > 0 ? selectedContactMethods.join(', ') : 'Select Options'"></span>
+                <svg class="mt-0.5 h-[18px] w-[18px] text-gray-800" fill="none" stroke="currentColor"
+                    viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M19 9l-7 7-7-7"></path>
+                </svg>
+            </button>
+        </div>
+        <div class="-mt-1 w-full rounded-b-md rounded-t-none border-b border-l border-r border-blue-300 bg-gray-100 pt-1 text-gray-600 md:flex md:flex-wrap"
+            x-show="showContactMethods" x-transition.scale.origin.top x-transition.duration.300ms
+            x-transition.ease-in-out x-cloak>
+            @foreach ($contactMethods as $method)
+                <div class="select-input-div">
+                    <input class="select-input" id="{{ $method }}" name="contact_method[]"
+                        type="checkbox" value="{{ $method }}"
+                        :checked="selectedContactMethods.includes('{{ $method }}')"
+                        @click="toggleSelectedContactMethod('{{ $method }}')">
+                    <label class="ml-2" for="{{ $method }}">{{ $method }}</label>
+                </div>
+            @endforeach
+            <div class="select-input-div">
+                <input class="select-input" id="otherContactMethodCheckbox" name="contact_method[]"
+                    type="checkbox" value="Other" :checked="selectedContactMethods.includes('Other')"
+                    @click="toggleSelectedContactMethod('Other')">
+                <label class="ml-2" for="otherContactMethod">Other</label>
             </div>
+
+            <div class="m-3 flex flex-row">
+                <input
+                    class="mr-0.5 mt-1 rounded-full transition duration-200 ease-in-out hover:bg-blue-500"
+                    id="otherContactMethodInput" name="otherContactMethod" type="text" style="display: none;">
+            </div>
+        </div>
+    </div>
+</div>
+
 
 
             <div class="my-4 rounded-lg border-2 border-blue-300 bg-blue-100 p-2">
@@ -233,14 +293,6 @@
                         <div class="-mt-1 w-full rounded-b-md rounded-t-none border-b border-l border-r border-blue-300 bg-gray-100 pt-1 text-gray-600 md:flex md:flex-wrap"
                             x-show="showGender" x-transition.scale.origin.top x-transition.duration.300ms
                             x-transition.ease-in-out x-cloak>
-                            {{-- @foreach ($genders as $gender)
-                                <div class="m-3 flex flex-row">
-                                    <input
-                                        class="mr-0.5 mt-1 rounded-full transition duration-200 ease-in-out hover:bg-blue-500"
-                                        name="gender[]" type="checkbox" value="{{ $gender }}">
-                                    <label class="" for="{{ $gender }}">{{ $gender }}</label>
-                                </div>
-                            @endforeach --}}
                             @foreach ($genders as $gender)
                                 <div class="m-3 flex flex-row">
                                     <input
@@ -270,16 +322,6 @@
                 <div class="col-span-6 mt-0 sm:col-span-4">
                     <div class="my-4 flex flex-col"
                     x-data='
-                    {{-- {
-                        openPronouns: false,
-                        selectedPronouns: @json($client->pronouns ?? []),
-                        toggleSelectedPronoun(option) {
-                            if (this.selectedPronouns.includes(option)) {
-                                this.selectedPronouns = this.selectedPronouns.filter(item => item !== option);
-                            } else {
-                                this.selectedPronouns.push(option);
-                            }
-                        }' --}}
                         {
                             openPronouns: false,
                             selectedPronouns: @json($client->pronouns ?? []),
