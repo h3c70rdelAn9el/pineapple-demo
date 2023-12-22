@@ -270,35 +270,48 @@
 
 
 
-                <div class="col-span-6 mt-0 sm:col-span-4">
-                    <div class="my-4 flex flex-col" x-data="{ openSexualOrientation: false, selectedSexualOrientation: @json($client->sexual_orientation ?? []) }">
-                        <x-form_label>
-                            Sexual Orientation(s): (previous selection:
-                            {{ str_replace(['[', ']', '"'], '', $client->sexual_orientation) }})
-                        </x-form_label>
-                        <button
-                            class="-m-0.5 flex w-full justify-between rounded-md border border-blue-300 bg-gray-100 p-2 text-gray-700 focus:border-blue-500"
-                            type="button" @click="openSexualOrientation = !openSexualOrientation">
-                            <span class="ml-0"
-                                x-text="selectedSexualOrientation.length > 0 ? selectedSexualOrientation.join(', ') : 'Select Options'"></span>
-                            <svg class="mt-0.5 h-[18px] w-[18px] text-gray-800" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M19 9l-7 7-7-7">
-                                </path>
-                            </svg>
-                        </button>
-                        <div class="-ml-[2px] -mt-2 mr-[2px] rounded-md rounded-t-none border border-b border-r border-t-0 border-blue-500 bg-gray-100 py-4 md:flex md:flex-wrap"
-                            x-show="openSexualOrientation" x-transition.scale.origin.top
-                            x-transition:enter.duration.300ms x-transition:enter.ease-in-out
-                            x-transition:leave.duration.300ms x-transition:ease-in-out x-cloak>
+                <div class="relative mb-4 mt-6 w-full"
+                    x-data='{
+                        showSexualOrientation: false,
+                        selectedSexualOrientation: @json($client->sexual_orientation ?? []),
+                        toggleSelectedSexualOrientation(option) {
+                            if (this.selectedSexualOrientation.includes(option)) {
+                                this.selectedSexualOrientation = this.selectedSexualOrientation.filter(item => item !== option);
+                            } else {
+                                this.selectedSexualOrientation.push(option);
+                            }
+                        }
+                    }'
+                    x-init="alpine.watch('showOptions', value => { if (!value) showSexualOrientation = false; })">
+                    <x-form_label>
+                        Sexual Orientation(s): (previous selection:
+                        {{ str_replace(['[', ']', '"'], '', $client->sexual_orientation) }})
+                    </x-form_label>
+                    <div class="rounded-md" @click.away="showSexualOrientation = false">
+                        <div class="flex w-full justify-between rounded-md border border-blue-300 bg-gray-100 p-3">
+                            <button class="-m-0.5 flex w-full justify-between text-gray-700" type="button"
+                                @click="showSexualOrientation = !showSexualOrientation">
+                                <span class="ml-0"
+                                    x-text="selectedSexualOrientation.length > 0 ? selectedSexualOrientation.join(', ') : 'Select Options'"></span>
+                                <svg class="mt-0.5 h-[18px] w-[18px] text-gray-800" fill="none"
+                                    stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="-mt-1 w-full rounded-b-md rounded-t-none border-b border-l border-r border-blue-300 bg-gray-100 pt-1 text-gray-600 md:flex md:flex-wrap"
+                            x-show="showSexualOrientation" x-transition.scale.origin.top x-transition.duration.300ms
+                            x-transition.ease-in-out x-cloak>
                             @foreach ($sexualOrientations as $orientation)
-                                <div class="select-input-div">
-                                    <input class="select-input" id="{{ $orientation }}" name="sexual_orientation[]"
-                                        type="checkbox" value="{{ $orientation }}"
+                                <div class="m-3 flex flex-row">
+                                    <input
+                                        class="mr-0.5 mt-1 rounded-full transition duration-200 ease-in-out hover:bg-blue-500"
+                                        id="{{ $orientation }}" name="sexual_orientation[]" type="checkbox"
+                                        value="{{ $orientation }}"
                                         :checked="selectedSexualOrientation.includes('{{ $orientation }}')"
                                         @click="toggleSelectedSexualOrientation('{{ $orientation }}')">
-                                    <label class="ml-2" for="{{ $orientation }}">{{ $orientation }}</label>
+                                    <label class="" for="{{ $orientation }}">{{ $orientation }}</label>
                                 </div>
                             @endforeach
                             <div class="select-input-div">
@@ -308,6 +321,7 @@
                                     @click="toggleSelectedSexualOrientation('Other')">
                                 <label class="ml-2" for="otherSexualOrientation">Other</label>
                             </div>
+
                             <div class="m-3 flex flex-row">
                                 <input
                                     class="mr-0.5 mt-1 rounded-full transition duration-200 ease-in-out hover:bg-blue-500"
@@ -317,6 +331,7 @@
                         </div>
                     </div>
                 </div>
+
 
 
 
@@ -370,15 +385,15 @@
                                 echo '</div>';
                             }
                             echo '<div class="select-input-div">';
-                                echo '<input class="select-input" id="otherEthnicGroupCheckbox" name="ethnic_group[]" type="checkbox" value="
+                            echo '<input class="select-input" id="otherEthnicGroupCheckbox" name="ethnic_group[]" type="checkbox" value="
                                 Other" :checked="selectedEthnicGroups.includes(\'Other\')" @click="toggleSelectedEthnicGroup(\'Other\')">';
-                                echo '<label class="ml-2" for="otherEthnicGroup">Other</label>';
-                                echo '</div>';
-                                echo '<div class="m-3 flex flex-row">';
-                                    echo '<input class="mr-0.5 mt-1 rounded-full transition duration-200 ease-in-out hover:bg
+                            echo '<label class="ml-2" for="otherEthnicGroup">Other</label>';
+                            echo '</div>';
+                            echo '<div class="m-3 flex flex-row">';
+                            echo '<input class="mr-0.5 mt-1 rounded-full transition duration-200 ease-in-out hover:bg
                                     -blue-500" id="otherEthnicGroupInput" name="otherEthnicGroup" type="text" style="display:
                                     none;">';
-                                    echo '</div>';
+                            echo '</div>';
 
                         @endphp
 
@@ -431,14 +446,6 @@
                 </div>
             </div>
 
-            {{-- previous therapy --}}
-            {{-- <div class="col-span-6 my-4 sm:col-span-4">
-                <x-jet-label for="Previous Therapy from Pineapple"
-                    value="Previous Therapy from Pineapple:  previous: {{ $client->previous_therapy == 0 ? 'No' : 'Yes' }}" />
-                <input class="rounded" id="previous_therapy" type="checkbox"
-                    wire:model.defer="state.previous_therapy" autocomplete="off" />
-                <x-jet-input-error class="mt-2" for="previous_therapy" />
-            </div> --}}
             <div class="mb-2 mt-4 w-full">
                 <x-form_label for="previous_therapy">
                     Previous Therapy
