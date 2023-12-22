@@ -8,6 +8,7 @@
     $clientCountries = json_decode($countriesJson, true);
     $sexualOrientations = ['Heterosexual/Straigh', 'Gay/Lesbian', 'Bisexual', 'Don\'t Know', 'Prefer Not to Say', 'Other'];
     $pronouns = ['He/Him/His', 'She/Her/Hers', 'They/Them/Theirs', 'Per/Per/Pers', 'Ze/Hir/Hirs', 'Prefer Not to Say', 'Other'];
+    $contactMethods = ['Telephone Call', 'Text Message', 'Email'];
 @endphp
 
 <x-app-layout>
@@ -89,7 +90,7 @@
                 <x-jet-input-error class="mt-2" for="phone" />
             </div>
 
-            <div class="relative mb-4 mt-6 w-full"
+            {{-- <div class="relative mb-4 mt-6 w-full"
                 x-data='{
                     showOptions: false,
                     selectedContactMethods: [],
@@ -140,26 +141,78 @@
                         </div>
                     </div>
                 </div>
+            </div> --}}
+            <div class="relative mb-4 mt-6 w-full"
+                x-data='{
+                    showContactMethods: false,
+                    selectedContactMethods: @json($client->contact_method ?? []),
+                    toggleSelectedContactMethod(option) {
+                        if (this.selectedContactMethods.includes(option)) {
+                            this.selectedContactMethods = this.selectedContactMethods.filter(item => item !== option);
+                        } else {
+                            this.selectedContactMethods.push(option);
+                        }
+                    }
+                }'
+                x-init="alpine.watch('showContactMethods', value => { if (!value) showContactMethods = false; })">
 
+                <x-form_label>
+                    Contact Method(s): (previous selection:
+                    {{ str_replace(['[', ']', '"'], '', $client->contact_method) }})
+                </x-form_label>
+                <div class="rounded-md" @click.away="showContactMethods = false">
+                    <div class="flex w-full justify-between rounded-md border border-blue-300 bg-gray-100 p-3">
+                        <button class="-m-0.5 flex w-full justify-between text-gray-700" type="button"
+                            @click="showContactMethods = !showContactMethods">
+                            <span class="ml-0"
+                                x-text="selectedContactMethods.length > 0 ? selectedContactMethods.join(', ') : 'Select Options'"></span>
+                            <svg class="mt-0.5 h-[18px] w-[18px] text-gray-800" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="-mt-1 w-full rounded-b-md rounded-t-none border-b border-l border-r border-blue-300 bg-gray-100 pt-1 text-gray-600 md:flex md:flex-wrap"
+                        x-show="showContactMethods" x-transition.scale.origin.top x-transition.duration.300ms
+                        x-transition.ease-in-out x-cloak>
+                        @foreach ($contactMethods as $method)
+                            <div class="select-input-div">
+                                <input class="select-input" id="{{ $method }}" name="contact_method[]"
+                                    type="checkbox" value="{{ $method }}"
+                                    :checked="selectedContactMethods.includes('{{ $method }}')"
+                                    @click="toggleSelectedContactMethod('{{ $method }}')">
+                                <label class="ml-2" for="{{ $method }}">{{ $method }}</label>
+                            </div>
+                        @endforeach
+                        <div class="m-3 flex flex-row">
+                            <input
+                                class="mr-0.5 mt-1 rounded-full transition duration-200 ease-in-out hover:bg-blue-500"
+                                id="otherContactMethodInput" name="otherContactMethod" type="text"
+                                style="display: none;">
+                        </div>
+                    </div>
+                </div>
             </div>
+
 
             <div class="my-4 rounded-lg border-2 border-blue-300 bg-blue-100 p-2">
                 <p>Optional Fields</p>
 
                 <div class="relative mb-4 mt-6 w-full"
                     x-data='{
-                    showGender: false,
-                    {{-- selectedOptions: [], --}}
-                    selectedOptions: @json($client->gender ?? []),
+                        showGender: false,
+                        {{-- selectedOptions: [], --}}
+                        selectedOptions: @json($client->gender ?? []),
 
-                    toggleSelectedOption(option) {
-                        if (this.selectedOptions.includes(option)) {
-                            this.selectedOptions = this.selectedOptions.filter(item => item !== option);
-                        } else {
-                            this.selectedOptions.push(option);
+                        toggleSelectedOption(option) {
+                            if (this.selectedOptions.includes(option)) {
+                                this.selectedOptions = this.selectedOptions.filter(item => item !== option);
+                            } else {
+                                this.selectedOptions.push(option);
+                            }
                         }
-                    }
-                }'
+                    }'
                     x-init="alpine.watch('showOptions', value => { if (!value) showOptions = false; })">
                     <x-form_label>
                         Gender(s): (previous selection: {{ str_replace(['[', ']', '"'], '', $client->gender) }})
@@ -215,7 +268,30 @@
                 </div>
 
                 <div class="col-span-6 mt-0 sm:col-span-4">
-                    <div class="my-4 flex flex-col" x-data="{ openPronouns: false, selectedPronouns: [] }">
+                    <div class="my-4 flex flex-col"
+                    x-data='
+                    {{-- {
+                        openPronouns: false,
+                        selectedPronouns: @json($client->pronouns ?? []),
+                        toggleSelectedPronoun(option) {
+                            if (this.selectedPronouns.includes(option)) {
+                                this.selectedPronouns = this.selectedPronouns.filter(item => item !== option);
+                            } else {
+                                this.selectedPronouns.push(option);
+                            }
+                        }' --}}
+                        {
+                            openPronouns: false,
+                            selectedPronouns: @json($client->pronouns ?? []),
+                            toggleSelectedPronoun(option) {
+                                if (this.selectedPronouns.includes(option)) {
+                                    this.selectedPronouns = this.selectedPronouns.filter(item => item !== option);
+                                } else {
+                                    this.selectedPronouns.push(option);
+                                }
+                            }
+                        }'
+                    x-init="alpine.watch('showOptions', value => { if (!value) showOptions = false; })">
                         <x-form_label>
                             Pronoun(s): (previous selection: {{ str_replace(['[', ']', '"'], '', $client->pronouns) }})
                         </x-form_label>
@@ -234,49 +310,12 @@
                             x-show="openPronouns" x-transition.scale.origin.top x-transition:enter.duration.300ms
                             x-transition:enter.ease-in-out x-transition:leave.duration.300ms x-transition:ease-in-out
                             x-cloak>
-                            {{-- <div class="select-input-div">
-                                <input class="select-input" id="they/them/theirs" name="pronouns[]" type="checkbox"
-                                    value="They/Them/Theirs">
-                                <label class="ml-2" for="they-them">They/Them/Theirs</label>
-                            </div>
-                            <div class="select-input-div">
-                                <input class="select-input" id="she/her/hers" name="pronouns[]" type="checkbox"
-                                    value="she/her/hers">
-                                <label class="ml-2" for="she-her">she/her/hers</label>
-                            </div>
-                            <div class="select-input-div">
-                                <input class="select-input" id="per/per/pers" name="pronouns[]" type="checkbox"
-                                    value="per/per/pers">
-                                <label class="ml-2">per/per/pers</label>
-                            </div>
-                            <div class="select-input-div">
-                                <input class="select-input" id="he/him/his" name="pronouns[]" type="checkbox"
-                                    value="he/him/his">
-                                <label class="ml-2" for="he-him">he/him/his</label>
-                            </div>
-
-                            <div class="select-input-div">
-                                <input class="select-input" id="ze/hir/hirs" name="pronouns[]" type="checkbox"
-                                    value="ze/hir/hirs">
-                                <label class="ml-2" for="her">ze/hir/hirs</label>
-                            </div>
-
-                            <div class="select-input-div">
-                                <input class="select-input" id="prefer-not-to-say-pronouns" name="pronouns[]"
-                                    type="checkbox" value="Prefer Not To Say">
-                                <label class="ml-2" for="prefer-not-to-say-pronouns">Prefer Not To Say</label>
-                            </div>
-                            <div class="select-input-div">
-                                <input class="select-input" id="otherPronounCheckbox" name="pronouns[]"
-                                    type="checkbox" value="Other">
-                                <label class="ml-2" for="otherPronoun">Other</label>
-                            </div> --}}
                             @foreach ($pronouns as $pronoun)
                                 <div class="select-input-div">
                                     <input class="select-input" id="{{ $pronoun }}" name="pronouns[]"
                                         type="checkbox" value="{{ $pronoun }}"
                                         :checked="selectedPronouns.includes('{{ $pronoun }}')"
-                                        @click="toggleSelectedPronouns('{{ $pronoun }}')">
+                                        @click="toggleSelectedPronoun('{{ $pronoun }}')">
                                     <label class="ml-2" for="{{ $pronoun }}">{{ $pronoun }}</label>
                                 </div>
                             @endforeach
