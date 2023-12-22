@@ -626,22 +626,24 @@ class ClientController extends Controller
             'client_code' => 'nullable',
             // 'legal_name' => 'nullable',
             // a=make legal name a string
-            'legal_name' =>'nullable|string',
+            'legal_name' => 'nullable|string',
             'preferred_name' => 'nullable',
-            'sexual_orientation' => 'nullable',
-            'ethnic_group' => 'nullable',
+
             'home_address_state' => 'nullable',
             'home_address_country' => 'nullable',
             'previous_therapy' => 'nullable',
-            'possible_support_needed' => 'nullable',
+
             'additional_notes' => 'nullable',
-            'pronouns' => 'nullable',
             'email' => 'nullable',
             'phone' => 'nullable',
             'client_contribution' => 'nullable',
             'user_id' => 'nullable',
-            'gender' => 'nullable',
-            'contact_method' => 'nullable',
+            // 'gender' => 'nullable',
+            // 'contact_method' => 'nullable',
+            // 'sexual_orientation' => 'nullable',
+            // 'ethnic_group' => 'nullable',
+            // 'possible_support_needed' => 'nullable',
+            // 'pronouns' => 'nullable',
             'max_sessions' => 'nullable',
             'user_id' => 'nullable',
             'status' => 'nullable',
@@ -668,15 +670,13 @@ class ClientController extends Controller
 
 
 
-        $fieldsToUpdate = ['status', 'legal_name', 'contact_method', 'gender', 'pronouns', 'ethnic_group','sexual_orientation', 'possible_support_needed', 'preferred_name', 'contact_method', 'additional_notes', 'client_contribution','max_sessions', 'email', 'phone', 'gender', 'additional_notes', 'phone', 'client_contribution', 'user_id', 'home_address_line_1', 'home_address_line_2', 'home_address_city', 'home_address_state', 'home_address_zip', 'home_address_country', 'health_coverage_provider', 'health_coverage_number', 'health_coverage_expiration', 'previous_therapy'];
+        $fieldsToUpdate = ['status', 'legal_name', 'contact_method', 'gender', 'pronouns', 'ethnic_group', 'sexual_orientation', 'possible_support_needed', 'preferred_name', 'contact_method', 'additional_notes', 'client_contribution', 'max_sessions', 'email', 'phone', 'gender', 'additional_notes', 'phone', 'client_contribution', 'user_id', 'home_address_line_1', 'home_address_line_2', 'home_address_city', 'home_address_state', 'home_address_zip', 'home_address_country', 'health_coverage_provider', 'health_coverage_number', 'health_coverage_expiration', 'previous_therapy'];
 
         foreach ($fieldsToUpdate as $field) {
             if ($request->has($field)) {
                 $client->$field = $request->input($field);
             } else {
-
             }
-
         }
 
         // $client->fill($validatedData);
@@ -762,7 +762,7 @@ class ClientController extends Controller
      */
     public function destroy(Client $client)
     {
-       $client->delete();
+        $client->delete();
         return redirect()->route('dashboard');
     }
 }
