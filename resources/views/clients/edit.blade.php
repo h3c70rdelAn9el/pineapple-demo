@@ -77,17 +77,6 @@
                 <x-jet-input-error class="mt-2" for="legal_name" />
             </div>
 
-
-            {{-- Status --}}
-            {{-- <x-form_label for="status">
-    Status
-</x-form_label>
-<select class="peer mt-2 w-full rounded-md border-blue-200 bg-gray-100 p-2 ring-0" id="status" name="status" type="text">
-    <option value="" disabled hidden>Select Status</option>
-    <option value="0" {{ old('status', $client->status) == '0' ? 'selected' : '' }}>Active</option>
-    <option value="1" {{ old('status', $client->status) == '1' ? 'selected' : '' }}>Inactive</option>
-</select> --}}
-
             <div class="mb-2 mt-4 w-full">
                 <x-jet-label for="email" value="{{ __('Email') }}" />
                 <input class="w-full rounded border border-blue-200 bg-gray-100" id="email" name="email"
@@ -405,7 +394,8 @@
                             <svg class="mt-0.5 h-[18px] w-[18px] text-gray-800" fill="none" stroke="currentColor"
                                 viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M19 9l-7 7-7-7"></path>
+                                    d="M19 9l-7 7-7-7">
+                                </path>
                             </svg>
                         </button>
                         <div class="-ml-[2px] -mt-2 mr-[2px] rounded-md rounded-t-none border border-b border-r border-t-0 border-blue-500 bg-gray-100 py-4 md:flex md:flex-wrap"
