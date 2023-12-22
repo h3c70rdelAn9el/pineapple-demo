@@ -10,6 +10,7 @@
     $pronouns = ['He/Him/His', 'She/Her/Hers', 'They/Them/Theirs', 'Per/Per/Pers', 'Ze/Hir/Hirs', 'Prefer Not to Say', 'Other'];
     $contactMethods = ['Telephone Call', 'Text Message', 'Email'];
     $ethnicGroups = ['American Indian or Alaska Native', 'Asian', 'Black or African American', 'Hispanic or Latino', 'Native Hawaiian or Other Pacific Islander', 'White', 'Prefer Not to Say', 'Other'];
+    $selectedEthnicGroups = $client->ethnic_group ? json_decode($client->ethnic_group) : [];
 @endphp
 
 <x-app-layout>
@@ -357,15 +358,18 @@
                         x-transition:enter.ease-in-out x-transition:leave.duration.300ms x-transition:ease-in-out
                         x-cloak>
 
-                        {{-- @foreach ($ethnicGroups as $group)
+                         @foreach ($ethnicGroups as $group)
                             <div class="select-input-div">
                                 <input class="select-input" id="{{ $group }}" name="ethnic_group[]"
                                     type="checkbox" value="{{ $group }}"
-                                    :checked="selectedEthnicGroups.includes('{{ $group }}')"
+                                   
+                            
+                                    @if (in_array($group, $selectedEthnicGroups)) checked @endif
                                     @click="toggleSelectedEthnicGroup('{{ $group }}')">
                                 <label class="ml-2" for="{{ $group }}">{{ $group }}</label>
                             </div>
-                        @endforeach --}}
+                        @endforeach 
+                        {{--
                         @php
                             $selectedEthnicGroups = json_decode($client->ethnic_group);
 
@@ -396,7 +400,7 @@
                             echo '</div>';
 
                         @endphp
-
+--}}
                         <div class="select-input-div">
                             <input class="select-input" id="otherEthnicGroupCheckbox" name="ethnic_group[]"
                                 type="checkbox" value="Other" :checked="selectedEthnicGroups.includes('Other')"
