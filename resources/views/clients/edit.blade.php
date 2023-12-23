@@ -459,43 +459,14 @@
                                     type="checkbox" value="{{ $group }}"
 
 
+
+
                                     @if (in_array($group, $selectedEthnicGroups)) checked @endif
                                     @click="toggleSelectedEthnicGroup('{{ $group }}')">
                                 <label class="ml-2" for="{{ $group }}">{{ $group }}</label>
                             </div>
                         @endforeach
-                        {{--
-                        @php
-                            $selectedEthnicGroups = json_decode($client->ethnic_group);
 
-                            foreach ($ethnicGroups as $ethnicGroup) {
-                                echo '<div class="select-input-div">';
-                                echo '<input class="select-input" id="' .
-                                    $ethnicGroup .
-                                    '" name="ethnic_group[]" type="checkbox" value="' .
-                                    $ethnicGroup .
-                                    '" :checked="selectedEthnicGroups.includes(\'' .
-                                    $ethnicGroup .
-                                    '\')" @click="toggleSelectedEthnic
-                                    Group(\'' .
-                                    $ethnicGroup .
-                                    '\')">';
-                                echo '<label class="ml-2" for="' . $ethnicGroup . '">' . $ethnicGroup . '</label>';
-                                echo '</div>';
-                            }
-                            echo '<div class="select-input-div">';
-                            echo '<input class="select-input" id="otherEthnicGroupCheckbox" name="ethnic_group[]" type="checkbox" value="
-                                Other" :checked="selectedEthnicGroups.includes(\'Other\')" @click="toggleSelectedEthnicGroup(\'Other\')">';
-                            echo '<label class="ml-2" for="otherEthnicGroup">Other</label>';
-                            echo '</div>';
-                            echo '<div class="m-3 flex flex-row">';
-                            echo '<input class="mr-0.5 mt-1 rounded-full transition duration-200 ease-in-out hover:bg
-                                    -blue-500" id="otherEthnicGroupInput" name="otherEthnicGroup" type="text" style="display:
-                                    none;">';
-                            echo '</div>';
-
-                        @endphp
---}}
                         <div class="select-input-div">
                             <input class="select-input" id="otherEthnicGroupCheckbox" name="ethnic_group[]"
                                 type="checkbox" value="Other" :checked="selectedEthnicGroups.includes('Other')"
