@@ -467,9 +467,26 @@
                             </div>
                         @endforeach
 
+                                   {{-- <div class="select-input-div">
+                                <input class="select-input" id="otherGenderCheckbox" name="gender[]" type="checkbox"
+                                    value="Other" :checked="selectedOptions.includes('Other')"
+                                    @click="toggleSelectedOption('Other')">
+                                <label class="ml-2" for="otherGender">Other</label>
+                            </div>
+
+                            <div class="m-3 flex flex-row">
+                                <input
+                                    class="mr-0.5 mt-1 rounded-full transition duration-200 ease-in-out hover:bg-blue-500"
+                                    id="otherGenderInput" name="otherGender" type="text" style="display: none;">
+                            </div> --}}
+
+
+
                         <div class="select-input-div">
                             <input class="select-input" id="otherEthnicGroupCheckbox" name="ethnic_group[]"
-                                type="checkbox" value="Other" :checked="selectedEthnicGroups.includes('Other')"
+                                type="checkbox" value="Other"
+                                {{-- :checked="selectedEthnicGroups.includes('Other')" --}}
+                                @if (in_array('Other', $selectedEthnicGroups)) checked @endif
                                 @click="toggleSelectedEthnicGroup('Other')">
                             <label class="ml-2" for="otherEthnicGroup">Other</label>
                         </div>
@@ -816,6 +833,7 @@
     });
 
     document.getElementById('otherEthnicGroupCheckbox').addEventListener('change', function() {
+        console.log('works')
         var otherEthnicGroupInput = document.getElementById('otherEthnicGroupInput');
         if (this.checked) {
             otherEthnicGroupInput.style.display = 'block';
