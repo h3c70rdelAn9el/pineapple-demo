@@ -16,7 +16,7 @@
         {{-- <form class="w-1/2 mx-auto" action="{{ route('clients.update', $client->id) }}" method="POST"> --}}
 
         {{-- <form action="{{ route('therapist.update', ['id' => $therapist->id]) }}" method="POST" class="w-1/2 mx-auto"> --}}
-        <form class="mx-auto w-1/2" action="{{ route('therapist.update', $therapist->id) }}" method="POST">
+        <form class="form" action="{{ route('therapist.update', $therapist->id) }}" method="POST">
 
             @csrf
             @method('PUT')

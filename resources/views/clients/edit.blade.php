@@ -41,7 +41,7 @@
         <h2 class="mt-2 text-center text-lg font-normal">Edit client: {{ $client->preferred_name }}</h2>
         <div class="mx-auto w-1/2 border-b border-gray-400 bg-gray-400">
         </div>
-        <form class="mx-auto w-1/2" action="{{ route('clients.update', $client->id) }}" method="POST">
+        <form class="form" action="{{ route('clients.update', $client->id) }}" method="POST">
             @csrf
             @method('POST')
             {{-- <input name="_method" type="hidden" value="POST"> --}}
