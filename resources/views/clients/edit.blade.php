@@ -6,7 +6,7 @@
     // $states = json_decode($statesJson, true);
     $countriesJson = file_get_contents(resource_path('json/countries.json'));
     $clientCountries = json_decode($countriesJson, true);
-    $sexualOrientations = ['Heterosexual/Straigh', 'Gay/Lesbian', 'Bisexual', 'Don\'t Know', 'Prefer Not to Say', 'Other'];
+    $sexualOrientations = ['Heterosexual/Straight', 'Gay/Lesbian', 'Bisexual', 'Don\'t Know', 'Prefer Not to Say', 'Other'];
     $pronouns = ['He/Him/His', 'She/Her/Hers', 'They/Them/Theirs', 'Per/Per/Pers', 'Ze/Hir/Hirs', 'Prefer Not to Say', 'Other'];
     $contactMethods = ['Telephone Call', 'Text Message', 'Email'];
     $ethnicGroups = ['American Indian or Alaska Native', 'Asian', 'Black or African American', 'Hispanic or Latino', 'Native Hawaiian or Other Pacific Islander', 'White', 'Prefer Not to Say', 'Other'];
@@ -239,7 +239,7 @@
                         }'
                         x-init="alpine.watch('showOptions', value => { if (!value) showOptions = false; })">
                         <x-form_label>
-                            Pronoun(s): (previous selection: {{ str_replace(['[', ']', '"'], '', $client->pronouns) }})
+                            Pronoun(s): (previous selection: {{ str_replace(['[', ']', '"', '\\'], '', $client->pronouns) }})
                         </x-form_label>
                         <button
                             class="-m-0.5 flex w-full justify-between rounded-md border border-blue-300 bg-gray-100 p-2 text-gray-700 focus:border-blue-500"
@@ -338,7 +338,7 @@
                     x-init="alpine.watch('showOptions', value => { if (!value) showSexualOrientation = false; })">
                     <x-form_label>
                         Sexual Orientation(s): (previous selection:
-                        {{ str_replace(['[', ']', '"'], '', $client->sexual_orientation) }})
+                        {{ str_replace(['[', ']', '"', '\\'], '', $client->sexual_orientation) }})
                     </x-form_label>
                     <div class="rounded-md" @click.away="showSexualOrientation = false">
                         <div class="flex w-full justify-between rounded-md border border-blue-300 bg-gray-100 p-3">
@@ -568,7 +568,7 @@
                 <div class="relative mb-4 mt-6 w-full" x-data="{ showDropdown: false, selectedPossibleSupportNeeded: [] }">
                     <x-form_label>
                         Possible Support Needed: (previous selection:
-                        {{ str_replace(['[', ']', '"'], '', $client->possible_support_needed) }})
+                        {{ str_replace(['[', ']', '"', '\\'], '', $client->possible_support_needed) }})
                     </x-form_label>
                     <div class="rounded-md" @click.away="showDropdown = false">
                         <div class="flex w-full justify-between rounded-md border border-blue-300 bg-gray-100 p-1.5">
