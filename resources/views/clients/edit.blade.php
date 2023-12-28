@@ -11,6 +11,9 @@
     $contactMethods = ['Telephone Call', 'Text Message', 'Email'];
     $ethnicGroups = ['American Indian or Alaska Native', 'Asian', 'Black or African American', 'Hispanic or Latino', 'Native Hawaiian or Other Pacific Islander', 'White', 'Prefer Not to Say', 'Other'];
     $selectedEthnicGroups = $client->ethnic_group ? json_decode($client->ethnic_group) : [];
+    $selectedPossibleSupportNeeded = $client->possible_support_needed ? json_decode($client->possible_support_needed) : [];
+    $selectedPronouns = $client->pronouns ? json_decode($client->pronouns) : [];
+    $selectedSexualOrientation = $client->sexual_orientation ? json_decode($client->sexual_orientation) : [];
 @endphp
 
 <x-app-layout>
@@ -224,7 +227,8 @@
                         x-data='
                         {
                             openPronouns: false,
-                            selectedPronouns: @json($client->pronouns ?? []),
+                            {{-- selectedPronouns: @json($client->pronouns ?? []), --}}
+                            selectedPronouns: @json(is_array($client->pronouns) ? $client->pronouns : []),
                             toggleSelectedPronoun(option) {
                                 if (this.selectedPronouns.includes(option)) {
                                     this.selectedPronouns = this.selectedPronouns.filter(item => item !== option);
@@ -293,8 +297,8 @@
                                 <div class="select-input-div">
                                     <input class="select-input" id="{{ $pronoun }}" name="pronouns[]"
                                         type="checkbox" value="{{ $pronoun }}"
-                                        :checked="selectedPronouns.includes('{{ $pronoun }}')"
-                                        @click="toggleSelectedPronouns('{{ $pronoun }}')">
+                                        @if(in_array($pronoun, $selectedPronouns)) checked @endif
+                                        @click="toggleSelectedPronoun('{{ $pronoun }}')">
                                     <label class="ml-2" for="{{ $pronoun }}">{{ $pronoun }}</label>
                                 </div>
                             @endforeach
@@ -358,7 +362,8 @@
                                         class="mr-0.5 mt-1 rounded-full transition duration-200 ease-in-out hover:bg-blue-500"
                                         id="{{ $orientation }}" name="sexual_orientation[]" type="checkbox"
                                         value="{{ $orientation }}"
-                                        :checked="selectedSexualOrientation.includes('{{ $orientation }}')"
+                                        {{-- :checked="selectedSexualOrientation.includes('{{ $orientation }}')" --}}
+                                        @if(in_array($orientation, $selectedSexualOrientation)) checked @endif
                                         @click="toggleSelectedSexualOrientation('{{ $orientation }}')">
                                     <label class="" for="{{ $orientation }}">{{ $orientation }}</label>
                                 </div>
@@ -427,9 +432,6 @@
                         </div>
                     </div>
                 </div>
-
-
-
 
 
                 <div class="my-4 flex flex-col" x-data="{ openEthnicGroup: false, selectedEthnicGroups: [] }">
@@ -561,15 +563,9 @@
                 <x-jet-input-error class="mt-2" for="previous_therapy" />
             </div>
 
-
-
-
-
-
-
             {{-- Possible Support Needed --}}
             <div class="col-span-6 mt-0 sm:col-span-4">
-                <div class="relative mb-4 mt-6 w-full" x-data="{ showDropdown: false }">
+                <div class="relative mb-4 mt-6 w-full" x-data="{ showDropdown: false, selectedPossibleSupportNeeded: [] }">
                     <x-form_label>
                         Possible Support Needed: (previous selection:
                         {{ str_replace(['[', ']', '"'], '', $client->possible_support_needed) }})
@@ -595,7 +591,12 @@
                                             class="m-2 mr-0.5 mt-1 rounded-full p-2 transition duration-200 ease-in-out hover:cursor-pointer hover:bg-blue-400"
                                             name="possible_support_needed[]" type="checkbox"
                                             value="{{ $category }}"
-                                            @if (is_array(old('possible_support_needed')) && in_array($category, old('possible_support_needed'))) checked @endif>
+
+                                    {{-- @if (in_array($category)) checked @endif --}}
+                                    @if (in_array($category, $selectedPossibleSupportNeeded)) checked @endif
+
+                                    @click="toggleSelectedPossilbeSupportNeeded('{{ $category }}')"
+                                            >
                                         <label class=""
                                             for="possible_support_needed">{{ $category }}</label>
                                     </div>
@@ -785,7 +786,6 @@
 <script>
     var input = document.querySelector("#phone");
     window.intlTelInput(input, {
-        // initialCountry: "us",
         separateDialCode: true,
         utilsScript: "{{ asset('js/utils.js') }}",
     });
@@ -850,4 +850,5 @@
             otherPossibleSupportInput.style.display = 'none';
         }
     });
+
 </script>

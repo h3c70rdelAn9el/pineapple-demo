@@ -749,10 +749,11 @@ class ClientController extends Controller
             $genders = $this->getGenders();
             $sexualOrientations = $this->getSexualOrientations();
             $pronouns = $this->getPronouns();
+            $selectedPossibleSupport = $this->getCategories();
             // dd($client);
 
 
-            return view('clients.edit')->with(['client' => $client, 'countries' => $countries, 'categories' => $categories, 'states' => $states, 'id' => $id, 'therapist' => $therapist, 'therapists' => $therapists, 'user_id' => $user_id, 'genders' => $genders, 'sexualOrientations' => $sexualOrientations, 'pronouns' => $pronouns]);
+            return view('clients.edit')->with(['client' => $client, 'countries' => $countries, 'categories' => $categories, 'states' => $states, 'id' => $id, 'therapist' => $therapist, 'therapists' => $therapists, 'user_id' => $user_id, 'genders' => $genders, 'sexualOrientations' => $sexualOrientations, 'pronouns' => $pronouns, 'selectedPossibleSupport' => $selectedPossibleSupport]);
         } else {
             return redirect()->route('dashboard')->with('error', '**You do not have permission to access that page**');
         }
