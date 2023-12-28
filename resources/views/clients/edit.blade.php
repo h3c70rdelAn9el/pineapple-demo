@@ -121,6 +121,7 @@
                     <div class="flex w-full justify-between rounded-md border border-blue-300 bg-gray-100 p-3">
                         <button class="-m-0.5 flex w-full justify-between text-gray-700" type="button"
                             @click="showContactMethods = !showContactMethods">
+                            Select Options:
                             <span class="ml-0"
                                 x-text="selectedContactMethods.length > 0 ? selectedContactMethods.join(', ') : 'Select Options'"></span>
                                 x-text="selectedContactMethods.length > 0 ? selectedContactMethods.join(', ') : 'Select Options'"></span>
@@ -184,6 +185,7 @@
                         <div class="flex w-full justify-between rounded-md border border-blue-300 bg-gray-100 p-3">
                             <button class="-m-0.5 flex w-full justify-between text-gray-700" type="button"
                                 @click="showGender = !showGender">
+                                Select Options:
                                 <span class="ml-0"
                                     x-text="selectedOptions.length > 0 ? selectedOptions.join(', ') : 'Select Options'"></span>
                                 <svg class="mt-0.5 h-[18px] w-[18px] text-gray-800" fill="none"
@@ -245,7 +247,7 @@
                             class="-m-0.5 flex w-full justify-between rounded-md border border-blue-300 bg-gray-100 p-2 text-gray-700 focus:border-blue-500"
                             type="button" @click="openPronouns = !openPronouns">
                             <span class="ml-0"
-                                x-text="selectedPronouns.length > 0 ? selectedPronouns.join(', ') : 'Select Options'"></span>
+                                x-text="selectedPronouns.length > 0 ? selectedPronouns.join(', ') : 'Select Options:'"></span>
                             <svg class="mt-0.5 h-[18px] w-[18px] text-gray-800" fill="none" stroke="currentColor"
                                 viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -344,6 +346,7 @@
                         <div class="flex w-full justify-between rounded-md border border-blue-300 bg-gray-100 p-3">
                             <button class="-m-0.5 flex w-full justify-between text-gray-700" type="button"
                                 @click="showSexualOrientation = !showSexualOrientation">
+                                Select Options:
                                 <span class="ml-0"
                                     x-text="selectedSexualOrientation.length > 0 ? selectedSexualOrientation.join(', ') : 'Select Options'"></span>
                                 <svg class="mt-0.5 h-[18px] w-[18px] text-gray-800" fill="none"
