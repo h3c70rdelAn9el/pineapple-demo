@@ -565,6 +565,8 @@ class ClientController extends Controller
         } else {
             $pronounsString = $selectedPronouns;
         }
+        $cleanedPronouns = str_replace(['"', '[', ']', '\\'], '', $pronounsString);
+
 
         $selectedGenders = $request->input('gender');
         $otherGender = $request->input('otherGender');
