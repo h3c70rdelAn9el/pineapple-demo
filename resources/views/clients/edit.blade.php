@@ -123,8 +123,9 @@
                             @click="showContactMethods = !showContactMethods">
                             Select Options:
                             <span class="ml-0"
-                                x-text="selectedContactMethods.length > 0 ? selectedContactMethods.join(', ') : 'Select Options'"></span>
-                                x-text="selectedContactMethods.length > 0 ? selectedContactMethods.join(', ') : 'Select Options'"></span>
+                                x-text="selectedContactMethods.length > 0 ? selectedContactMethods.join(', ') : 'Select Options'">
+                            </span>
+                            <p></p>
                             <svg class="mt-0.5 h-[18px] w-[18px] text-gray-800" fill="none" stroke="currentColor"
                                 viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -185,7 +186,6 @@
                         <div class="flex w-full justify-between rounded-md border border-blue-300 bg-gray-100 p-3">
                             <button class="-m-0.5 flex w-full justify-between text-gray-700" type="button"
                                 @click="showGender = !showGender">
-                                Select Options:
                                 <span class="ml-0"
                                     x-text="selectedOptions.length > 0 ? selectedOptions.join(', ') : 'Select Options'"></span>
                                 <svg class="mt-0.5 h-[18px] w-[18px] text-gray-800" fill="none"
@@ -241,7 +241,8 @@
                         }'
                         x-init="alpine.watch('showOptions', value => { if (!value) showOptions = false; })">
                         <x-form_label>
-                            Pronoun(s): (previous selection: {{ str_replace(['[', ']', '"', '\\'], '', $client->pronouns) }})
+                            Pronoun(s): (previous selection:
+                            {{ str_replace(['[', ']', '"', '\\'], '', $client->pronouns) }})
                         </x-form_label>
                         <button
                             class="-m-0.5 flex w-full justify-between rounded-md border border-blue-300 bg-gray-100 p-2 text-gray-700 focus:border-blue-500"
@@ -299,11 +300,12 @@
                                 <div class="select-input-div">
                                     <input class="select-input" id="{{ $pronoun }}" name="pronouns[]"
                                         type="checkbox" value="{{ $pronoun }}"
-                                        @if(in_array($pronoun, $selectedPronouns)) checked @endif
+                                        @if (in_array($pronoun, $selectedPronouns ?? [])) checked @endif
                                         @click="toggleSelectedPronoun('{{ $pronoun }}')">
                                     <label class="ml-2" for="{{ $pronoun }}">{{ $pronoun }}</label>
                                 </div>
                             @endforeach
+
 
                             <div class="m-3 flex flex-row">
                                 <input
@@ -346,7 +348,6 @@
                         <div class="flex w-full justify-between rounded-md border border-blue-300 bg-gray-100 p-3">
                             <button class="-m-0.5 flex w-full justify-between text-gray-700" type="button"
                                 @click="showSexualOrientation = !showSexualOrientation">
-                                Select Options:
                                 <span class="ml-0"
                                     x-text="selectedSexualOrientation.length > 0 ? selectedSexualOrientation.join(', ') : 'Select Options'"></span>
                                 <svg class="mt-0.5 h-[18px] w-[18px] text-gray-800" fill="none"
@@ -364,13 +365,13 @@
                                     <input
                                         class="mr-0.5 mt-1 rounded-full transition duration-200 ease-in-out hover:bg-blue-500"
                                         id="{{ $orientation }}" name="sexual_orientation[]" type="checkbox"
-                                        value="{{ $orientation }}"
-                                        {{-- :checked="selectedSexualOrientation.includes('{{ $orientation }}')" --}}
-                                        @if(in_array($orientation, $selectedSexualOrientation)) checked @endif
+                                        value="{{ $orientation }}" {{-- :checked="selectedSexualOrientation.includes('{{ $orientation }}')" --}}
+                                        @if (in_array($orientation, $selectedSexualOrientation ?? [])) checked @endif
                                         @click="toggleSelectedSexualOrientation('{{ $orientation }}')">
                                     <label class="" for="{{ $orientation }}">{{ $orientation }}</label>
                                 </div>
                             @endforeach
+
                             <div class="select-input-div">
                                 <input class="select-input" id="otherSexualOrientationCheckbox"
                                     name="sexual_orientation[]" type="checkbox" value="Other"
@@ -458,21 +459,17 @@
                         x-transition:enter.ease-in-out x-transition:leave.duration.300ms x-transition:ease-in-out
                         x-cloak>
 
-                         @foreach ($ethnicGroups as $group)
+                        @foreach ($ethnicGroups as $group)
                             <div class="select-input-div">
                                 <input class="select-input" id="{{ $group }}" name="ethnic_group[]"
                                     type="checkbox" value="{{ $group }}"
-
-
-
-
                                     @if (in_array($group, $selectedEthnicGroups)) checked @endif
                                     @click="toggleSelectedEthnicGroup('{{ $group }}')">
                                 <label class="ml-2" for="{{ $group }}">{{ $group }}</label>
                             </div>
                         @endforeach
 
-                                   {{-- <div class="select-input-div">
+                        {{-- <div class="select-input-div">
                                 <input class="select-input" id="otherGenderCheckbox" name="gender[]" type="checkbox"
                                     value="Other" :checked="selectedOptions.includes('Other')"
                                     @click="toggleSelectedOption('Other')">
@@ -489,8 +486,7 @@
 
                         <div class="select-input-div">
                             <input class="select-input" id="otherEthnicGroupCheckbox" name="ethnic_group[]"
-                                type="checkbox" value="Other"
-                                {{-- :checked="selectedEthnicGroups.includes('Other')" --}}
+                                type="checkbox" value="Other" {{-- :checked="selectedEthnicGroups.includes('Other')" --}}
                                 @if (in_array('Other', $selectedEthnicGroups)) checked @endif
                                 @click="toggleSelectedEthnicGroup('Other')">
                             <label class="ml-2" for="otherEthnicGroup">Other</label>
@@ -594,12 +590,8 @@
                                             class="m-2 mr-0.5 mt-1 rounded-full p-2 transition duration-200 ease-in-out hover:cursor-pointer hover:bg-blue-400"
                                             name="possible_support_needed[]" type="checkbox"
                                             value="{{ $category }}"
-
-                                    {{-- @if (in_array($category)) checked @endif --}}
-                                    @if (in_array($category, $selectedPossibleSupportNeeded)) checked @endif
-
-                                    @click="toggleSelectedPossilbeSupportNeeded('{{ $category }}')"
-                                            >
+                                            @if (in_array($category, $selectedPossibleSupportNeeded ?? [])) checked @endif
+                                            @click="toggleSelectedPossilbeSupportNeeded('{{ $category }}')">
                                         <label class=""
                                             for="possible_support_needed">{{ $category }}</label>
                                     </div>
@@ -853,5 +845,4 @@
             otherPossibleSupportInput.style.display = 'none';
         }
     });
-
 </script>
