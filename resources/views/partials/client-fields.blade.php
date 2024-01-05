@@ -9,7 +9,7 @@
         'Preferred Name' => $client->preferred_name ?: 'Preferred Name needed',
         'Legal Name' => $client->legal_name ?: 'Legal Name needed',
         'Status' => $client->status === 1 ? 'Inactive' : 'Active',
-        'Therapist' => $client->user->name,
+        'Therapist' => $client->user ? $client->user->name : '',
         'Client Code' => $client->client_code ?: 'Client Code needed',
         'Max Sessions' => $client->max_sessions ?: 'Max Sessions needed',
         'Phone' => $client->phone ?: 'Phone needed',

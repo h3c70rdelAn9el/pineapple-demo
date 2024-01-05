@@ -322,8 +322,12 @@ class ClientController extends Controller
         $client->possible_support_needed = $possibleSupportNeededString;
         $client->sexual_orientation = $orientationString;
         $client->max_sessions = $request->max_sessions;
-        $therapist = User::find($request->user_id);
-        $therapist->notify(new NewClientNotification());
+        if($request->user_id)
+        {
+
+            $therapist = User::find($request->user_id);
+            $therapist->notify(new NewClientNotification());
+        }
 
         $client->previous_therapy = $request->previous_therapy ?? 0;
 
