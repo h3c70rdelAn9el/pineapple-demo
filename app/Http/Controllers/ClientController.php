@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Log;
 use App\Models\User;
 use App\Models\Client;
 use Illuminate\Support\Arr;
@@ -63,7 +64,6 @@ class ClientController extends Controller
                 'Native Hawaiian or Other Pacific Islander',
                 'White',
                 'prefer not to say',
-                'Other'
             ];
             $pronouns = [
                 'they/them/theirs',
@@ -550,6 +550,9 @@ class ClientController extends Controller
         } else {
             $orientationString = $selectedOrientations;
         }
+        error_log("selectedOrientations: " . print_r($selectedOrientations, true));
+        error_log("otherSexualOrientation: " . $otherSexualOrientation);
+        error_log("orientationString: " . $orientationString);
 
         $selectedPronouns = $request->input('pronouns');
         $otherPronoun = $request->input('otherPronoun');
@@ -569,6 +572,7 @@ class ClientController extends Controller
 
 
         $selectedGenders = $request->input('gender');
+        // $otherGender = $request->input('otherGender');
         $otherGender = $request->input('otherGender');
         $genderString = "";
         if (is_array($selectedGenders)) {
