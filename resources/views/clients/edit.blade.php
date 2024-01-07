@@ -9,12 +9,13 @@
     $sexualOrientations = ['Heterosexual/Straight', 'Gay/Lesbian', 'Bisexual', 'Don\'t Know', 'Prefer Not to Say', 'Other'];
     $pronouns = ['He/Him/His', 'She/Her/Hers', 'They/Them/Theirs', 'Per/Per/Pers', 'Ze/Hir/Hirs', 'Prefer Not to Say', 'Other'];
     $contactMethods = ['Telephone Call', 'Text Message', 'Email'];
-    $ethnicGroups = ['American Indian or Alaska Native', 'Asian', 'Black or African American', 'Hispanic or Latino', 'Native Hawaiian or Other Pacific Islander', 'White', 'Prefer Not to Say', 'Other'];
+    $ethnicGroups = ['American Indian or Alaska Native', 'Asian', 'Black or African American', 'Hispanic or Latino', 'Native Hawaiian or Other Pacific Islander', 'White', 'Prefer Not to Say'];
     $selectedEthnicGroups = $client->ethnic_group ? json_decode($client->ethnic_group) : [];
     $selectedPossibleSupportNeeded = $client->possible_support_needed ? json_decode($client->possible_support_needed) : [];
     $selectedPronouns = $client->pronouns ? json_decode($client->pronouns) : [];
     $selectedSexualOrientation = $client->sexual_orientation ? json_decode($client->sexual_orientation) : [];
 @endphp
+
 
 <x-app-layout>
     <x-main-container>
@@ -41,7 +42,7 @@
         <h2 class="mt-2 text-center text-lg font-normal">Edit client: {{ $client->preferred_name }}</h2>
         <div class="mx-auto w-1/2 border-b border-gray-400 bg-gray-400">
         </div>
-        <form class="form" action="{{ route('clients.update', $client->id) }}" method="POST">
+        <form class="form" action="{{ route('clients.update', $client->id) }}" method="POST" id="client-edit-form">
             @csrf
             @method('POST')
             {{-- <input name="_method" type="hidden" value="POST"> --}}
@@ -164,28 +165,57 @@
             <div class="my-4 rounded-lg border-2 border-blue-300 bg-blue-100 p-2">
                 <p>Optional Fields</p>
 
-                <div class="relative mb-4 mt-6 w-full"
+                {{-- <div class="relative mb-4 mt-6 w-full"
                     x-data='{
                         showGender: false,
-                        {{-- selectedOptions: [], --}}
                         selectedOptions: @json($client->gender ?? []),
 
                         toggleSelectedOption(option) {
-                            if (this.selectedOptions.includes(option)) {
-                                this.selectedOptions = this.selectedOptions.filter(item => item !== option);
-                            } else {
-                                this.selectedOptions.push(option);
+                                if (this.selectedOptions.includes(option)) {
+                                    this.selectedOptions = this.selectedOptions.filter(item => item !== option);
+                                } else {
+                                    this.selectedOptions.push(option);
+                                }
                             }
-                        }
-                    }'
-                    x-init="alpine.watch('showOptions', value => { if (!value) showOptions = false; })">
+
+                        } '
+                    x-init="alpine.watch('showOptions', value => { if (!value) showOptions = false; })"
+                    > --}}
+                <div class="relative mb-4 mt-6 w-full"
+                    x-data='{
+        showGender: false,
+        selectedOptions: @json($client->gender ?? []),
+        otherGender: @json(str_contains($client->gender ?? '', 'Other') ? 'Other' : ''),
+
+        toggleSelectedOption(option) {
+            if (option === "Other") {
+                this.toggleOtherCheckbox();
+            } else {
+                if (this.selectedOptions.includes(option)) {
+                    this.selectedOptions = this.selectedOptions.filter(item => item !== option);
+                } else {
+                    this.selectedOptions.push(option);
+                }
+            }
+        },
+
+        toggleOtherCheckbox() {
+            if (this.selectedOptions.includes("Other")) {
+                this.selectedOptions = this.selectedOptions.filter(item => item !== "Other");
+                this.otherGender = "";
+            } else {
+                this.selectedOptions.push("Other");
+                this.otherGender = "Other";
+            }
+        }
+    }'>
                     <x-form_label>
                         Gender(s): (previous selection: {{ str_replace(['[', ']', '"'], '', $client->gender) }})
                     </x-form_label>
                     <div class="rounded-md" @click.away="showGender = false">
                         <div class="flex w-full justify-between rounded-md border border-blue-300 bg-gray-100 p-3">
                             <button class="-m-0.5 flex w-full justify-between text-gray-700" type="button"
-                                @click="showGender = !showGender">
+                                @click="showGender = !showGender" {{-- @click="showGender = !showGender ? false : !showGender" --}}>
                                 <span class="ml-0"
                                     x-text="selectedOptions.length > 0 ? selectedOptions.join(', ') : 'Select Options'"></span>
                                 <svg class="mt-0.5 h-[18px] w-[18px] text-gray-800" fill="none"
@@ -208,17 +238,27 @@
                                     <label class="" for="{{ $gender }}">{{ $gender }}</label>
                                 </div>
                             @endforeach
-                            <div class="select-input-div">
-                                <input class="select-input" id="otherGenderCheckbox" name="gender[]" type="checkbox"
-                                    value="Other" :checked="selectedOptions.includes('Other')"
-                                    @click="toggleSelectedOption('Other')">
+                            <div class="select-input-div"
+                            {{-- x-data='{ otherGender: '' }' --}}
+                            x-data="{
+                                otherGender: '',
+                                showOtherInput: false
+                            }"
+                            >
+                                <input class="select-input" id="otherGenderCheckbox" type="checkbox" value="Other"
+                                    {{-- @click="toggleSelectedOption('Other')" @click="toggleOtherCheckbox()" --}}
+                                    x-on:click="otherGender = ''"
+                                    :checked="selectedOptions.includes('Other')">
                                 <label class="ml-2" for="otherGender">Other</label>
                             </div>
 
                             <div class="m-3 flex flex-row">
                                 <input
                                     class="mr-0.5 mt-1 rounded-full transition duration-200 ease-in-out hover:bg-blue-500"
-                                    id="otherGenderInput" name="otherGender" type="text" style="display: none;">
+                                    id="otherGenderInput" name="gender[]" type="text" style="display: none;"
+                                    x-model="otherGender"
+                                    x-show="showOtherInput"
+                                    >
                             </div>
                         </div>
                     </div>
@@ -484,9 +524,9 @@
 
 
 
-                        <div class="select-input-div">
+                        {{-- <div class="select-input-div">
                             <input class="select-input" id="otherEthnicGroupCheckbox" name="ethnic_group[]"
-                                type="checkbox" value="Other" {{-- :checked="selectedEthnicGroups.includes('Other')" --}}
+                                type="checkbox" value="Other"
                                 @if (in_array('Other', $selectedEthnicGroups)) checked @endif
                                 @click="toggleSelectedEthnicGroup('Other')">
                             <label class="ml-2" for="otherEthnicGroup">Other</label>
@@ -497,7 +537,24 @@
                                 class="mr-0.5 mt-1 rounded-full transition duration-200 ease-in-out hover:bg-blue-500"
                                 id="otherEthnicGroupInput" name="otherEthnicGroup" type="text"
                                 style="display: none;">
+                        </div> --}}
+                        <div x-data="{ showOtherEthnicGroupInput: false, otherEthnicGroupInput: '' }">
+                            <div class="select-input-div">
+                                <input class="select-input" id="otherEthnicGroupCheckbox" name="ethnic_group[]"
+                                    type="checkbox" value="Other" x-model="selectedEthnicGroups"
+                                    @click="showOtherEthnicGroupInput = !showOtherEthnicGroupInput">
+                                <label class="ml-2" for="otherEthnicGroup">Other</label>
+                            </div>
+
+                            <div class="m-3 flex flex-row">
+                                <input
+                                    class="mr-0.5 mt-1 rounded-full transition duration-200 ease-in-out hover:bg-blue-500"
+                                    id="otherEthnicGroupInput" name="otherEthnicGroup" type="text"
+                                    x-model="otherEthnicGroupInput" x-show="showOtherEthnicGroupInput">
+                            </div>
                         </div>
+
+
                     </div>
                 </div>
 
@@ -591,7 +648,7 @@
                                             name="possible_support_needed[]" type="checkbox"
                                             value="{{ $category }}"
                                             @if (in_array($category, $selectedPossibleSupportNeeded ?? [])) checked @endif
-                                            @click="toggleSelectedPossilbeSupportNeeded('{{ $category }}')">
+                                            @click="toggleSelectedPossibleSupportNeeded('{{ $category }}')">
                                         <label class=""
                                             for="possible_support_needed">{{ $category }}</label>
                                     </div>
@@ -827,15 +884,15 @@
         }
     });
 
-    document.getElementById('otherEthnicGroupCheckbox').addEventListener('change', function() {
-        console.log('works')
-        var otherEthnicGroupInput = document.getElementById('otherEthnicGroupInput');
-        if (this.checked) {
-            otherEthnicGroupInput.style.display = 'block';
-        } else {
-            otherEthnicGroupInput.style.display = 'none';
-        }
-    });
+    // document.getElementById('otherEthnicGroupCheckbox').addEventListener('change', function() {
+    //     console.log('works')
+    //     var otherEthnicGroupInput = document.getElementById('otherEthnicGroupInput');
+    //     if (this.checked) {
+    //         otherEthnicGroupInput.style.display = 'block';
+    //     } else {
+    //         otherEthnicGroupInput.style.display = 'none';
+    //     }
+    // });
 
     document.getElementById('otherPossibleSupportCheckbox').addEventListener('change', function() {
         var otherPossibleSupportInput = document.getElementById('otherPossibleSupportInput');
@@ -846,3 +903,8 @@
         }
     });
 </script>
+
+
+{{-- <script>
+    window.showOtherEthnicGroupInput = {{ in_array('Other', $selectedEthnicGroups) ? 'true' : 'false' }};
+</script> --}}
