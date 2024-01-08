@@ -6,7 +6,7 @@
     // $states = json_decode($statesJson, true);
     $countriesJson = file_get_contents(resource_path('json/countries.json'));
     $clientCountries = json_decode($countriesJson, true);
-    $sexualOrientations = ['Heterosexual/Straight', 'Gay/Lesbian', 'Bisexual', 'Don\'t Know', 'Prefer Not to Say', 'Other'];
+    $sexualOrientations = ['Heterosexual/Straight', 'Gay/Lesbian', 'Bisexual', 'Don\'t Know', 'Prefer Not to Say'];
     $pronouns = ['He/Him/His', 'She/Her/Hers', 'They/Them/Theirs', 'Per/Per/Pers', 'Ze/Hir/Hirs', 'Prefer Not to Say', 'Other'];
     $contactMethods = ['Telephone Call', 'Text Message', 'Email'];
     $ethnicGroups = ['American Indian or Alaska Native', 'Asian', 'Black or African American', 'Hispanic or Latino', 'Native Hawaiian or Other Pacific Islander', 'White', 'Prefer Not to Say'];
@@ -137,12 +137,16 @@
                     <div class="-mt-1 w-full rounded-b-md rounded-t-none border-b border-l border-r border-blue-300 bg-gray-100 pt-1 text-gray-600 md:flex md:flex-wrap"
                         x-show="showContactMethods" x-transition.scale.origin.top x-transition.duration.300ms
                         x-transition.ease-in-out x-cloak>
-                        <div class="select-input-div" x-data="{ selectedContactMethods: @json($client->contact_method ?? []) }">
-                            <input class="select-input" id="telephone-call" name="contact_method[]" type="checkbox"
-                                value="Telephone Call">
-                            <label class="ml-2" for="telephone-call">Telephone Call</label>
-                        </div>
-                        <div class="select-input-div">
+                        @foreach ($contactMethods as $method)
+                            <div class="select-input-div">
+                                <input class="select-input" id="{{ $method }}" name="contact_method[]"
+                                    type="checkbox" value="{{ $method }}"
+                                    :checked="selectedContactMethods.includes('{{ $method }}')"
+                                    @click="toggleSelectedContactMethod('{{ $method }}')">
+                                <label class="ml-2" for="{{ $method }}">{{ $method }}</label>
+                            </div>
+                        @endforeach
+                        {{-- <div class="select-input-div">
                             <input class="select-input" id="otherContactMethodCheckbox" name="contact_method[]"
                                 type="checkbox" value="Other" :checked="selectedContactMethods.includes('Other')"
                                 @click="toggleSelectedContactMethod('Other')">
@@ -152,9 +156,9 @@
                         <div class="m-3 flex flex-row">
                             <input
                                 class="mr-0.5 mt-1 rounded-full transition duration-200 ease-in-out hover:bg-blue-500"
-                                id="otherContactMethodInput" name="otherContactMethod" type="text"
+                                id="otherContactMethodInput" name="contact_method[]" type="text"
                                 style="display: none;">
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
 
@@ -183,32 +187,32 @@
                     > --}}
                 <div class="relative mb-4 mt-6 w-full"
                     x-data='{
-        showGender: false,
-        selectedOptions: @json($client->gender ?? []),
-        otherGender: @json(str_contains($client->gender ?? '', 'Other') ? 'Other' : ''),
+                        showGender: false,
+                        selectedOptions: @json($client->gender ?? []),
+                        otherGender: @json(str_contains($client->gender ?? '', 'Other') ? 'Other' : ''),
 
-        toggleSelectedOption(option) {
-            if (option === "Other") {
-                this.toggleOtherCheckbox();
-            } else {
-                if (this.selectedOptions.includes(option)) {
-                    this.selectedOptions = this.selectedOptions.filter(item => item !== option);
-                } else {
-                    this.selectedOptions.push(option);
-                }
-            }
-        },
+                        toggleSelectedOption(option) {
+                            if (option === "Other") {
+                                this.toggleOtherCheckbox();
+                            } else {
+                                if (this.selectedOptions.includes(option)) {
+                                    this.selectedOptions = this.selectedOptions.filter(item => item !== option);
+                                } else {
+                                    this.selectedOptions.push(option);
+                                }
+                            }
+                        },
 
-        toggleOtherCheckbox() {
-            if (this.selectedOptions.includes("Other")) {
-                this.selectedOptions = this.selectedOptions.filter(item => item !== "Other");
-                this.otherGender = "";
-            } else {
-                this.selectedOptions.push("Other");
-                this.otherGender = "Other";
-            }
-        }
-    }'>
+                        toggleOtherCheckbox() {
+                            if (this.selectedOptions.includes("Other")) {
+                                this.selectedOptions = this.selectedOptions.filter(item => item !== "Other");
+                                this.otherGender = "";
+                            } else {
+                                this.selectedOptions.push("Other");
+                                this.otherGender = "Other";
+                            }
+                        }
+                    }'>
                     <x-form_label>
                         Gender(s): (previous selection: {{ str_replace(['[', ']', '"'], '', $client->gender) }})
                     </x-form_label>
@@ -238,16 +242,12 @@
                                     <label class="" for="{{ $gender }}">{{ $gender }}</label>
                                 </div>
                             @endforeach
-                            <div class="select-input-div"
-                            {{-- x-data='{ otherGender: '' }' --}}
-                            x-data="{
+                            <div class="select-input-div" x-data="{
                                 otherGender: '',
                                 showOtherInput: false
-                            }"
-                            >
+                            }">
                                 <input class="select-input" id="otherGenderCheckbox" type="checkbox" value="Other"
-                                    {{-- @click="toggleSelectedOption('Other')" @click="toggleOtherCheckbox()" --}}
-                                    x-on:click="otherGender = ''"
+                                    {{-- @click="toggleSelectedOption('Other')" @click="toggleOtherCheckbox()" --}} x-on:click="otherGender = ''"
                                     :checked="selectedOptions.includes('Other')">
                                 <label class="ml-2" for="otherGender">Other</label>
                             </div>
@@ -256,9 +256,7 @@
                                 <input
                                     class="mr-0.5 mt-1 rounded-full transition duration-200 ease-in-out hover:bg-blue-500"
                                     id="otherGenderInput" name="gender[]" type="text" style="display: none;"
-                                    x-model="otherGender"
-                                    x-show="showOtherInput"
-                                    >
+                                    x-model="otherGender" x-show="showOtherInput">
                             </div>
                         </div>
                     </div>
@@ -371,15 +369,30 @@
                     x-data='{
                         showSexualOrientation: false,
                         selectedSexualOrientation: @json($client->sexual_orientation ?? []),
+                        otherSexualOrientation: @json(str_contains($client->sexual_orientation ?? '', 'Other') ? 'Other' : ''),
+
                         toggleSelectedSexualOrientation(option) {
-                            if (this.selectedSexualOrientation.includes(option)) {
-                                this.selectedSexualOrientation = this.selectedSexualOrientation.filter(item => item !== option);
+                            if (option === "Other") {
+                                this.toggleOtherSexualOrientationCheckbox();
                             } else {
-                                this.selectedSexualOrientation.push(option);
+                                if (this.selectedSexualOrientation.includes(option)) {
+                                    this.selectedSexualOrientation = this.selectedSexualOrientation.filter(item => item !== option);
+                                } else {
+                                    this.selectedSexualOrientation.push(option);
+                                }
+                            }
+                        },
+
+                        toggleOtherSexualOrientationCheckbox() {
+                            if (this.selectedSexualOrientation.includes("Other")) {
+                                this.selectedSexualOrientation = this.selectedSexualOrientation.filter(item => item !== "Other");
+                                this.otherSexualOrientation = "";
+                            } else {
+                                this.selectedSexualOrientation.push("Other");
+                                this.otherSexualOrientation = "Other";
                             }
                         }
-                    }'
-                    x-init="alpine.watch('showOptions', value => { if (!value) showSexualOrientation = false; })">
+                    }'>
                     <x-form_label>
                         Sexual Orientation(s): (previous selection:
                         {{ str_replace(['[', ']', '"', '\\'], '', $client->sexual_orientation) }})
@@ -405,77 +418,37 @@
                                     <input
                                         class="mr-0.5 mt-1 rounded-full transition duration-200 ease-in-out hover:bg-blue-500"
                                         id="{{ $orientation }}" name="sexual_orientation[]" type="checkbox"
-                                        value="{{ $orientation }}" {{-- :checked="selectedSexualOrientation.includes('{{ $orientation }}')" --}}
-                                        @if (in_array($orientation, $selectedSexualOrientation ?? [])) checked @endif
+                                        value="{{ $orientation }}"
+                                        :checked="selectedSexualOrientation.includes('{{ $orientation }}')"
                                         @click="toggleSelectedSexualOrientation('{{ $orientation }}')">
                                     <label class="" for="{{ $orientation }}">{{ $orientation }}</label>
                                 </div>
                             @endforeach
 
-                            <div class="select-input-div">
-                                <input class="select-input" id="otherSexualOrientationCheckbox"
-                                    name="sexual_orientation[]" type="checkbox" value="Other"
-                                    :checked="selectedSexualOrientation.includes('Other')"
-                                    @click="toggleSelectedSexualOrientation('Other')">
-                                <label class="ml-2" for="otherSexualOrientation">Other</label>
-                            </div>
-                            <div class="m-3 flex flex-row">
-                                <input
-                                    class="mr-0.5 mt-1 rounded-full transition duration-200 ease-in-out hover:bg-blue-500"
-                                    id="otherSexualOrientationInput" name="otherSexualOrientation" type="text"
-                                    style="display: none;">
-                            </div>
-                        </div>
-                    </div>
-                </div> --}}
+                            <div class="select-input-div" x-data="{
+                                otherSexualOrientation: '',
+                                showOtherSexualOrientationInput: false,
+                                toggleOtherSexualOrientationCheckbox() {
+                                    this.showOtherSexualOrientationInput = !this.showOtherSexualOrientationInput;
+                                }
+                            }">
+                                <input class="select-input" id="otherSexualOrientationCheckbox" type="checkbox"
+                                    value="Other" x-on:click="toggleOtherSexualOrientationCheckbox()"
+                                    :checked="selectedSexualOrientation.includes('Other')">
+                                <label class="ml-2" for="otherSexualOrientationCheckbox">Other</label>
 
-                <div class="col-span-6 mt-0 sm:col-span-4">
-                    <div class="my-4 flex flex-col" x-data="{ openSexualOrientation: false, selectedSexualOrientation: @json($client->sexual_orientation ?? []) }">
-                        <x-form_label>
-                            Sexual Orientation(s): (previous selection:
-                            {{ str_replace(['[', ']', '"'], '', $client->sexual_orientation) }})
-                        </x-form_label>
-                        <button
-                            class="-m-0.5 flex w-full justify-between rounded-md border border-blue-300 bg-gray-100 p-2 text-gray-700 focus:border-blue-500"
-                            type="button" @click="openSexualOrientation = !openSexualOrientation">
-                            <span class="ml-0"
-                                x-text="selectedSexualOrientation.length > 0 ? selectedSexualOrientation.join(', ') : 'Select Options'"></span>
-                            <svg class="mt-0.5 h-[18px] w-[18px] text-gray-800" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M19 9l-7 7-7-7">
-                                </path>
-                            </svg>
-                        </button>
-                        <div class="-ml-[2px] -mt-2 mr-[2px] rounded-md rounded-t-none border border-b border-r border-t-0 border-blue-500 bg-gray-100 py-4 md:flex md:flex-wrap"
-                            x-show="openSexualOrientation" x-transition.scale.origin.top
-                            x-transition:enter.duration.300ms x-transition:enter.ease-in-out
-                            x-transition:leave.duration.300ms x-transition:ease-in-out x-cloak>
-                            @foreach ($sexualOrientations as $orientation)
-                                <div class="select-input-div">
-                                    <input class="select-input" id="{{ $orientation }}" name="sexual_orientation[]"
-                                        type="checkbox" value="{{ $orientation }}"
-                                        :checked="selectedSexualOrientation.includes('{{ $orientation }}')"
-                                        @click="toggleSelectedSexualOrientation('{{ $orientation }}')">
-                                    <label class="ml-2" for="{{ $orientation }}">{{ $orientation }}</label>
-                                </div>
-                            @endforeach
-                            <div class="select-input-div">
-                                <input class="select-input" id="otherSexualOrientationCheckbox"
-                                    name="sexual_orientation[]" type="checkbox" value="Other"
-                                    :checked="selectedSexualOrientation.includes('Other')"
-                                    @click="toggleSelectedSexualOrientation('Other')">
-                                <label class="ml-2" for="otherSexualOrientation">Other</label>
-                            </div>
-                            <div class="m-3 flex flex-row">
-                                <input
+                                <div class="m-3 flex flex-row">
+                                    <input
                                     class="mr-0.5 mt-1 rounded-full transition duration-200 ease-in-out hover:bg-blue-500"
-                                    id="otherSexualOrientationInput" name="otherSexualOrientation" type="text"
-                                    style="display: none;">
+                                    id="otherSexualOrientationInput" name="sexual_orientation[]" type="text"
+                                    x-model="otherSexualOrientation" x-show="showOtherSexualOrientationInput">
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
+
+
 
 
                 <div class="my-4 flex flex-col" x-data="{ openEthnicGroup: false, selectedEthnicGroups: [] }">
@@ -499,11 +472,21 @@
                         x-transition:enter.ease-in-out x-transition:leave.duration.300ms x-transition:ease-in-out
                         x-cloak>
 
-                        @foreach ($ethnicGroups as $group)
+                        {{-- @foreach ($ethnicGroups as $group)
                             <div class="select-input-div">
                                 <input class="select-input" id="{{ $group }}" name="ethnic_group[]"
                                     type="checkbox" value="{{ $group }}"
                                     @if (in_array($group, $selectedEthnicGroups)) checked @endif
+                                    @click="toggleSelectedEthnicGroup('{{ $group }}')">
+                                <label class="ml-2" for="{{ $group }}">{{ $group }}</label>
+                            </div>
+                        @endforeach --}}
+
+                        @foreach ($ethnicGroups as $group)
+                            <div class="select-input-div">
+                                <input class="select-input" id="{{ $group }}" name="ethnic_group[]"
+                                    type="checkbox" value="{{ $group }}"
+                                    @if (in_array($group, $selectedEthnicGroups ?? [])) checked @endif
                                     @click="toggleSelectedEthnicGroup('{{ $group }}')">
                                 <label class="ml-2" for="{{ $group }}">{{ $group }}</label>
                             </div>
