@@ -523,7 +523,7 @@
                         </div> --}}
                         <div x-data="{ showOtherEthnicGroupInput: false, otherEthnicGroupInput: '' }">
                             <div class="select-input-div">
-                                <input class="select-input" id="otherEthnicGroupCheckbox" name="ethnic_group[]"
+                                <input class="select-input" id="otherEthnicGroupCheckbox"
                                     type="checkbox" value="Other" x-model="selectedEthnicGroups"
                                     @click="showOtherEthnicGroupInput = !showOtherEthnicGroupInput">
                                 <label class="ml-2" for="otherEthnicGroup">Other</label>
@@ -532,7 +532,7 @@
                             <div class="m-3 flex flex-row">
                                 <input
                                     class="mr-0.5 mt-1 rounded-full transition duration-200 ease-in-out hover:bg-blue-500"
-                                    id="otherEthnicGroupInput" name="otherEthnicGroup" type="text"
+                                    id="otherEthnicGroupInput" name="ethnic_group[]" type="text"
                                     x-model="otherEthnicGroupInput" x-show="showOtherEthnicGroupInput">
                             </div>
                         </div>
