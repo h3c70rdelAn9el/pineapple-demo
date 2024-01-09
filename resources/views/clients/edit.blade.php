@@ -682,9 +682,9 @@
             </div>
 
             <div class="col-span-6 mt-0 sm:col-span-4">
-                <x-jet-label for="client_contribution"
+                <x-jet-label for="client_contribution" class="w-full"
                     value="Client Contribution:  previous: {{ $client->client_contribution }}" />
-                <input class="rounded" id="client_contribution" type="number"
+                <x-jet-input class="rounded-md w-full mt-2 bg-gray-100" id="client_contribution" type="number"
                     value="{{ $client->client_contribution }}" name="client_contribution" min="0"
                     step="1.00" autocomplete="off" />
                     value="{{ $client->client_contribution }}" name="client_contribution" min="0"
@@ -692,7 +692,7 @@
                 <x-jet-input-error class="mt-2" for="client_contribution" />
             </div>
 
-            <div class="col-span-6 mt-0 sm:col-span-4">
+            <div class="col-span-6 mt-4 sm:col-span-4">
                 <x-jet-label for="therapist" value="Therapist:  previous: {{ $therapist->name }}" />
                 <select class="peer mt-2 w-full rounded-md border-blue-200 bg-gray-100 p-2 capitalize ring-0"
                     id="user_id" name="user_id">
