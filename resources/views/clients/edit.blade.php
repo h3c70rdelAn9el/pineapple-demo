@@ -466,7 +466,7 @@
                         Country: (previous selection: {{ $client->home_address_country }})
                     </x-form_label>
                     <select class="peer mt-2 w-full rounded-md border-blue-200 bg-gray-100 p-2 ring-0" id=""
-                        name="">
+                        name="home_address_country">
                         <option value="" disabled selected hidden>Previous: {{ $client->home_address_country }}
                         </option>
                         @foreach ($clientCountries as $country)
