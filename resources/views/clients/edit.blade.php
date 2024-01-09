@@ -763,8 +763,8 @@
             </x-jet-button>
 
         </form>
-        <div x-data="{ open: false }">
-            <div class="w-1/2 mt-2 mx-auto">
+        <div x-data="{ open: false }" class="form">
+            <div class="mt-4">
                 <x-jet-button class="ml-4 bg-red-500 hover:bg-red-700" @click="open = true">
                     {{ __('Delete') }}
                 </x-jet-button>
