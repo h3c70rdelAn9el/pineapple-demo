@@ -7,7 +7,7 @@
     $countriesJson = file_get_contents(resource_path('json/countries.json'));
     $clientCountries = json_decode($countriesJson, true);
     $sexualOrientations = ['Heterosexual/Straight', 'Gay/Lesbian', 'Bisexual', 'Don\'t Know', 'Prefer Not to Say'];
-    $pronouns = ['He/Him/His', 'She/Her/Hers', 'They/Them/Theirs', 'Per/Per/Pers', 'Ze/Hir/Hirs', 'Prefer Not to Say', 'Other'];
+    $pronouns = ['He/Him/His', 'She/Her/Hers', 'They/Them/Theirs', 'Per/Per/Pers', 'Ze/Hir/Hirs', 'Prefer Not to Say'];
     $contactMethods = ['Telephone Call', 'Text Message', 'Email'];
     $ethnicGroups = ['American Indian or Alaska Native', 'Asian', 'Black or African American', 'Hispanic or Latino', 'Native Hawaiian or Other Pacific Islander', 'White', 'Prefer Not to Say'];
     $selectedEthnicGroups = $client->ethnic_group ? json_decode($client->ethnic_group) : [];
@@ -99,7 +99,7 @@
 
             <div class="relative mb-4 mt-6 w-full"
                 x-data='{
-                    showOptions: false,
+                    showContactMethods: false,
                     selectedContactMethods: [],
                     toggleSelectedContactMethod(option) {
                         if (this.selectedContactMethods.includes(option)) {
@@ -112,7 +112,7 @@
                 x-init="alpine.watch('selectedContactMethods', value => { if (!value) selectedContactMethods = false; })">
 
                 <x-form_label>
-                    Contact Method(s): (previous selection:
+                 Contact Method(s): (previous selection:
                     {{ str_replace(['[', ']', '"'], '', $client->contact_method) }})
                 </x-form_label>
                 <div class="rounded-md" @click.away="showContactMethods = false">
@@ -121,7 +121,7 @@
                             @click="showContactMethods = !showContactMethods">
                             Select Options:
                             <span class="ml-0"
-                                x-text="selectedContactMethods.length > 0 ? selectedContactMethods.join(', ') : 'Select Options'">
+                                x-text="selectedContactMethods.length > 0 ? selectedContactMethods.join(', ') : ''">
                             </span>
                             <p></p>
                             <svg class="mt-0.5 h-[18px] w-[18px] text-gray-800" fill="none" stroke="currentColor"
@@ -145,7 +145,6 @@
                         @endforeach
                     </div>
                 </div>
-
             </div>
 
 
@@ -265,43 +264,6 @@
                             x-show="openPronouns" x-transition.scale.origin.top x-transition:enter.duration.300ms
                             x-transition:enter.ease-in-out x-transition:leave.duration.300ms x-transition:ease-in-out
                             x-cloak>
-                            {{-- <div class="select-input-div">
-                                <input class="select-input" id="they/them/theirs" name="pronouns[]" type="checkbox"
-                                    value="They/Them/Theirs">
-                                <label class="ml-2" for="they-them">They/Them/Theirs</label>
-                            </div>
-                            <div class="select-input-div">
-                                <input class="select-input" id="she/her/hers" name="pronouns[]" type="checkbox"
-                                    value="she/her/hers">
-                                <label class="ml-2" for="she-her">she/her/hers</label>
-                            </div>
-                            <div class="select-input-div">
-                                <input class="select-input" id="per/per/pers" name="pronouns[]" type="checkbox"
-                                    value="per/per/pers">
-                                <label class="ml-2">per/per/pers</label>
-                            </div>
-                            <div class="select-input-div">
-                                <input class="select-input" id="he/him/his" name="pronouns[]" type="checkbox"
-                                    value="he/him/his">
-                                <label class="ml-2" for="he-him">he/him/his</label>
-                            </div>
-
-                            <div class="select-input-div">
-                                <input class="select-input" id="ze/hir/hirs" name="pronouns[]" type="checkbox"
-                                    value="ze/hir/hirs">
-                                <label class="ml-2" for="her">ze/hir/hirs</label>
-                            </div>
-
-                            <div class="select-input-div">
-                                <input class="select-input" id="prefer-not-to-say-pronouns" name="pronouns[]"
-                                    type="checkbox" value="Prefer Not To Say">
-                                <label class="ml-2" for="prefer-not-to-say-pronouns">Prefer Not To Say</label>
-                            </div>
-                            <div class="select-input-div">
-                                <input class="select-input" id="otherPronounCheckbox" name="pronouns[]"
-                                    type="checkbox" value="Other">
-                                <label class="ml-2" for="otherPronoun">Other</label>
-                            </div> --}}
                             @foreach ($pronouns as $pronoun)
                                 <div class="select-input-div">
                                     <input class="select-input" id="{{ $pronoun }}" name="pronouns[]"
@@ -313,20 +275,23 @@
                             @endforeach
 
 
-                            <div class="m-3 flex flex-row">
-                                <input
-                                    class="mr-0.5 mt-1 rounded-full transition duration-200 ease-in-out hover:bg-blue-500"
-                                    id="otherPronounInput" name="pronouns[]" type="checkbox" value="Other"
-                                    :checked="selectedPronouns.includes('Other')"
-                                    @click="toggleSelectedPronoun('Other')">
-                                <label class="ml-2" for="otherPronoun">Other</label>
-                                <input
-                                    class="mr-0.5 mt-1 rounded-full transition duration-200 ease-in-out hover:bg-blue
-                                    -500"
-                                    id="otherPronounInput" name="otherPronoun" type="text"
-                                    style="display: none;">
-                                <label class="ml-2" for="otherPronoun">Other</label>
-                            </div>
+                            <div class="m-3 flex flex-row"
+    x-data="{ otherPronoun: '', showOtherPronounInput: false }">
+
+    <input class="mr-0.5 mt-1 rounded-full transition duration-200 ease-in-out hover:bg-blue-500"
+        id="otherPronounCheckbox" type="checkbox" value="Other"
+        :checked="selectedPronouns.includes('Other')"
+        x-on:click="showOtherPronounInput = !showOtherPronounInput; otherPronoun = ''">
+
+    <label class="ml-2" for="otherPronounCheckbox">Other</label>
+
+    <input class="mr-0.5 mt-1 rounded-full transition duration-200 ease-in-out hover:bg-blue-500"
+        id="otherPronounInput" name="pronouns[]" type="text"
+        x-model="otherPronoun"
+        x-show="showOtherPronounInput">
+
+</div>
+
                         </div>
                     </div>
                 </div>
