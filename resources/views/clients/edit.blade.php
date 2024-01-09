@@ -14,11 +14,18 @@
     $selectedPossibleSupportNeeded = $client->possible_support_needed ? json_decode($client->possible_support_needed) : [];
     $selectedPronouns = $client->pronouns ? json_decode($client->pronouns) : [];
     $selectedSexualOrientation = $client->sexual_orientation ? json_decode($client->sexual_orientation) : [];
+    $selectedOptions = $client->options ? json_decode($client->options) : [];
 @endphp
 
 
 <x-app-layout>
-    <x-main-container>
+    <x-main-container
+        x-data="{
+            submitForm() {
+                document.getElementById('client-edit-form').submit();
+            }
+        }"
+    >
         @if ($errors->any())
             <div class="alert alert-danger">
                 <ul>
@@ -42,9 +49,11 @@
         <h2 class="mt-2 text-center text-lg font-normal">Edit client: {{ $client->preferred_name }}</h2>
         <div class="mx-auto w-1/2 border-b border-gray-400 bg-gray-400">
         </div>
-        <form class="form" action="{{ route('clients.update', $client->id) }}" method="POST" id="client-edit-form">
+        <form class="form" action="{{ route('clients.update', $client->id) }}" method="POST" id="client-edit-form"
+            @submit.prevent="submitForm">
             @csrf
             @method('POST')
+
             {{-- <input name="_method" type="hidden" value="POST"> --}}
 
             <input name="user_id" type="hidden" value="{{ $client->user_id }}">
@@ -169,22 +178,6 @@
             <div class="my-4 rounded-lg border-2 border-blue-300 bg-blue-100 p-2">
                 <p>Optional Fields</p>
 
-                {{-- <div class="relative mb-4 mt-6 w-full"
-                    x-data='{
-                        showGender: false,
-                        selectedOptions: @json($client->gender ?? []),
-
-                        toggleSelectedOption(option) {
-                                if (this.selectedOptions.includes(option)) {
-                                    this.selectedOptions = this.selectedOptions.filter(item => item !== option);
-                                } else {
-                                    this.selectedOptions.push(option);
-                                }
-                            }
-
-                        } '
-                    x-init="alpine.watch('showOptions', value => { if (!value) showOptions = false; })"
-                    > --}}
                 <div class="relative mb-4 mt-6 w-full"
                     x-data='{
                         showGender: false,
@@ -219,7 +212,7 @@
                     <div class="rounded-md" @click.away="showGender = false">
                         <div class="flex w-full justify-between rounded-md border border-blue-300 bg-gray-100 p-3">
                             <button class="-m-0.5 flex w-full justify-between text-gray-700" type="button"
-                                @click="showGender = !showGender" {{-- @click="showGender = !showGender ? false : !showGender" --}}>
+                                @click="showGender = !showGender">
                                 <span class="ml-0"
                                     x-text="selectedOptions.length > 0 ? selectedOptions.join(', ') : 'Select Options'"></span>
                                 <svg class="mt-0.5 h-[18px] w-[18px] text-gray-800" fill="none"
@@ -237,7 +230,9 @@
                                     <input
                                         class="mr-0.5 mt-1 rounded-full transition duration-200 ease-in-out hover:bg-blue-500"
                                         name="gender[]" type="checkbox" value="{{ $gender }}"
-                                        :checked="selectedOptions.includes('{{ $gender }}')"
+                                        {{-- :checked="selectedOptions.includes('{{ $gender }}')" --}}
+:checked="{{ in_array($gender, $selectedOptions) ? 'true' : 'false' }}"
+
                                         @click="toggleSelectedOption('{{ $gender }}')">
                                     <label class="" for="{{ $gender }}">{{ $gender }}</label>
                                 </div>
@@ -439,9 +434,9 @@
 
                                 <div class="m-3 flex flex-row">
                                     <input
-                                    class="mr-0.5 mt-1 rounded-full transition duration-200 ease-in-out hover:bg-blue-500"
-                                    id="otherSexualOrientationInput" name="sexual_orientation[]" type="text"
-                                    x-model="otherSexualOrientation" x-show="showOtherSexualOrientationInput">
+                                        class="mr-0.5 mt-1 rounded-full transition duration-200 ease-in-out hover:bg-blue-500"
+                                        id="otherSexualOrientationInput" name="sexual_orientation[]" type="text"
+                                        x-model="otherSexualOrientation" x-show="showOtherSexualOrientationInput">
                                 </div>
                             </div>
                         </div>
@@ -523,8 +518,8 @@
                         </div> --}}
                         <div x-data="{ showOtherEthnicGroupInput: false, otherEthnicGroupInput: '' }">
                             <div class="select-input-div">
-                                <input class="select-input" id="otherEthnicGroupCheckbox"
-                                    type="checkbox" value="Other" x-model="selectedEthnicGroups"
+                                <input class="select-input" id="otherEthnicGroupCheckbox" type="checkbox"
+                                    value="Other" x-model="selectedEthnicGroups"
                                     @click="showOtherEthnicGroupInput = !showOtherEthnicGroupInput">
                                 <label class="ml-2" for="otherEthnicGroup">Other</label>
                             </div>
