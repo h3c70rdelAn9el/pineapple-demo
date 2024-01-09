@@ -26,15 +26,6 @@
             }
         }"
     >
-        @if ($errors->any())
-            <div class="alert alert-danger">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
 
         @if ($errors->any())
             <div class="alert alert-danger">
@@ -63,7 +54,6 @@
                 <input class="w-full rounded border border-blue-200 bg-gray-100" id="client_code" name="client_code"
                     type="text" value="{{ old('client_code', $client->client_code) }}"
                     placeholder="{{ old('client_code', $client->client_code) }}" autocomplete="off" />
-                    placeholder="{{ old('client_code', $client->client_code) }}" autocomplete="off" />
                 <x-jet-input-error class="mt-2" for="client_code" />
             </div>
 
@@ -71,7 +61,6 @@
                 <x-jet-label for="preferred_name" value="{{ __('Preferred Name') }}" />
                 <input class="w-full rounded border border-blue-200 bg-gray-100" id="preferred_name"
                     name="preferred_name" type="text" value="{{ old('preferred_name', $client->preferred_name) }}"
-                    placeholder="{{ old('preferred_name', $client->preferred_name) }}" autocomplete="off" />
                     placeholder="{{ old('preferred_name', $client->preferred_name) }}" autocomplete="off" />
                 <x-jet-input-error class="mt-2" for="preferred_name" />
             </div>
@@ -102,7 +91,6 @@
                 <x-jet-label for="phone" value="{{ __('Phone') }}" />
                 <input class="w-full rounded border border-blue-200 bg-gray-100" id="phone" name="phone"
                     type="text" value="{{ old('phone', $client->phone) }}"
-                    placeholder="{{ old('phone', $client->phone) }}" autocomplete="off" />
                     placeholder="{{ old('phone', $client->phone) }}" autocomplete="off" />
                 <x-jet-input-error class="mt-2" for="phone" />
             </div>
@@ -502,10 +490,8 @@
                     <x-form_label for="home_address_country">
                         Country: (previous selection: {{ $client->home_address_country }})
                     </x-form_label>
-                    <select class="peer mt-2 w-full rounded-md border-blue-200 bg-gray-100 p-2 ring-0"
-                        id="home_address_country" name="home_address_country">
-                    <select class="peer mt-2 w-full rounded-md border-blue-200 bg-gray-100 p-2 ring-0"
-                        id="home_address_country" name="home_address_country">
+                    <select class="peer mt-2 w-full rounded-md border-blue-200 bg-gray-100 p-2 ring-0" id=""
+                        name="">
                         <option value="" disabled selected hidden>Previous: {{ $client->home_address_country }}
                         </option>
                         @foreach ($clientCountries as $country)
@@ -601,8 +587,6 @@
                 <x-jet-label for="client_contribution" class="w-full"
                     value="Client Contribution:  previous: {{ $client->client_contribution }}" />
                 <x-jet-input class="rounded-md w-full mt-2 bg-gray-100" id="client_contribution" type="number"
-                    value="{{ $client->client_contribution }}" name="client_contribution" min="0"
-                    step="1.00" autocomplete="off" />
                     value="{{ $client->client_contribution }}" name="client_contribution" min="0"
                     step="1.00" autocomplete="off" />
                 <x-jet-input-error class="mt-2" for="client_contribution" />
