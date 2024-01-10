@@ -12,11 +12,13 @@
     $ethnicGroups = ['American Indian or Alaska Native', 'Asian', 'Black or African American', 'Hispanic or Latino', 'Native Hawaiian or Other Pacific Islander', 'White', 'Prefer Not to Say'];
     $selectedContactMethods = $client->contact_method ? array_map('trim', explode(','  ,$client->contact_method)) : [];
     $selectedGenders = $client->gender ? array_map('trim', explode(',',$client->gender)) : [];
+    $selectedGenders = array_map('strtolower', $selectedGenders);
     $selectedEthnicGroups = $client->ethnic_group ? array_map('trim', explode(',', $client->ethnic_group)) : [];
     $selectedPossibleSupportNeeded = $client->possible_support_needed ? array_map('trim', explode(',',$client->possible_support_needed)) : [];
     $selectedPronouns = $client->pronouns ? array_map('trim', explode(',', $client->pronouns) ): [];
     
     $selectedSexualOrientation = $client->sexual_orientation ? array_map('trim', explode(',',$client->sexual_orientation)) : [];
+    $selectedSexualOrientation = array_map('strtolower', $selectedSexualOrientation);
     $selectedOptions = $client->options ? json_decode($client->options) : [];
     
 @endphp
@@ -212,7 +214,7 @@
                                         class="mr-0.5 mt-1 rounded-full transition duration-200 ease-in-out hover:bg-blue-500"
                                         name="gender[]" type="checkbox" value="{{ $gender }}"
                                         
-                                        @if (in_array($gender, $selectedGenders)) checked @endif
+                                        @if (in_array(strtolower($gender), $selectedGenders)) checked @endif
                                         @click="toggleSelectedOption('{{ $gender }}')">
                                     <label class="" for="{{ $gender }}">{{ $gender }}</label>
                                 </div>
@@ -361,7 +363,7 @@
                                         class="mr-0.5 mt-1 rounded-full transition duration-200 ease-in-out hover:bg-blue-500"
                                         id="{{ $orientation }}" name="sexual_orientation[]" type="checkbox"
                                         value="{{ $orientation }}"
-                                        @if (in_array($orientation, $selectedSexualOrientation ?? [])) checked @endif
+                                        @if (in_array(strtolower($orientation), $selectedSexualOrientation ?? [])) checked @endif
                                         @click="toggleSelectedSexualOrientation('{{ $orientation }}')">
                                     <label class="" for="{{ $orientation }}">{{ $orientation }}</label>
                                 </div>
