@@ -91,6 +91,8 @@ Route::middleware([
     Route::get('/clients/{client_id}', [ClientController::class, 'show'])->name('clients.show');
     Route::post('/clients/store', [ClientController::class, 'store'])->name('clients.store');
     Route::get('/clients/{client_id}/edit', [ClientController::class, 'edit'])->name('clients.edit');
+    // Route::put('/clients/{client}/update', [ClientController::class, 'update'])->name('clients.update');
+    // HAD TO USE POST METHOD INSTEAD OF PUT FOR THIS ROUTE
     Route::post('/clients/{client}/update', [ClientController::class, 'update'])->name('clients.update');
     Route::delete('/clients/{client_id}/delete', [ClientController::class, 'destroy'])->name('clients.delete');
     Route::get('/search', SearchController::class)->name('search');
