@@ -118,6 +118,7 @@ class FileUploadController extends Controller
     //  */
     public function edit($id)
     {
+
         $form = FileUpload::findOrFail($id);
 
         $user = auth()->user();
@@ -144,24 +145,15 @@ class FileUploadController extends Controller
         }
 
         $request->validate([
-            'form_id' => 'required',
-            'verified' => 'required',
+            'verified' => 'nullable|in:1',
         ]);
+
         $form = FileUpload::findOrFail($id);
-        $verified = $request->input('verified') === 'on' ? true : false;
-        $form->fill([
-            'verified' => $verified,
+        $form->update([
+            'verified' => $request->has('verified'),
         ]);
-        $therapist = User::find($form->user_id);
-        $file_name = FileUpload::where('user_id', $therapist->id)->get();
 
-        try {
-            $form->save();
-        } catch (\Exception $e) {
-            return redirect()->back();
-        }
-
-        return view('therapist.show', ['id' => $id, 'user' => $user, 'therapist' => $therapist, 'file_name' => $file_name, 'form' => $form]);
+        return redirect()->route('therapist.show', $form->user_id);
     }
 
     /**
