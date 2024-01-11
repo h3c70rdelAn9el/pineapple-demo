@@ -55,10 +55,11 @@
         <form action="{{ route('fileUpdate', $form->id) }}" method="POST">
             @csrf
             @method('PUT')
-            <input name="form_id" type="hidden" value="{{ $form->id }}">
             <label for="verified">Verify</label>
-            <input id="verified" name="verified" type="checkbox">
+            <input type="hidden" name="verified" value="0">
+            <input id="verified" name="verified" type="checkbox" value="1">
             <button type="submit">Submit</button>
+
         </form>
     @else
     @endif
