@@ -40,18 +40,22 @@ class FileUpload extends Model
     }
     public function url()
     {
-       
-        
+
+
 
         if (env('FILESYSTEM_DISK') == 's3') {
             $url = Storage::temporaryUrl(
-                $this->file_path . $this->file_name, 
+                $this->file_path . $this->file_name,
                 now()->addMinutes(5)
             );
          } else {
              $url = Storage::url($this->file_path . $this->file_name);
          }
-        
+
         return $url;
     }
+
+    protected $casts = [
+        'verified' => 'boolean',
+    ];
 }
