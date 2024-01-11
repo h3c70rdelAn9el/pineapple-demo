@@ -1,5 +1,5 @@
 <x-app-layout>
-    <h1>Edit Form</h1>
+    <h1 class="text-lg w-1/2 mx-auto">Edit Form</h1>
     <div class="flex flex-col items-center justify-center min-h-screen bg-gray-100">
         <div class="items-center justify-center">
             @if (Str::contains($form->file_name, '.pdf'))
@@ -22,7 +22,7 @@
         </div>
     </div>
 
-    <div class="flex flex-col w-1/2  mx-auto text-sm">
+    <div class="flex flex-col md:w-1/2 w-2/3 mx-auto text-sm">
         <div class="flex flex-row mt-2">
             <p class="">Date:</p>
             <p class="ml-4 ">{{ $form->date }}</p>
@@ -33,8 +33,13 @@
         </div>
         <div class="flex flex-col w-full mt-2">
             <p class=" ">Notes:</p>
-            <p class="border border-gray-200 ">{{ $form->notes }}
-            </p>
+                @if (!empty($form->notes))
+    <p class="border border-gray-200 rounded-md">
+        {{ $form->notes }}
+    </p>
+@else
+    <p class="border border-gray-200 rounded-md font-light">No notes available.</p>
+@endif
         </div>
         @if ($user->admin == 1)
             @if ($form->verified == 1)
