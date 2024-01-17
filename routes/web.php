@@ -58,12 +58,6 @@ Route::middleware([
 ])->post('/session/store', [TherapySessionController::class, 'store'])->name('session.store');
 
 
-// Route::middleware([
-//     'auth:sanctum',
-//     config('jetstream.auth_session'),
-//     'verified'
-// ])->get('/session/{id}', [TherapySessionController::class, 'show'])->name('session.show');
-
 
 Route::middleware([
     'auth:sanctum',
@@ -73,10 +67,7 @@ Route::middleware([
     // Route::post('/session/store', [TherapySessionController::class, 'store'])->name('session.store');
     Route::get('/session/{id}', [TherapySessionController::class, 'show'])->name('session.show');
     Route::get('file-upload', [FileUploadController::class, 'index'])->name('fileUpload');
-    Route::post('file-store', [FileUploadController::class, 'store'])->name('fileStore');
-    // Route::put('file-update/{id}', [FileUploadController::class, 'update'])->name('fileUpdate');
-    // Route::put('file-update/{id}', 'App\Http\Controllers\FileUploadController@update')->name('fileUpdate');
-    // Route::get('file-edit/{id}', [FileUploadController::class, 'edit'])->name('fileEdit');
+    Route::post('file-store/{id}', [FileUploadController::class, 'store'])->name('fileStore');
 
     Route::put('/profile/update', [UserController::class, 'updateUserProfile'])->name('profile.update');
     // Route::post('/update-gender', 'UserController@updateGender')->name('update.gender');
@@ -124,19 +115,6 @@ Route::middleware([
     'verified'
 ])->get('/therapist/forms/{id}/edit', [FileUploadController::class, 'edit'])->name('fileEdit');
 
-
-// Route::get('/therapist/forms/{therapist}/edit', [FileUploadController::class, 'edit'])->name('therapist.forms.edit');
-// Route::put('/therapist/forms/{therapist}/update', [FileUploadController::class, 'update'])->name('therapist.forms.update');
-
-// Route::middleware([
-//     'auth:sanctum',
-//     config('jetstream.auth_session'),
-//     'verified'
-// ])->get('/patient/{id}', [PatientController::class, 'show'])->name('patient.show');
-// Route::get('/patients/show/{first}', [PatientController::class, 'show'])->name('patient');
-// Route::get('/patients/{patient_id}', [PatientController::class, 'show'])->name('patient');
-
-// Route::post('/patients/{patient_id}/therapy_session/store', 'TherapySessionController@store')->middleware('auth')->name('therapy_session.store');
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),

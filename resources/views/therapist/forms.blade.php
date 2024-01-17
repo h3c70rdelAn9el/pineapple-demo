@@ -54,6 +54,7 @@
                         </div>
                     </div>
                 </div>
+                <x-file-upload :user="$user" :therapist="$therapist" />
             </div>
             <section class="mx-auto grid w-5/6 grid-cols-1 gap-5 p-2 px-4 md:w-full md:grid-cols-2 lg:grid-cols-3">
                 @foreach ($file_name as $form)
