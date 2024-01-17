@@ -14,6 +14,8 @@ use App\Notifications\MissedTherapySessions;
 use App\Notifications\SessionLimitNotification;
 use App\Http\Requests\StoreTherapySessionRequest;
 use App\Http\Requests\UpdateTherapySessionRequest;
+// use Log
+use Illuminate\Support\Facades\Log;
 
 class TherapySessionController extends Controller
 {
@@ -105,9 +107,14 @@ class TherapySessionController extends Controller
             if ($client->therapySessions()->whereIn('attendance', ['attended', 'no-show'])->count() >= 16) {
                 $client->status = 1;
                 $client->save();
-            } else {
+                Log::info('Client status set to 1 for client id: ' . $client->id);
+
+            }
+            else {
                 $client->status = 0;
                 $client->save();
+                Log::info('Client status set to 0 for client id: ' . $client->id);
+
             }
 
             $user_id = $ts->user_id;

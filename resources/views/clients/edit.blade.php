@@ -10,28 +10,26 @@
     $pronouns = ['He/Him/His', 'She/Her/Hers', 'They/Them/Theirs', 'Per/Per/Pers', 'Ze/Hir/Hirs', 'Prefer Not to Say'];
     $contactMethods = ['Telephone Call', 'Text Message', 'Email'];
     $ethnicGroups = ['American Indian or Alaska Native', 'Asian', 'Black or African American', 'Hispanic or Latino', 'Native Hawaiian or Other Pacific Islander', 'White', 'Prefer Not to Say'];
-    $selectedContactMethods = $client->contact_method ? array_map('trim', explode(','  ,$client->contact_method)) : [];
-    $selectedGenders = $client->gender ? array_map('trim', explode(',',$client->gender)) : [];
+    $selectedContactMethods = $client->contact_method ? array_map('trim', explode(',', $client->contact_method)) : [];
+    $selectedGenders = $client->gender ? array_map('trim', explode(',', $client->gender)) : [];
     $selectedGenders = array_map('strtolower', $selectedGenders);
     $selectedEthnicGroups = $client->ethnic_group ? array_map('trim', explode(',', $client->ethnic_group)) : [];
-    $selectedPossibleSupportNeeded = $client->possible_support_needed ? array_map('trim', explode(',',$client->possible_support_needed)) : [];
-    $selectedPronouns = $client->pronouns ? array_map('trim', explode(',', $client->pronouns) ): [];
-    
-    $selectedSexualOrientation = $client->sexual_orientation ? array_map('trim', explode(',',$client->sexual_orientation)) : [];
+    $selectedPossibleSupportNeeded = $client->possible_support_needed ? array_map('trim', explode(',', $client->possible_support_needed)) : [];
+    $selectedPronouns = $client->pronouns ? array_map('trim', explode(',', $client->pronouns)) : [];
+
+    $selectedSexualOrientation = $client->sexual_orientation ? array_map('trim', explode(',', $client->sexual_orientation)) : [];
     $selectedSexualOrientation = array_map('strtolower', $selectedSexualOrientation);
     $selectedOptions = $client->options ? json_decode($client->options) : [];
-    
+
 @endphp
 
 
 <x-app-layout>
-    <x-main-container
-        x-data="{
-            submitForm() {
-                document.getElementById('client-edit-form').submit();
-            }
-        }"
-    >
+    <x-main-container x-data="{
+        submitForm() {
+            document.getElementById('client-edit-form').submit();
+        }
+    }">
 
         @if ($errors->any())
             <div class="alert alert-danger">
@@ -118,9 +116,9 @@
                 x-init="alpine.watch('selectedContactMethods', value => { if (!value) selectedContactMethods = false; })">
 
                 <x-form_label>
-                 Contact Method(s): (previous selection:
+                    Contact Method(s): (previous selection:
                     {{-- str_replace(['[', ']', '"'], '', $client->contact_method) --}})
-                    {{ $client->contact_method}}
+                    {{ $client->contact_method }}
                 </x-form_label>
                 <div class="rounded-md" @click.away="showContactMethods = false">
                     <div class="flex w-full justify-between rounded-md border border-blue-300 bg-gray-100 p-3">
@@ -145,7 +143,6 @@
                             <div class="select-input-div">
                                 <input class="select-input" id="{{ $method }}" name="contact_method[]"
                                     type="checkbox" value="{{ $method }}"
-                                    
                                     @if (in_array($method, $selectedContactMethods)) checked @endif
                                     @click="toggleSelectedContactMethod('{{ $method }}')">
                                 <label class="ml-2" for="{{ $method }}">{{ $method }}</label>
@@ -187,9 +184,9 @@
                                 this.otherGender = "Other";
                             }
                         }
-                    }'> 
+                    }'>
                     <x-form_label>
-                        Gender(s): (previous selection: {{  $client->gender }})
+                        Gender(s): (previous selection: {{ $client->gender }})
                     </x-form_label>
                     <div class="rounded-md" @click.away="showGender = false">
                         <div class="flex w-full justify-between rounded-md border border-blue-300 bg-gray-100 p-3">
@@ -207,13 +204,12 @@
                         <div class="-mt-1 w-full rounded-b-md rounded-t-none border-b border-l border-r border-blue-300 bg-gray-100 pt-1 text-gray-600 md:flex md:flex-wrap"
                             x-show="showGender" x-transition.scale.origin.top x-transition.duration.300ms
                             x-transition.ease-in-out x-cloak>
-                           
+
                             @foreach ($genders as $gender)
                                 <div class="m-3 flex flex-row">
                                     <input
                                         class="mr-0.5 mt-1 rounded-full transition duration-200 ease-in-out hover:bg-blue-500"
                                         name="gender[]" type="checkbox" value="{{ $gender }}"
-                                        
                                         @if (in_array(strtolower($gender), $selectedGenders)) checked @endif
                                         @click="toggleSelectedOption('{{ $gender }}')">
                                     <label class="" for="{{ $gender }}">{{ $gender }}</label>
@@ -274,7 +270,7 @@
                             x-show="openPronouns" x-transition.scale.origin.top x-transition:enter.duration.300ms
                             x-transition:enter.ease-in-out x-transition:leave.duration.300ms x-transition:ease-in-out
                             x-cloak>
-                            
+
                             @foreach ($pronouns as $pronoun)
                                 <div class="select-input-div">
                                     <input class="select-input" id="{{ $pronoun }}" name="pronouns[]"
@@ -286,22 +282,22 @@
                             @endforeach
 
 
-                            <div class="m-3 flex flex-row"
-    x-data="{ otherPronoun: '', showOtherPronounInput: false }">
+                            <div class="m-3 flex flex-row" x-data="{ otherPronoun: '', showOtherPronounInput: false }">
 
-    <input class="mr-0.5 mt-1 rounded-full transition duration-200 ease-in-out hover:bg-blue-500"
-        id="otherPronounCheckbox" type="checkbox" value="Other"
-        :checked="selectedPronouns.includes('Other')"
-        x-on:click="showOtherPronounInput = !showOtherPronounInput; otherPronoun = ''">
+                                <input
+                                    class="mr-0.5 mt-1 rounded-full transition duration-200 ease-in-out hover:bg-blue-500"
+                                    id="otherPronounCheckbox" type="checkbox" value="Other"
+                                    :checked="selectedPronouns.includes('Other')"
+                                    x-on:click="showOtherPronounInput = !showOtherPronounInput; otherPronoun = ''">
 
-    <label class="ml-2" for="otherPronounCheckbox">Other</label>
+                                <label class="ml-2" for="otherPronounCheckbox">Other</label>
 
-    <input class="mr-0.5 mt-1 rounded-full transition duration-200 ease-in-out hover:bg-blue-500"
-        id="otherPronounInput" name="pronouns[]" type="text"
-        x-model="otherPronoun"
-        x-show="showOtherPronounInput">
+                                <input
+                                    class="mr-0.5 mt-1 rounded-full transition duration-200 ease-in-out hover:bg-blue-500"
+                                    id="otherPronounInput" name="pronouns[]" type="text" x-model="otherPronoun"
+                                    x-show="showOtherPronounInput">
 
-</div>
+                            </div>
 
                         </div>
                     </div>
@@ -362,8 +358,7 @@
                                     <input
                                         class="mr-0.5 mt-1 rounded-full transition duration-200 ease-in-out hover:bg-blue-500"
                                         id="{{ $orientation }}" name="sexual_orientation[]" type="checkbox"
-                                        value="{{ $orientation }}"
-                                        @if (in_array(strtolower($orientation), $selectedSexualOrientation ?? [])) checked @endif
+                                        value="{{ $orientation }}" @if (in_array(strtolower($orientation), $selectedSexualOrientation ?? [])) checked @endif
                                         @click="toggleSelectedSexualOrientation('{{ $orientation }}')">
                                     <label class="" for="{{ $orientation }}">{{ $orientation }}</label>
                                 </div>
@@ -415,7 +410,7 @@
                         x-show="openEthnicGroup" x-transition.scale.origin.top x-transition:enter.duration.300ms
                         x-transition:enter.ease-in-out x-transition:leave.duration.300ms x-transition:ease-in-out
                         x-cloak>
-                        
+
                         @foreach ($ethnicGroups as $group)
                             <div class="select-input-div">
                                 <input class="select-input" id="{{ $group }}" name="ethnic_group[]"
@@ -621,6 +616,24 @@
                 </div>
 
                 <x-jet-input-error class="mt-2" for="status" />
+            </div>
+
+            <div class="mt-4">
+                <x-jet-label for="waitlist" value="{{ __('Waitlist') }}" />
+                <div class="flex items-center mt-2">
+                    <label for="waitlist_yes" class="mr-4">
+                        <input id="waitlist_yes" type="radio" name="waitlist" value="1"
+                            {{ $therapist->waitlist == 1 ? 'checked' : '' }} autofocus />
+                        <span class="ml-2 text-sm text-gray-600">Yes</span>
+                    </label>
+
+                    <label for="waitlist_no">
+                        <input id="waitlist_no" type="radio" name="waitlist" value="0"
+                            {{ $therapist->waitlist == 0 ? 'checked' : '' }} />
+                        <span class="ml-2 text-sm text-gray-600">No</span>
+                    </label>
+                </div>
+                <x-jet-input-error for="waitlist" class="mt-2" />
             </div>
 
             <div class="mb-2 mt-4 w-full">
