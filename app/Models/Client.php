@@ -41,7 +41,8 @@ class Client extends Model
         'max_sessions',
         'gender',
         'therapist_id',
-        'user_id'
+        'user_id',
+        'waitlist'
     ];
 
     public function user()
@@ -58,4 +59,9 @@ class Client extends Model
         return LogOptions::defaults()
             ->logAll();
     }
+
+    protected $attributes = [
+        'status' => 'active',
+        'waitlist' => 'null',
+    ];
 }
