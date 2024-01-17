@@ -34,7 +34,12 @@
                             <strong>{{ $message }}</strong>
                         </div>
                     @endif
-                    <form action="{{ route('fileStore') }}" method="POST" enctype="multipart/form-data">
+                    {{-- <form action="{{ route('fileStore', ['therapistId' => $therapist->id]) }}" method="POST" enctype="multipart/form-data"> --}}
+                    {{-- <form action="{{ route('fileStore') }}" method="POST" enctype="multipart/form-data"> --}}
+                    {{-- <form action="{{ route('fileStore', ['id' => $therapist->id]) }}" method="POST" enctype="multipart/form-data"> --}}
+                    <form action="{{ route('fileStore', ['id' => $user->id]) }}" method="POST"
+                        enctype="multipart/form-data">
+
                         @csrf
 
                         {{-- file input --}}
@@ -46,6 +51,7 @@
                                 <span class="text-red-900">{{ $message }}</span>
                             @enderror
                         </div>
+
 
                         {{-- document type --}}
                         <div class="mt-5 flex flex-col" x-data="{ documentType: '' }">
@@ -98,7 +104,13 @@
                                     id="note" name="note" cols="40" rows="2" placeholder="Note"></textarea>
                             </div>
                         </div>
-
+                        @if ($user->admin == 1)
+                            {
+                            <input type="hidden" name="therapist_id" value="{{ $therapist->id }}">
+                            }else {
+                            <input type="hidden" name="user_id" value="{{ $user->id }}">
+                            }
+                        @endif
                         <x-jet-button class="absolute right-0 mb-3 mr-6 mt-9" type="submit">
                             Save
                         </x-jet-button>

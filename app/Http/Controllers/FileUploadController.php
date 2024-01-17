@@ -58,9 +58,11 @@ class FileUploadController extends Controller
 
 
 
-    public function store(Request $request)
+    public function store(Request $request, $therapist)
     {
-        $user = $request->user();
+        $therapist = User::find($therapist);
+        // $user = $request->user();
+        $user = auth()->user();
         $request->validate([
             'file' => 'required|mimes:pdf,jpg,jpeg,png|max:1048576',
         ]);
@@ -68,17 +70,34 @@ class FileUploadController extends Controller
         $verified = $user->admin ? 1 : 0;
         $path = 'uploads/forms/therapist/' . $user->id . '/';
         $request->file->storeAs($path, $fileName);
-        //Storage::put($path . $fileName, $request->file('file')->getContent());
 
-        $user->fileUploads()->create([
-            'file_path' => $path,
-            'file_name' => $fileName,
-            'document_type' => $request->document_type,
-            'date' => $request->date,
-            'note' => $request->note,
-            'verified' => $verified,
-            'file_title' => $request->file_title,
-        ]);
+        if ($user->admin == 1) {
+            $therapist->fileUploads()->create([
+                'file_path' => $path,
+                'file_name' => $fileName,
+                'document_type' => $request->document_type,
+                'date' => $request->date,
+                'note' => $request->note,
+                'verified' => $verified,
+                'file_title' => $request->file_title,
+                // 'user_id' => $therapist->id,
+                'user_id' => $request->user_id,
+                // 'therapist_id' => $therapist->id,
+            ]);
+        } else {
+            $user->fileUploads()->create([
+                'file_path' => $path,
+                'file_name' => $fileName,
+                'document_type' => $request->document_type,
+                'date' => $request->date,
+                'note' => $request->note,
+                'verified' => $verified,
+                'file_title' => $request->file_title,
+                // 'user_id' => $therapist->id,
+                'user_id' => $request->user_id,
+                // 'therapist_id' => $therapist->id,
+            ]);
+        }
 
         if ($fileName) {
             $adminUsers = User::where('admin', 1)->get();
@@ -93,9 +112,9 @@ class FileUploadController extends Controller
 
 
     /**
-    * Display the specified resource.
-    * @param  int  $id
-    * @return \Illuminate\Http\Response
+     * Display the specified resource.
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
     //  */
 
     public function show($id): View
@@ -183,6 +202,4 @@ class FileUploadController extends Controller
             'user' => auth()->user(),
         ]);
     }
-
-
 }
