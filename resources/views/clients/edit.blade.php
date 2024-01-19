@@ -77,10 +77,10 @@
             <div class="flex flex-row mt-4">
                 <label for="special_sessions">Special Sessions:</label>
                 <input type="radio" name="special_sessions" id="special_sessions_yes" value="1"
-                {{ $client->special_sessions == 1? 'checked' : '' }}>
+                    {{ $client->special_sessions == 1 ? 'checked' : '' }}>
                 <label for="special_sessions_yes">Yes</label>
                 <input type="radio" name="special_sessions" id="special_sessions_no" value="0"
-                {{ $client->special_sessions == 0? 'checked' : '' }}>
+                    {{ $client->special_sessions == 0 ? 'checked' : '' }}>
                 <label for="special_sessions_no">No</label>
                 <x-jet-input-error class="mt-2" for="special_sessions" />
             </div>
@@ -580,6 +580,7 @@
                 <select class="peer mt-2 w-full rounded-md border-blue-200 bg-gray-100 p-2 capitalize ring-0"
                     id="user_id" name="user_id">
                     <option value="" disabled selected hidden>Previous: {{ $therapist->name }}</option>
+                    <option value="no_therapist">No Therapist Assigned</option>
 
                     @php
                         $groupedTherapists = $therapists->groupBy('state')->sortKeys();
