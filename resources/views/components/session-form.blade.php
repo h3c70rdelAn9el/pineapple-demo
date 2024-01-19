@@ -1,3 +1,9 @@
+@php
+    $defaultSpecialSessions = $client->special_sessions ?: 6;
+    $specialSessionsCount = $client->therapySessions()->where('special', true)->count();
+    $specialSessionsLeft = max(0, $defaultSpecialSessions - $specialSessionsCount);
+@endphp
+
 <form class="capitalize"
     action="{{ route('session.store') }}"
     method="POST"
@@ -29,6 +35,11 @@
             placeholder="0.00">
     </div> --}}
 
+    @if ($client->special_sessions)
+        <p class="normal-case">Client has {{ $specialSessionsLeft }} special sessions left.</p>
+    @endif
+
+
     <div>
         <label for="created_at">Session Date</label>
         <input class="form-input"
@@ -44,9 +55,18 @@
     <div>
         <label for="session_cost">Session Cost</label>
 
-        <div class="flex items-center">
+        @if ($client->special_sessions)
+            {{-- make session cost 0 --}}
+          <input class="form-input"
+                type="text"
+                value="0.00"
+                readonly>
+            <input name="session_cost"
+                type="hidden"
+                value="0.00">
+        @else
+    <div class="flex items-center">
             <input class="form-input"
-                id="session_cost_display"
                 type="text"
                 value="{{ $therapist->session_cost }}"
                 readonly>
@@ -54,6 +74,7 @@
                 type="hidden"
                 value="{{ $therapist->session_cost }}">
         </div>
+        @endif
     </div>
 
     </div>

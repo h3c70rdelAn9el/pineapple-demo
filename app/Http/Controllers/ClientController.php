@@ -321,22 +321,44 @@ class ClientController extends Controller
         $client->contact_method = $contactMethodString;
         $client->possible_support_needed = $possibleSupportNeededString;
         $client->sexual_orientation = $orientationString;
-        $client->max_sessions = $request->max_sessions;
-        $client->waitlist = $request->input('waitlist', 0);
-        if($request->user_id)
-        {
+        // $client->max_sessions = $request->max_sessions;
+       $client->special_sessions = $request->input('special_sessions', false);
+    $client->max_sessions = $request->input('max_sessions', 16);
 
-            $therapist = User::find($request->user_id);
-            $therapist->notify(new NewClientNotification());
-        }
+        $client->waitlist = $request->input('waitlist', 0);
+        $client->special_sessions = $request->input('special_sessions', 6);
+
+        // if ($request->user_id) {
+
+        //     $therapist = User::find($request->user_id);
+        //     $therapist->notify(new NewClientNotification());
+        // }
 
         $client->previous_therapy = $request->previous_therapy ?? 0;
+
+        if ($request->input('special_sessions')) {
+            $client->special_sessions = 6;
+            $client->max_sessions = 16;
+        } else {
+            $client->max_sessions = 16;
+        }
 
         // $c->ethnic_group = json_encode($ethnicGroupArray);
 
         // $c->user_id = $user->id;
         // dd($client->gender);
         $client->save();
+
+
+            if ($client->special_sessions) {
+        for ($i = 0; $i < 6; $i++) {
+            $client->therapySessions()->create([
+                // other session fields...
+                'special' => true,
+            ]);
+        }
+    }
+
         return redirect()->route('dashboard');
     }
 
@@ -409,15 +431,25 @@ class ClientController extends Controller
             'user_id' => $request->input('user_id'),
             'gender' => $client->gender,
             'contact_method' => $client->contact_method,
-            'max_sessions' => $request->input('max_sessions'),
+            // 'max_sessions' => $request->input('max_sessions'),
+            'max_sessions' => $request->input('special_sessions') ? 10 : 16,
+            'special_sessions' => $request->has('special_sessions') ? 6 : 0,
             'therapist' => $request->input('therapist'),
             'status' => $request->input('status'),
             'waitlist' => $request->input('waitlist', 0),
+            'special_sessions' => $request->input('special_sessions', 0),
         ]);
 
         // $client->update($validatedData);
         // Update the client fields (excluding 'status')
         // unset($validatedData['status']);
+
+        if ($request->input('special_sessions')) {
+            $client->special_sessions = 6;
+            $client->max_sessions = 10;
+        } else {
+            $client->max_sessions = 16;
+        }
 
         // Update 'status' separately
         if ($request->has('status')) {
@@ -425,10 +457,10 @@ class ClientController extends Controller
             $client->save();
         }
         // Notify the therapist
-        if ($request->user_id) {
-            $therapist = User::find($request->user_id);
-            $therapist->notify(new NewClientNotification());
-        }
+        // if ($request->user_id) {
+        //     $therapist = User::find($request->user_id);
+        //     $therapist->notify(new NewClientNotification());
+        // }
 
 
         return redirect()->route('dashboard');
