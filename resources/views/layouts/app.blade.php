@@ -5,22 +5,24 @@
 <body class="font-sans antialiased bg-gray-50">
     <x-jet-banner />
 
-    <div class="">
-        @livewire('navigation-menu')
+    <div class="px-2">
+        <x-layout.main-container >
+            @livewire('navigation-menu')
 
-        <!-- Page Heading -->
-        @if (isset($header))
-            <header class="bg-white shadow">
-                <div class="px-4 py-6 mx-auto max-w-7xl sm:px-6 lg:px-8">
-                    {{ $header }}
-                </div>
-            </header>
-        @endif
+            <!-- Page Heading -->
+            {{-- @if (isset($header))
+                <header class="bg-white shadow">
+                    <div class="px-4 py-6 mx-auto max-w-7xl sm:px-6 lg:px-8">
+                        {{ $header }}
+                    </div>
+                </header>
+            @endif --}}
 
-        <!-- Page Content -->
-        <main class="p-2">
-            {{ $slot }}
-        </main>
+            <!-- Page Content -->
+            <main class="p-2">
+                {{ $slot }}
+            </main>
+        </x-layout.main-container>
     </div>
 
     @stack('modals')
