@@ -171,33 +171,33 @@ class TherapySessionController extends Controller
             $specialSessionsCount = $client->therapySessions()->where('special', true)->count();
 
             if ($client->special_sessions && $specialSessionsCount < 6) {
-            // Special session
-            $ts = new TherapySession();
-            $ts->client_id = $request->client_id;
-            $ts->session_cost = 0;
-            $ts->client_contribution = $request->client_contribution;
-            $ts->remaining_client_contribution = $client->client_contribution - $ts->session_cost;
-            $ts->created_at = $request->created_at;
-            $ts->user_id = $user->id;
-            $ts->attendance = $request->attendance;
-            $ts->notes = $request->notes;
-            $ts->special = true;
+                // Special session
+                $ts = new TherapySession();
+                $ts->client_id = $request->client_id;
+                $ts->session_cost = 0;
+                $ts->client_contribution = $request->client_contribution;
+                $ts->remaining_client_contribution = $client->client_contribution - $ts->session_cost;
+                $ts->created_at = $request->created_at;
+                $ts->user_id = $user->id;
+                $ts->attendance = $request->attendance;
+                $ts->notes = $request->notes;
+                $ts->special = true;
 
-            $ts->save();
-        } else {
-            // Regular session
-            $ts = new TherapySession();
-            $ts->client_id = $request->client_id;
-            $ts->session_cost = $therapist_session_cost;
-            $ts->client_contribution = $request->client_contribution;
-            $ts->remaining_client_contribution = $client->client_contribution - $ts->session_cost;
-            $ts->created_at = $request->created_at;
-            $ts->user_id = $user->id;
-            $ts->attendance = $request->attendance;
-            $ts->notes = $request->notes;
+                $ts->save();
+            } else {
+                // Regular session
+                $ts = new TherapySession();
+                $ts->client_id = $request->client_id;
+                $ts->session_cost = $therapist_session_cost;
+                $ts->client_contribution = $request->client_contribution;
+                $ts->remaining_client_contribution = $client->client_contribution - $ts->session_cost;
+                $ts->created_at = $request->created_at;
+                $ts->user_id = $user->id;
+                $ts->attendance = $request->attendance;
+                $ts->notes = $request->notes;
 
-            $ts->save();
-        }
+                $ts->save();
+            }
 
             if ($client->therapySessions()->whereIn('attendance', ['attended', 'no-show'])->count() >= 16) {
                 $client->status = 1;
@@ -256,9 +256,9 @@ class TherapySessionController extends Controller
         $attendanceColor = $this->calculateAttendanceColor($therapySession->attendance);
 
 
-         $defaultSpecialSessions = $client->special_sessions ?: 6;
-    $specialSessionsCount = $client->therapySessions()->where('special', true)->count();
-    $specialSessionsLeft = max(0, $defaultSpecialSessions - $specialSessionsCount);
+        $defaultSpecialSessions = $client->special_sessions ?: 6;
+        $specialSessionsCount = $client->therapySessions()->where('special', true)->count();
+        $specialSessionsLeft = max(0, $defaultSpecialSessions - $specialSessionsCount);
 
 
 
