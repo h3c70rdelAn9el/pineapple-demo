@@ -14,6 +14,7 @@ use App\Notifications\MissedTherapySessions;
 use App\Notifications\SessionLimitNotification;
 use App\Http\Requests\StoreTherapySessionRequest;
 use App\Http\Requests\UpdateTherapySessionRequest;
+use App\Notifications\SpecialSessionsLimitNotification;
 // use Log
 use Illuminate\Support\Facades\Log;
 
@@ -51,101 +52,6 @@ class TherapySessionController extends Controller
      * @param  \App\Http\Requests\StoreTherapySessionRequest  $request
      * @return \Illuminate\Http\Response
      */
-    // public function store(Request $request)
-    // {
-    //     // TODO: MAKE A THE REQEUST FORM
-
-    //     $user = auth()->user();
-    //     $client_id = $request->client_id;
-    //     $client = Client::find($client_id);
-
-    //     if($user->admin == 1){
-    //         $therapist = $client->user;
-    //     }
-    //     else
-    //     {
-    //         $therapist = User::find($user->id);
-    //     }
-    //     //$therapist = User::find($user->id);
-    //     if($therapist->session_cost == null || $therapist->session_cost == 0){
-    //         Session::flash('error', 'You have no session cost set. please set it in your profile.');
-    //         return redirect()->back();
-    //     }
-    //     $therapist_session_cost = $therapist->session_cost ;
-    //     // $currentDate = Carbon::now();
-    //     // $sessionDate = $request->created_at;
-
-
-    //     // if (strtotime($sessionDate) > strtotime($currentDate)) {
-    //     //     Session::flash('error', 'Cannot schedule a session for a future date.');
-    //     //     return redirect()->back();
-    //     // }
-
-    //     if ($client->therapySessions()->whereIn('attendance', ['attended', 'no-show'])->count() < $client->max_sessions) {
-
-    //         $ts = new TherapySession();
-    //         $ts->client_id = $request->client_id;
-
-    //         // $ts->session_cost = $request->session_cost;
-    //         $ts->session_cost = $therapist_session_cost;
-
-    //         $clientContribution = DB::table('clients')
-    //             ->where('id', $request->client_id)
-    //             ->value('client_contribution');
-    //         $client_contribution = $client->client_contribution;
-    //         $ts->client_contribution = $client->$client_contribution;
-    //         $ts->remaining_client_contribution = $clientContribution - $request->session_cost;
-    //         $ts->client_contribution = $request->client_contribution;
-    //         $ts->created_at = $request->created_at;
-    //         // $ts->created_at = $currentDate;
-
-    //         $ts->user_id = $user->id;
-    //         $ts->attendance = $request->attendance;
-    //         $ts->notes = $request->notes;
-    //         $ts->save();
-
-    //         if ($client->therapySessions()->whereIn('attendance', ['attended', 'no-show'])->count() >= 16) {
-    //             $client->status = 1;
-    //             $client->save();
-    //             // Log::info('Client status set to 1 for client id: ' . $client->id);
-    //         }
-    //         else {
-    //             $client->status = 0;
-    //             $client->save();
-    //             // Log::info('Client status set to 0 for client id: ' . $client->id);
-    //         }
-
-    //         $user_id = $ts->user_id;
-    //         $therapist = User::find($user_id);
-
-    //         if ($client->therapySessions()->whereIn('attendance', ['attended', 'no-show'])->count() === 14) {
-    //             $client->notify(new SessionLimitNotification());
-    //         }
-
-    //         // Check if the client has missed 3 consecutive sessions
-    //         $consecutiveNoShows = 0;
-    //         foreach ($client->therapySessions()->latest()->take(5)->get() as $session) {
-    //             if ($session->attendance === 'no-show') {
-    //                 $consecutiveNoShows++;
-    //             } else {
-    //                 break;
-    //             }
-    //         }
-
-    //         if ($consecutiveNoShows >= 3) {
-    //             $client->notify(new MissedTherapySessions());
-    //         }
-
-    //         return redirect()
-    //             ->back()
-    //             ->with('success', 'Session added successfully.');
-    //     } else {
-    //         Session::flash('error', 'You have reached the maximum number of sessions for this client.');
-    //         return redirect()
-    //             ->back();
-    //     }
-    // }
-
 
     public function store(Request $request)
     {
@@ -213,6 +119,12 @@ class TherapySessionController extends Controller
             if ($client->therapySessions()->whereIn('attendance', ['attended', 'no-show'])->count() === 14) {
                 $client->notify(new SessionLimitNotification());
             }
+
+                if ($client->special_sessions == 0) {
+        $therapist = User::find($request->user_id);
+        $therapist->notify(new SpecialSessionsLimitNotification());
+    }
+
 
             $consecutiveNoShows = 0;
             foreach ($client->therapySessions()->latest()->take(5)->get() as $session) {
