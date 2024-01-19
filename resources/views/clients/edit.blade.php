@@ -74,6 +74,17 @@
             <input class="mx-2 w-16 rounded-md border-blue-200 bg-gray-100 p-1 text-center ring-0" id="max_sessions"
                 name="max_sessions" type="number" value="{{ $client->max_sessions }}">
 
+            <div class="flex flex-row mt-4">
+                <label for="special_sessions">Special Sessions:</label>
+                <input type="radio" name="special_sessions" id="special_sessions_yes" value="1"
+                {{ $client->special_sessions == 1? 'checked' : '' }}>
+                <label for="special_sessions_yes">Yes</label>
+                <input type="radio" name="special_sessions" id="special_sessions_no" value="0"
+                {{ $client->special_sessions == 0? 'checked' : '' }}>
+                <label for="special_sessions_no">No</label>
+                <x-jet-input-error class="mt-2" for="special_sessions" />
+            </div>
+
             {{-- legal_name --}}
             <div class="mb-2 mt-4 w-full">
                 <x-jet-label for="legal_name" value="{{ __('Legal Name') }}" />

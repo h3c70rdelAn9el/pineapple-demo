@@ -1,9 +1,15 @@
+@php
+    $attendedCount = $client->therapySessions->where('attendance', 'attended')->count();
+    $noShowCount = $client->therapySessions->where('attendance', 'no-show')->count();
+    $sessionsLeft = $client->max_sessions - $attendedSessions->count();
+    $defaultSpecialSessions = $client->special_sessions ?: 6;
+    $specialSessionsCount = $client
+        ->therapySessions()
+        ->where('special', true)
+        ->count();
+    $specialSessionsLeft = max(0, $defaultSpecialSessions - $specialSessionsCount);
+@endphp
 <div class="flex flex-col mt-4 text-xs">
-    @php
-        $attendedCount = $client->therapySessions->where('attendance', 'attended')->count();
-        $noShowCount = $client->therapySessions->where('attendance', 'no-show')->count();
-        $sessionsLeft = $client->max_sessions - $attendedSessions->count();
-    @endphp
 
     <p class="text-gray-500">
         <span class="mr-3 font-bold">{{ $sessionsLeft }}</span>Sessions Left
@@ -14,4 +20,6 @@
     <p class="text-red-600">
         <span class="mr-2">{{ $noShowCount }}</span>No Show
     </p>
+    <p class="text-gray-500">
+        {{ $specialSessionsLeft }}
 </div>
