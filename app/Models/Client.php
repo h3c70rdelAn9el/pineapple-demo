@@ -42,7 +42,8 @@ class Client extends Model
         'gender',
         'therapist_id',
         'user_id',
-        'waitlist'
+        'waitlist',
+        'special_sessions',
     ];
 
     public function user()
