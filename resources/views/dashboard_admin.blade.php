@@ -1,16 +1,15 @@
 <x-app-layout>
-    <x-main-container>
-        <x-container-header :user="$user">
+        {{-- <x-container-header :user="$user">
             {{ $user->preferred_name ? $user->preferred_name : $user->name }}
-        </x-container-header>
+        </x-container-header> --}}
 
-        @if ($user->admin == 1)
+        {{-- @if ($user->admin == 1)
             <div class="flex flex-row pt-2 ml-7">
                 <p class="ml-2">
                     Admin Priveleges
                 </p>
             </div>
-        @endif
+        @endif --}}
 
         <div class="mx-auto mt-2 w-1/2">
             {{-- <form action="/search" method="get">
@@ -22,7 +21,7 @@
                         type="submit">Search</button>
                 </div>
             </form> --}}
-            <x-search-bar />
+            {{-- <x-search-bar /> --}}
         </div>
         <div class="ml-7 mt-2 w-fit ">
             <table class="w-full ml-4">
@@ -127,5 +126,4 @@
                 </x-slot>
             </x-container-content>
         </div>
-    </x-main-container>
 </x-app-layout>
