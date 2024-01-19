@@ -1,8 +1,4 @@
 <x-app-layout>
-    <x-main-container>
-        <x-container-header-secondary :user="$user">
-            {{ $user->name }}
-        </x-container-header-secondary>
         <section
                  class="w-5/6 h-full p-2 mx-auto mt-3 text-gray-800 bg-gray-100 border border-black rounded-lg shadow-md shadow-blue-100 lg:w-1/2">
             <div>
@@ -40,5 +36,4 @@
         <div class="flex mt-2">
             <a class="mx-auto hover:text-blue-500" href="{{ route('clients.show', $therapySession->client_id) }}">Back to client Details</a>
         </div>
-    </x-main-container>
 </x-app-layout>

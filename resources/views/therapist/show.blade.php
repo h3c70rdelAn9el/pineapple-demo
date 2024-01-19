@@ -1,8 +1,5 @@
 <x-app-layout>
-    <x-main-container>
-        <x-container-header :user="$user">
-            {{ $user->name }}
-        </x-container-header>
+
 
         <div class="ml-7 mt-2 w-fit ">
             <table class="w-full ml-4">
@@ -108,5 +105,4 @@
                 </x-slot>
             </x-container-content>
         </div>
-    </x-main-container>
 </x-app-layout>

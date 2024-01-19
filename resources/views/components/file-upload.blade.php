@@ -105,11 +105,10 @@
                             </div>
                         </div>
                         @if ($user->admin == 1)
-                            {
-                            <input type="hidden" name="therapist_id" value="{{ $therapist->id }}">
-                            }else {
+                            {{-- <input type="hidden" name="therapist_id" value="{{ $therapist->id }}"> --}}
+                            <input type="hidden" name="therapist_id" value="{{ optional($therapist)->id }}">
+                        @else
                             <input type="hidden" name="user_id" value="{{ $user->id }}">
-                            }
                         @endif
                         <x-jet-button class="absolute right-0 mb-3 mr-6 mt-9" type="submit">
                             Save
