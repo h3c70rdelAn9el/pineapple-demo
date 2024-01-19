@@ -18,9 +18,6 @@
             </div>
         </div>
     </div>
-    <x-main-container>
-        <x-container-header :user="$user">
-        </x-container-header>
         <div class="mx-auto grid w-full grid-cols-1 gap-3 rounded-lg p-2 px-6 md:grid-cols-2">
             {{-- left side --}}
 
@@ -81,5 +78,4 @@
                 </div>
             </div>
         </div>
-    </x-main-container>
 </x-app-layout>
