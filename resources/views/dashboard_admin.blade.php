@@ -13,15 +13,16 @@
         @endif
 
         <div class="mx-auto mt-2 w-1/2">
-            <form action="/search" method="get">
+            {{-- <form action="/search" method="get">
                 @csrf
                 <div class="flex flex-row">
                     <input class="block w-full rounded-md" id="query" name="query" type="text"
-                        placeholder="Search for..." {{-- value={{ request()->get('query') }} --}}>
+                        placeholder="Search for...">
                     <button class="rounded-md bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700"
                         type="submit">Search</button>
                 </div>
-            </form>
+            </form> --}}
+            <x-search-bar />
         </div>
         <div class="ml-7 mt-2 w-fit ">
             <table class="w-full ml-4">
