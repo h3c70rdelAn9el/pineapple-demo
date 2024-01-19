@@ -269,7 +269,6 @@ class ClientController extends Controller
             $possibleSupportNeededString = $selectedPossibleSupportNeeded;
         }
 
-        // do the same as above for contact_method
 
         $selectedContactMethods = $request->input('contact_method') ?? [];
         $contactMethodString = implode(', ', $selectedContactMethods);
@@ -328,11 +327,11 @@ class ClientController extends Controller
         $client->waitlist = $request->input('waitlist', 0);
         $client->special_sessions = $request->input('special_sessions', 6);
 
-        // if ($request->user_id) {
+        if ($request->user_id) {
 
-        //     $therapist = User::find($request->user_id);
-        //     $therapist->notify(new NewClientNotification());
-        // }
+            $therapist = User::find($request->user_id);
+            $therapist->notify(new NewClientNotification());
+        }
 
         $client->previous_therapy = $request->previous_therapy ?? 0;
 
@@ -456,11 +455,12 @@ class ClientController extends Controller
             $client->status = $request->input('status');
             $client->save();
         }
+
         // Notify the therapist
-        // if ($request->user_id) {
-        //     $therapist = User::find($request->user_id);
-        //     $therapist->notify(new NewClientNotification());
-        // }
+        if ($request->user_id) {
+            $therapist = User::find($request->user_id);
+            $therapist->notify(new NewClientNotification());
+        }
 
 
         return redirect()->route('dashboard');
