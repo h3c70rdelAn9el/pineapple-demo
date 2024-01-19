@@ -569,23 +569,44 @@
         @endforeach
     </select>
 
-    <div class="mt-4">
-        <x-jet-label for="waitlist" value="{{ __('Waitlist') }}" />
-        <div class="flex items-center mt-2">
-            <label for="waitlist_yes" class="mr-4">
-                <input id="waitlist_yes" type="radio" name="waitlist" value="1"
-                    {{ $therapist->waitlist == 1 ? 'checked' : '' }} autofocus />
-                <span class="ml-2 text-sm text-gray-600">Yes</span>
-            </label>
+<div class="mt-4">
+    <x-jet-label for="waitlist" value="{{ __('Waitlist') }}" />
+    <div class="flex items-center mt-2">
+        <label for="waitlist_yes" class="mr-4">
+            <input id="waitlist_yes" type="radio" name="waitlist" value="1"
+                   {{ old('waitlist', 0) == 1 ? 'checked' : '' }} autofocus />
+            <span class="ml-2 text-sm text-gray-600">Yes</span>
+        </label>
 
-            <label for="waitlist_no">
-                <input id="waitlist_no" type="radio" name="waitlist" value="0"
-                    {{ $therapist->waitlist == 0 ? 'checked' : '' }} />
-                <span class="ml-2 text-sm text-gray-600">No</span>
-            </label>
-        </div>
-        <x-jet-input-error for="waitlist" class="mt-2" />
+        <label for="waitlist_no">
+            <input id="waitlist_no" type="radio" name="waitlist" value="0"
+                   {{ old('waitlist', 0) == 0 ? 'checked' : '' }} />
+            <span class="ml-2 text-sm text-gray-600">No</span>
+        </label>
     </div>
+    <x-jet-input-error for="waitlist" class="mt-2" />
+</div>
+     {{-- Special Sessions --}}
+ <div class="mt-4">
+    <x-jet-label for="special_sessions" value="{{ __('Special Sessions') }}" />
+    <div class="flex items-center mt-2">
+        <label for="special_sessions_yes" class="mr-4">
+            <input id="special_sessions_yes" type="radio" name="special_sessions" value="1"
+                   {{ old('special_sessions', 0) == 1 ? 'checked' : '' }} autofocus />
+            <span class="ml-2 text-sm text-gray-600">Yes</span>
+        </label>
+
+        <label for="special_sessions_no">
+            <input id="special_sessions_no" type="radio" name="special_sessions" value="0"
+                   {{ old('special_sessions', 0) == 0 ? 'checked' : '' }} />
+            <span class="ml-2 text-sm text-gray-600">No</span>
+        </label>
+    </div>
+    <x-jet-input-error for="special_sessions" class="mt-2" />
+</div>
+
+
+     </div>
 
 
 
