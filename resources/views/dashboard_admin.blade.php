@@ -104,12 +104,9 @@
                 <div class="flex w-1/4 flex-col text-base">
                     <div class="flex justify-between font-bold">
                         <p>Clients:</p>
-                        <p>{{ $allClients->count() }}</p>
+                        <p>{{ $totalClientCount }}</p>
                     </div>
-                    <div class="flex justify-between">
-                        <p>Active:</p>
-                        <p class='text-green-500'>{{ $activeClients->count() }}</p>
-                    </div>
+
                     <div class="flex justify-between">
                         <p>Inactive:</p>
                         <p class="text-orange-500">{{ $inactiveClients->count() }}</p>
