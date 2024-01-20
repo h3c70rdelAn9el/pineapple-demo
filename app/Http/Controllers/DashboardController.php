@@ -17,11 +17,11 @@ class DashboardController extends Controller
     {
         $user = auth()->user();
         $user_id = $user->id;
-        $clients = User::find($user_id)->clients()->orderBy('client_code', 'asc')->paginate(15);
+        $clients = User::find($user_id)->clients()->orderBy('client_code', 'asc')->paginate(10);
         $totalSessionCost = TherapySession::sum('session_cost');
         $totalClientContribution = Client::sum('client_contribution');
         $client = Client::find($user_id);
-        $allClients = Client::orderBy('client_code', 'asc')->paginate(15, ['*'], 'clients');
+        $allClients = Client::orderBy('client_code', 'asc')->paginate(10, ['*'], 'clients');
         $activeClients = Client::where('status', '0')->get()->sortBy('client_code');
         $inactiveClients = Client::where('status', '1')->get()->sortBy('client_code');
         $therapySessions = TherapySession::where('user_id', $user->id)
@@ -29,7 +29,7 @@ class DashboardController extends Controller
             ->get();
         $therapists = User::where('admin', 0)
             ->orderBy(DB::raw('COALESCE(preferred_name, name)'))
-            ->paginate(5, ['*'], 'therapists');
+            ->paginate(10, ['*'], 'therapists');
         $therapist = Client::find($user_id)?->therapist;
         $attendedSessions = TherapySession::whereIn('client_id', $clients->pluck('id'))->whereIn('attendance', ['attended', 'no-show'])->orderBy('created_at', 'desc')->get();
         $inactiveTherapists = User::where('admin', 0)->where('active_status', 1)->get();
