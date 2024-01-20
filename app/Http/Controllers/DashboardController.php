@@ -18,6 +18,7 @@ class DashboardController extends Controller
         $user = auth()->user();
         $user_id = $user->id;
         $clients = User::find($user_id)->clients()->orderBy('client_code', 'asc')->paginate(10);
+        $totalClientCount = Client::count();
         $totalSessionCost = TherapySession::sum('session_cost');
         $totalClientContribution = Client::sum('client_contribution');
         $client = Client::find($user_id);
@@ -97,7 +98,8 @@ class DashboardController extends Controller
                 'totalSessionCost' => $totalSessionCost,
                 'totalClientContribution' => $totalClientContribution,
                 'client' => $client,
-
+                'clients' => $clients,
+                'totalClientCount' => $totalClientCount,
             ]);
         } else {
             return view('dashboard', [
