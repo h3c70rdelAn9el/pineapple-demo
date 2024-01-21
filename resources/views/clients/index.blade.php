@@ -21,7 +21,7 @@
             <div class="w-full md:w-1/2">
 
                 <button x-on:click="showAllClients = true, showInactiveClients = false, showWaitlistClients = false">
-                    <div class="flex flex-row gap-2">
+                    <div class="flex flex-row gap-2 hover:text-blue-800 transition-all duration-200 ease-in-out">
                         <p>All Clients:</p>
                         <p>{{ $clients->total() }}</p>
                         <p x-text="allClientsCount"></p>
@@ -30,14 +30,14 @@
                 <div class="flex flex-row gap-2">
 
                     <button x-on:click="showInactiveClients = true, showAllClients = false, showWaitlistClients = false">
-                        <div class="flex w-full flex-row gap-2">
+                        <div class="flex w-full flex-row gap-2 text-orange-500 hover:text-orange-700 transition-all duration-200 ease-in-out">
                             <p>Inactive Clients:</p>
                             <p>{{ $inactiveClientsCount }}</p>
                         </div>
                     </button>
                 </div>
                 <button x-on:click="showWaitlistClients = true, showAllClients = false, showInactiveClients = false">
-                    <div class="flex flex-row gap-2">
+                    <div class="flex flex-row gap-2 text-blue-500 hover:text-blue-700 transition-all duration-200 ease-in-out">
                         <p>Waitlisted</p>
                         <p>{{ $waitlistCount }}</p>
                     </div>
