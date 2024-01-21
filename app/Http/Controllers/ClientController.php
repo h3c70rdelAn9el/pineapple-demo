@@ -24,13 +24,13 @@ class ClientController extends Controller
     public function index()
     {
         $user = auth()->user();
-        $clients = Client::all();
+        $clients = Client::all()->sortBy('client_code');
         foreach ($clients as $client) {
             $client->therapist;
             $client->therapySessions;
         }
-        $inactiveClients = $clients->where('status', 1);
-        $waitlistClients = $clients->where('waitlist', 1);
+        $inactiveClients = $clients->where('status', 1)->sortBy('client_code');
+        $waitlistClients = $clients->where('waitlist', 1)->sortBy('client_code');
 
         $therapist = User::all();
 
