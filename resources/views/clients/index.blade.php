@@ -54,7 +54,11 @@
                 </button>
             </div>
         </div>
-        <x-client-table :clients="$clients" />
+        <x-client-table :clients="$clients"
+            :attendedSessions="$attendedSessions"
+            :missedSessions="$missedSessions"
+            :client="$client"
+        />
     </div>
 </x-app-layout>
 
