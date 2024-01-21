@@ -11,7 +11,8 @@
     <div x-data="{
         showAllClients: true,
         showInactiveClients: false,
-        showWaitlistClients: false
+        showWaitlistClients: false,
+
     }">
         <div>
             <h2 class="text-center text-2xl">Clients</h2>
@@ -19,8 +20,7 @@
         <div class="container mx-auto flex flex-row justify-between px-4 md:w-2/3 md:flex-row">
             <div class="w-full md:w-1/2">
 
-                <button
-                    x-on:click="showAllClients = true, showInactiveClients = false, showWaitlistClients = false; updateCounts()">
+                <button x-on:click="showAllClients = true, showInactiveClients = false, showWaitlistClients = false">
                     <div class="flex flex-row gap-2">
                         <p>All Clients:</p>
                         <p>{{ $clients->total() }}</p>
@@ -36,13 +36,14 @@
                         </div>
                     </button>
                 </div>
-                <button
-                    x-on:click="showWaitlistClients = true, showAllClients = false, showInactiveClients = false, updateCounts()">
+                <button x-on:click="showWaitlistClients = true, showAllClients = false, showInactiveClients = false">
                     <div class="flex flex-row gap-2">
                         <p>Waitlisted</p>
                         <p>{{ $waitlistCount }}</p>
                     </div>
                 </button>
+
+
             </div>
             <div>
                 <button class="button-secondary mt-4">
@@ -52,7 +53,19 @@
                 </button>
             </div>
         </div>
-        <x-client-table :clients="$clients" :attendedSessions="$attendedSessions" :missedSessions="$missedSessions" :client="$client" />
+
+        <section x-show="showAllClients">
+            <x-client-table :clients="$clients" :attendedSessions="$attendedSessions" :missedSessions="$missedSessions" :client="$client" />
+        </section>
+
+        <section x-show="showInactiveClients">
+            <x-client-table :clients="$inactiveClients" :attendedSessions="$attendedSessions" :missedSessions="$missedSessions" :client="$client" />
+
+        </section>
+
+        <section x-show="showWaitlistClients">
+            <x-client-table :clients="$waitlistClients" :attendedSessions="$attendedSessions" :missedSessions="$missedSessions" :client="$client" />
+        </section>
     </div>
 </x-app-layout>
 

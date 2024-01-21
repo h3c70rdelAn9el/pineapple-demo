@@ -42,12 +42,16 @@
                             </th>
                         </tr>
                     </thead>
-                    <tbody>
+                    {{-- <tbody> --}}
+
                         @foreach ($clients as $client)
                             <tr
                                 class="{{ $client->status == 1 ? 'bg-orange-300' : ($client->waitlist == 1 ? 'bg-blue-300' : 'bg-green-300') }} border-b-4">
                                 <td class="whitespace-nowrap px-4 py-4 text-sm font-medium text-gray-900">
-                                    {{ $client->client_code }}
+                                    <a href="{{ route('clients.show', $client->id) }}" class="text-blue-600 hover:text-blue-800">
+
+                                        {{ $client->client_code }}
+                                    </a>
                                 </td>
                                 <td class="whitespace-nowrap px-4 py-4 text-sm font-light text-gray-900">
                                     {{ $client && $client->user && $client->user->preferred_name ? $client->user->preferred_name : ($client && $client->user ? $client->user->name : '') }}
