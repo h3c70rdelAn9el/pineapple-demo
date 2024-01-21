@@ -1,3 +1,13 @@
+@php
+    $totalClients = $clients->count();
+    // how do  i pull in teh waitlist count?
+        $waitlistCount = $waitlistClients->total();
+
+
+    // $waitlistCount = $clients->where('waitlist', 1)->count();
+
+@endphp
+
 <x-app-layout>
     <div x-data="{
         showAllClients: true,
@@ -10,10 +20,11 @@
         <div class="container mx-auto flex flex-row justify-between px-4 md:w-2/3 md:flex-row">
             <div class="w-full md:w-1/2">
 
-                <button x-on:click="showAllClients = true">
+<button x-on:click="showAllClients = true, showInactiveClients = false, showWaitlistClients = false; updateCounts()">
                     <div class="flex flex-row gap-2">
                         <p>All Clients:</p>
-                        <p>{{ $clients->count() }}</p>
+                        <p>{{ $clients->total() }}</p>
+                        <p x-text="allClientsCount"></p>
                     </div>
                 </button>
                 <div class="flex flex-row gap-2">
@@ -21,14 +32,17 @@
                     <button x-on:click="showInactiveClients = true, showAllClients = false, showWaitlistClients = false">
                         <div class="flex w-full flex-row gap-2 border border-purple-300">
                             <p>Inactive Clients:</p>
-                            <p>{{ $inactiveClients->count() }}</p>
+                            <p>{{ $inactiveClientsCount }}</p>
                         </div>
                     </button>
                 </div>
-                <button x-on:click="showWaitlistClients = true, showAllClients = false, showInactiveClients = false">
+                <button x-on:click="showWaitlistClients = true, showAllClients = false, showInactiveClients = false, updateCounts()">
                     <div class="flex flex-row gap-2">
                         <p>Waitlisted</p>
-                        <p>{{ $waitlistClients->count() }}</p>
+                        @php
+                            // dd($waitlistClientsCount);
+                        @endphp
+                        <p>{{ $waitlistCount }}</p>
                     </div>
                 </button>
             </div>
@@ -56,9 +70,9 @@
                 </x-client-card>
             @endforeach
             {{-- add links --}}
-            {{-- <div class="flex justify-center">
+            <div class="flex justify-center">
                 {{ $clients->links() }}
-                </div> --}}
+                </div>
         </section>
         <section
             class="container mx-auto p-6"
