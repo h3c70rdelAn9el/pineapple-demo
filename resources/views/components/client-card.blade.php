@@ -24,7 +24,6 @@
 
         <p><span class="mr-2 text-red-500">
                 {{ $client->therapySessions->whereIn('attendance', 'no-show')->count() }}</span>No show</p>
-        {{-- do the canceled --}}
         <p><span class="mr-2 text-yellow-700">
                 {{ $client->therapySessions->whereIn('attendance', 'canceled')->count() }}</span>Canceled</p>
     </div>

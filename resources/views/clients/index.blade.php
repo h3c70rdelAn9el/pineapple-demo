@@ -30,7 +30,7 @@
                 <div class="flex flex-row gap-2">
 
                     <button x-on:click="showInactiveClients = true, showAllClients = false, showWaitlistClients = false">
-                        <div class="flex w-full flex-row gap-2 border border-purple-300">
+                        <div class="flex w-full flex-row gap-2">
                             <p>Inactive Clients:</p>
                             <p>{{ $inactiveClientsCount }}</p>
                         </div>
@@ -39,9 +39,6 @@
                 <button x-on:click="showWaitlistClients = true, showAllClients = false, showInactiveClients = false, updateCounts()">
                     <div class="flex flex-row gap-2">
                         <p>Waitlisted</p>
-                        @php
-                            // dd($waitlistClientsCount);
-                        @endphp
                         <p>{{ $waitlistCount }}</p>
                     </div>
                 </button>
@@ -57,57 +54,7 @@
                 </button>
             </div>
         </div>
-        <section
-            class="container mx-auto p-6"
-            x-show="showAllClients"
-        >
-            @foreach ($clients as $client)
-                <x-client-card
-                    :client="$client"
-                    :therapist="$therapist"
-                    :user="$user"
-                >
-                </x-client-card>
-            @endforeach
-            {{-- add links --}}
-            <div class="flex justify-center">
-                {{ $clients->links() }}
-                </div>
-        </section>
-        <section
-            class="container mx-auto p-6"
-            x-show="showInactiveClients"
-        >
-            @foreach ($inactiveClients as $client)
-                <x-client-card
-                    :client="$client"
-                    :therapist="$therapist"
-                    :user="$user"
-                >
-                </x-client-card>
-            @endforeach
-            {{-- add links --}}
-            {{-- <div class="flex justify-center">
-                {{ $clients->links() }}
-                </div> --}}
-        </section>
-        <section
-            class="container mx-auto p-6"
-            x-show="showWaitlistClients"
-        >
-            @foreach ($waitlistClients as $client)
-                <x-client-card
-                    :client="$client"
-                    :therapist="$therapist"
-                    :user="$user"
-                >
-                </x-client-card>
-            @endforeach
-            {{-- add links --}}
-            {{-- <div class="flex justify-center">
-                        {{ $clients->links() }}
-                        </div> --}}
-        </section>
+        <x-client-table :clients="$clients" />
     </div>
 </x-app-layout>
 
