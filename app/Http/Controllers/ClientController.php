@@ -24,13 +24,23 @@ class ClientController extends Controller
     public function index()
     {
         $user = auth()->user();
-        $clients = Client::all()->sortBy('client_code');
+    // $clients = Client::orderBy('client_code', 'asc')->paginate(10, ['*'], 'clients');
+    $clientsQuery = Client::orderBy('client_code', 'asc');
+$clients = $clientsQuery->paginate(10, ['*'], 'clients');
+
         foreach ($clients as $client) {
             $client->therapist;
             $client->therapySessions;
         }
-        $inactiveClients = $clients->where('status', 1)->sortBy('client_code');
-        $waitlistClients = $clients->where('waitlist', 1)->sortBy('client_code');
+        // $inactiveClients = $clients->where('status', 1)->sortBy('client_code')->paginate(10);
+        $waitlistClients = Client::where('waitlist', 1)->orderBy('client_code')->paginate(10, ['*'], 'waitlistClients');
+        $inactiveClients = $clientsQuery->where('status', 1)->paginate(10, ['*'], 'inactiveClients');
+        // $waitlistClients = $clientsQuery->where('waitlist', 1)->paginate(10, ['*'], 'waitlistClients');
+        // $waitlistClients = $clientsQuery->where('waitlist', 1)->paginate(10, ['*'], 'waitlistClients');
+        $inactiveClientsCount = $inactiveClients->total();
+        // $waitlistClients = $clientsQuery->where('waitlist', 1);
+        $waitlistClientsCount = $waitlistClients->total();
+            // dd($waitlistClients);
 
         $therapist = User::all();
 
@@ -41,6 +51,8 @@ class ClientController extends Controller
             'client' => $client,
             'inactiveClients' => $inactiveClients,
             'waitlistClients' => $waitlistClients,
+            'inactiveClientsCount' => $inactiveClientsCount,
+            'waitlistClientsCount' => $waitlistClientsCount,
         ]);
     }
 
