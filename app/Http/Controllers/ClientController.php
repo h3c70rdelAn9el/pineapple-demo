@@ -24,12 +24,24 @@ class ClientController extends Controller
     public function index()
     {
         $user = auth()->user();
-        $client = Client::all()
-            ->where('client_id', $client->id)
-            ->get();
+        $clients = Client::all();
+        foreach ($clients as $client) {
+            $client->therapist;
+            $client->therapySessions;
+        }
+        $inactiveClients = $clients->where('status', 1);
+        $waitlistClients = $clients->where('waitlist', 1);
 
-        // return view('dashboard', ['client'=>$clients]);
-        // return view('therapist.show', ['client' => $clients()]);
+        $therapist = User::all();
+
+        return view('clients.index', [
+            'user' => $user,
+            'clients' => $clients,
+            'therapist' => $therapist,
+            'client' => $client,
+            'inactiveClients' => $inactiveClients,
+            'waitlistClients' => $waitlistClients,
+        ]);
     }
 
 
@@ -321,8 +333,8 @@ class ClientController extends Controller
         $client->possible_support_needed = $possibleSupportNeededString;
         $client->sexual_orientation = $orientationString;
         // $client->max_sessions = $request->max_sessions;
-       $client->special_sessions = $request->input('special_sessions', false);
-    $client->max_sessions = $request->input('max_sessions', 16);
+        $client->special_sessions = $request->input('special_sessions', false);
+        $client->max_sessions = $request->input('max_sessions', 16);
 
         $client->waitlist = $request->input('waitlist', 0);
         $client->special_sessions = $request->input('special_sessions', 6);
@@ -349,14 +361,14 @@ class ClientController extends Controller
         $client->save();
 
 
-            if ($client->special_sessions) {
-        for ($i = 0; $i < 6; $i++) {
-            $client->therapySessions()->create([
-                // other session fields...
-                'special' => true,
-            ]);
+        if ($client->special_sessions) {
+            for ($i = 0; $i < 6; $i++) {
+                $client->therapySessions()->create([
+                    // other session fields...
+                    'special' => true,
+                ]);
+            }
         }
-    }
 
         return redirect()->route('dashboard');
     }
