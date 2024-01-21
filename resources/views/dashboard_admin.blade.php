@@ -66,10 +66,7 @@
                     {{ $therapists->links() }}
                 </div>
                 @foreach ($therapists as $therapist)
-                    <x-therapists-card
-                        :therapist="$therapist"
-                        incompleteTherapist="$incompleteTherapist"
-                    ></x-therapists-card>
+                    <x-therapists-card :therapist="$therapist" incompleteTherapist="$incompleteTherapist"></x-therapists-card>
                 @endforeach
                 <div>
                     {{ $therapists->links() }}
@@ -82,25 +79,35 @@
             <x-slot name="title">
                 <div class="flex w-1/4 flex-col text-base">
                     <div class="flex justify-between font-bold">
-                        <a href="{{ route('clients.index') }}">
-                            <p>Clients:</p>
-                        </a>
+                        <button
+                            class="rounded-md bg-blue-300 px-2 py-1 transition duration-300 ease-in-out hover:bg-blue-400">
+                            <a href="{{ route('clients.index') }}">
+                                <p>Clients:</p>
+                            </a>
+                        </button>
                         <p>{{ $totalClientCount }}</p>
                     </div>
 
-                    <div class="flex justify-between">
+                    {{-- <div class="flex justify-between">
                         <p>Inactive:</p>
                         <p class="text-orange-500">{{ $inactiveClients->count() }}</p>
+                    </div> --}}
+                    <div
+                        class="flex w-full flex-row gap-2 text-orange-500 transition-all duration-200 ease-in-out hover:text-orange-700">
+                        <button x-on:click="navigateToClientsPage('inactive')">
+                            <a href="{{ route('clients.index', ['status' => 'inactive']) }}">
+                                <p>Inactive Clients:</p>
+                                <p class="text-orange-500">{{ $inactiveClients->count() }}</p>
+                            </a>
+                        </button>
+
                     </div>
                 </div>
 
             </x-slot>
             <x-slot name="count">
                 <button class="button-secondary mt-4">
-                    <a
-                        class="text-sm"
-                        href="{{ route('clients.create') }}"
-                    >
+                    <a class="text-sm" href="{{ route('clients.create') }}">
                         Add Client
                     </a>
                 </button>
@@ -111,11 +118,7 @@
                     {{ $allClients->links() }}
                 </div>
                 @foreach ($allClients as $client)
-                    <x-client-card
-                        :client="$client"
-                        :therapist="$therapist"
-                        :user="$user"
-                    ></x-client-card>
+                    <x-client-card :client="$client" :therapist="$therapist" :user="$user"></x-client-card>
                 @endforeach
                 <div>
                     {{ $allClients->links() }}
@@ -124,3 +127,11 @@
         </x-container-content>
     </div>
 </x-app-layout>
+
+<script>
+    fucntion navigateToClients(tab) {
+        window.loacation.href = "{{ route('clients.index') }}?tab=" + tab;
+    }
+    "
+    }
+</script>
