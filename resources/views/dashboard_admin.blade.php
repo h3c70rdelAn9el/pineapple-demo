@@ -77,31 +77,37 @@
 
         <x-container-content>
             <x-slot name="title">
-                <div class="flex w-1/4 flex-col text-base">
+                <div class="flex w-1/3 flex-col text-base mt-4">
                     <div class="flex justify-between font-bold">
                         <button
-                            class="rounded-md bg-blue-300 px-2 py-1 transition duration-300 ease-in-out hover:bg-blue-400">
+                            class="rounded-md border-2 border-blue-300 px-2 py-1 transition duration-300 ease-in-out hover:bg-blue-400">
                             <a href="{{ route('clients.index') }}">
-                                <p>Clients:</p>
+                                <p>Clients</p>
                             </a>
                         </button>
-                        <p>{{ $totalClientCount }}</p>
+                        {{-- <p>{{ $totalClientCount }}</p> --}}
                     </div>
 
                     {{-- <div class="flex justify-between">
                         <p>Inactive:</p>
                         <p class="text-orange-500">{{ $inactiveClients->count() }}</p>
                     </div> --}}
+
+
+                    <!--
                     <div
-                        class="flex w-full flex-row gap-2 text-orange-500 transition-all duration-200 ease-in-out hover:text-orange-700">
-                        <button x-on:click="navigateToClientsPage('inactive')">
-                            <a href="{{ route('clients.index', ['status' => 'inactive']) }}">
+                        class=" w-full flex flex-row gap-2 text-orange-500">
+                        {{-- <a href="javascript:void(0)" class="w-full flex flex-row"> --}}
+                                {{-- <button x-on:click="navigateToClients('inactive')" class="flex flex-row"> --}}
+
                                 <p>Inactive Clients:</p>
                                 <p class="text-orange-500">{{ $inactiveClients->count() }}</p>
-                            </a>
-                        </button>
+                            {{-- </button> --}}
+                            {{-- </a> --}}
 
                     </div>
+                -->
+
                 </div>
 
             </x-slot>
@@ -129,9 +135,18 @@
 </x-app-layout>
 
 <script>
-    fucntion navigateToClients(tab) {
-        window.loacation.href = "{{ route('clients.index') }}?tab=" + tab;
+    function navigateToClients(tab) {
+        window.location.href = "{{ route('clients.index', ['status' => '']) }}/" + tab;
     }
-    "
-    }
+
+    // Update the currentTab based on the URL parameter
+    let urlParams = new URLSearchParams(window.location.search);
+    let currentTab = urlParams.get('status') || 'all';
+
+    let app = {
+        currentTab: currentTab,
+        updateTab(tab) {
+            this.currentTab = tab;
+        }
+    };
 </script>
