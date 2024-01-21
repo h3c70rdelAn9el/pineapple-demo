@@ -12,11 +12,15 @@
                                 Therapist
                             </th>
                             <th scope="col" class="px-6 py-4 text-left text-sm font-medium text-gray-900">
-                                Possible Support
-                            </th>
-                            <th scope="col" class="px-6 py-4 text-left text-sm font-medium text-gray-900">
                                 Email
                             </th>
+                            <th scope="col" class="px-6 py-4 text-left text-sm font-medium text-gray-900">
+                                Possible Support
+                            </th>
+                            <th scope="col" class="max-w-20 text -gray-900 px-6 py-4 text-left text-sm font-medium">
+                                Special Sessions
+                            </th>
+
                             <th scope="col" class="max-w-20 px-6 py-4 text-left text-sm font-medium text-gray-900">
                                 Max Sessions
                             </th>
@@ -26,6 +30,7 @@
                             <th scope="col" class="max-w-20 px-6 py-4 text-left text-sm font-medium text-gray-900">
                                 Missed Sessions
                             </th>
+
                             <th scope="col" class="w-6 px-6 py-4 text-left text-sm font-medium text-gray-900">
                                 Status
                             </th>
@@ -47,11 +52,15 @@
                                 <td class="whitespace-nowrap px-4 py-4 text-sm font-light text-gray-900">
                                     {{ $client && $client->user && $client->user->preferred_name ? $client->user->preferred_name : ($client && $client->user ? $client->user->name : '') }}
                                 </td>
-                                <td class="whitespace-nowrap px-4 py-4 text-sm font-light text-gray-900">
-                                    {{ $client->possible_support_needed }}
-                                </td>
+
                                 <td class="whitespace-nowrap px-4 py-4 text-sm font-light text-gray-900">
                                     {{ $client->email }}
+                                </td>
+                                <td class="whitespace-nowrap px-4 py-4 text-sm font-light text-gray-900">
+                                    {{ str_replace(['[', ']', '"'], '', $client->possible_support_needed) }}
+                                </td>
+                                <td class="max-w-20 whitespace-nowrap px-4 py-4 text-sm font-light text-gray-900">
+                                    {{ $client->special_sessions == 6 ? 'Yes' : 'No' }}
                                 </td>
                                 <td class="max-w-20 whitespace-nowrap px-4 py-4 text-sm font-light text-gray-900">
                                     {{ $client->max_sessions }}
