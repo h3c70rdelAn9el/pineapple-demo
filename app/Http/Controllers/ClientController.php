@@ -26,16 +26,16 @@ class ClientController extends Controller
         $user = auth()->user();
         // $clients = Client::orderBy('client_code', 'asc')->paginate(10, ['*'], 'clients');
         $clientsQuery = Client::orderBy('client_code', 'asc');
-        $clients = $clientsQuery->with('TherapySessions')->paginate(10, ['*'], 'clients');
+        $clients = $clientsQuery->with('TherapySessions')->paginate(15, ['*'], 'clients');
 
         foreach ($clients as $client) {
             $client->therapist;
             $client->therapySessions;
         }
         // $inactiveClients = $clients->where('status', 1)->sortBy('client_code')->paginate(10);
-        $waitlistClients = Client::where('waitlist', 1)->orderBy('client_code')->paginate(10, ['*'], 'waitlistClients');
-        $inactiveClients = $clientsQuery->where('status', 1)->paginate(10, ['*'], 'inactiveClients');
-        $specialSessionsClients = Client::where('special_sessions', '>', 0)->paginate(10, ['*'], 'specialSessionsClients');
+        $waitlistClients = Client::where('waitlist', 1)->orderBy('client_code')->paginate(15, ['*'], 'waitlistClients');
+        $inactiveClients = $clientsQuery->where('status', 1)->orderBy('client_code')->paginate(15, ['*'], 'inactiveClients');
+        $specialSessionsClients = Client::where('special_sessions', '>', 0)->orderBy('client_code')->paginate(15, ['*'], 'specialSessionsClients');
         // $waitlistClients = $clientsQuery->where('waitlist', 1)->paginate(10, ['*'], 'waitlistClients');
         // $waitlistClients = $clientsQuery->where('waitlist', 1)->paginate(10, ['*'], 'waitlistClients');
         $inactiveClientsCount = $inactiveClients->total();
