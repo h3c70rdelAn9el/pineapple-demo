@@ -56,7 +56,7 @@
                 <div class="flex flex-row gap-2">
 
                     <button
-                        x-on:click="showSpecialSessionsClients = true, showAllClients = false, showInactiveClients = false">
+                        x-on:click="showSpecialSessionsClients = true, showAllClients = false, showInactiveClients = false, showWaitlistClients = false">
                         <div
                             class="flex flex-row gap-2 text-purple-500 transition-all duration-200 ease-in-out hover:text-purple-700">
                             <p>Special Sessions</p>
