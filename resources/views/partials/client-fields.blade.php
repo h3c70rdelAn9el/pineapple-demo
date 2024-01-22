@@ -1,4 +1,4 @@
- <div class="p-1 px-3 mt-2 overflow-x-scroll border border-green-500 rounded-md shadow-md h-[500px] bg-blue-50 shadow-blue-100">
+ <div class="p-1 px-3 mt-2 overflow-x-scroll custom-special-sessions border border-green-500 rounded-md shadow-md h-[500px] bg-blue-50 shadow-blue-100">
      <h2 class="text-lg font-bold text-center">Client: {{ $client->preferred_name }}</h2>
         @if (auth()->user()->admin == 1)
         <div class="flex flex-row justify-end">
@@ -6,11 +6,12 @@
         </div>
         @endif
      @foreach ([
+         'Client Code' => $client->client_code ?: 'Client Code needed',
         'Preferred Name' => $client->preferred_name ?: 'Preferred Name needed',
         'Legal Name' => $client->legal_name ?: 'Legal Name needed',
         'Status' => $client->status === 1 ? 'Inactive' : 'Active',
+        'Special Sessions' => $client->special_sessions > 0 ? 'Yes' : 'No' ,
         'Therapist' => $client->user ? $client->user->name : '',
-        'Client Code' => $client->client_code ?: 'Client Code needed',
         'Max Sessions' => $client->max_sessions ?: 'Max Sessions needed',
         'Phone' => $client->phone ?: 'Phone needed',
         'Contact by' => $client->contact_method ?: 'Contact method needed',
@@ -26,7 +27,7 @@
         'Client Contribution' => $client->client_contribution ?: 'Client Contribution not provided',
         'Additional Notes' => $client->additional_notes ?: 'Additional Notes not provided',
     ] as $label => $value)
-        <div class="flex flex-row text-sm">
+        <div class="flex flex-row text-sm {{ $label === 'Special Sessions' ? 'text-purple-700' : '' }} {{ $value === 'Active' ? 'text-green-600' : '' }} mb-2">
             <div class="w-1/2 p-2 border-b border-r border-gray-400">{{ $label }}:</div>
             <div class="w-1/2 p-2 font-medium border-b border-gray-400">{{ $value }}</div>
         </div>
