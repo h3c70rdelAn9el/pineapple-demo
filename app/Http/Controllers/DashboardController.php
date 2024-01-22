@@ -25,9 +25,12 @@ class DashboardController extends Controller
         $allClients = Client::orderBy('client_code', 'asc')->paginate(10, ['*'], 'clients');
         $activeClients = Client::where('status', '0')->get()->sortBy('client_code');
         $inactiveClients = Client::where('status', '1')->get()->sortBy('client_code');
+        $inactiveTherapistClientsCount = User::find($user_id)->clients()->where('status', '1')->count();
+
         $therapySessions = TherapySession::where('user_id', $user->id)
             ->orderBy('created_at', 'desc')
             ->get();
+
         $therapists = User::where('admin', 0)
             ->orderBy(DB::raw('COALESCE(preferred_name, name)'))
             ->paginate(10, ['*'], 'therapists');
@@ -120,7 +123,7 @@ class DashboardController extends Controller
                 'totalSessionCost' => $totalSessionCost,
                 'totalClientContribution' => $totalClientContribution,
                 'therapySessionsForTherapistClients' => $therapySessionsForTherapistClients,
-
+                'inactiveTherapistClientsCount' => $inactiveTherapistClientsCount,
             ]);
         }
     }
