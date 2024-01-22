@@ -1,38 +1,14 @@
 <x-app-layout>
-    {{-- <x-container-header :user="$user">
-            {{ $user->preferred_name ? $user->preferred_name : $user->name }}
-        </x-container-header> --}}
-
-    {{-- @if ($user->admin == 1)
-            <div class="flex flex-row pt-2 ml-7">
-                <p class="ml-2">
-                    Admin Priveleges
-                </p>
-            </div>
-        @endif --}}
-
-    <div class="mx-auto mt-2 w-1/2">
-        {{-- <form action="/search" method="get">
-                @csrf
-                <div class="flex flex-row">
-                    <input class="block w-full rounded-md" id="query" name="query" type="text"
-                        placeholder="Search for...">
-                    <button class="rounded-md bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700"
-                        type="submit">Search</button>
-                </div>
-            </form> --}}
-        {{-- <x-search-bar /> --}}
-    </div>
-    <div class="ml-7 mt-2 w-fit ">
-        <table class="w-full ml-4">
+    <div class="ml-7 mt-2 w-fit">
+        <table class="ml-4 w-full">
             <tbody class="text-sm">
                 <tr>
                     <td>Total Sessions' Cost:</td>
-                    <td><span class="font-bold ml-4">{{ $totalSessionCost }}</span></td>
+                    <td><span class="ml-4 font-bold">{{ $totalSessionCost }}</span></td>
                 </tr>
                 <tr>
                     <td>Total Clients' Contribution:</td>
-                    <td><span class="font-bold ml-4 text-blue-500">{{ $totalClientContribution }}</span></td>
+                    <td><span class="ml-4 font-bold text-blue-500">{{ $totalClientContribution }}</span></td>
                 </tr>
                 <?php
                 $remainder = $totalSessionCost - $totalClientContribution;
@@ -40,7 +16,7 @@
                 <tr>
                     <td>Total:</td>
                     <td>
-                        <span class="font-bold ml-4 {{ $remainder < 0 ? 'text-red-500' : '' }}">
+                        <span class="{{ $remainder < 0 ? 'text-red-500' : '' }} ml-4 font-bold">
                             {{ $remainder }}
                         </span>
                     </td>
@@ -55,7 +31,7 @@
             <x-slot name="title">
                 {{-- Therapists: --}}
 
-                <div class="flex lg:w-1/2 w-2/3 flex-col text-base">
+                <div class="flex w-2/3 flex-col text-base lg:w-1/2">
                     <div class="flex justify-between font-bold">
                         <p>Therapists:</p>
                         <p>{{ $therapists->count() }}</p>
@@ -86,7 +62,7 @@
                     </div> --}}
             </x-slot>
             <x-slot name="content">
-                     <div>
+                <div>
                     {{ $therapists->links() }}
                 </div>
                 @foreach ($therapists as $therapist)
@@ -101,19 +77,37 @@
 
         <x-container-content>
             <x-slot name="title">
-                <div class="flex w-1/4 flex-col text-base">
+                <div class="flex w-1/3 flex-col text-base mt-4">
                     <div class="flex justify-between font-bold">
-                        <p>Clients:</p>
-                        <p>{{ $allClients->count() }}</p>
+                        <button
+                            class="rounded-md border-2 border-blue-300 px-2 py-1 mb-1 transition duration-300 ease-in-out hover:bg-blue-400">
+                            <a href="{{ route('clients.index') }}">
+                                <p>Clients</p>
+                            </a>
+                        </button>
+                        {{-- <p>{{ $totalClientCount }}</p> --}}
                     </div>
-                    <div class="flex justify-between">
-                        <p>Active:</p>
-                        <p class='text-green-500'>{{ $activeClients->count() }}</p>
-                    </div>
-                    <div class="flex justify-between">
+
+                    {{-- <div class="flex justify-between">
                         <p>Inactive:</p>
                         <p class="text-orange-500">{{ $inactiveClients->count() }}</p>
+                    </div> --}}
+
+
+                    <!--
+                    <div
+                        class=" w-full flex flex-row gap-2 text-orange-500">
+                        {{-- <a href="javascript:void(0)" class="w-full flex flex-row"> --}}
+                                {{-- <button x-on:click="navigateToClients('inactive')" class="flex flex-row"> --}}
+
+                                <p>Inactive Clients:</p>
+                                <p class="text-orange-500">{{ $inactiveClients->count() }}</p>
+                            {{-- </button> --}}
+                            {{-- </a> --}}
+
                     </div>
+                -->
+
                 </div>
 
             </x-slot>
@@ -126,7 +120,7 @@
             </x-slot>
 
             <x-slot name="content">
-                  <div>
+                <div>
                     {{ $allClients->links() }}
                 </div>
                 @foreach ($allClients as $client)
@@ -135,9 +129,24 @@
                 <div>
                     {{ $allClients->links() }}
                 </div>
-
-
             </x-slot>
         </x-container-content>
     </div>
 </x-app-layout>
+
+<script>
+    function navigateToClients(tab) {
+        window.location.href = "{{ route('clients.index', ['status' => '']) }}/" + tab;
+    }
+
+    // Update the currentTab based on the URL parameter
+    let urlParams = new URLSearchParams(window.location.search);
+    let currentTab = urlParams.get('status') || 'all';
+
+    let app = {
+        currentTab: currentTab,
+        updateTab(tab) {
+            this.currentTab = tab;
+        }
+    };
+</script>

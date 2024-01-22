@@ -26,10 +26,16 @@
         <div class="flex flex-col-reverse w-full h-full max-w-6xl p-4 mx-auto mt-3 rounded-md md:flex-row">
             <x-container-content>
                 <x-slot name="title">
-                    Clients:
+                    <div class="flex flex-col">
+                        <p>Clients:</p>
+                        <p class="text-orange-600">Inactive Clients:</p>
+                    </div>
                 </x-slot>
                 <x-slot name="count">
-                    {{ $clients->count() }}
+                    <div class="flex flex-col">
+                        <p>{{ $clients->total() }}</p>
+                        <p class="text-orange-600">{{ $inactiveTherapistClientsCount }}</p>
+                    </div>
                 </x-slot>
                 <x-slot name="content">
                     @foreach ($clients as $client)
@@ -37,37 +43,33 @@
                             :therapist="$therapist"
                             :user="$user"></x-client-card>
                     @endforeach
+                    <div class="flex flex-col">
+                        {{-- add paginator links --}}
+                        {{ $clients->links() }}
+                    </div>
+
                 </x-slot>
             </x-container-content>
-            {{-- <div class="p-2 m-2 bg-blue-100 rounded-md shadow-sm md:w-1/2">
-                <div class="flex flex-row flex-wrap justify-between mx-12 mb-2 text-lg border-b border-gray-100">
-                    <p class="font-bold">Clients:</p>
-                    <p class="ml-2">Total: <span class="font-bold">{{ $clients->count() }}</span></p>
-                </div>
-                <div class="flex flex-row flex-wrap p-2 m-2 mx-auto overflow-y-scroll h-96">
-
-                    @foreach ($clients as $client)
-                        <x-client-card :client="$client"
-                            :therapist="$therapist"
-                            :user="$user"></x-client-card>
-                    @endforeach
-                </div>
-            </div> --}}
             <x-container-content>
                 <x-slot name="title">
                     Sessions:
                 </x-slot>
                 <x-slot name="count">
-                    {{ $therapySessions->count() }}
+                    {{ $therapySessionsForTherapistClients->total() }}
                 </x-slot>
                 <x-slot name="content">
-                    @forelse ($therapySessions as $therapySession)
+                    @forelse ($therapySessionsForTherapistClients as $therapySession)
                         <x-session-card :therapySession='$therapySession'
                             :therapist='$therapist'
                             :client='$therapySession->client'></x-session-card>
                     @empty
                         <p>There are no sessions to display</p>
                     @endforelse
+                    <div class="flex flex-col">
+                        {{-- add paginator links --}}
+                        {{ $therapySessionsForTherapistClients->links() }}
+                        {{-- {{ $therapySessionsForTherapistClients->links('pagination::tailwind') }} --}}
+                    </div>
                 </x-slot>
             </x-container-content>
 </x-app-layout>

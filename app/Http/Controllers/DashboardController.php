@@ -17,16 +17,20 @@ class DashboardController extends Controller
     {
         $user = auth()->user();
         $user_id = $user->id;
-        $clients = User::find($user_id)->clients()->orderBy('client_code', 'asc')->paginate(10);
+        $clients = User::find($user_id)->clients()->orderBy('client_code', 'asc')->paginate(15, ['*'], 'clients');
+        $totalClientCount = Client::count();
         $totalSessionCost = TherapySession::sum('session_cost');
         $totalClientContribution = Client::sum('client_contribution');
         $client = Client::find($user_id);
         $allClients = Client::orderBy('client_code', 'asc')->paginate(10, ['*'], 'clients');
         $activeClients = Client::where('status', '0')->get()->sortBy('client_code');
         $inactiveClients = Client::where('status', '1')->get()->sortBy('client_code');
+        $inactiveTherapistClientsCount = User::find($user_id)->clients()->where('status', '1')->count();
+
         $therapySessions = TherapySession::where('user_id', $user->id)
             ->orderBy('created_at', 'desc')
             ->get();
+
         $therapists = User::where('admin', 0)
             ->orderBy(DB::raw('COALESCE(preferred_name, name)'))
             ->paginate(10, ['*'], 'therapists');
@@ -38,6 +42,9 @@ class DashboardController extends Controller
         $states = json_decode($file, true);
         $jsonFile = file_get_contents(resource_path('json/categories.json'));
         $categories = json_decode($jsonFile, true);
+        $therapySessionsForTherapistClients = TherapySession::whereIn('client_id', $clients->pluck('id'))
+            ->orderBy('created_at', 'desc')
+            ->paginate(15, ['*'], 'sessions');
 
         if ($therapists) {
             $incompleteTherapists = $therapists->filter(function ($therapist) {
@@ -97,7 +104,8 @@ class DashboardController extends Controller
                 'totalSessionCost' => $totalSessionCost,
                 'totalClientContribution' => $totalClientContribution,
                 'client' => $client,
-
+                'clients' => $clients,
+                'totalClientCount' => $totalClientCount,
             ]);
         } else {
             return view('dashboard', [
@@ -113,7 +121,10 @@ class DashboardController extends Controller
                 'attendedSessions' => $attendedSessions,
                 'incompleteTherapist' => $incompleteTherapist,
                 'totalSessionCost' => $totalSessionCost,
-                'totalClientContribution' => $totalClientContribution]);
+                'totalClientContribution' => $totalClientContribution,
+                'therapySessionsForTherapistClients' => $therapySessionsForTherapistClients,
+                'inactiveTherapistClientsCount' => $inactiveTherapistClientsCount,
+            ]);
         }
     }
 }

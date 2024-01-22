@@ -24,12 +24,47 @@ class ClientController extends Controller
     public function index()
     {
         $user = auth()->user();
-        $client = Client::all()
-            ->where('client_id', $client->id)
-            ->get();
+        // $clients = Client::orderBy('client_code', 'asc')->paginate(10, ['*'], 'clients');
+        $clientsQuery = Client::orderBy('client_code', 'asc');
+        $clients = $clientsQuery->with('TherapySessions')->paginate(15, ['*'], 'clients');
 
-        // return view('dashboard', ['client'=>$clients]);
-        // return view('therapist.show', ['client' => $clients()]);
+        foreach ($clients as $client) {
+            $client->therapist;
+            $client->therapySessions;
+        }
+        // $inactiveClients = $clients->where('status', 1)->sortBy('client_code')->paginate(10);
+        $waitlistClients = Client::where('waitlist', 1)->orderBy('client_code')->paginate(15, ['*'], 'waitlistClients');
+        $inactiveClients = $clientsQuery->where('status', 1)->orderBy('client_code')->paginate(15, ['*'], 'inactiveClients');
+        $specialSessionsClients = Client::where('special_sessions', '>', 0)->orderBy('client_code')->paginate(15, ['*'], 'specialSessionsClients');
+        // $waitlistClients = $clientsQuery->where('waitlist', 1)->paginate(10, ['*'], 'waitlistClients');
+        // $waitlistClients = $clientsQuery->where('waitlist', 1)->paginate(10, ['*'], 'waitlistClients');
+        $inactiveClientsCount = $inactiveClients->total();
+        // $waitlistClients = $clientsQuery->where('waitlist', 1);
+        $waitlistClientsCount = $waitlistClients->total();
+        $specialSessionsClientsCount = $specialSessionsClients->count();
+
+        $therapySessions = TherapySession::where('user_id', $user->id);
+        $therapySessions = $therapySessions->orderBy('created_at', 'desc')->get();
+        $attendedSessions = TherapySession::whereIn('client_id', $clients->pluck('id'))->where('attendance', 'attended')->count();
+        $missedSessions = TherapySession::whereIn('client_id', $clients->pluck('id'))->where('attendance', 'no-show')->count();
+
+        $therapist = User::all();
+
+        return view('clients.index', [
+            'user' => $user,
+            'clients' => $clients,
+            'therapist' => $therapist,
+            'client' => $client,
+            'inactiveClients' => $inactiveClients,
+            'waitlistClients' => $waitlistClients,
+            'inactiveClientsCount' => $inactiveClientsCount,
+            'waitlistClientsCount' => $waitlistClientsCount,
+            'therapySessions' => $therapySessions,
+            'attendedSessions' => $attendedSessions,
+            'missedSessions' => $missedSessions,
+            'specialSessionsClients' => $specialSessionsClients,
+            'specialSessionsClientsCount' => $specialSessionsClientsCount,
+        ]);
     }
 
 
@@ -321,8 +356,8 @@ class ClientController extends Controller
         $client->possible_support_needed = $possibleSupportNeededString;
         $client->sexual_orientation = $orientationString;
         // $client->max_sessions = $request->max_sessions;
-       $client->special_sessions = $request->input('special_sessions', false);
-    $client->max_sessions = $request->input('max_sessions', 16);
+        $client->special_sessions = $request->input('special_sessions', false);
+        $client->max_sessions = $request->input('max_sessions', 16);
 
         $client->waitlist = $request->input('waitlist', 0);
         $client->special_sessions = $request->input('special_sessions', 6);
@@ -349,14 +384,14 @@ class ClientController extends Controller
         $client->save();
 
 
-            if ($client->special_sessions) {
-        for ($i = 0; $i < 6; $i++) {
-            $client->therapySessions()->create([
-                // other session fields...
-                'special' => true,
-            ]);
+        if ($client->special_sessions) {
+            for ($i = 0; $i < 6; $i++) {
+                $client->therapySessions()->create([
+                    // other session fields...
+                    'special' => true,
+                ]);
+            }
         }
-    }
 
         return redirect()->route('dashboard');
     }
