@@ -19,7 +19,7 @@
             @endif --}}
 
             <!-- Page Content -->
-            <main class="p-2">
+            <main class="p-2 overflow-y-auto h-[87vh]">
                 {{ $slot }}
             </main>
         </x-layout.main-container>
