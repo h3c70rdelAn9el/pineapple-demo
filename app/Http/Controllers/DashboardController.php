@@ -39,6 +39,9 @@ class DashboardController extends Controller
         $states = json_decode($file, true);
         $jsonFile = file_get_contents(resource_path('json/categories.json'));
         $categories = json_decode($jsonFile, true);
+        $therapySessionsForTherapistClients = TherapySession::whereIn('client_id', $clients->pluck('id'))
+            ->orderBy('created_at', 'desc')
+            ->get();
 
         if ($therapists) {
             $incompleteTherapists = $therapists->filter(function ($therapist) {
@@ -115,7 +118,10 @@ class DashboardController extends Controller
                 'attendedSessions' => $attendedSessions,
                 'incompleteTherapist' => $incompleteTherapist,
                 'totalSessionCost' => $totalSessionCost,
-                'totalClientContribution' => $totalClientContribution]);
+                'totalClientContribution' => $totalClientContribution,
+                'therapySessionsForTherapistClients' => $therapySessionsForTherapistClients,
+
+            ]);
         }
     }
 }
