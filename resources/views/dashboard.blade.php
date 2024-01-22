@@ -61,7 +61,7 @@
                     {{ $therapySessions->count() }}
                 </x-slot>
                 <x-slot name="content">
-                    @forelse ($therapySessions as $therapySession)
+                    @forelse ($therapySessionsForTherapistClients as $therapySession)
                         <x-session-card :therapySession='$therapySession'
                             :therapist='$therapist'
                             :client='$therapySession->client'></x-session-card>
