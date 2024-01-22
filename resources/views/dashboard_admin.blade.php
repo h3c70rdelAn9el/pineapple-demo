@@ -80,7 +80,7 @@
                 <div class="flex w-1/3 flex-col text-base mt-4">
                     <div class="flex justify-between font-bold">
                         <button
-                            class="rounded-md border-2 border-blue-300 px-2 py-1 transition duration-300 ease-in-out hover:bg-blue-400">
+                            class="rounded-md border-2 border-blue-300 px-2 py-1 mb-1 transition duration-300 ease-in-out hover:bg-blue-400">
                             <a href="{{ route('clients.index') }}">
                                 <p>Clients</p>
                             </a>
