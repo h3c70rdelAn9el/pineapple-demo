@@ -17,7 +17,7 @@ class DashboardController extends Controller
     {
         $user = auth()->user();
         $user_id = $user->id;
-        $clients = User::find($user_id)->clients()->orderBy('client_code', 'asc')->paginate(10);
+        $clients = User::find($user_id)->clients()->orderBy('client_code', 'asc')->paginate(15, ['*'], 'clients');
         $totalClientCount = Client::count();
         $totalSessionCost = TherapySession::sum('session_cost');
         $totalClientContribution = Client::sum('client_contribution');
@@ -44,7 +44,7 @@ class DashboardController extends Controller
         $categories = json_decode($jsonFile, true);
         $therapySessionsForTherapistClients = TherapySession::whereIn('client_id', $clients->pluck('id'))
             ->orderBy('created_at', 'desc')
-            ->get();
+            ->paginate(15, ['*'], 'sessions');
 
         if ($therapists) {
             $incompleteTherapists = $therapists->filter(function ($therapist) {
