@@ -11,17 +11,19 @@
             <div class="mx-auto w-full md:w-1/2">
                 <button
                     x-on:click="showAllTherapists = true, showInactiveTherapists = false, showIncompleteTherapists = false"
-                    class="flex flex-row gap-2">
-                    <div class="flex flex-row gap-2 transition-all duration-200 ease-in-out hover:text-blue-800">
+                    class="mx-auto flex w-1/2 flex-row gap-2">
+                    <div
+                        class="flex w-full flex-row justify-between gap-2 text-blue-600 transition-all duration-200 ease-in-out hover:text-blue-800">
                         <p>All Therapists:</p>
                         <p>{{ $therapists->total() }}</p>
                     </div>
                 </button>
                 <div class="flex flex-row gap-2">
                     <button
-                        x-on:click="showInactiveTherapists = true, showAllTherapists = false, showIncompleteTherapists = false">
+                        x-on:click="showInactiveTherapists = true, showAllTherapists = false, showIncompleteTherapists = false"
+                        class="mx-auto w-1/2">
                         <div
-                            class="flex w-full flex-row gap-2 text-red-500 transition-all duration-200 ease-in-out hover:text-orange-700">
+                            class="flex flex-row justify-between gap-2 text-slate-500 transition-all duration-200 ease-in-out hover:text-slate-700">
                             <p>Inactive Therapists:</p>
                             <p>{{ $inactiveTherapistsCount }}</p>
                         </div>
@@ -29,9 +31,10 @@
                 </div>
                 <div class="flex flex-row gap-2">
                     <button
-                        x-on:click="showIncompleteTherapists = true, showAllTherapists = false, showInactiveTherapists = false">
+                        x-on:click="showIncompleteTherapists = true, showAllTherapists = false, showInactiveTherapists = false"
+                        class="mx-auto w-1/2 justify-between">
                         <div
-                            class="flex w-full flex-row gap-2 text-red-500 transition-all duration-200 ease-in-out hover:text-orange-700">
+                            class="flex flex-row justify-between gap-2 text-red-500 transition-all duration-200 ease-in-out hover:text-orange-700">
                             <p>Incomplete Therapists:</p>
                             <p>{{ $incompleteTherapists->count() }}</p>
                         </div>
