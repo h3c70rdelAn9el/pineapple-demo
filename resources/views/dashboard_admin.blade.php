@@ -32,8 +32,8 @@
                 {{-- Therapists: --}}
 
                 <div class="flex w-2/3 flex-col text-base lg:w-1/2">
-                    <div class="flex justify-between font-bold">
-                        <a href="{{ route('therapists.index') }}"><p>Therapists:</p></a>
+                    <div class="flex justify-between font-bold items-center">
+                        <a href="{{ route('therapists.index') }}" class=""><button class="rounded-md border-2 border-blue-300 px-2 py-1 mb-1 transition duration-300 ease-in-out hover:bg-blue-400">Therapists:</button></a>
                         <p>{{ $therapists->count() }}</p>
                     </div>
                     <div class="flex justify-between">
