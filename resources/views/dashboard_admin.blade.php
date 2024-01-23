@@ -33,7 +33,7 @@
 
                 <div class="flex w-2/3 flex-col text-base lg:w-1/2">
                     <div class="flex justify-between font-bold">
-                        <p>Therapists:</p>
+                        <a href="{{ route('therapists.index') }}"><p>Therapists:</p></a>
                         <p>{{ $therapists->count() }}</p>
                     </div>
                     <div class="flex justify-between">
@@ -51,22 +51,15 @@
                 </div>
             </x-slot>
             <x-slot name="count">
-
-                {{-- {{ $therapists->count() }}
-                    {{ $activeTherapists->count() }}
-                    {{ $inactiveTherapists->count() }} --}}
-                {{-- <div class="flex flex-col">
-                        <p>Total: <span>{{ $therapists->count() }}</span></p>
-                        <p>Active: <span>{{ $activeTherapists->count() }}</span></p>
-                        <p>Inactive: <span>{{ $inactiveTherapists->count() }}</span> </p>
-                    </div> --}}
             </x-slot>
             <x-slot name="content">
                 <div>
                     {{ $therapists->links() }}
                 </div>
                 @foreach ($therapists as $therapist)
-                    <x-therapists-card :therapist="$therapist" incompleteTherapist="$incompleteTherapist"></x-therapists-card>
+                    <x-therapists-card :therapist="$therapist" incompleteTherapist="$incompleteTherapist"
+                    incompleteTherapists="$incompleteTherapists"
+                    ></x-therapists-card>
                 @endforeach
                 <div>
                     {{ $therapists->links() }}
