@@ -121,9 +121,9 @@ class TherapySessionController extends Controller
             }
 
                 if ($client->special_sessions == 0) {
-        $therapist = User::find($request->user_id);
-        $therapist->notify(new SpecialSessionsLimitNotification());
-    }
+       
+                     $therapist->notify(new SpecialSessionsLimitNotification());
+                }
 
 
             $consecutiveNoShows = 0;
