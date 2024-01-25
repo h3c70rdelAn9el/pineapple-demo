@@ -25,6 +25,7 @@ class DashboardController extends Controller
         $allClients = Client::orderBy('client_code', 'asc')->paginate(10, ['*'], 'clients');
         $activeClients = Client::where('status', '0')->get()->sortBy('client_code');
         $inactiveClients = Client::where('status', '1')->get()->sortBy('client_code');
+        $therapistClients = User::find($user_id)->clients()->orderBy('client_code')->paginate(10, ['*'], 'therapistClients');
         $inactiveTherapistClientsCount = User::find($user_id)->clients()->where('status', '1')->count();
 
         $therapySessions = TherapySession::where('user_id', $user->id)
@@ -68,24 +69,6 @@ class DashboardController extends Controller
             $incompleteTherapists = collect();
         }
 
-
-        // if ($therapist) {
-        //     $fieldsToCheck = [
-        //         'contract_signed' => $therapist->contract_signed,
-        //         'public_liability_insurance' => $therapist->public_liability_insurance,
-        //         'all_documents_received' => $therapist->all_documents_received,
-        //         'leah_signed' => $therapist->leah_signed,
-        //     ];
-
-        //     foreach ($fieldsToCheck as $fieldName => $fieldValue) {
-        //         if (is_null($fieldValue) || $fieldValue === false) {
-        //             $incompleteTherapist = true;
-        //             break;
-        //         }
-        //     }
-        // } else {
-        //     $incompleteTherapist = false;
-        // }
         $incompleteTherapist = false;
 
         if ($user) {
@@ -104,7 +87,6 @@ class DashboardController extends Controller
             }
         }
 
-        // dd($user->all_documents);
 
         if ($user->admin) {
             return view('dashboard_admin', [
@@ -145,6 +127,7 @@ class DashboardController extends Controller
                 'totalClientContribution' => $totalClientContribution,
                 'therapySessionsForTherapistClients' => $therapySessionsForTherapistClients,
                 'inactiveTherapistClientsCount' => $inactiveTherapistClientsCount,
+                'therapistClients' => $therapistClients,
             ]);
         }
     }
