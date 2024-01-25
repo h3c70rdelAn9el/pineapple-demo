@@ -32,41 +32,34 @@
                 {{-- Therapists: --}}
 
                 <div class="flex w-2/3 flex-col text-base lg:w-1/2">
-                    <div class="flex justify-between font-bold">
-                        <p>Therapists:</p>
+                    <div class="flex justify-between font-bold items-center">
+                        <a href="{{ route('therapists.index') }}" class=""><button class="rounded-md border-2 border-blue-300 px-2 py-1 mb-1 transition duration-300 ease-in-out hover:bg-blue-400">Therapists:</button></a>
                         <p>{{ $therapists->count() }}</p>
                     </div>
-                    <div class="flex justify-between">
+                    <div class="flex justify-between text-blue-600">
                         <p>Active:</p>
-                        <p class='text-blue-600'>{{ $activeTherapists->count() }}</p>
+                        <p>{{ $activeTherapists->count() }}</p>
                     </div>
-                    <div class="flex justify-between">
+                    <div class="flex justify-between text-slate-500">
                         <p>Inactive:</p>
-                        <p class="text-orange-400">{{ $inactiveTherapists->count() }}</p>
+                        <p class="">{{ $inactiveTherapists->count() }}</p>
                     </div>
-                    <div class="flex justify-between">
+                    <div class="flex justify-between text-red-600">
                         <p>Incomplete Profiles:</p>
-                        <p class="text-red-600">{{ $incompleteTherapists->count() }}</p>
+                        <p >{{ $incompleteTherapists->count() }}</p>
                     </div>
                 </div>
             </x-slot>
             <x-slot name="count">
-
-                {{-- {{ $therapists->count() }}
-                    {{ $activeTherapists->count() }}
-                    {{ $inactiveTherapists->count() }} --}}
-                {{-- <div class="flex flex-col">
-                        <p>Total: <span>{{ $therapists->count() }}</span></p>
-                        <p>Active: <span>{{ $activeTherapists->count() }}</span></p>
-                        <p>Inactive: <span>{{ $inactiveTherapists->count() }}</span> </p>
-                    </div> --}}
             </x-slot>
             <x-slot name="content">
                 <div>
                     {{ $therapists->links() }}
                 </div>
                 @foreach ($therapists as $therapist)
-                    <x-therapists-card :therapist="$therapist" incompleteTherapist="$incompleteTherapist"></x-therapists-card>
+                    <x-therapists-card :therapist="$therapist" incompleteTherapist="$incompleteTherapist"
+                    incompleteTherapists="$incompleteTherapists"
+                    ></x-therapists-card>
                 @endforeach
                 <div>
                     {{ $therapists->links() }}

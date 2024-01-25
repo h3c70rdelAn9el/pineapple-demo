@@ -8,19 +8,76 @@ use App\Models\Patient;
 use App\Models\FileUpload;
 use Illuminate\Http\Request;
 use App\Models\TherapySession;
-// use Illuminate\Notifications\Notification;
+// use Illuminate\\Notification;
 use Illuminate\Validation\Rule;
 use App\Notifications\TherapistFileUploaded;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Contracts\Pagination\Paginator;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class TherapistsController extends Controller
 {
+
+
     public function index()
     {
         $user = auth()->user();
-        $therapists = User::where('admin', 0)->get();
-        return view('therapist.index')->with(['therapists' => $therapists]);
+        $therapists = User::where('admin', 0)->paginate(15);
+        $inactiveTherapists = User::where('admin', 0)->where('active_status', 1)->paginate(15);
+
+        // Filter therapists with incomplete data
+        $incompleteTherapists = $therapists->filter(function ($therapist) {
+            $fieldsToCheck = [
+                'contract_signed' => $therapist->contract_signed,
+                'public_liability_insurance' => $therapist->public_liability_insurance,
+                'all_documents' => $therapist->all_documents,
+                'signed_documents' => $therapist->signed_documents,
+                'leah_signed' => $therapist->leah_signed,
+            ];
+
+            foreach ($fieldsToCheck as $field) {
+                if (is_null($field) || $field === false) {
+                    return true;
+                }
+            }
+
+            return false;
+        });
+
+        $inactiveTherapist = User::where('admin', 0)->where('active_status', 1);
+        $inactiveTherapistsCount = $inactiveTherapists->total();
+
+        // Check if the authenticated user (therapist) has incomplete data
+        $therapist = User::find($user->id);
+        $incompleteTherapist = false;
+
+        if ($therapist) {
+            $fieldsToCheck = [
+                'contract_signed' => $therapist->contract_signed,
+                'public_liability_insurance' => $therapist->public_liability_insurance,
+                'all_documents_received' => $therapist->all_documents_received,
+            ];
+
+            foreach ($fieldsToCheck as $field) {
+                if (is_null($field) || $field === false) {
+                    $incompleteTherapist = true;
+                    break;
+                }
+            }
+        }
+
+        return view('therapist.index')->with([
+            'therapists' => $therapists,
+            'therapist' => $user,
+            'inactiveTherapists' => $inactiveTherapists,
+            'inactiveTherapistsCount' => $inactiveTherapistsCount,
+            'incompleteTherapists' => $incompleteTherapists,
+            'incompleteTherapist' => $incompleteTherapist,
+            'inactiveTherapist' => $inactiveTherapist,
+        ]);
     }
+
+
 
     public function show($id)
     {
@@ -107,7 +164,6 @@ class TherapistsController extends Controller
         } else {
             $genderString = $selectedGenders;
         }
-        // $user->gender = is_array($selectedGenders) ? implode(', ', $selectedGenders) : $selectedGenders;
 
         // Validate the request data
         $validatedData = $request->validate([
@@ -149,27 +205,7 @@ class TherapistsController extends Controller
 
         $user = User::find($id);
 
-        // $user->gender = is_array($selectedGenders) ? implode(', ', $selectedGenders) : $selectedGenders;
         $validatedData['gender'] = $genderString;
-        // $user->update($validatedData);
-        // if ($user->admin == 1) {
-        //     unset($validatedData['full']);
-        // } else {
-        //     if ($user->space_for_new_clients == 0) {
-        //         $validatedData['full'] = 1;
-        //     }
-        // }
-// TODO: Check if we need to add this::
-        // if ($user->admin == 1) {
-        //     unset($validatedData['full']);
-        // } else {
-        //     // Check if the therapist has space for new clients
-        //     if ($user->space_for_new_clients > 0) {
-        //         $validatedData['full'] = 0;
-        //     } else {
-        //         $validatedData['full'] = 1;
-        //     }
-        // }
 
 
 
@@ -177,12 +213,8 @@ class TherapistsController extends Controller
             return redirect()->route('therapist.show', $id)->with('error', 'User not found');
         }
 
-        // $user->save();
         $user->update($validatedData);
 
-        // return redirect()->route('therapist.show', $id)->with('success', 'Therapist updated successfully');
         return redirect()->back()->with('success', 'Profile updated!');
-
     }
-
 }

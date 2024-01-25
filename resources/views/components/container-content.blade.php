@@ -1,10 +1,6 @@
 <div class="p-2 pb-12 m-2 bg-blue-100 rounded-md shadow-sm md:w-1/2 overflow-y-auto border-2  border-purple-300">
     {{-- <div class="{{ $classes ?? '' }}flex flex-row flex-wrap justify-between mx-8 mb-2 text-lg border-b border-gray-100"> --}}
-
     <div {!! $attributes->merge(['class' => 'flex flex-row flex-wrap justify-between mx-8 mb-2 text-lg border-b border-gray-100']) !!}>
-
-
-
         <p class="font-bold">
             {{ $title }}
         </p>

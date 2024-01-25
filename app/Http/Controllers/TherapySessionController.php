@@ -120,10 +120,10 @@ class TherapySessionController extends Controller
                 $client->notify(new SessionLimitNotification());
             }
 
-                if ($client->special_sessions == 0) {
-       
-                     $therapist->notify(new SpecialSessionsLimitNotification());
-                }
+            if ($client->special_sessions > 0) {
+                $therapist->notify(new SpecialSessionsLimitNotification());
+            }
+
 
 
             $consecutiveNoShows = 0;
