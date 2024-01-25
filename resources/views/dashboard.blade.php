@@ -34,7 +34,7 @@
         @endif
     </div>
 
-    <div class="mx-auto mt-3 flex h-full w-full max-w-6xl flex-col-reverse rounded-md p-4 md:flex-row">
+    <div class="mx-auto mt-3 flex h-full w-full max-w-6xl flex-col rounded-md p-4 md:flex-row">
         <x-container-content>
             <x-slot name="title">
                 <div class="flex flex-col">
@@ -64,10 +64,14 @@
         </x-container-content>
         <x-container-content>
             <x-slot name="title">
-                Sessions:
+                <div class="flex flex-col h-14">
+                    Sessions:
+                </div>
             </x-slot>
             <x-slot name="count">
-                {{ $therapySessionsForTherapistClients->total() }}
+                <div class="flex flex-col">
+                    {{ $therapySessionsForTherapistClients->total() }}
+                </div>
             </x-slot>
             <x-slot name="content">
                 <div class="flex flex-col">
