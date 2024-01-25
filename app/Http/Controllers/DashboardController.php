@@ -68,11 +68,32 @@ class DashboardController extends Controller
             $incompleteTherapists = collect();
         }
 
-        if ($therapist) {
+
+        // if ($therapist) {
+        //     $fieldsToCheck = [
+        //         'contract_signed' => $therapist->contract_signed,
+        //         'public_liability_insurance' => $therapist->public_liability_insurance,
+        //         'all_documents_received' => $therapist->all_documents_received,
+        //         'leah_signed' => $therapist->leah_signed,
+        //     ];
+
+        //     foreach ($fieldsToCheck as $fieldName => $fieldValue) {
+        //         if (is_null($fieldValue) || $fieldValue === false) {
+        //             $incompleteTherapist = true;
+        //             break;
+        //         }
+        //     }
+        // } else {
+        //     $incompleteTherapist = false;
+        // }
+        $incompleteTherapist = false;
+
+        if ($user) {
             $fieldsToCheck = [
-                'contract_signed' => $therapist->contract_signed,
-                'public_liability_insurance' => $therapist->public_liability_insurance,
-                'all_documents_received' => $therapist->all_documents_received,
+                'contract_signed' => $user->contract_signed,
+                'leah_signed' => $user->leah_signed,
+                // 'public_liability_insurance' => $user->public_liability_insurance,
+                'all_documents' => $user->all_documents,
             ];
 
             foreach ($fieldsToCheck as $field) {
@@ -81,9 +102,9 @@ class DashboardController extends Controller
                     break;
                 }
             }
-        } else {
-            $incompleteTherapist = false;
         }
+
+        // dd($user->all_documents);
 
         if ($user->admin) {
             return view('dashboard_admin', [
