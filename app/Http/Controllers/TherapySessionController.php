@@ -133,6 +133,7 @@ class TherapySessionController extends Controller
             }
 
 
+
             $consecutiveNoShows = 0;
             foreach ($client->therapySessions()->latest()->take(5)->get() as $session) {
                 if ($session->attendance === 'no-show') {
