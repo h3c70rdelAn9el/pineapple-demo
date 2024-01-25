@@ -26,7 +26,8 @@
 
     <div class="ml-7 flex flex-row pt-2">
         @if ($incompleteTherapist)
-            <div class="flex flex-col text-center text-lg mx-auto border border-red-800 p-2 rounded-md bg-red-100 text-red-600">
+            <div
+                class="mx-auto flex flex-col rounded-md border border-red-800 bg-red-100 p-2 text-center text-lg text-red-600">
                 <p>Your Profile Is Incomplete</p>
                 <p>Before clients are assigned, you must visit your profile page and complete it.</p>
             </div>
@@ -48,12 +49,17 @@
                 </div>
             </x-slot>
             <x-slot name="content">
+                <div class="flex flex-col">
+                    {{ $therapistClients->links() }}
+                </div>
+
                 @foreach ($clients as $client)
                     <x-client-card :client="$client" :therapist="$therapist" :user="$user"></x-client-card>
                 @endforeach
                 <div class="flex flex-col">
-                    {{ $clients->links() }}
+                    {{ $therapistClients->links() }}
                 </div>
+
             </x-slot>
         </x-container-content>
         <x-container-content>
@@ -64,15 +70,16 @@
                 {{ $therapySessionsForTherapistClients->total() }}
             </x-slot>
             <x-slot name="content">
+                <div class="flex flex-col">
+                    {{ $therapySessionsForTherapistClients->links() }}
+                </div>
                 @forelse ($therapySessionsForTherapistClients as $therapySession)
                     <x-session-card :therapySession='$therapySession' :therapist='$therapist' :client='$therapySession->client'></x-session-card>
                 @empty
                     <p>There are no sessions to display</p>
                 @endforelse
                 <div class="flex flex-col">
-                    {{-- add paginator links --}}
                     {{ $therapySessionsForTherapistClients->links() }}
-                    {{-- {{ $therapySessionsForTherapistClients->links('pagination::tailwind') }} --}}
                 </div>
             </x-slot>
         </x-container-content>
