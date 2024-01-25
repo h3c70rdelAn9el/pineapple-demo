@@ -32,6 +32,23 @@ class DashboardController extends Controller
             ->orderBy('created_at', 'desc')
             ->get();
 
+        $therapySession = TherapySession::where('user_id', $user->id)
+            ->orderBy('created_at', 'desc')
+            ->first();
+
+        $allTherapySessions = TherapySession::orderBy('created_at', 'desc')->paginate('10', ['*'], 'therapySessions');
+
+        $missedSessions = TherapySession::where('user_id', $user->id)
+            ->where('attendance', 'missed')
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        $allMissedSessions = TherapySession::where('attendance', 'no-show')
+            ->orderBy('created_at', 'desc')
+            ->paginate('15', ['*'], 'missedSessions');
+
+      $allSpecialSessions = TherapySession::where('special',  1)->paginate('15', ['*'],'specialSessions');
+
         $therapists = User::where('admin', 0)
             ->orderBy(DB::raw('COALESCE(preferred_name, name)'))
             ->paginate(15, ['*'], 'therapists');
@@ -87,6 +104,7 @@ class DashboardController extends Controller
             }
         }
 
+        // dd($allClients);
 
         if ($user->admin) {
             return view('dashboard_admin', [
@@ -94,12 +112,13 @@ class DashboardController extends Controller
                 'therapists' => $therapists,
                 'allClients' => $allClients,
                 'therapist' => $therapist,
-                'therapySessions' => $therapySessions,
                 'states' => $states,
                 'categories' => $categories,
                 'activeClients' => $activeClients,
                 'inactiveClients' => $inactiveClients,
+                'therapySessions' => $therapySessions,
                 'attendedSessions' => $attendedSessions,
+                'missedSessions' => $missedSessions,
                 'inactiveTherapists' => $inactiveTherapists,
                 'activeTherapists' => $activeTherapists,
                 'incompleteTherapists' => $incompleteTherapists,
@@ -109,6 +128,10 @@ class DashboardController extends Controller
                 'client' => $client,
                 'clients' => $clients,
                 'totalClientCount' => $totalClientCount,
+                'allTherapySessions' => $allTherapySessions,
+                'therapySession' => $therapySession,
+                'allMissedSessions' => $allMissedSessions,
+                'allSpecialSessions' => $allSpecialSessions,
             ]);
         } else {
             return view('dashboard', [
