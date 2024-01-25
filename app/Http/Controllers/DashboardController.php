@@ -25,6 +25,7 @@ class DashboardController extends Controller
         $allClients = Client::orderBy('client_code', 'asc')->paginate(10, ['*'], 'clients');
         $activeClients = Client::where('status', '0')->get()->sortBy('client_code');
         $inactiveClients = Client::where('status', '1')->get()->sortBy('client_code');
+        $therapistClients = User::find($user_id)->clients()->orderBy('client_code')->paginate(10, ['*'], 'therapistClients');
         $inactiveTherapistClientsCount = User::find($user_id)->clients()->where('status', '1')->count();
 
         $therapySessions = TherapySession::where('user_id', $user->id)
@@ -33,7 +34,7 @@ class DashboardController extends Controller
 
         $therapists = User::where('admin', 0)
             ->orderBy(DB::raw('COALESCE(preferred_name, name)'))
-            ->paginate(10, ['*'], 'therapists');
+            ->paginate(15, ['*'], 'therapists');
         $therapist = Client::find($user_id)?->therapist;
         $attendedSessions = TherapySession::whereIn('client_id', $clients->pluck('id'))->whereIn('attendance', ['attended', 'no-show'])->orderBy('created_at', 'desc')->get();
         $inactiveTherapists = User::where('admin', 0)->where('active_status', 1)->get();
@@ -68,11 +69,14 @@ class DashboardController extends Controller
             $incompleteTherapists = collect();
         }
 
-        if ($therapist) {
+        $incompleteTherapist = false;
+
+        if ($user) {
             $fieldsToCheck = [
-                'contract_signed' => $therapist->contract_signed,
-                'public_liability_insurance' => $therapist->public_liability_insurance,
-                'all_documents_received' => $therapist->all_documents_received,
+                'contract_signed' => $user->contract_signed,
+                'leah_signed' => $user->leah_signed,
+                // 'public_liability_insurance' => $user->public_liability_insurance,
+                'all_documents' => $user->all_documents,
             ];
 
             foreach ($fieldsToCheck as $field) {
@@ -81,9 +85,8 @@ class DashboardController extends Controller
                     break;
                 }
             }
-        } else {
-            $incompleteTherapist = false;
         }
+
 
         if ($user->admin) {
             return view('dashboard_admin', [
@@ -124,6 +127,7 @@ class DashboardController extends Controller
                 'totalClientContribution' => $totalClientContribution,
                 'therapySessionsForTherapistClients' => $therapySessionsForTherapistClients,
                 'inactiveTherapistClientsCount' => $inactiveTherapistClientsCount,
+                'therapistClients' => $therapistClients,
             ]);
         }
     }
