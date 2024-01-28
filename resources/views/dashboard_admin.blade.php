@@ -85,15 +85,17 @@
 
                         <div class="flex w-full flex-col text-base lg:w-1/2">
                             <div class="flex items-center justify-between font-bold">
-                                <a href="{{ route('therapists.index') }}" class=""><button
+                                {{-- <a href="{{ route('therapists.index') }}" class=""> --}}
+                                <a href="#" class="">
+                                    <button
                                         class="mb-1 rounded-md border-2 border-blue-300 px-2 py-1 transition duration-300 ease-in-out hover:bg-blue-400">Therapy Sessions::</button></a>
                                 <p>{{ $allTherapySessions->total() }}</p>
                             </div>
-                            <div class="flex justify-between text-blue-600">
+                            <div class="flex justify-between text-red-500">
                                 <p>Missed:</p>
                                 <p>{{ $allMissedSessions->total() }}</p>
                             </div>
-                            <div class="flex justify-between text-slate-500">
+                            <div class="flex justify-between text-purple-500">
                                 <p>Special::</p>
                                 <p class="">{{ $allSpecialSessions->total() }}</p>
                             </div>
@@ -129,6 +131,7 @@
 
 
       <section class="col-span-1 md:col-span-2">
+        {{-- TODO: only display the latest 10 clients that have had  with the latest therapy sessions --}}
             <x-container-content>
                 <x-slot name="title">
                     <div class="mt-4 flex w-1/3 flex-col text-base">
