@@ -66,6 +66,7 @@ Route::middleware([
 ])->group(function () {
     // Route::post('/session/store', [TherapySessionController::class, 'store'])->name('session.store');
     Route::get('/session/{id}', [TherapySessionController::class, 'show'])->name('session.show');
+    Route::get('sessions/index', [TherapySessionController::class, 'index'])->name('session.index');
     Route::get('file-upload', [FileUploadController::class, 'index'])->name('fileUpload');
     Route::post('file-store/{id}', [FileUploadController::class, 'store'])->name('fileStore');
 
