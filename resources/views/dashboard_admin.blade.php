@@ -85,8 +85,7 @@
 
                         <div class="flex w-full flex-col text-base lg:w-1/2">
                             <div class="flex items-center justify-between font-bold">
-                                {{-- <a href="{{ route('therapists.index') }}" class=""> --}}
-                                <a href="#" class="">
+                                <a href="{{ route('sessions.index') }}" class="">
                                     <button
                                         class="mb-1 rounded-md border-2 border-blue-300 px-2 py-1 transition duration-300 ease-in-out hover:bg-blue-400">Therapy Sessions::</button></a>
                                 <p>{{ $allTherapySessions->total() }}</p>

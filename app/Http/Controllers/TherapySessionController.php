@@ -27,13 +27,28 @@ class TherapySessionController extends Controller
      */
     public function index()
     {
+        $user = auth()->user();
+        $user_id = $user->id;
         $therapySessions = TherapySession::get();
         $ts = [];
         $therapist = User::find($user_id);
         foreach ($therapySessions as $t) {
             $ts[] = $t;
+            $ts[$t->id]['client'] = $t->client;
+            $ts[$t->id]['therapist'] = $t->therapist;
         }
-        return view('client.show', ['therapySessions' => $ts, 'therapist' => $therapist]);
+
+        $missedSessions = TherapySession::where('attendance', 'no-show')->get();
+        $specialSessions = TherapySession::where('special', 1)->get();
+
+        // dd($ts);
+        // return view('client.show', ['therapySessions' => $ts, 'therapist' => $therapist]);
+        return view('session.index',
+            ['therapySessions' => $t,
+            'therapist' => $therapist,
+            'missedSessions' => $missedSessions
+            ,'specialSessions' => $specialSessions,
+        ]);
     }
 
     /**
