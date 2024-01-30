@@ -64,12 +64,15 @@
         </x-container-content>
         <x-container-content>
             <x-slot name="title">
-                <div class="flex flex-col h-14">
-                    Sessions:
-                </div>
+                <a href="{{ route('session.index') }}" class="">
+                    <button
+                        class="mb-1 rounded-md border-2 border-blue-300 px-2 py-1 transition duration-300 ease-in-out hover:bg-blue-400">Therapy
+                        Sessions:
+                    </button>
+                </a>
             </x-slot>
             <x-slot name="count">
-                <div class="flex flex-col">
+                <div class="flex flex-col items-center pt-1.5">
                     {{ $therapySessionsForTherapistClients->total() }}
                 </div>
             </x-slot>
