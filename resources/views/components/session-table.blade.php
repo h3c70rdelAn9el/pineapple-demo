@@ -26,7 +26,9 @@
                             <th scope="col" class="max-w-20 th-table-header">
                                 Special Session
                             </th>
-
+                            <th scope="col" class="max-w-20 th-table-header">
+                                Action
+                            </th>
                         </tr>
                     </thead>
                     {{-- <tbody> --}}
@@ -57,8 +59,15 @@
                             <td class="max-w-20 td-table-data">
                                 {{ $therapySession->special ? 'Yes' : 'No' }}
                             </td>
+                            <td class="max-w-20 td-table-data text-blue-700">
+                                <a href="{{ route('session.show', $therapySession->id) }}" class="hover:text-blue-800 hover:font-normal transition duration-200">
+                                    View
+                                </a>
+                            </td>
                         </tr>
+                        </a>
                     @endforeach
+
                     </tbody>
                     <tfoot class="border-b bg-white">
                         {{-- <td colspan="10" class="whitespace-nowrap px-6 py-4 text-sm font-medium text-gray-900">
