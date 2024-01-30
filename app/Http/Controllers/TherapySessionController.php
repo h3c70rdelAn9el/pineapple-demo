@@ -30,7 +30,7 @@ class TherapySessionController extends Controller
         $user = auth()->user();
         $user_id = $user->id;
         $therapist = $user_id;
-        $therapySessions = TherapySession::orderBy('created_at', 'desc')->get();
+        $therapySessions = TherapySession::orderBy('created_at', 'desc')->paginate(50, ['*'], 'therapy_sessions');
 
         $client_id = $therapySessions->pluck('client_id');
         $client = Client::whereIn('id', $client_id)->get();
@@ -44,8 +44,8 @@ class TherapySessionController extends Controller
         }
 
         $therapySession = TherapySession::where('user_id')->orderBy('created_at', 'desc')->get();
-        $missedSessions = TherapySession::where('attendance', 'no-show')->get();
-        $specialSessions = TherapySession::where('special', 1)->get();
+        $missedSessions = TherapySession::where('attendance', 'no-show')->paginate(100, ['*'], 'therapy_sessions');
+        $specialSessions = TherapySession::where('special', 1)->paginate(100, ['*'], 'therapy_sessions');
 
         return view('session.index',
             ['therapySessions' => $therapySessions,

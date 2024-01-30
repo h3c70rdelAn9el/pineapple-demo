@@ -70,9 +70,9 @@
 
                     </tbody>
                     <tfoot class="border-b bg-white">
-                        {{-- <td colspan="10" class="whitespace-nowrap px-6 py-4 text-sm font-medium text-gray-900">
-                            {{ $clients->links() }}
-                        </td> --}}
+                        <td colspan="10" class="whitespace-nowrap px-6 py-2 text-sm font-medium text-gray-900">
+                            {{ $therapySessions->links() }}
+                        </td>
                     </tfoot>
                 </table>
             </div>
