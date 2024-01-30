@@ -5,26 +5,26 @@
         showSpecialSessions: false,
     }" x-init="showAllSessions = {{ json_encode(request('tab') !== 'inactive') }};
     showMissedSessions = {{ json_encode(request('tab') === 'inactive') }};
-    showSpecialSessions ={{ json_encode(request('tab')=== 'inactive')}} ">
+    showSpecialSessions = {{ json_encode(request('tab') === 'inactive') }}">
         <div>
             <h2 class="text-center text-2xl">Sessions</h2>
         </div>
         <div class="container mx-auto flex flex-row justify-between px-4 md:w-2/3 md:flex-row">
-            <div class="w-2/3 mx-auto">
-                <button
-                    x-on:click="showAllSessions = true, showMissedSessions = false, showSpecialSessions = false,"
-                    class="flex flex-row gap-2 w-full">
-                    <div class="flex w-full justify-between flex-row gap-2 transition-all duration-200 ease-in-out hover:text-blue-800">
+            <div class="mx-auto w-2/3">
+                <button x-on:click="showAllSessions = true, showMissedSessions = false, showSpecialSessions = false,"
+                    class="flex w-full flex-row gap-2">
+                    <div
+                        class="flex w-full flex-row justify-between gap-2 transition-all duration-200 ease-in-out hover:text-blue-800">
                         <p>All Sessions:</p>
                         <p>{{ $therapySessions->count() }}</p>
                     </div>
                 </button>
 
                 <div class="flex flex-row gap-2">
-                    <button
-                        x-on:click="showMissedSessions = true, showAllSessions = false, showSpecialSessions = false" class="w-full">
+                    <button x-on:click="showMissedSessions = true, showAllSessions = false, showSpecialSessions = false"
+                        class="w-full">
                         <div
-                            class="flex w-full flex-row gap-2 justify-between text-orange-500 transition-all duration-200 ease-in-out hover:text-orange-700">
+                            class="flex w-full flex-row justify-between gap-2 text-orange-500 transition-all duration-200 ease-in-out hover:text-orange-700">
                             <p>Missed Sessions:</p>
                             <p>{{ $missedSessions->count() }}</p>
                         </div>
@@ -33,12 +33,12 @@
 
 
 
-                <div class="flex flex-row gap-2 justify-between">
+                <div class="flex flex-row justify-between gap-2">
 
-                    <button
-                        x-on:click="showSpecialSessions = true, showAllSessions = false, showMissedSessions = false" class="w-full flex justify-between flex-row">
+                    <button x-on:click="showSpecialSessions = true, showAllSessions = false, showMissedSessions = false"
+                        class="flex w-full flex-row justify-between">
                         <div
-                            class="flex flex-row gap-2 text-purple-500 transition-all duration-200 ease-in-out hover:text-purple-700 w-full justify-between">
+                            class="flex w-full flex-row justify-between gap-2 text-purple-500 transition-all duration-200 ease-in-out hover:text-purple-700">
                             <p>Special Sessions</p>
                             <p>{{ $specialSessions->count() }}</p>
                         </div>
@@ -55,10 +55,10 @@
             </div> --}}
         </div>
 
-        {{-- <section x-show="showAllClients">
-            <x-client-table :clients="$clients" :attendedSessions="$attendedSessions" :missedSessions="$missedSessions" :client="$client" />
+        <section x-show="showAllSessions">
+            <x-session-table :sessions="$therapySessions"  :missedSessions="$missedSessions" :specialSessions="$specialSessions" :client="$client" :clients="$clients" :therapySession="$therapySession" :therapySessions="$therapySessions" />
         </section>
-
+{{--
         <section x-show="showInactiveClients">
             <x-client-table :clients="$inactiveClients" :attendedSessions="$attendedSessions" :missedSessions="$missedSessions" :client="$client" />
 

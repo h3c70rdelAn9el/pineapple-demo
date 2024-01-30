@@ -20,6 +20,13 @@ class TherapySession extends Model
     {
         return $this->belongsTo(Client::class);
     }
+
+       public function therapist()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
