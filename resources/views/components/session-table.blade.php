@@ -37,7 +37,7 @@
                         <tr
                             class="{{ $therapySession->special == 1 ? 'bg-purple-300' : ($therapySession->attendance === 'no-show' ? 'bg-red-300' : 'bg-green-300') }} border-b-4">
                             <td class="td-table-data">
-                                {{ $therapySession->client->id }}
+                                {{ $therapySession->id }}
                             </td>
                             <td class="td-table-data">
                                 {{ $therapySession->client->client_code }}
