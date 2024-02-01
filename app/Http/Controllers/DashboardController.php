@@ -28,9 +28,6 @@ class DashboardController extends Controller
         $therapistClients = User::find($user_id)->clients()->orderBy('client_code')->paginate(10, ['*'], 'therapistClients');
         $inactiveTherapistClientsCount = User::find($user_id)->clients()->where('status', '1')->count();
 
-
-
-
         $latestActiveClient = Client::where('status', '0')->orderBy('created_at', 'desc')->first();
         $therapySessions = TherapySession::where('user_id', $user->id)
             ->orderBy('created_at', 'desc')
@@ -66,7 +63,10 @@ class DashboardController extends Controller
         $categories = json_decode($jsonFile, true);
         $therapySessionsForTherapistClients = TherapySession::whereIn('client_id', $clients->pluck('id'))
             ->orderBy('created_at', 'desc')
-            ->paginate(15, ['*'], 'sessions');
+            ->take(10)
+            ->paginate(10);
+
+        // $therapySessionsForTherapistClients = TherapySession::where('user_id', $therapist)->orderBy('created_at', 'desc')->take(10)->get();
 
         if ($therapists) {
             $incompleteTherapists = $therapists->filter(function ($therapist) {
