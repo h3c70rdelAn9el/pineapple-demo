@@ -28,7 +28,10 @@ class DashboardController extends Controller
         $therapistClients = User::find($user_id)->clients()->orderBy('client_code')->paginate(10, ['*'], 'therapistClients');
         $inactiveTherapistClientsCount = User::find($user_id)->clients()->where('status', '1')->count();
 
-        // $latestActiveClient = Client::where('status', '0')->orderBy('created_at', 'desc')->first();
+
+
+
+        $latestActiveClient = Client::where('status', '0')->orderBy('created_at', 'desc')->first();
         $therapySessions = TherapySession::where('user_id', $user->id)
             ->orderBy('created_at', 'desc')
             ->get();
