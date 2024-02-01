@@ -1,42 +1,45 @@
-<a href="{{ route('session.show', $therapySession->id) }}" class="relative w-full h-20 p-2 m-2 transition-all duration-200 ease-in border border-blue-200 rounded-lg shadow-md bg-blue-50 shadow-blue-100 hover:border hover:border-blue-400 hover:shadow-lg">
-    <div class="flex flex-row justify-between w-full ml-1 text-xs">
-        <div class="flex flex-col">
-            <div class="flex flex-row">
-                <p class="mr-1">Client:</p>
-                <p>{{ $therapySession->client->preferred_name ?? 'N/A'}}</p>
+<div class="w-full flex flex-col">
+    <a href="{{ route('session.show', $therapySession->id) }}" class="relative w-full h-20 p-2 m-2 transition-all duration-200 ease-in border border-blue-200 rounded-lg shadow-md bg-blue-50 shadow-blue-100 hover:border hover:border-blue-400 hover:shadow-lg">
+        <div class="flex flex-row justify-between w-full ml-1 text-xs">
+            <div class="flex flex-col">
+                <div class="flex flex-row">
+                    <p class="mr-1">Client:</p>
+                    <p>{{ $therapySession->client->preferred_name ?? 'N/A'}}</p>
+                </div>
+               <div class="flex flex-row text-xs">
+                   <p class="mr-1">Session:</p>
+                   @if ($therapySession->attendance === 'attended')
+                   <p class="text-green-500">{{ $therapySession->attendance }}</p>
+                   @elseif ($therapySession->attendance === 'no-show')
+                   <p class="text-red-500">{{ $therapySession->attendance }}</p>
+                   @elseif ($therapySession->attendance === 'canceled')
+                   <p class="text-yellow-500">{{ $therapySession->attendance }}</p>
+                   @else
+                   <p>{{ $therapySession->attendance }}</p>
+                   @endif
+               </div>
+                @if (Auth::user()->admin)
+                <div class="flex flex-row">
+                    <p class="mr-1">Therapist:</p>
+                    <p>{{ $therapySession->client->user->name }}</p>
+                </div>
+                @endif
             </div>
-           <div class="flex flex-row text-xs">
-               <p class="mr-1">Session:</p>
-               @if ($therapySession->attendance === 'attended')
-               <p class="text-green-500">{{ $therapySession->attendance }}</p>
-               @elseif ($therapySession->attendance === 'no-show')
-               <p class="text-red-500">{{ $therapySession->attendance }}</p>
-               @elseif ($therapySession->attendance === 'canceled')
-               <p class="text-yellow-500">{{ $therapySession->attendance }}</p>
-               @else
-               <p>{{ $therapySession->attendance }}</p>
-               @endif
-           </div>
-            @if (Auth::user()->admin)
-            <div class="flex flex-row">
-                <p class="mr-1">Therapist:</p>
-                <p>{{ $therapySession->client->user->name }}</p>
-            </div>
-            @endif
-        </div>
-        <div class="mr-1 font-light text-right">
-            <div>
-           <p class="">Date:<span class="ml-2">{{ $therapySession->created_at ? $therapySession->created_at->format('M d Y') : 'N/A' }}</span></p>
-            </div>
+            <div class="mr-1 font-light text-right">
+                <div>
+               <p class="">Date:<span class="ml-2">{{ $therapySession->created_at ? $therapySession->created_at->format('M d Y') : 'N/A' }}</span></p>
+                </div>
 
-            {{-- <div class="">
-                <p><span class="mr-2">Session Cost</span>: {{ $therapySession->session_cost }}</p>
+                {{-- <div class="">
+                    <p><span class="mr-2">Session Cost</span>: {{ $therapySession->session_cost }}</p>
+                </div>
+                <div class="">
+                    <p>
+                        Client Contribution remaining: <span class="ml-2">${{ $therapySession->client->client_contribution - $therapySession->client->therapySessions->sum('session_cost') }}</span>
+                    </p>
+                </div> --}}
             </div>
-            <div class="">
-                <p>
-                    Client Contribution remaining: <span class="ml-2">${{ $therapySession->client->client_contribution - $therapySession->client->therapySessions->sum('session_cost') }}</span>
-                </p>
-            </div> --}}
         </div>
-    </div>
-</a>
+    </a>
+
+</div>

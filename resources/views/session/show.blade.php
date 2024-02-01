@@ -1,13 +1,12 @@
 <x-app-layout>
-    <div class="mt-2 flex">
-        <a class="mx-auto w-5/6 text-blue-600 transition duration-200 hover:text-blue-700 lg:w-1/2"
-            href="{{ route('clients.show', $therapySession->client_id) }}">Back to client Details</a>
-    </div>
     <section
         class="mx-auto mt-3 h-full w-5/6 rounded-lg border border-black bg-gray-100 p-2 text-gray-800 shadow-md shadow-blue-100 lg:w-1/2">
         <div>
-            <p class="text-lg">Client: <span
-                    class="font-bold capitalize">{{ $therapySession->client->preferred_name }}</span></p>
+            <p class="text-lg">Client: <span class="font-bold capitalize">
+                    <a href="{{ route('clients.show', $therapySession->client_id) }}"
+                        class="text-blue-500 hover:text-blue-800">
+                        {{ $therapySession->client->preferred_name }}</a>
+                </span></p>
             <p class="text-center text-lg">Session Details</p>
         </div>
         @foreach ([
@@ -37,8 +36,4 @@
             <div class="w-1/2 border-gray-400 p-2">{{ $therapySession->notes }}</div>
         </div>
     </section>
-    <div class="mt-2 flex">
-        <a class="mx-auto w-5/6 text-blue-600 transition duration-200 hover:text-blue-700 lg:w-1/2"
-            href="{{ route('clients.show', $therapySession->client_id) }}">Back to client Details</a>
-    </div>
 </x-app-layout>
