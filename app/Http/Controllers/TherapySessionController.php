@@ -27,13 +27,72 @@ class TherapySessionController extends Controller
      */
     public function index()
     {
-        $therapySessions = TherapySession::get();
+        $user = auth()->user();
+        $user_id = $user->id;
+        // $therapist = $user_id;
+        // $therapySessions = TherapySession::orderBy('created_at', 'desc')->paginate(50, ['*'], 'therapy_sessions');
+            $therapySessions = TherapySession::where('user_id', $user_id)->orderBy('created_at', 'desc')->paginate(50, ['*'], 'therapy_sessions');
+
+        // $therapySessions = TherapySession::where('user_id', $user_id)->orderBy('created_at', 'desc')->paginate(50, ['*'], 'therapy_sessions');
+
+        $client_id = $therapySessions->pluck('client_id');
+        $client = Client::whereIn('id', $client_id)->get();
+        $clients = Client::all();
         $ts = [];
         $therapist = User::find($user_id);
         foreach ($therapySessions as $t) {
             $ts[] = $t;
+            $ts[$t->id]['client'] = $t->client;
+            $ts[$t->id]['therapist'] = $t->therapist;
         }
-        return view('client.show', ['therapySessions' => $ts, 'therapist' => $therapist]);
+
+$therapists = User::where('admin', '!=', 1)->get();
+
+
+
+
+        // $therapistSessions = TherapySession::whereIn('user_id', $therapist->id)->orderBy('created_at', 'desc')->get();
+            // $therapistSessions = TherapySession::whereIn('user_id', $therapists->pluck('id'))
+            // ->orderBy('created_at', 'desc')
+            // ->paginate(100, ['*'], 'sessions');
+        // dd($therapistsSessions);
+        $therapySession = TherapySession::where('user_id')->orderBy('created_at', 'desc')->get();
+        // $allMissedSessions = TherapySession::where('attendance', 'no-show')->paginate(100, ['*'], 'therapy_sessions');
+        // $allSpecialSessions = TherapySession::where('special', 1)->paginate(100, ['*'], 'therapy_sessions');
+
+        // $missedSessions = TherapySession::where('attendance', 'no-show')->paginate(100, ['user_id', '*'], 'therapy_sessions');
+        // $specialSessions = TherapySession::where('special', 1)->paginate(100, ['user_id', '*'], 'therapy_sessions');
+
+        $allMissedSessions = TherapySession::where('attendance', 'no-show')->orderBy('created_at', 'desc')->paginate(100, ['*'], 'therapy_sessions');
+        $allSpecialSessions = TherapySession::where('special', 1)->orderBy('created_at', 'desc')->paginate(100, ['*'], 'therapy_sessions');
+
+        // $missedSessions = TherapySession::where('attendance', 'no-show')->orderBy('created_at', 'desc')->paginate(100);
+        // $specialSessions = TherapySession::where('special', 1)->orderBy('created_at', 'desc')->paginate(100);
+        $missedSessions = TherapySession::where('user_id')->where('attendance', 'no-show')->orderBy('created_at', 'desc')->paginate(100, ['*'], 'therapy_sessions');
+        $specialSessions = TherapySession::where('user_id')->where('special', 1)->orderBy('created_at', 'desc')->paginate(100, ['*'], 'therapy_sessions');
+        $allTherapySessions = TherapySession::orderBy('created_at', 'desc')->paginate(100, ['*'], 'therapy_sessions');
+
+
+
+
+        return view('session.index',
+            ['therapySessions' => $therapySessions,
+            'therapist' => $therapist,
+            'missedSessions' => $missedSessions,
+            'specialSessions' => $specialSessions,
+            'therapySession' => $therapySession,
+            'client' => $client,
+            'clients' => $clients,
+            'allTherapySessions' => $allTherapySessions,
+            'therapists' => $therapists,
+            'user' => $user,
+            // 'therapistSessions' => $therapistSessions,
+            // 'therapistSessions' => $therapistSessions,
+            // 'therapySessionsForTherapistClients' => $therapySessionsForTherapistClients,
+            'allTherapySessions' => $allTherapySessions,
+            'allMissedSessions' => $allMissedSessions,
+            'allSpecialSessions' => $allSpecialSessions,
+        ]);
     }
 
     /**
@@ -139,7 +198,7 @@ class TherapySessionController extends Controller
                 $client->notify(new MissedTherapySessions());
             }
 
-            return redirect()->back()->with('success', 'Session added successfully.');
+        return redirect()->back()->with('success', 'Session ashowed successfully.');
         } else {
             Session::flash('error', 'You have reached the maximum number of sessions for this client.');
             return redirect()->back();
