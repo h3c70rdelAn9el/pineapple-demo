@@ -10,19 +10,6 @@
             {{ session('success') }}
         </div>
     @endif
-    {{-- <x-container-header :user="$user">
-            {{ $user->preferred_name ? $user->preferred_name : $user->name }}
-        </x-container-header> --}}
-
-    {{-- <div class="flex flex-row pt-2 ml-7">
-            @if ($incompleteTherapist)
-            <div class="text-red-600 text-xs flex flex-col">
-                <p >Your Profile Is Incomplete</p>
-                <p>Before clients are assigned, you must visit your profile page and complete it.</p>
-            </div>
-
-            @endif
-        </div> --}}
 
     <div class="ml-7 flex flex-row pt-2">
         @if ($incompleteTherapist)
@@ -73,21 +60,17 @@
             </x-slot>
             <x-slot name="count">
                 <div class="flex flex-col items-center pt-1.5">
-                    {{ $therapySessionsForTherapistClients->total() }}
+                    {{-- {{ $therapySessionsForTherapistClients->count() }} --}}
+                    <p>{{ $therapySessionsForTherapistClients->total() }}</p>
                 </div>
             </x-slot>
             <x-slot name="content">
-                <div class="flex flex-col">
-                    {{ $therapySessionsForTherapistClients->links() }}
-                </div>
+                <p>Latest 10 sessions:</p>
                 @forelse ($therapySessionsForTherapistClients as $therapySession)
                     <x-session-card :therapySession='$therapySession' :therapist='$therapist' :client='$therapySession->client'></x-session-card>
                 @empty
                     <p>There are no sessions to display</p>
                 @endforelse
-                <div class="flex flex-col">
-                    {{ $therapySessionsForTherapistClients->links() }}
-                </div>
             </x-slot>
         </x-container-content>
 </x-app-layout>
