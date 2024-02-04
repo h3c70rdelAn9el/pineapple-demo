@@ -25,15 +25,12 @@
         </table>
     </div>
 
-
-    <div class="relative mx-auto mt-3 grid h-full w-full max-w-6xl grid-cols-1 md:grid-cols-2 gap-3 rounded-md p-4">
-       <section class="col-span-1">
+    <div class="relative mx-auto mt-3 grid h-full w-full max-w-6xl grid-cols-1 gap-3 rounded-md p-4 md:grid-cols-2">
+        <section class="col-span-1">
             <x-container-content>
                 <div class="w-full">
-
                     <x-slot name="title">
                         {{-- Therapists: --}}
-
                         <div class="flex w-full flex-col text-base lg:w-1/2">
                             <div class="flex items-center justify-between font-bold">
                                 <a href="{{ route('therapists.index') }}" class=""><button
@@ -75,19 +72,18 @@
                     </x-slot>
                 </div>
             </x-container-content>
-       </section>
+        </section>
 
         <section class="col-span-1">
             <x-container-content>
                 <div class="w-full">
-
                     <x-slot name="title">
-
                         <div class="flex w-full flex-col text-base lg:w-1/2">
                             <div class="flex items-center justify-between font-bold">
                                 <a href="{{ route('session.index') }}" class="">
                                     <button
-                                        class="mb-1 rounded-md border-2 border-blue-300 px-2 py-1 transition duration-300 ease-in-out hover:bg-blue-400">Therapy Sessions:
+                                        class="mb-1 rounded-md border-2 border-blue-300 px-2 py-1 transition duration-300 ease-in-out hover:bg-blue-400">Therapy
+                                        Sessions:
                                     </button>
                                 </a>
                                 <p>{{ $allTherapySessions->total() }}</p>
@@ -100,39 +96,28 @@
                                 <p>Special::</p>
                                 <p class="">{{ $allSpecialSessions->total() }}</p>
                             </div>
-
-
                         </div>
                     </x-slot>
                     <x-slot name="count">
                     </x-slot>
                     <x-slot name="content">
                         <div class="h-60 w-full">
-                            {{-- <div>
-                                {{ $allTherapySessions->links() }}
-                            </div> --}}
                             <p>Latest 10 Sessions:</p>
                             <div class="h-96 overflow-y-auto">
                                 @foreach ($allTherapySessions->take(10) as $ts)
-                                    <x-session-card
-                                    :therapySession="$therapySession"
-
-                                        ></x-session-card>
+                                    <x-session-card :therapySession="$therapySession">
+                                    </x-session-card>
                                 @endforeach
                             </div>
-                            {{-- <div>
-                                {{ $therapists->links() }}
-                            </div> --}}
-
                         </div>
                     </x-slot>
                 </div>
             </x-container-content>
-       </section>
+        </section>
 
 
-      <section class="col-span-1 md:col-span-2">
-        {{-- TODO: only display the latest 10 clients that have had  with the latest therapy sessions --}}
+        <section class="col-span-1 md:col-span-2">
+            {{-- TODO: only display the latest 10 clients that have had  with the latest therapy sessions --}}
             <x-container-content>
                 <x-slot name="title">
                     <div class="mt-4 flex w-1/3 flex-col text-base">
@@ -178,21 +163,19 @@
                 </x-slot>
 
                 <x-slot name="content">
-                    <div>
+                    {{-- <div>
                         {{ $allClients->links() }}
-                    </div>
+                    </div> --}}
                     {{-- @foreach ($allClients as $client) --}}
                     {{-- <x-client-card :client="$client" :therapist="$therapist" :user="$user"></x-client-card> --}}
                     {{-- <x-client-table :client="$client" :therapist="$therapist" :user="$user" :clients="$clients"></x-client-table> --}}
-                    <x-client-table :clients="$allClients" :attendedSessions="$attendedSessions" :missedSessions="$missedSessions" :client="$client" />
+                    <p class="inline-block min-w-full py-2 sm:px-6 lg:px-8">Latest Active Clients</p>
 
-                    {{-- @endforeach --}}
-                    <div>
-                        {{ $allClients->links() }}
-                    </div>
+                    <x-client-table :clients="$recentActiveClients" :attendedSessions="$attendedSessions" :missedSessions="$missedSessions" :client="$client" />
+
                 </x-slot>
             </x-container-content>
-      </section>
+        </section>
     </div>
 </x-app-layout>
 
