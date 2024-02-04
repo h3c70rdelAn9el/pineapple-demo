@@ -117,21 +117,32 @@
 
                         <x-slot name="content">
                             <!-- Account Management -->
-                            <div class="block px-4 py-2 text-xs text-gray-400">
-                                {{ __('Manage Account') }}
-                            </div>
+
+
+                            <x-jet-dropdown-link href="{{ route('dashboard') }}">
+                                {{ __('Dashboard') }}
+                            </x-jet-dropdown-link>
+
+                            @if ($user->admin == 1)
+                                <x-jet-dropdown-link href="{{ route('therapists.index') }}">
+                                    {{ __('Therapists') }}
+                                </x-jet-dropdown-link>
+                            @endif
+
+
+                            <x-jet-dropdown-link href="{{ route('clients.index') }}">
+                                {{ __('Clients') }}
+                            </x-jet-dropdown-link>
+
+                            <x-jet-dropdown-link href="{{ route('session.index') }}">
+                                {{ __('Sessions') }}
+                            </x-jet-dropdown-link>
 
                             <x-jet-dropdown-link href="{{ route('profile.show') }}">
                                 {{ __('Profile') }}
                             </x-jet-dropdown-link>
 
-                            @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
-                                <x-jet-dropdown-link href="{{ route('api-tokens.index') }}">
-                                    {{ __('API Tokens') }}
-                                </x-jet-dropdown-link>
-                            @endif
-
-                            <div class="border-t border-gray-100"></div>
+                            <div class="border-t border-gray-200"></div>
 
                             <!-- Authentication -->
                             <form method="POST" action="{{ route('logout') }}" x-data>
@@ -190,16 +201,28 @@
 
             <div class="mt-3 space-y-1">
                 <!-- Account Management -->
+                <x-jet-responsive-nav-link class="text-gray-50" href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
+                    {{ __('Dashboard') }}
+                </x-jet-responsive-nav-link>
+
+                @if ($user->admin == 1)
+                    <x-jet-responsive-nav-link class="text-gray-50" href="{{ route('therapists.index') }}"
+                        :active="request()->routeIs('therapists.index')">
+                        {{ __('Therapists') }}
+                    </x-jet-responsive-nav-link>
+                @endif
+
+                <x-jet-responsive-nav-link class="text-gray-50" href="{{ route('clients.index') }}" :active="request()->routeIs('clients.index')">
+                    {{ __('Clients') }}
+                </x-jet-responsive-nav-link>
+
+                <x-jet-responsive-nav-link class="text-gray-50" href="{{ route('session.index') }}" :active="request()->routeIs('session.index')">
+                    {{ __('Sessions') }}
+                </x-jet-responsive-nav-link>
+
                 <x-jet-responsive-nav-link class="text-gray-50" href="{{ route('profile.show') }}" :active="request()->routeIs('profile.show')">
                     {{ __('Profile') }}
                 </x-jet-responsive-nav-link>
-
-                @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
-                    <x-jet-responsive-nav-link class="text-gray-50" href="{{ route('api-tokens.index') }}"
-                        :active="request()->routeIs('api-tokens.index')">
-                        {{ __('API Tokens') }}
-                    </x-jet-responsive-nav-link>
-                @endif
 
                 <!-- Authentication -->
                 <form method="POST" action="{{ route('logout') }}" x-data>
@@ -211,37 +234,7 @@
                     </x-jet-responsive-nav-link>
                 </form>
 
-                <!-- Team Management -->
-                @if (Laravel\Jetstream\Jetstream::hasTeamFeatures())
-                    <div class="border-t border-gray-200"></div>
 
-                    <div class="block px-4 py-2 text-xs text-gray-400">
-                        {{ __('Manage Team') }}
-                    </div>
-
-                    <!-- Team Settings -->
-                    <x-jet-responsive-nav-link href="{{ route('teams.show', Auth::user()->currentTeam->id) }}"
-                        :active="request()->routeIs('teams.show')">
-                        {{ __('Team Settings') }}
-                    </x-jet-responsive-nav-link>
-
-                    @can('create', Laravel\Jetstream\Jetstream::newTeamModel())
-                        <x-jet-responsive-nav-link href="{{ route('teams.create') }}" :active="request()->routeIs('teams.create')">
-                            {{ __('Create New Team') }}
-                        </x-jet-responsive-nav-link>
-                    @endcan
-
-                    <div class="border-t border-gray-200"></div>
-
-                    <!-- Team Switcher -->
-                    <div class="block px-4 py-2 text-xs text-gray-400">
-                        {{ __('Switch Teams') }}
-                    </div>
-
-                    @foreach (Auth::user()->allTeams() as $team)
-                        <x-jet-switchable-team :team="$team" component="jet-responsive-nav-link" />
-                    @endforeach
-                @endif
             </div>
         </div>
     </div>
