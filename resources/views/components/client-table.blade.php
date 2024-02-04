@@ -99,9 +99,11 @@
                         </tr>
                     @endforeach
                     </tbody>
-                    <tfoot class="border-b bg-white">
-                        <td colspan="10" class="whitespace-nowrap px-6 py-4 text-sm font-medium text-gray-900">
-                            {{ $clients->links() }}
+                    <tfoot class="w-full border-b bg-white">
+                        <td colspan="12" class="whitespace-nowrap px-6 py-4 text-sm font-medium text-gray-900">
+                            @if ($clients->count() > 10)
+                                {{ $clients->links() }}
+                            @endif
                         </td>
                     </tfoot>
                 </table>

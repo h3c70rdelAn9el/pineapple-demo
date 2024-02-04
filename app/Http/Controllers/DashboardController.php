@@ -27,18 +27,16 @@ class DashboardController extends Controller
         $inactiveClients = Client::where('status', '1')->get()->sortBy('client_code');
         $therapistClients = User::find($user_id)->clients()->orderBy('client_code')->paginate(10, ['*'], 'therapistClients');
         $inactiveTherapistClientsCount = User::find($user_id)->clients()->where('status', '1')->count();
-
+        $recentClientWithSessions = TherapySession::orderBy('created_at', 'desc')->take(10)->with('client')->get()->pluck('client')->unique('id');
         $latestActiveClient = Client::where('status', '0')->orderBy('created_at', 'desc')->first();
         $therapySessions = TherapySession::where('user_id', $user->id)
             ->orderBy('created_at', 'desc')
             ->get();
-
         $therapySession = TherapySession::where('user_id', $user->id)
             ->orderBy('created_at', 'desc')
             ->first();
-
         $allTherapySessions = TherapySession::orderBy('created_at', 'desc')->paginate('10', ['*'], 'therapySessions');
-
+        $attendedSessions = TherapySession::whereIn('client_id', $clients->pluck('id'))->whereIn('attendance', ['attended', 'no-show'])->orderBy('created_at', 'desc')->get();
         $missedSessions = TherapySession::where('user_id', $user->id)
             ->where('attendance', 'missed')
             ->orderBy('created_at', 'desc')
@@ -48,15 +46,18 @@ class DashboardController extends Controller
             ->orderBy('created_at', 'desc')
             ->paginate('15', ['*'], 'missedSessions');
 
-      $allSpecialSessions = TherapySession::where('special',  1)->paginate('15', ['*'],'specialSessions');
+        $allSpecialSessions = TherapySession::where('special',  1)->paginate('15', ['*'], 'specialSessions');
+
+        $recentSessions = TherapySession::orderBy('created_at', 'desc')->take(100)->get();
+        $recentActiveClients = Client::whereIn('id', $recentSessions->pluck('client_id')->unique())->orderBy('created_at', 'desc')->take(10)->get();
 
         $therapists = User::where('admin', 0)
             ->orderBy(DB::raw('COALESCE(preferred_name, name)'))
             ->paginate(15, ['*'], 'therapists');
         $therapist = Client::find($user_id)?->therapist;
-        $attendedSessions = TherapySession::whereIn('client_id', $clients->pluck('id'))->whereIn('attendance', ['attended', 'no-show'])->orderBy('created_at', 'desc')->get();
         $inactiveTherapists = User::where('admin', 0)->where('active_status', 1)->get();
         $activeTherapists = User::where('admin', 0)->where('active_status', 0)->get();
+
         $file = file_get_contents(storage_path('states.json'));
         $states = json_decode($file, true);
         $jsonFile = file_get_contents(resource_path('json/categories.json'));
@@ -65,8 +66,6 @@ class DashboardController extends Controller
             ->orderBy('created_at', 'desc')
             ->take(10)
             ->paginate(10);
-
-        // $therapySessionsForTherapistClients = TherapySession::where('user_id', $therapist)->orderBy('created_at', 'desc')->take(10)->get();
 
         if ($therapists) {
             $incompleteTherapists = $therapists->filter(function ($therapist) {
@@ -108,7 +107,6 @@ class DashboardController extends Controller
             }
         }
 
-        // dd($allClients);
 
         if ($user->admin) {
             return view('dashboard_admin', [
@@ -136,6 +134,7 @@ class DashboardController extends Controller
                 'therapySession' => $therapySession,
                 'allMissedSessions' => $allMissedSessions,
                 'allSpecialSessions' => $allSpecialSessions,
+                'recentActiveClients' => $recentActiveClients,
             ]);
         } else {
             return view('dashboard', [
