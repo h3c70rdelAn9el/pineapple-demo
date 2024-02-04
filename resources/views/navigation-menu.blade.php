@@ -123,9 +123,12 @@
                                 {{ __('Dashboard') }}
                             </x-jet-dropdown-link>
 
-                            <x-jet-dropdown-link href="{{ route('therapists.index') }}">
-                                {{ __('Therapists') }}
-                            </x-jet-dropdown-link>
+                            @if ($user->admin == 1)
+                                <x-jet-dropdown-link href="{{ route('therapists.index') }}">
+                                    {{ __('Therapists') }}
+                                </x-jet-dropdown-link>
+                            @endif
+
 
                             <x-jet-dropdown-link href="{{ route('clients.index') }}">
                                 {{ __('Clients') }}
@@ -198,15 +201,18 @@
 
             <div class="mt-3 space-y-1">
                 <!-- Account Management -->
-                 <x-jet-responsive-nav-link class="text-gray-50" href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
+                <x-jet-responsive-nav-link class="text-gray-50" href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
                     {{ __('Dashboard') }}
                 </x-jet-responsive-nav-link>
 
-                 <x-jet-responsive-nav-link class="text-gray-50" href="{{ route('therapists.index') }}" :active="request()->routeIs('therapists.index')">
-                    {{ __('Therapists') }}
-                </x-jet-responsive-nav-link>
+                @if ($user->admin == 1)
+                    <x-jet-responsive-nav-link class="text-gray-50" href="{{ route('therapists.index') }}"
+                        :active="request()->routeIs('therapists.index')">
+                        {{ __('Therapists') }}
+                    </x-jet-responsive-nav-link>
+                @endif
 
-                 <x-jet-responsive-nav-link class="text-gray-50" href="{{ route('clients.index') }}" :active="request()->routeIs('clients.index')">
+                <x-jet-responsive-nav-link class="text-gray-50" href="{{ route('clients.index') }}" :active="request()->routeIs('clients.index')">
                     {{ __('Clients') }}
                 </x-jet-responsive-nav-link>
 
