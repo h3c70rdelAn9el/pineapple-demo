@@ -10,6 +10,17 @@
     $statesData = json_decode($statesJson, true);
     $states = $statesData['states'];
     $genders = ['Male', 'Female', 'Transgender', 'Genderfluid', 'Genderqueer', 'Agender', 'Cisgender', 'Bigender', 'Non-binary', 'Prefer Not to Say'];
+    // $currencies = file_get_contents(resource_path('json/currencies.json'));
+    // $currencies = json_decode($currencies, true);
+    $currenciesJson = file_get_contents(resource_path('json/currencies.json'));
+$currencies = json_decode($currenciesJson, true);
+// dd($currencies);
+
+
+    // $currencies = json_decode($currencies, true);
+
+    // $currencies = json_decode($currencies, true);
+
 @endphp
 <div class="grid grid-cols-1 md:grid-cols-3">
     <div>
@@ -323,6 +334,28 @@
         />
     <x-jet-input-error class="mt-2" for="session_cost" />
 </div>
+{{-- @php
+    dd($currencies);
+@endphp --}}
+
+        {{-- currency --}}
+
+
+<div class="input-div">
+    <x-jet-label value="Currency" />
+    <select class="mt-1 block w-full rounded-md border border-blue-300 bg-gray-100"
+        id="currency"
+        name="currency">
+        <option value="">Select currency &nbsp &nbsp &nbsp(selected:{{ $user->currency }})</option>
+        @foreach ($currencies as $currency => $currencyCode)
+            <option value="{{ $currencyCode }}" {{ $user->currency == $currencyCode ? 'selected' : '' }}>
+                {{ $currency }}
+            </option>
+        @endforeach
+    </select>
+    <x-jet-input-error class="mt-2" for="currency" />
+</div>
+
 
 
         {{-- intern --}}

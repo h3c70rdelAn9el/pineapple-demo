@@ -46,6 +46,7 @@ class UserController extends Controller
             'state' => 'nullable|string|max:255',
             'time_zone' => 'nullable|string|max:255',
             'selectedGenders' => 'nullable|array',
+            'currency' => 'nullable|string|max:255'
         ]);
 
         // Handle selectedGenders separately

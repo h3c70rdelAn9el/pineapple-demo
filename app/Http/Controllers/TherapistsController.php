@@ -197,18 +197,21 @@ class TherapistsController extends Controller
             // 'client_extensions' => 'nullable|boolean',
             'notes' => 'nullable|string|max:255',
             'number_of_potential_clients' => 'nullable|numeric',
+            'currencyCode' => 'nullable|string|max:255',
 
             // 'gender' => $genderString
 
 
         ]);
 
+        // Log('User currency: ' . $user->currency);
         $user = User::find($id);
 
         $validatedData['gender'] = $genderString;
 
+        $user->currency = $request->currencyCode;
 
-
+        dd($validatedData, $user->currency);
         if (!$user) {
             return redirect()->route('therapist.show', $id)->with('error', 'User not found');
         }
