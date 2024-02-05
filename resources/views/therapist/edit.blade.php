@@ -393,28 +393,31 @@
                     <x-jet-input-error for="quickbooks" class="mt-2" />
                 </div>
 
-                <div>
-                    <x-jet-label for="session_cost" value="{{ __('Session Cost') }}" />
-                    <x-jet-input id="session_cost" class="mt-1 block w-full" type="number" name="session_cost"
-                        :value="old('session_cost', $therapist->session_cost)" :placeholder="$therapist->session_cost" autofocus />
-                    <x-jet-input-error for="session_cost" class="mt-2" />
-                </div>
+                <div class="flex w-full flex-row gap-2">
+                    <div class="w-/12 flex flex-col">
+                        <x-jet-label for="session_cost" value="{{ __('Session Cost') }}" />
+                        <x-jet-input id="session_cost" class="mt-1 block w-full" type="number" name="session_cost"
+                            :value="old('session_cost', $therapist->session_cost)" :placeholder="$therapist->session_cost" autofocus />
+                        <x-jet-input-error for="session_cost" class="mt-2" />
+                    </div>
 
-                {{-- add the currency --}}
-                <div class="flex w-1/2 flex-col">
-                    <x-jet-label value="Currency" />
-                    <select class="mt-1 block w-full rounded-md border border-blue-300 bg-gray-100" id="currency"
-                        name="currency">
-                        <option value="">Select currency &nbsp &nbsp &nbsp(selected:{{ $therapist->currency }})
-                        </option>
-                        @foreach ($currencies as $currency => $currencyCode)
-                            <option value="{{ $currencyCode }}"
-                                {{ $therapist->currency == $currencyCode ? 'selected' : '' }}>
-                                {{ $currency }}
+                    {{-- add the currency --}}
+                    <div class="flex w-1/2 flex-col">
+                        <x-jet-label value="Currency" />
+                        <select class="mt-1 block w-full rounded-md border border-blue-300 bg-gray-100" id="currency"
+                            name="currency">
+                            <option value="">Select currency &nbsp &nbsp
+                                &nbsp(selected:{{ $therapist->currency }})
                             </option>
-                        @endforeach
-                    </select>
-                </div cl>
+                            @foreach ($currencies as $currency => $currencyCode)
+                                <option value="{{ $currencyCode }}"
+                                    {{ $therapist->currency == $currencyCode ? 'selected' : '' }}>
+                                    {{ $currency }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
 
                 {{-- notes --}}
                 <div class="w-full">
