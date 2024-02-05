@@ -57,6 +57,7 @@
                                 'Clients' => $therapist->clients->count(),
                                 'Space for New Clients' => $space_for_new_clients,
                                 'session cost' => $therapist->session_cost ?: 'Session Cost needed',
+                                'currency' => $therapist->currency ?: 'Currency needed',
                                 'Email' => $therapist->email ?: 'Email n/a',
                                 'Timezone' => $therapist->timezone ?: 'Timezone n/a',
                                 'Home County/Town' => $therapist->county_town ?: 'County/Town n/a',
