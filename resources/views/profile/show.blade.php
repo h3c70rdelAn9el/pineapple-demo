@@ -8,6 +8,31 @@
     // $therapist = Therapist::findOrFail($id);
     $gender = $user->gender;
     $genders = ['male', 'female'];
+    // $currencies = json_decode(file_get_contents(base_path('resources/json/currencies.json')), true);
+$currencies = [
+    "United States Dollar" => "USD",
+    "British Pound" => "GBP",
+    "Euro" => "EUR",
+    "Japanese Yen" => "JPY",
+    "Australian Dollar" => "AUD",
+    "Canadian Dollar" => "CAD",
+    "Swiss Franc" => "CHF",
+    "Chinese Yuan" => "CNY",
+    "Swedish Krona" => "SEK",
+    "New Zealand Dollar" => "NZD",
+    "Mexican Peso" => "MXN",
+    "Singapore Dollar" => "SGD",
+    "Hong Kong Dollar" => "HKD",
+    "Norwegian Krone" => "NOK",
+    "South Korean Won" => "KRW",
+    "Turkish Lira" => "TRY",
+    "Russian Ruble" => "RUB",
+    "Indian Rupee" => "INR",
+    "Brazilian Real" => "BRL",
+    "South African Rand" => "ZAR",
+    "Philippine Peso" => "PHP",
+    "Czech Koruna" => "CZK",
+];
 
 @endphp
 

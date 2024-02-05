@@ -10,16 +10,24 @@
     $statesData = json_decode($statesJson, true);
     $states = $statesData['states'];
     $genders = ['Male', 'Female', 'Transgender', 'Genderfluid', 'Genderqueer', 'Agender', 'Cisgender', 'Bigender', 'Non-binary', 'Prefer Not to Say'];
+    // $currencies = file_get_contents(resource_path('json/currencies.json'));
+    // $currencies = json_decode($currencies, true);
+    $currenciesJson = file_get_contents(resource_path('json/currencies.json'));
+    $currencies = json_decode($currenciesJson, true);
+    // dd($currencies);
+
+    // $currencies = json_decode($currencies, true);
+
+    // $currencies = json_decode($currencies, true);
+
 @endphp
 <div class="grid grid-cols-1 md:grid-cols-3">
     <div>
         Profile Information
     </div>
-    <form class="col-span-2 mb-4 rounded-md bg-white p-4 pb-0 shadow-sm"
-        method="POST"
-        action="{{ route('profile.update') }}"
-        x-on:submit.prevent="submitForm"
-        >
+    <form class="col-span-2 mb-4 rounded-md bg-white p-4 pb-0 shadow-sm" method="POST"
+        action="{{ route('profile.update') }}" x-on:submit.prevent="submitForm">
+
 
         @csrf
         @method('put')
@@ -104,41 +112,27 @@
         {{-- name --}}
         <div class="input-div">
             <x-jet-label value="Name" />
-            <x-jet-input class="mt-1 block w-full"
-                id="name"
-                name="name"
-                type="text"
-                value="{{ $user->name }}"
-                wire:model.defer="state.name"
-                autocomplete="name" />
-            <x-jet-input-error class="mt-2"
-                for="name" />
+            <x-jet-input class="mt-1 block w-full" id="name" name="name" type="text" value="{{ $user->name }}"
+                wire:model.defer="state.name" autocomplete="name" />
+            <x-jet-input-error class="mt-2" for="name" />
+
         </div>
 
         {{-- preferred_name --}}
         <div class="input-div">
             <x-jet-label value="Preferred Name" />
-            <x-jet-input class="mt-1 block w-full"
-                id="preferred_name"
-                name="preferred_name"
-                type="text"
-                value="{{ $user->preferred_name }}"
-                wire:model.defer="state.preferred_name" />
-            <x-jet-input-error class="mt-2"
-                for="preferred_name" />
+            <x-jet-input class="mt-1 block w-full" id="preferred_name" name="preferred_name" type="text"
+                value="{{ $user->preferred_name }}" wire:model.defer="state.preferred_name" />
+            <x-jet-input-error class="mt-2" for="preferred_name" />
+
         </div>
 
         {{-- title --}}
         <div class="input-div">
             <x-jet-label value="Title" />
-            <x-jet-input class="mt-1 block w-full"
-                id="title"
-                name="title"
-                type="text"
-                value="{{ $user->title }}"
-                wire:model.defer="state.title" />
-            <x-jet-input-error class="mt-2"
-                for="title" />
+            <x-jet-input class="mt-1 block w-full" id="title" name="title" type="text"
+                value="{{ $user->title }}" wire:model.defer="state.title" />
+            <x-jet-input-error class="mt-2" for="title" />
         </div>
 
         {{-- <div class="input-div">
@@ -159,90 +153,65 @@
         {{-- email --}}
         <div class="input-div">
             <x-jet-label value="email" />
-            <x-jet-input class="mt-1 block w-full"
-                id="email"
-                name="email"
-                type="email"
-                value="{{ $user->email }}"
-                wire:model.defer="state.email" />
-            <x-jet-input-error class="mt-2"
-                for="email" />
+            <x-jet-input class="mt-1 block w-full" id="email" name="email" type="email"
+                value="{{ $user->email }}" wire:model.defer="state.email" />
+            <x-jet-input-error class="mt-2" for="email" />
         </div>
 
         {{-- street_address --}}
         <div class="input-div">
             <x-jet-label value="Street Address" />
-            <x-jet-input class="mt-1 block w-full"
-                id="street_address"
-                name="street_address"
-                type="text"
-                value="{{ $user->street_address }}"
-                wire:model.defer="state.street_address" />
-            <x-jet-input-error class="mt-2"
-                for="street_address" />
+            <x-jet-input class="mt-1 block w-full" id="street_address" name="street_address" type="text"
+                value="{{ $user->street_address }}" wire:model.defer="state.street_address" />
+            <x-jet-input-error class="mt-2" for="street_address" />
         </div>
 
         {{-- county_town --}}
         <div class="input-div">
             <x-jet-label value="County/Town" />
-            <x-jet-input class="mt-1 block w-full"
-                id="county_town"
-                name="county_town"
-                type="text"
-                value="{{ $user->county_town }}"
-                wire:model.defer="state.county_town" />
-            <x-jet-input-error class="mt-2"
-                for="county_town" />
+            <x-jet-input class="mt-1 block w-full" id="county_town" name="county_town" type="text"
+                value="{{ $user->county_town }}" wire:model.defer="state.county_town" />
+            <x-jet-input-error class="mt-2" for="county_town" />
         </div>
 
         {{-- zip_code_postal_code --}}
         <div class="input-div">
             <x-jet-label value="Zip Code Postal Code" />
-            <x-jet-input class="mt-1 block w-full"
-                id="zip_code_postal_code"
-                name="zip_code_postal_code"
-                type="text"
-                value="{{ $user->zip_code_postal_code }}"
-                wire:model.defer="state.zip_code_postal_code" />
-            <x-jet-input-error class="mt-2"
-                for="zip_code_postal_code" />
+            <x-jet-input class="mt-1 block w-full" id="zip_code_postal_code" name="zip_code_postal_code" type="text"
+                value="{{ $user->zip_code_postal_code }}" wire:model.defer="state.zip_code_postal_code" />
+            <x-jet-input-error class="mt-2" for="zip_code_postal_code" />
         </div>
 
         {{-- country --}}
         <div class="input-div">
             <x-jet-label value="Country" />
-            <select class="mt-1 block w-full rounded-md border border-blue-300 bg-gray-100"
-                id="country"
+            <select class="mt-1 block w-full rounded-md border border-blue-300 bg-gray-100" id="country"
                 name="country">
                 <option value="">Select country &nbsp &nbsp &nbsp(selected:{{ $user->country }})</option>
                 @foreach ($countries as $country)
                     <option value="{{ $country['name'] }}">{{ $country['name'] }}</option>
                 @endforeach
             </select>
-            <x-jet-input-error class="mt-2"
-                for="country" />
+            <x-jet-input-error class="mt-2" for="country" />
         </div>
 
         {{-- state --}}
         <div class="input-div">
             <x-jet-label value="State  (Optional)" />
-            <select class="mt-1 block w-full rounded-md border border-blue-300 bg-gray-100"
-                id="state"
+            <select class="mt-1 block w-full rounded-md border border-blue-300 bg-gray-100" id="state"
                 name="state">
                 <option value="">Select state &nbsp &nbsp &nbsp(selected:{{ $user->state }})</option>
                 @foreach ($states as $state)
                     <option value="{{ $state }}">{{ $state }}</option>
                 @endforeach
             </select>
-            <x-jet-input-error class="mt-2"
-                for="state" />
+            <x-jet-input-error class="mt-2" for="state" />
         </div>
 
         {{-- time_zone --}}
         <div class="input-div">
             <x-jet-label value="Time Zone" />
-            <select class="mt-1 block w-full rounded-md border border-blue-300 bg-gray-100"
-                id="time_zone"
+            <select class="mt-1 block w-full rounded-md border border-blue-300 bg-gray-100" id="time_zone"
                 name="time_zone">
                 <option value="">Select time zone &nbsp &nbsp &nbsp(selected:{{ $user->time_zone }})</option>
                 @foreach ($timeZones as $timeZone)
@@ -251,118 +220,121 @@
                     </option>
                 @endforeach
             </select>
-            <x-jet-input-error class="mt-2"
-                for="time_zone" />
+            <x-jet-input-error class="mt-2" for="time_zone" />
         </div>
 
         {{-- iban_swift_code --}}
         <div class="input-div">
             <x-jet-label value="IBAN Swift Code" />
-            <x-jet-input class="mt-1 block w-full"
-                id="iban_swift_code"
-                name="iban_swift_code"
-                type="text"
-                value="{{ $user->iban_swift_code }}"
-                wire:model.defer="state.iban_swift_code" />
-            <x-jet-input-error class="mt-2"
-                for="iban_swift_code" />
+            <x-jet-input class="mt-1 block w-full" id="iban_swift_code" name="iban_swift_code" type="text"
+                value="{{ $user->iban_swift_code }}" wire:model.defer="state.iban_swift_code" />
+            <x-jet-input-error class="mt-2" for="iban_swift_code" />
         </div>
 
         {{-- contact_for_promotionals --}}
         <div class="input-div">
             <x-jet-label value="Contact for Promotionals" />
-            <input class="rounded-md"
-                id="contact_for_promotionals"
-                name="contact_for_promotionals"
-                type="checkbox"
-                value="1"
-                {{-- value="{{ $user->contact_for_promotionals }}" --}}
-                {{ $user->contact_for_promotionals ? 'checked' : '' }} />
-            <x-jet-input-error class="mt-2"
-                for="contact_for_promotionals" />
+            <input class="rounded-md" id="contact_for_promotionals" name="contact_for_promotionals" type="checkbox"
+                value="1" {{-- value="{{ $user->contact_for_promotionals }}" --}} {{ $user->contact_for_promotionals ? 'checked' : '' }} />
+            <x-jet-input-error class="mt-2" for="contact_for_promotionals" />
         </div>
 
         {{-- out_of_state_coaching --}}
         <div class="input-div">
             <x-jet-label value="Out Of State Coaching" />
-            <input class="rounded-md"
-                id="out_of_state_coaching"
-                name="out_of_state_coaching"
-                type="checkbox"
-                value="1"
-                {{-- value="{{ $user->out_of_state_coaching }}"  --}}
-                {{ $user->out_of_state_coaching ? 'checked' : '' }} />
-            <x-jet-input-error class="mt-2"
-                for="out_of_state_coaching" />
+            <input class="rounded-md" id="out_of_state_coaching" name="out_of_state_coaching" type="checkbox"
+                value="1" {{-- value="{{ $user->out_of_state_coaching }}"  --}} {{ $user->out_of_state_coaching ? 'checked' : '' }} />
+            <x-jet-input-error class="mt-2" for="out_of_state_coaching" />
         </div>
 
         {{-- number_of_potential_clients --}}
         <div class="input-div">
             <x-jet-label value="Number Of Potential Clients:" />
-            <x-jet-input class="mt-1 block border border-blue-200 p-2"
-                id="number_of_potential_clients"
-                name="number_of_potential_clients"
-                type="numeric"
-                value="{{ $user->number_of_potential_clients }}"
+            <x-jet-input class="mt-1 block border border-blue-200 p-2" id="number_of_potential_clients"
+                name="number_of_potential_clients" type="numeric" value="{{ $user->number_of_potential_clients }}"
                 wire:model.defer="state.number_of_potential_clients" />
-            <x-jet-input-error class="mt-2"
-                for="number_of_potential_clients" />
+            <x-jet-input-error class="mt-2" for="number_of_potential_clients" />
         </div>
 
-        {{-- session_cost --}}
-{{-- session_cost --}}
-<div class="input-div">
-    <x-jet-label value="Session Cost:" />
-    <x-jet-input class="mt-1 block border border-blue-200 p-2"
-        id="session_cost"
-        name="session_cost"
-        type="text"
-        value="{{ number_format($user->session_cost, 2) }}"
-        autocomplete="session_cost"
-        required
-        />
-    <x-jet-input-error class="mt-2" for="session_cost" />
-</div>
 
+        <div class="relative mt-4">
+            <x-jet-label for="clinical_license_verification_portal"
+                value="{{ __('Clinical License Verification Portal') }}" />
+            <x-jet-input class="mr-1 mt-0.5 w-full" name="clinical_license_verification_portal"
+                id="clinical_license_verification_portal" type="text"
+                wire:model.defer="state.clinical_license_verification_portal"
+                autocomplete="clinical_license_verification_portal" />
+            <p class="ml-1 mt-[3px] text-xs font-light">(Optional)</p>
+            <x-jet-input-error class="mt-2" for="clinical_license_verification_portal" />
+        </div>
 
         {{-- intern --}}
         <div class="input-div">
             <x-jet-label value="Intern" />
-            <x-jet-input id="intern"
-                name="intern"
-                type="checkbox"
-                value="{{ $user->intern }}"
-                wire:model.defer="state.intern" />         <div class="relative mt-4">
-                                <x-jet-label for="clinical_license_verification_portal"
-                                    value="{{ __('Clinical License Verification Portal') }}" />
-                                <x-jet-input class="mr-1 mt-0.5 w-full"
-                                    name="clinical_license_verification_portal"
-                                    id="clinical_license_verification_portal"
-                                    type="text"
-                                    wire:model.defer="state.clinical_license_verification_portal"
-                                    autocomplete="clinical_license_verification_portal" />
-                                <p class="ml-1 mt-[3px] text-xs font-light">(Optional)</p>
-                                <x-jet-input-error class="mt-2"
-                                    for="clinical_license_verification_portal" />
-                            </div>
-            <x-jet-input-error class="mt-2"
-                for="intern" />
+            <x-jet-input id="intern" name="intern" type="checkbox" value="{{ $user->intern }}"
+                wire:model.defer="state.intern" />
+            {{-- <div class="relative mt-4">
+                <x-jet-label for="clinical_license_verification_portal"
+                    value="{{ __('Clinical License Verification Portal') }}" />
+                <x-jet-input class="mr-1 mt-0.5 w-full" name="clinical_license_verification_portal"
+                    id="clinical_license_verification_portal" type="text"
+                    wire:model.defer="state.clinical_license_verification_portal"
+                    autocomplete="clinical_license_verification_portal" />
+                <p class="ml-1 mt-[3px] text-xs font-light">(Optional)</p>
+                <x-jet-input-error class="mt-2" for="clinical_license_verification_portal" />
+            </div> --}}
+            <x-jet-input-error class="mt-2" for="intern" />
         </div>
 
         {{-- supervisor_name --}}
         <div class="input-div">
             <x-jet-label value="Supervisor Name" />
-            <x-jet-input class="mt-1 block w-full"
-                id="supervisor_name"
-                name="supervisor_name"
-                type="text"
-                value="{{ $user->supervisor_name }}"
-                wire:model.defer="state.supervisor_name" />
-            <x-jet-input-error class="mt-2"
-                for="supervisor_name" />
+            <x-jet-input class="mt-1 block w-full" id="supervisor_name" name="supervisor_name" type="text"
+                value="{{ $user->supervisor_name }}" wire:model.defer="state.supervisor_name" />
+            <x-jet-input-error class="mt-2" for="supervisor_name" />
         </div>
 
-        {{-- clinical_license_verification_portal --}}
+        {{-- session_cost --}}
+        <div class="flex w-full flex-row items-center">
+            <div class="flex w-1/2 flex-col">
+                <x-jet-label value="Session Cost:" />
+                <x-jet-input class="mt-1 block border border-blue-200 p-2" id="session_cost" name="session_cost"
+                    type="text" value="{{ number_format($user->session_cost, 2) }}" autocomplete="session_cost"
+                    required />
+            </div>
+            <x-jet-input-error class="mt-2" for="session_cost" />
+
+            <div class="flex w-1/2 flex-col">
+                <x-jet-label value="Currency" />
+                <select class="mt-1 block w-full rounded-md border border-blue-300 bg-gray-100" id="currency"
+                    name="currency">
+                    <option value="">Select currency &nbsp &nbsp &nbsp(selected:{{ $user->currency }})</option>
+                    @foreach ($currencies as $currency => $currencyCode)
+                        <option value="{{ $currencyCode }}" {{ $user->currency == $currencyCode ? 'selected' : '' }}>
+                            {{ $currency }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+            <x-jet-input-error class="mt-2" for="currency" />
+        </div>
+
+        {{-- currency --}}
+        {{-- <div class="input-div"> --}}
+        {{-- <x-jet-label value="Currency" />
+            <select class="mt-1 block w-full rounded-md border border-blue-300 bg-gray-100" id="currency"
+                name="currency">
+                <option value="">Select currency &nbsp &nbsp &nbsp(selected:{{ $user->currency }})</option>
+                @foreach ($currencies as $currency => $currencyCode)
+                    <option value="{{ $currencyCode }}" {{ $user->currency == $currencyCode ? 'selected' : '' }}>
+                        {{ $currency }}
+                    </option>
+                @endforeach
+            </select>
+            <x-jet-input-error class="mt-2" for="currency" /> --}}
+        {{-- </div> --}}
+
+
 
         {{-- notes --}}
         {{-- <div>
@@ -380,47 +352,29 @@
         {{-- account_name --}}
         <div class="input-div">
             <x-jet-label value="Account Name" />
-            <x-jet-input class="mt-1 block w-full"
-                id="account_name"
-                name="account_name"
-                type="text"
-                value="{{ $user->account_name }}"
-                wire:model.defer="state.account_name" />
-            <x-jet-input-error class="mt-2"
-                for="account_name" />
+            <x-jet-input class="mt-1 block w-full" id="account_name" name="account_name" type="text"
+                value="{{ $user->account_name }}" wire:model.defer="state.account_name" />
+            <x-jet-input-error class="mt-2" for="account_name" />
         </div>
 
         {{-- account_number --}}
         <div class="input-div">
             <x-jet-label value="Account Number" />
-            <x-jet-input class="mt-1 block w-full"
-                id="account_number"
-                name="account_number"
-                type="text"
-                value="{{ $user->account_number }}"
-                wire:model.defer="state.account_number" />
-            <x-jet-input-error class="mt-2"
-                for="account_number" />
+            <x-jet-input class="mt-1 block w-full" id="account_number" name="account_number" type="text"
+                value="{{ $user->account_number }}" wire:model.defer="state.account_number" />
+            <x-jet-input-error class="mt-2" for="account_number" />
         </div>
 
         {{-- routing_number --}}
         <div class="input-div">
             <x-jet-label value="Routing Number" />
-            <x-jet-input class="mt-1 block w-full"
-                id="routing_number"
-                name="routing_number"
-                type="text"
-                value="{{ $user->routing_number }}"
-                wire:model.defer="state.routing_number" />
-            <x-jet-input-error class="mt-2"
-                for="routing_number" />
+            <x-jet-input class="mt-1 block w-full" id="routing_number" name="routing_number" type="text"
+                value="{{ $user->routing_number }}" wire:model.defer="state.routing_number" />
+            <x-jet-input-error class="mt-2" for="routing_number" />
         </div>
 
-        <div class="flex w-[105%] mx-auto justify-end bg-gray-50 p-2 -ml-4 border border-t-none border-gray-200">
-            <x-jet-button class="mr-10 mt-2 "
-                type="submit"
-                {{-- wire:loading.attr="disabled" --}}
-                {{-- wire:target="photo" --}}>
+        <div class="border-t-none mx-auto -ml-4 flex w-[105%] justify-end border border-gray-200 bg-gray-50 p-2">
+            <x-jet-button class="mr-10 mt-2" type="submit" {{-- wire:loading.attr="disabled" --}} {{-- wire:target="photo" --}}>
                 Save
             </x-jet-button>
         </div>
