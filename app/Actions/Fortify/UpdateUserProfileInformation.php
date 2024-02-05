@@ -79,6 +79,7 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
             'number_of_potential_clients' => ['nullable', 'numeric'],
             'file_upload' => ['nullable', 'mimes:pdf,jpg,jpeg,png', 'max:1024'],
             'currency' => ['nullable', 'string', 'max:255'],
+
         ])->validateWithBag('updateProfileInformation');
 
 
@@ -165,6 +166,7 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
                 "number_of_potential_clients" => $input['number_of_potential_clients'],
                 "file_upload" => $input['file_upload'],
                 "currency" => $input['currencyCode'],
+
             ])->save();
 
             if (!$user->isAdmin()) {
@@ -242,6 +244,7 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
             'number_of_potential_clients' => $input['number_of_potential_clients'],
             'file_upload' => $input['file_upload'],
             'currency' => $input['currencyCode'],
+
         ])->save();
 
         if (!$user->isAdmin()) {

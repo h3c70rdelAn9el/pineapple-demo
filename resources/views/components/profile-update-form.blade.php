@@ -19,6 +19,7 @@
     // $currencies = json_decode($currencies, true);
 
     // $currencies = json_decode($currencies, true);
+
 @endphp
 <div class="grid grid-cols-1 md:grid-cols-3">
     <div>
@@ -26,6 +27,7 @@
     </div>
     <form class="col-span-2 mb-4 rounded-md bg-white p-4 pb-0 shadow-sm" method="POST"
         action="{{ route('profile.update') }}" x-on:submit.prevent="submitForm">
+
 
         @csrf
         @method('put')
@@ -113,6 +115,7 @@
             <x-jet-input class="mt-1 block w-full" id="name" name="name" type="text" value="{{ $user->name }}"
                 wire:model.defer="state.name" autocomplete="name" />
             <x-jet-input-error class="mt-2" for="name" />
+
         </div>
 
         {{-- preferred_name --}}
@@ -121,6 +124,7 @@
             <x-jet-input class="mt-1 block w-full" id="preferred_name" name="preferred_name" type="text"
                 value="{{ $user->preferred_name }}" wire:model.defer="state.preferred_name" />
             <x-jet-input-error class="mt-2" for="preferred_name" />
+
         </div>
 
         {{-- title --}}
@@ -331,9 +335,6 @@
         {{-- </div> --}}
 
 
-
-
-        {{-- clinical_license_verification_portal --}}
 
         {{-- notes --}}
         {{-- <div>
