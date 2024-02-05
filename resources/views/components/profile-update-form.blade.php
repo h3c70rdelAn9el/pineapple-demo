@@ -297,7 +297,7 @@
                 <x-jet-input class="mt-1 block border border-blue-200 p-2" id="session_cost" name="session_cost"
                     type="text" value="{{ number_format($user->session_cost, 2) }}" autocomplete="session_cost"
                     required />
-            </div class=>
+            </div>
             <x-jet-input-error class="mt-2" for="session_cost" />
 
             <div class="flex w-1/2 flex-col">
@@ -311,7 +311,7 @@
                         </option>
                     @endforeach
                 </select>
-            </div cl>
+            </div>
             <x-jet-input-error class="mt-2" for="currency" />
         </div>
 
