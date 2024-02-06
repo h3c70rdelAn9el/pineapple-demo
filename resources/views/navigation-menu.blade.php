@@ -123,7 +123,7 @@
                                 {{ __('Dashboard') }}
                             </x-jet-dropdown-link>
 
-                            @if ($user->admin == 1)
+                            {{-- @if ($user->admin == 1)
                                 <x-jet-dropdown-link href="{{ route('therapists.index') }}">
                                     {{ __('Therapists') }}
                                 </x-jet-dropdown-link>
@@ -136,7 +136,7 @@
 
                             <x-jet-dropdown-link href="{{ route('session.index') }}">
                                 {{ __('Sessions') }}
-                            </x-jet-dropdown-link>
+                            </x-jet-dropdown-link> --}}
 
                             <x-jet-dropdown-link href="{{ route('profile.show') }}">
                                 {{ __('Profile') }}
@@ -205,7 +205,7 @@
                     {{ __('Dashboard') }}
                 </x-jet-responsive-nav-link>
 
-                @if ($user->admin == 1)
+                {{-- @if ($user->admin == 1)
                     <x-jet-responsive-nav-link class="text-gray-50" href="{{ route('therapists.index') }}"
                         :active="request()->routeIs('therapists.index')">
                         {{ __('Therapists') }}
@@ -218,7 +218,7 @@
 
                 <x-jet-responsive-nav-link class="text-gray-50" href="{{ route('session.index') }}" :active="request()->routeIs('session.index')">
                     {{ __('Sessions') }}
-                </x-jet-responsive-nav-link>
+                </x-jet-responsive-nav-link> --}}
 
                 <x-jet-responsive-nav-link class="text-gray-50" href="{{ route('profile.show') }}" :active="request()->routeIs('profile.show')">
                     {{ __('Profile') }}
