@@ -25,7 +25,7 @@ class ClientController extends Controller
     {
         $user = auth()->user();
         // $clients = Client::orderBy('client_code', 'asc')->paginate(10, ['*'], 'clients');
-        $clientsQuery = Client::orderBy('client_code', 'asc');
+        $clientsQuery = Client::where('user_id', $user->id)->orderBy('client_code', 'asc');
         $clients = $clientsQuery->with('TherapySessions')->paginate(15, ['*'], 'clients');
 
         foreach ($clients as $client) {
