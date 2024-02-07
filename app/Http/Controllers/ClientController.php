@@ -21,40 +21,93 @@ class ClientController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+
+    // public function index()
+    // {
+    //     $user = auth()->user();
+    //     // $clients = Client::orderBy('client_code', 'asc')->paginate(10, ['*'], 'clients');
+    //     $clientsQuery = Client::where('user_id', $user->id)->orderBy('client_code', 'asc');
+    //     $clients = $clientsQuery->with('TherapySessions')->paginate(15, ['*'], 'clients');
+
+    //     foreach ($clients as $client) {
+    //         $client->therapist;
+    //         $client->therapySessions;
+    //     }
+    //     // $inactiveClients = $clients->where('status', 1)->sortBy('client_code')->paginate(10);
+    //     $waitlistClients = Client::where('waitlist', 1)->orderBy('client_code')->paginate(15, ['*'], 'waitlistClients');
+    //     $inactiveClients = $clientsQuery->where('status', 1)->orderBy('client_code')->paginate(15, ['*'], 'inactiveClients');
+    //     $specialSessionsClients = Client::where('special_sessions', '>', 0)->orderBy('client_code')->paginate(15, ['*'], 'specialSessionsClients');
+    //     // $waitlistClients = $clientsQuery->where('waitlist', 1)->paginate(10, ['*'], 'waitlistClients');
+    //     // $waitlistClients = $clientsQuery->where('waitlist', 1)->paginate(10, ['*'], 'waitlistClients');
+    //     $inactiveClientsCount = $inactiveClients->total();
+    //     // $waitlistClients = $clientsQuery->where('waitlist', 1);
+    //     $waitlistClientsCount = $waitlistClients->total();
+    //     $specialSessionsClientsCount = $specialSessionsClients->count();
+
+    //     $therapySessions = TherapySession::where('user_id', $user->id);
+    //     $therapySessions = $therapySessions->orderBy('created_at', 'desc')->get();
+    //     $attendedSessions = TherapySession::whereIn('client_id', $clients->pluck('id'))->where('attendance', 'attended')->count();
+    //     $missedSessions = TherapySession::whereIn('client_id', $clients->pluck('id'))->where('attendance', 'no-show')->count();
+
+    //     $therapist = User::all();
+
+    //     return view('clients.index', [
+    //         'user' => $user,
+    //         'clients' => $clients,
+    //         'therapist' => $therapist,
+    //         'client' => null,
+    //         'inactiveClients' => $inactiveClients,
+    //         'waitlistClients' => $waitlistClients,
+    //         'inactiveClientsCount' => $inactiveClientsCount,
+    //         'waitlistClientsCount' => $waitlistClientsCount,
+    //         'therapySessions' => $therapySessions,
+    //         'attendedSessions' => $attendedSessions,
+    //         'missedSessions' => $missedSessions,
+    //         'specialSessionsClients' => $specialSessionsClients,
+    //         'specialSessionsClientsCount' => $specialSessionsClientsCount,
+    //     ]);
+    // }
+
     public function index()
     {
         $user = auth()->user();
-        // $clients = Client::orderBy('client_code', 'asc')->paginate(10, ['*'], 'clients');
         $clientsQuery = Client::where('user_id', $user->id)->orderBy('client_code', 'asc');
-        $clients = $clientsQuery->with('TherapySessions')->paginate(15, ['*'], 'clients');
 
-        foreach ($clients as $client) {
-            $client->therapist;
-            $client->therapySessions;
-        }
-        // $inactiveClients = $clients->where('status', 1)->sortBy('client_code')->paginate(10);
-        $waitlistClients = Client::where('waitlist', 1)->orderBy('client_code')->paginate(15, ['*'], 'waitlistClients');
-        $inactiveClients = $clientsQuery->where('status', 1)->orderBy('client_code')->paginate(15, ['*'], 'inactiveClients');
-        $specialSessionsClients = Client::where('special_sessions', '>', 0)->orderBy('client_code')->paginate(15, ['*'], 'specialSessionsClients');
-        // $waitlistClients = $clientsQuery->where('waitlist', 1)->paginate(10, ['*'], 'waitlistClients');
-        // $waitlistClients = $clientsQuery->where('waitlist', 1)->paginate(10, ['*'], 'waitlistClients');
+        // Include clients on the waitlist
+        $clients = $clientsQuery->with('therapySessions')->paginate(15, ['*'], 'clients');
+        $allClients = Client::orderBy('client_code', 'asc')->paginate(15, ['*'], 'allClients');
+
+        // Fetch therapists
+        $therapists = User::where('admin', 0)->get();
+
+        // Other queries remain unchanged
+        $inactiveClients = Client::where('user_id', $user->id)->where('status', 1)->paginate(15, ['*'], 'inactiveClients');
+        $waitlistClients = Client::where('user_id', $user->id)->where('waitlist', 1)->paginate(15, ['*'], 'waitlistClients');
+        $specialSessionsClients = Client::where('user_id', $user->id)->where('special_sessions', '>', 0)->orderBy('client_code')->paginate(15, ['*'], 'specialSessionsClients');
+
+        $allInactiveClients = Client::where('status', 1)->paginate(15, ['*'], 'inactiveClients');
+        $allWaitlistClients = Client::where('waitlist', 1)->paginate(15, ['*'], 'waitlistClients');
+        $allSpecialSessionClients = Client::where('special_sessions', '>', 0)->orderBy('client_code')->paginate(15, ['*'], 'specialSessionsClients');
+
+        // Counting total clients on each list
         $inactiveClientsCount = $inactiveClients->total();
-        // $waitlistClients = $clientsQuery->where('waitlist', 1);
         $waitlistClientsCount = $waitlistClients->total();
-        $specialSessionsClientsCount = $specialSessionsClients->count();
+        $specialSessionsClientsCount = $specialSessionsClients->total();
 
-        $therapySessions = TherapySession::where('user_id', $user->id);
-        $therapySessions = $therapySessions->orderBy('created_at', 'desc')->get();
-        $attendedSessions = TherapySession::whereIn('client_id', $clients->pluck('id'))->where('attendance', 'attended')->count();
-        $missedSessions = TherapySession::whereIn('client_id', $clients->pluck('id'))->where('attendance', 'no-show')->count();
-
-        $therapist = User::all();
+        // Other logic for therapy sessions
+        $therapySessions = TherapySession::where('user_id', $user->id)
+            ->orderBy('created_at', 'desc')->get();
+        $attendedSessions = TherapySession::whereIn('client_id', $clients->pluck('id'))
+        ->where('attendance', 'attended')->count();
+        $missedSessions = TherapySession::whereIn('client_id', $clients->pluck('id'))
+        ->where('attendance', 'no-show')->count();
 
         return view('clients.index', [
             'user' => $user,
             'clients' => $clients,
-            'therapist' => $therapist,
-            'client' => $client,
+            'therapists' => $therapists, // Add therapists to the view data
+            'client' => null,
             'inactiveClients' => $inactiveClients,
             'waitlistClients' => $waitlistClients,
             'inactiveClientsCount' => $inactiveClientsCount,
@@ -64,8 +117,13 @@ class ClientController extends Controller
             'missedSessions' => $missedSessions,
             'specialSessionsClients' => $specialSessionsClients,
             'specialSessionsClientsCount' => $specialSessionsClientsCount,
+            'allClients' => $allClients,
+            'allInactiveClients' => $allInactiveClients,
+            'allWaitlistClients' => $allWaitlistClients,
+            'allSpecialSessionClients' => $allSpecialSessionClients,
         ]);
     }
+
 
 
 
