@@ -127,14 +127,14 @@
                                 <x-jet-dropdown-link href="{{ route('therapists.index') }}">
                                     {{ __('Therapists') }}
                                 </x-jet-dropdown-link>
-                            @endif
+                            @endif --}}
 
 
                             <x-jet-dropdown-link href="{{ route('clients.index') }}">
                                 {{ __('Clients') }}
                             </x-jet-dropdown-link>
 
-                            <x-jet-dropdown-link href="{{ route('session.index') }}">
+                            {{-- <x-jet-dropdown-link href="{{ route('session.index') }}">
                                 {{ __('Sessions') }}
                             </x-jet-dropdown-link> --}}
 
@@ -210,13 +210,13 @@
                         :active="request()->routeIs('therapists.index')">
                         {{ __('Therapists') }}
                     </x-jet-responsive-nav-link>
-                @endif
+                @endif --}}
 
                 <x-jet-responsive-nav-link class="text-gray-50" href="{{ route('clients.index') }}" :active="request()->routeIs('clients.index')">
                     {{ __('Clients') }}
                 </x-jet-responsive-nav-link>
 
-                <x-jet-responsive-nav-link class="text-gray-50" href="{{ route('session.index') }}" :active="request()->routeIs('session.index')">
+                {{-- <x-jet-responsive-nav-link class="text-gray-50" href="{{ route('session.index') }}" :active="request()->routeIs('session.index')">
                     {{ __('Sessions') }}
                 </x-jet-responsive-nav-link> --}}
 

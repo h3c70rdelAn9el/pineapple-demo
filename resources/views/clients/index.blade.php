@@ -29,8 +29,12 @@
                     class="flex flex-row gap-2">
                     <div class="flex flex-row gap-2 transition-all duration-200 ease-in-out hover:text-blue-800">
                         <p>All Clients:</p>
-                        <p>{{ $clients->total() }}</p>
-                        <p x-text="allClientsCount"></p>
+                        {{-- <p>{{ $clients->total() }}</p> --}}
+                        @if ($user->admin == 1)
+                            <p>{{ $allClients->total() }}</p>
+                        @else
+                            <p>{{ $clients->total() }}</p>
+                        @endif
                     </div>
                 </button>
                 <div class="flex flex-row gap-2">
@@ -40,7 +44,11 @@
                         <div
                             class="flex w-full flex-row gap-2 text-orange-500 transition-all duration-200 ease-in-out hover:text-orange-700">
                             <p>Inactive Clients:</p>
-                            <p>{{ $inactiveClientsCount }}</p>
+                            @if ($user->admin == 1)
+                                <p>{{ $allInactiveClients->total() }}</p>
+                            @else
+                                <p>{{ $inactiveClientsCount }}</p>
+                            @endif
                         </div>
                     </button>
                 </div>
@@ -49,7 +57,11 @@
                     <div
                         class="flex flex-row gap-2 text-blue-500 transition-all duration-200 ease-in-out hover:text-blue-700">
                         <p>Waitlisted</p>
-                        <p>{{ $waitlistCount }}</p>
+                        @if ($user->admin == 1)
+                            <p>{{ $allWaitlistClients->total() }}</p>
+                        @else
+                            <p>{{ $waitlistCount }}</p>
+                        @endif
                     </div>
                 </button>
 
@@ -60,7 +72,11 @@
                         <div
                             class="flex flex-row gap-2 text-purple-500 transition-all duration-200 ease-in-out hover:text-purple-700">
                             <p>Special Sessions</p>
-                            <p>{{ $specialSessionsClientsCount }}</p>
+                            @if ($user->admin == 1)
+                                <p>{{ $allSpecialSessionClients->total() }}</p>
+                            @else
+                                <p>{{ $specialSessionsClientsCount }}</p>
+                            @endif
                         </div>
                     </button>
                 </div>
@@ -75,22 +91,41 @@
             </div>
         </div>
 
-        <section x-show="showAllClients">
-            <x-client-table :clients="$clients" :attendedSessions="$attendedSessions" :missedSessions="$missedSessions" :client="$client" />
-        </section>
+        @if ($user->admin == 1)
+            <section x-show="showAllClients" x-cloak>
+                <x-client-table :clients="$allClients" :attendedSessions="$attendedSessions" :missedSessions="$missedSessions" :client="$client" />
+            </section>
 
-        <section x-show="showInactiveClients">
-            <x-client-table :clients="$inactiveClients" :attendedSessions="$attendedSessions" :missedSessions="$missedSessions" :client="$client" />
+            <section x-show="showInactiveClients" x-cloak>
+                <x-client-table :clients="$allInactiveClients" :attendedSessions="$attendedSessions" :missedSessions="$missedSessions" :client="$client" />
 
-        </section>
+            </section>
 
-        <section x-show="showWaitlistClients">
-            <x-client-table :clients="$waitlistClients" :attendedSessions="$attendedSessions" :missedSessions="$missedSessions" :client="$client" />
-        </section>
+            <section x-show="showWaitlistClients" x-cloak>
+                <x-client-table :clients="$allWaitlistClients" :attendedSessions="$attendedSessions" :missedSessions="$missedSessions" :client="$client" />
+            </section>
 
-        <section x-show="showSpecialSessionsClients">
-            <x-client-table :clients="$specialSessionsClients" :attendedSessions="$attendedSessions" :missedSessions="$missedSessions" :client="$client" />
-        </section>
+            <section x-show="showSpecialSessionsClients" x-cloak>
+                <x-client-table :clients="$allSpecialSessionClients" :attendedSessions="$attendedSessions" :missedSessions="$missedSessions" :client="$client" />
+            </section>
+        @else
+            <section x-show="showAllClients" x-cloak>
+                <x-client-table :clients="$clients" :attendedSessions="$attendedSessions" :missedSessions="$missedSessions" :client="$client" />
+            </section>
+
+            <section x-show="showInactiveClients" x-cloak>
+                <x-client-table :clients="$inactiveClients" :attendedSessions="$attendedSessions" :missedSessions="$missedSessions" :client="$client" />
+
+            </section>
+
+            <section x-show="showWaitlistClients" x-cloak>
+                <x-client-table :clients="$waitlistClients" :attendedSessions="$attendedSessions" :missedSessions="$missedSessions" :client="$client" />
+            </section>
+
+            <section x-show="showSpecialSessionsClients" x-cloak>
+                <x-client-table :clients="$specialSessionsClients" :attendedSessions="$attendedSessions" :missedSessions="$missedSessions" :client="$client" />
+            </section>
+        @endif
     </div>
 </x-app-layout>
 
