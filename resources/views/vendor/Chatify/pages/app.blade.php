@@ -1,4 +1,5 @@
 @include('Chatify::layouts.headLinks')
+<x-app-layout>
 <div class="messenger">
     {{-- ----------------------Users/Groups lists side---------------------- --}}
     <div class="messenger-listView {{ !!$id ? 'conversation-active' : '' }}">
@@ -107,6 +108,7 @@
         {!! view('Chatify::layouts.info')->render() !!}
     </div>
 </div>
+</x-app-layout>
 
 @include('Chatify::layouts.modals')
 @include('Chatify::layouts.footerLinks')
