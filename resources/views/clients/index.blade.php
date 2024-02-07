@@ -33,8 +33,7 @@
                         @if ($user->admin == 1)
                             <p>{{ $allClients->total() }}</p>
                         @else
-
-                        <p >{{ $clients->total() }}</p>
+                            <p>{{ $clients->total() }}</p>
                         @endif
                     </div>
                 </button>
@@ -48,8 +47,7 @@
                             @if ($user->admin == 1)
                                 <p>{{ $allInactiveClients->total() }}</p>
                             @else
-
-                            <p>{{ $inactiveClientsCount }}</p>
+                                <p>{{ $inactiveClientsCount }}</p>
                             @endif
                         </div>
                     </button>
@@ -62,7 +60,7 @@
                         @if ($user->admin == 1)
                             <p>{{ $allWaitlistClients->total() }}</p>
                         @else
-                        <p>{{ $waitlistCount }}</p>
+                            <p>{{ $waitlistCount }}</p>
                         @endif
                     </div>
                 </button>
@@ -77,8 +75,7 @@
                             @if ($user->admin == 1)
                                 <p>{{ $allSpecialSessionClients->total() }}</p>
                             @else
-
-                            <p>{{ $specialSessionsClientsCount }}</p>
+                                <p>{{ $specialSessionsClientsCount }}</p>
                             @endif
                         </div>
                     </button>

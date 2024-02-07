@@ -99,9 +99,9 @@ class ClientController extends Controller
         $therapySessions = TherapySession::where('user_id', $user->id)
             ->orderBy('created_at', 'desc')->get();
         $attendedSessions = TherapySession::whereIn('client_id', $clients->pluck('id'))
-        ->where('attendance', 'attended')->count();
+            ->where('attendance', 'attended')->count();
         $missedSessions = TherapySession::whereIn('client_id', $clients->pluck('id'))
-        ->where('attendance', 'no-show')->count();
+            ->where('attendance', 'no-show')->count();
 
         return view('clients.index', [
             'user' => $user,
