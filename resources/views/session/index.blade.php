@@ -13,7 +13,7 @@
                         @if ($user->admin)
                             <p>{{ $allTherapySessions->total() }}</p>
                         @else
-                            <p>{{ $therapySessions->count() }}</p>
+                            <p>{{ $therapySessions->total() }}</p>
                         @endif
                     </div>
                 </button>
