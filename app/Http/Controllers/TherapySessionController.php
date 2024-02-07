@@ -30,25 +30,28 @@ class TherapySessionController extends Controller
         $user = auth()->user();
         $user_id = $user->id;
         // $therapist = $user_id;
-        // $therapySessions = TherapySession::orderBy('created_at', 'desc')->paginate(50, ['*'], 'therapy_sessions');
-        $therapySessions = TherapySession::where('user_id', $user_id)->orderBy('created_at', 'desc')->paginate(50, ['*'], 'therapy_sessions');
+        $therapySessions = TherapySession::where('user_id', $user_id)->orderBy('created_at', 'desc')->paginate(100, ['*'], 'therapy_sessions');
+
         $client_id = $therapySessions->pluck('client_id');
         $client = Client::whereIn('id', $client_id)->get();
         $clients = Client::all();
         $ts = [];
+
         $therapist = User::find($user_id);
         foreach ($therapySessions as $t) {
             $ts[] = $t;
             $ts[$t->id]['client'] = $t->client;
             $ts[$t->id]['therapist'] = $t->therapist;
         }
+
         $therapists = User::where('admin', '!=', 1)->get();
+
         $therapySession = TherapySession::where('user_id')->orderBy('created_at', 'desc')->get();
+        $missedSessions = TherapySession::where('user_id', $user_id)->where('attendance', 'no-show')->orderBy('created_at', 'desc')->paginate(100, ['*'], 'therapy_sessions');
+        $specialSessions = TherapySession::where('user_id', $user_id)->where('special', 1)->orderBy('created_at', 'desc')->paginate(100, ['*'], 'therapy_sessions');
+        $allTherapySessions = TherapySession::orderBy('created_at', 'desc')->paginate(100, ['*'], 'therapy_sessions');
         $allMissedSessions = TherapySession::where('attendance', 'no-show')->orderBy('created_at', 'desc')->paginate(100, ['*'], 'therapy_sessions');
         $allSpecialSessions = TherapySession::where('special', 1)->orderBy('created_at', 'desc')->paginate(100, ['*'], 'therapy_sessions');
-        $missedSessions = TherapySession::where('user_id')->where('attendance', 'no-show')->orderBy('created_at', 'desc')->paginate(100, ['*'], 'therapy_sessions');
-        $specialSessions = TherapySession::where('user_id')->where('special', 1)->orderBy('created_at', 'desc')->paginate(100, ['*'], 'therapy_sessions');
-        $allTherapySessions = TherapySession::orderBy('created_at', 'desc')->paginate(100, ['*'], 'therapy_sessions');
 
         return view(
             'session.index',

@@ -134,9 +134,9 @@
                                 {{ __('Clients') }}
                             </x-jet-dropdown-link>
 
-                            {{-- <x-jet-dropdown-link href="{{ route('session.index') }}">
+                            <x-jet-dropdown-link href="{{ route('session.index') }}">
                                 {{ __('Sessions') }}
-                            </x-jet-dropdown-link> --}}
+                            </x-jet-dropdown-link>
 
                             <x-jet-dropdown-link href="{{ route('profile.show') }}">
                                 {{ __('Profile') }}
@@ -216,9 +216,9 @@
                     {{ __('Clients') }}
                 </x-jet-responsive-nav-link>
 
-                {{-- <x-jet-responsive-nav-link class="text-gray-50" href="{{ route('session.index') }}" :active="request()->routeIs('session.index')">
+                <x-jet-responsive-nav-link class="text-gray-50" href="{{ route('session.index') }}" :active="request()->routeIs('session.index')">
                     {{ __('Sessions') }}
-                </x-jet-responsive-nav-link> --}}
+                </x-jet-responsive-nav-link>
 
                 <x-jet-responsive-nav-link class="text-gray-50" href="{{ route('profile.show') }}" :active="request()->routeIs('profile.show')">
                     {{ __('Profile') }}
