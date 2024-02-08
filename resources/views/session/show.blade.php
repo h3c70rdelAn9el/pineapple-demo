@@ -36,4 +36,14 @@
             <div class="w-1/2 border-gray-400 p-2">{{ $therapySession->notes }}</div>
         </div>
     </section>
+
+
+    @if (auth()->user()->admin == 1)
+    <form action="{{ route('session.destroy', $therapySession) }}" method="POST">
+        @csrf
+        @method('DELETE')
+        <button type="submit" class="btn btn-danger text-blue-500 hover:text-blue-800" 
+            onclick="return confirm('Are you really sure that you want to delete this session?')">Delete</button>
+    </form>
+    @endif
 </x-app-layout>

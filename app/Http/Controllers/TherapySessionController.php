@@ -260,8 +260,12 @@ class TherapySessionController extends Controller
      * @param  \App\Models\TherapySession  $therapySession
      * @return \Illuminate\Http\Response
      */
+
     public function destroy(TherapySession $therapySession)
     {
-        //
+        $therapySession->delete();
+
+        return redirect()->route('dashboard')
+            ->with('success', 'Therapy session deleted successfully');
     }
 }
