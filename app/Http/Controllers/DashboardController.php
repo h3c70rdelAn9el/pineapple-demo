@@ -7,8 +7,11 @@ use App\Models\Client;
 use Illuminate\Http\Request;
 use App\Models\TherapySession;
 use Illuminate\Support\Facades\DB;
+use Symfony\Component\Mime\Message;
 use App\Http\Controllers\Controller;
 use Illuminate\Pagination\LengthAwarePaginator;
+use App\Models\ChMessage as ChatMessage;
+
 
 class DashboardController extends Controller
 {
@@ -66,6 +69,10 @@ class DashboardController extends Controller
             ->orderBy('created_at', 'desc')
             ->take(10)
             ->paginate(10);
+
+        $unreadMessagesCount = ChatMessage::where('to_id', $user->id)
+        ->where('seen', 0)
+        ->count();
 
         if ($therapists) {
             $incompleteTherapists = $therapists->filter(function ($therapist) {
@@ -135,6 +142,7 @@ class DashboardController extends Controller
                 'allMissedSessions' => $allMissedSessions,
                 'allSpecialSessions' => $allSpecialSessions,
                 'recentActiveClients' => $recentActiveClients,
+                'unreadMessagesCount' => $unreadMessagesCount,
             ]);
         } else {
             return view('dashboard', [
@@ -154,6 +162,7 @@ class DashboardController extends Controller
                 'therapySessionsForTherapistClients' => $therapySessionsForTherapistClients,
                 'inactiveTherapistClientsCount' => $inactiveTherapistClientsCount,
                 'therapistClients' => $therapistClients,
+                'unreadMessagesCount' => $unreadMessagesCount,
             ]);
         }
     }

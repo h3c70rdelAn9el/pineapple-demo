@@ -21,7 +21,18 @@
         @endif
     </div>
 
-    <div class="mx-auto mt-3 flex h-full w-full max-w-6xl flex-col rounded-md p-4 md:flex-row">
+    @if ($unreadMessagesCount > 0)
+        <div
+            class="mx-auto ml-14 mt-2 flex w-52 max-w-6xl flex-row items-center justify-center rounded-md border border-blue-400 bg-blue-200 px-4 py-1 font-medium transition duration-200 hover:bg-blue-500">
+            <a href="/messages">
+                <p class="text-center">Unread Messages:<span class="ml-2 font-bold">
+                        {{ $unreadMessagesCount }}</span>
+                </p>
+            </a>
+        </div>
+    @endif
+
+    <div class="mx-auto mt-2 flex h-full w-full max-w-6xl flex-col rounded-md p-4 md:flex-row">
         <x-container-content>
             <x-slot name="title">
                 <div class="flex flex-col">

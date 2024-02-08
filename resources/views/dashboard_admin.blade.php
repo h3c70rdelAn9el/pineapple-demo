@@ -25,6 +25,17 @@
         </table>
     </div>
 
+    @if ($unreadMessagesCount > 0)
+        <div
+            class="mx-auto ml-14 mt-2 flex w-52 rounded-md hover:bg-blue-500 bg-blue-200 transition duration-200 max-w-6xl flex-row items-center justify-center border border-blue-400 px-4 py-1 font-medium">
+            <a href="/messages">
+                <p class="text-center">Unread Messages:<span class="ml-2 font-bold">
+                        {{ $unreadMessagesCount }}</span>
+                </p>
+            </a>
+        </div>
+    @endif
+
     <div class="relative mx-auto mt-3 grid h-full w-full max-w-6xl grid-cols-1 gap-3 rounded-md p-4 md:grid-cols-2">
         <section class="col-span-1">
             <x-container-content>
