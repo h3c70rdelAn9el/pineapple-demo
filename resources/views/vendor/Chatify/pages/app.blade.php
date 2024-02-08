@@ -4,12 +4,12 @@
     {{-- ----------------------Users/Groups lists side---------------------- --}}
     <div class="messenger-listView {{ !!$id ? 'conversation-active' : '' }}">
         {{-- Header and search bar --}}
-        <div class="m-header">
+        <div class="m-header md:mt-4 mt-2">
             <nav>
                 <a href="#"><i class="fas fa-inbox"></i> <span class="messenger-headTitle">MESSAGES</span> </a>
                 {{-- header buttons --}}
                 <nav class="m-header-right">
-                    <a href="#"><i class="fas fa-cog settings-btn"></i></a>
+                    {{-- <a href="#"><i class="fas fa-cog settings-btn"></i></a> --}}
                     <a href="#" class="listView-x"><i class="fas fa-times"></i></a>
                 </nav>
             </nav>
@@ -52,13 +52,13 @@
     {{-- ----------------------Messaging side---------------------- --}}
     <div class="messenger-messagingView">
         {{-- header title [conversation name] amd buttons --}}
-        <div class="m-header m-header-messaging">
+        <div class="m-header m-header-messaging -mt-2">
             <nav class="chatify-d-flex chatify-justify-content-between chatify-align-items-center">
                 {{-- header back button, avatar and user name --}}
                 <div class="chatify-d-flex chatify-justify-content-between chatify-align-items-center">
-                    <a href="#" class="show-listView"><i class="fas fa-arrow-left"></i></a>
+                    {{-- <a href="#" class="show-listView"><i class="fas fa-arrow-left"></i></a>
                     <div class="avatar av-s header-avatar" style="margin: 0px 10px; margin-top: -5px; margin-bottom: -5px;">
-                    </div>
+                    </div> --}}
                     <a href="#" class="user-name">{{ config('chatify.name') }}</a>
                 </div>
                 {{-- header buttons --}}
@@ -109,6 +109,20 @@
     </div>
 </div>
 </x-app-layout>
+
+<style>
+    @media (max-width: 980px) {
+    .messenger-listView {
+        margin-top: 95px !important;
+    }
+}
+
+@media (max-width: 1060px) {
+    .messenger-infoView {
+        margin-top: 95px !important;
+    }
+}
+</style>
 
 @include('Chatify::layouts.modals')
 @include('Chatify::layouts.footerLinks')
