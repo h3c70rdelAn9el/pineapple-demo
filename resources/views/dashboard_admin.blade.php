@@ -105,7 +105,7 @@
                             <p>Latest 10 Sessions:</p>
                             <div class="h-96 overflow-y-auto">
                                 @foreach ($allTherapySessions->take(10) as $ts)
-                                    <x-session-card :therapySession="$therapySession">
+                                    <x-session-card :therapySession="$ts">
                                     </x-session-card>
                                 @endforeach
                             </div>
