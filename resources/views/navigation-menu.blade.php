@@ -138,6 +138,10 @@
                                 {{ __('Sessions') }}
                             </x-jet-dropdown-link>
 
+                            <x-jet-dropdown-link href="/messages">
+                                {{ __('Messages') }}
+                            </x-jet-dropdown-link>
+
                             <x-jet-dropdown-link href="{{ route('profile.show') }}">
                                 {{ __('Profile') }}
                             </x-jet-dropdown-link>
@@ -218,6 +222,10 @@
 
                 <x-jet-responsive-nav-link class="text-gray-50" href="{{ route('session.index') }}" :active="request()->routeIs('session.index')">
                     {{ __('Sessions') }}
+                </x-jet-responsive-nav-link>
+
+                <x-jet-responsive-nav-link class="text-gray-50" href="/messages" :active="request()->routeIs('session.index')">
+                    {{ __('Messages') }}
                 </x-jet-responsive-nav-link>
 
                 <x-jet-responsive-nav-link class="text-gray-50" href="{{ route('profile.show') }}" :active="request()->routeIs('profile.show')">
