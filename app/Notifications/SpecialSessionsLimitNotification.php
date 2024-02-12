@@ -36,7 +36,7 @@ class SpecialSessionsLimitNotification extends Notification
     {
         return (new MailMessage)
             ->line('Hello!')
-            ->line('Your remaining special sessions are now 0.')
+            ->line('You currently have one special session remaining.')
             ->line('We appreciate your commitment to your well-being.')
             ->action('Please contact us for assistance', 'mailto:kelly@pineapplesupport.org')
             ->line('Thank you for choosing our services.');
