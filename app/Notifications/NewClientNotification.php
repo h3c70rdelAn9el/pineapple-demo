@@ -35,8 +35,8 @@ class NewClientNotification extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->line('Hello, we are informing you that you have recieved a new client.')
-            ->action('Please login to your dashboard to view your new client.', url('/login'))
+            ->line('Hello, we are informing you that something has changed on your portal.')
+            ->action('Please log in to your dashboard.', url('/login'))
             ->line('Thank you.');
     }
 
