@@ -34,11 +34,19 @@
                         {{-- TODO: REFACTOR THE FOLLOWING LATER --}}
                         {{-- Add Session --}}
                         <div x-data="{ showSessionModal: false }">
-                            <button
-                                class="mt-2 w-full rounded-lg bg-blue-500 p-2 text-center text-sm font-bold text-white shadow-md transition-all duration-200 ease-in hover:bg-blue-700 hover:shadow-lg"
-                                @click="showSessionModal = true">
-                                Add Session
-                            </button>
+                              @if ($client->therapySessions()->whereIn('attendance', ['attended', 'no-show'])->count() < $client->max_sessions)
+                            <div class="w-full">
+                                    <button
+                                        class="mt-2 w-full rounded-lg bg-blue-500 p-2 text-center text-sm font-bold text-white shadow-md transition-all duration-200 ease-in hover:bg-blue-700 hover:shadow-lg"
+                                        @click="showSessionModal = true">
+                                        Add Session
+                                    </button>
+                            </div>
+                            @else
+                                <p class="text-center text-xs text-red-500">
+                                    Session Limit Reached
+                                </p>
+                            @endif
                             <div class="fixed inset-0 z-50 flex items-center justify-center overflow-auto bg-gray-800 bg-opacity-50"
                                 x-show="showSessionModal"
                                 x-transition.duration.300ms
