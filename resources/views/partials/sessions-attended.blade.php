@@ -7,7 +7,7 @@ $specialSessionsCount = $client->special_sessions? $client->special_sessions : 6
 
     $specialSessionsLeft = max(0, $defaultSpecialSessions - $specialSessionsCount);
 @endphp
-<div class="flex flex-col mt-4 text-xs w-1/2">
+<div class="flex flex-col mt-4 text-xs">
 
     <p class="text-gray-500">
         <span class="mr-3 font-bold">{{ $sessionsLeft }}</span>Sessions Left
