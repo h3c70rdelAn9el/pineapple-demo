@@ -15,14 +15,14 @@
             </div>
         </div>
     </div>
-    <div class="mx-auto grid w-full grid-cols-1 gap-3 rounded-lg p-2 px-6 md:grid-cols-2">
+    <div class="mx-auto grid w-full grid-cols-1 gap-3 rounded-lg p-2 px-6 md:grid-cols-2 h-full">
         {{-- left side --}}
 
-        <div class="col-span-1">@include('partials.client-fields')</div>
+        <div class="col-span-1 h-full">@include('partials.client-fields')</div>
 
 
         {{-- right side --}}
-        <div class="mt-2 flex flex-col rounded-md border border-purple-500 p-1 shadow-md shadow-blue-100">
+        <div class="mt-2 flex flex-col h-full rounded-md border border-purple-500 p-1 shadow-md shadow-blue-100">
             <h2 class="text-center text-lg font-bold">Client Sessions</h2>
             <p class="ml-2 text-xs">Assigned Sessions: {{ $client->max_sessions }}</p>
             <div class="mx-auto flex w-2/3 flex-row">

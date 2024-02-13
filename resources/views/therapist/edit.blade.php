@@ -257,6 +257,15 @@
             </div>
 
             <div>
+                <x-jet-label value="Client Extensions" />
+                <x-jet-input class="mt-1 block border border-blue-200 p-2" id="client_extensions"
+                    name="client_extensions" type="number" value="{{ $therapist->client_extensions }}"
+                    wire:model.defer="state.client_extensions" />
+                <x-jet-input-error class="mt-2" for="client_extensions" />
+            </div>
+
+
+            <div>
                 <x-jet-label for="out_of_state_coaching" value="{{ __('Out of State Coaching') }}" />
                 <div class="mt-2 flex items-center">
                     <label for="out_of_state_coaching_yes" class="mr-4">

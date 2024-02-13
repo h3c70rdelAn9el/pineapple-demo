@@ -83,7 +83,8 @@ class User extends Authenticatable
         'state',
         'gender',
         'time_zone',
-        'currency'
+        'currency',
+        'client_extensions'
 
     ];
 
@@ -114,7 +115,6 @@ class User extends Authenticatable
         'contract_signed' => 'boolean',
         'full' => 'boolean',
         'intern' => 'boolean',
-        'client_extensions' => 'boolean',
         'covid_fundraise' => 'boolean',
         'insurance' => 'boolean',
         'signed_documents' => 'boolean',

@@ -198,6 +198,7 @@ class TherapistsController extends Controller
             'notes' => 'nullable|string|max:255',
             'number_of_potential_clients' => 'nullable|numeric',
             'currencyCode' => 'nullable|string|max:255',
+            'client_extensions' => 'nullable|numeric'
 
 
             // 'gender' => $genderString
