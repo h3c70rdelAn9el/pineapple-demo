@@ -84,7 +84,8 @@ class User extends Authenticatable
         'gender',
         'time_zone',
         'currency',
-        'client_extensions'
+        'client_extensions',
+        'active_status',
 
     ];
 
