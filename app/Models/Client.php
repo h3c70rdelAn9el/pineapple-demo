@@ -50,6 +50,10 @@ class Client extends Model
     {
         return $this->belongsTo(User::class);
     }
+    public function therapist()
+    {
+        return $this->belongsTo(User::class);
+    }
 
     public function therapySessions()
     {
