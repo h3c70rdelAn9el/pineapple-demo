@@ -197,7 +197,7 @@ class TherapistsController extends Controller
             // 'client_extensions' => 'nullable|boolean',
             'notes' => 'nullable|string|max:255',
             'number_of_potential_clients' => 'nullable|numeric',
-            'currencyCode' => 'nullable|string|max:255',
+            'currency' => 'nullable|string|max:255',
             'client_extensions' => 'nullable|numeric'
 
 
@@ -212,7 +212,7 @@ class TherapistsController extends Controller
 
         $validatedData['gender'] = $genderString;
 
-        $user->currency = $request->currencyCode;
+        //$user->currency = $request->currencyCode;
 
 
 
