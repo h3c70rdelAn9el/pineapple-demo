@@ -529,7 +529,7 @@ class ClientController extends Controller
         $id = $client->id;
         // $therapist = User::find($user_id);
         //$therapist = User::where('id', $user_id)->first();
-        $therapist = $client->user;
+        $therapist = $client->user ?? new User();
 
         return view('clients.show')->with(['client' => $client, 'therapySessions' => $therapySessions, 'therapist' => $therapist, 'attendedSessions' => $attendedSessions, 'user' => $user, 'id' => $id]);
     }
