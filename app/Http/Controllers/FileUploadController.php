@@ -172,7 +172,7 @@ class FileUploadController extends Controller
             'verified' => $request->has('verified'),
         ]);
 
-        return redirect()->route('therapist.show', $form->user_id);
+        return redirect()->route('therapist-forms', ['id' => $form->user_id]);
     }
 
     /**
