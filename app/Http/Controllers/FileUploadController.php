@@ -125,7 +125,9 @@ class FileUploadController extends Controller
         $therapist = User::find($user->id);
         $id = $user->id;
 
-        return view('therapist-forms', ['id' => $id, 'file_name' => $file_name, 'user' => $user, 'therapist' => $therapist]);
+
+
+        return view('therapist-forms', ['id' => $id, 'file_name' => $file_name, 'user' => $user, 'therapist' => $therapist, 'therapistForm' => $therapistForm]);
     }
 
 
