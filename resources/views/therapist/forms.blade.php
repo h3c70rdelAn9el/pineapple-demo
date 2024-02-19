@@ -1,6 +1,4 @@
 <x-app-layout>
-    {{-- <x-container-header :user="$user">
-        </x-container-header> --}}
     <div class="h-full overflow-scroll">
         <div class="flex w-full flex-row flex-wrap">
             <div class="flex w-full flex-col">
@@ -22,7 +20,7 @@
         </div>
 
         <div class="mx-auto w-5/6 px-4 md:w-full" x-data="{ openUpload: false }">
-            <div class="flex flex-row justify-between px-2 itmes-center">
+            <div class="itmes-center flex flex-row justify-between px-2">
                 {{-- <button class="w-32 button-secondary">
                         <a href="{{ route('therapist.show', $therapist) }}">{{ $therapist->name }}</a>
                     </button> --}}
@@ -53,12 +51,17 @@
                     </div>
                 </div>
 
-                <button x-on:click="openUpload = !openUpload" class="button w-44 justify-end text-sm h-10">
+                <button x-on:click="openUpload = !openUpload" class="button h-10 w-44 justify-end text-sm">
                     <span x-show="!openUpload" x-cloak>Upload Document</span>
                     <span x-show="openUpload" x-cloak>Close Form</span>
                 </button>
             </div>
-            <div x-show="openUpload" x-cloak>
+            <div x-show="openUpload" x-cloak x-transition:enter="transition ease-out duration-300 transform"
+                x-transition:enter-start="opacity-0 translate-y-[-20px]"
+                x-transition:enter-end="opacity-100 translate-y-0"
+                x-transition:leave="transition ease-in duration-300 transform"
+                x-transition:leave-start="opacity-100 translate-y-0"
+                x-transition:leave-end="opacity-0 translate-y-[-20px]">
                 <x-file-upload :user="$user" :therapist="$therapist" />
             </div>
         </div>
