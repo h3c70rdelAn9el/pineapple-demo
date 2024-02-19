@@ -170,6 +170,7 @@ class FileUploadController extends Controller
         $form = FileUpload::findOrFail($id);
         $form->update([
             'verified' => $request->has('verified'),
+            'pinned' => $request->has('pinned'),
         ]);
 
         return redirect()->route('therapist-forms', ['id' => $form->user_id]);
