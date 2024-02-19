@@ -47,9 +47,9 @@ return [
                 'address' => env('MAIL_FROM_ADDRESS', 'therapy@pineapplesupport.org'),
                 'name' => env('MAIL_FROM_NAME', 'Example'),
             ],
-        
+
             'reply_to' => [
-                'address' => env('MAIL_REPLY_TO_ADDRESS', 'kelly@pineapplesupport.org'),
+                'address' => env('MAIL_REPLY_TO_ADDRESS', 'kellie@pineapplesupport.org'),
                 'name' => env('MAIL_FROM_NAME', 'Example'),
             ],
         ],
@@ -106,7 +106,7 @@ return [
     ],
 
     'reply_to' => [
-        'address' => env('MAIL_REPLY_TO_ADDRESS', 'kelly@pineapplesupport.org'),
+        'address' => env('MAIL_REPLY_TO_ADDRESS', 'kellie@pineapplesupport.org'),
         'name' => env('MAIL_FROM_NAME', 'Example'),
     ],
 
