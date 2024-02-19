@@ -32,7 +32,7 @@ class UserController extends Controller
             'contract_signed' => 'nullable|boolean',
             'all_documents' => 'nullable|string|max:255',
             'full' => 'nullable|boolean',
-            'session_cost' => 'nullable|numeric',
+            'session_cost' => 'nullable|numeric|max:100',
             'contact_for_promotionals' => 'nullable|boolean',
             'number_of_potential_clients' => 'nullable|string|max:255',
             'out_of_state_coaching' => 'nullable|boolean',

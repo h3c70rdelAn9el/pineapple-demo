@@ -405,7 +405,7 @@
                 <div class="flex w-full flex-row gap-2">
                     <div class="w-/12 flex flex-col">
                         <x-jet-label for="session_cost" value="{{ __('Session Cost') }}" />
-                        <x-jet-input id="session_cost" class="mt-1 block w-full" type="number" name="session_cost"
+                        <x-jet-input id="session_cost" class="mt-1 block w-full" type="number" step="1.00" max="100" name="session_cost"
                             :value="old('session_cost', $therapist->session_cost)" :placeholder="$therapist->session_cost" autofocus />
                         <x-jet-input-error for="session_cost" class="mt-2" />
                     </div>
