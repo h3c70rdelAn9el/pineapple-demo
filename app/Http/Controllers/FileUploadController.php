@@ -31,11 +31,17 @@ class FileUploadController extends Controller
             return $file->date && $file->date < now();
         });
 
+        $pinnedForms = $file_name->where('user_id', $therapist->id)->where('pinned', 1)->sortByDesc('created_at');
+        $unPinnedForms = $file_name->where('user_id', $therapist->id)->where('pinned', 0)->sortByDesc('created_at');
+
         return view('therapist.forms', [
             'file_name' => $file_name,
             'therapist' => $therapist,
             'user' => $user,
             'expiredFiles' => $expiredFiles,
+            'pinnedForms' => $pinnedForms,
+            'unPinnedForms' => $unPinnedForms,
+
         ]);
     }
 
