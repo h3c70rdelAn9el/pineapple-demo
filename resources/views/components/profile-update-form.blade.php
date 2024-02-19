@@ -299,7 +299,7 @@
             <div class="flex w-1/2 flex-col">
                 <x-jet-label value="Session Cost:" />
                 <x-jet-input class="mt-1 block border border-blue-200 p-2" id="session_cost" name="session_cost"
-                    type="text" value="{{ number_format($user->session_cost, 2) }}" autocomplete="session_cost"
+                    type="number" max="100" step="1.00" value="{{ number_format($user->session_cost, 2) }}" autocomplete="session_cost"
                     required />
             </div>
             <x-jet-input-error class="mt-2" for="session_cost" />
