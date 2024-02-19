@@ -41,7 +41,7 @@
                             </div>
                         @else
                             <p class="text-center text-xs text-red-500">
-                                Session Limit Reached, please <a href="mailto: kelly@pineapple.com"
+                                Session Limit Reached, please <a href="mailto: kellie@pineapplesupport.org"
                                     class="text-blue-400 hover:text-blue-600">contact us</a>.
                             </p>
                         @endif
