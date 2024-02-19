@@ -123,11 +123,11 @@
                                 {{ __('Dashboard') }}
                             </x-jet-dropdown-link>
 
-                            {{-- @if ($user->admin == 1)
+                            @if ($user->admin == 1)
                                 <x-jet-dropdown-link href="{{ route('therapists.index') }}">
                                     {{ __('Therapists') }}
                                 </x-jet-dropdown-link>
-                            @endif --}}
+                            @endif
 
 
                             <x-jet-dropdown-link href="{{ route('clients.index') }}">
@@ -209,12 +209,12 @@
                     {{ __('Dashboard') }}
                 </x-jet-responsive-nav-link>
 
-                {{-- @if ($user->admin == 1)
+                @if ($user->admin == 1)
                     <x-jet-responsive-nav-link class="text-gray-50" href="{{ route('therapists.index') }}"
                         :active="request()->routeIs('therapists.index')">
                         {{ __('Therapists') }}
                     </x-jet-responsive-nav-link>
-                @endif --}}
+                @endif
 
                 <x-jet-responsive-nav-link class="text-gray-50" href="{{ route('clients.index') }}" :active="request()->routeIs('clients.index')">
                     {{ __('Clients') }}
