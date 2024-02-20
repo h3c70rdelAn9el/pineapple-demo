@@ -37,7 +37,7 @@
                     {{-- <form action="{{ route('fileStore', ['therapistId' => $therapist->id]) }}" method="POST" enctype="multipart/form-data"> --}}
                     {{-- <form action="{{ route('fileStore') }}" method="POST" enctype="multipart/form-data"> --}}
                     {{-- <form action="{{ route('fileStore', ['id' => $therapist->id]) }}" method="POST" enctype="multipart/form-data"> --}}
-                    <form action="{{ route('fileStore', ['id' => $therapist->id]) }}" method="POST"
+                    <form action="{{ route('fileStore', ['id' => $therapist ? $therapist->id : $user->id]) }}" method="POST"
                         enctype="multipart/form-data">
 
                         @csrf
