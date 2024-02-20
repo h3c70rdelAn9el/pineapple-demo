@@ -110,11 +110,22 @@ class FileUploadController extends Controller
             $adminUsers = User::where('admin', 1)->get();
             Notification::send($adminUsers, new TherapistFileUploaded($user));
         }
+        if($user->admin ==1)
+        {
+            return redirect('therapist/forms/' . $therapist->id)
+            ->with('alert', 'success')
+            ->with('message', 'Thank you. You have uploaded your file.')
+            ->with('file_name', $fileName);
+
+        }
+        else
+        {
 
         return redirect('user/profile')
             ->with('alert', 'success')
             ->with('message', 'Thank you. You have uploaded your file.')
             ->with('file_name', $fileName);
+        }
     }
 
 
