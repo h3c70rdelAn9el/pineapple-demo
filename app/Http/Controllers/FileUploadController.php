@@ -65,9 +65,9 @@ class FileUploadController extends Controller
 
 
 
-    public function store(Request $request, $therapist)
+    public function store(Request $request, $therapist_id)
     {
-        //$therapist = User::find($therapist);
+        $therapist = User::find($therapist_id);
         // $user = $request->user();
         $user = auth()->user();
         $request->validate([
