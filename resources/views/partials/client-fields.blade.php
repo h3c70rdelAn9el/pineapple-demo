@@ -14,6 +14,7 @@
         'Therapist' => $client->user ? $client->user->name : '',
         'Max Sessions' => $client->max_sessions ?: 'Max Sessions needed',
         'Phone' => $client->phone ?: 'Phone needed',
+        'Email' => $client->email ?: 'Email needed',
         'Contact by' => $client->contact_method ?: 'Contact method needed',
         'Client Status' => $client->status === 1 ? 'Inactive' : 'Active',
         'Pronouns' => $client->pronouns ?: 'Pronouns needed',
