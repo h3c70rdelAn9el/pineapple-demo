@@ -67,7 +67,7 @@ class FileUploadController extends Controller
 
     public function store(Request $request, $therapist)
     {
-        $therapist = User::find($therapist);
+        //$therapist = User::find($therapist);
         // $user = $request->user();
         $user = auth()->user();
         $request->validate([
@@ -87,8 +87,8 @@ class FileUploadController extends Controller
                 'note' => $request->note,
                 'verified' => $verified,
                 'file_title' => $request->file_title,
-                // 'user_id' => $therapist->id,
-                'user_id' => $request->user_id,
+                'user_id' => $therapist->id,
+                //'user_id' => $request->user_id,
                 // 'therapist_id' => $therapist->id,
             ]);
         } else {
