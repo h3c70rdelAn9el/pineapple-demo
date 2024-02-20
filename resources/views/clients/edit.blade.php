@@ -594,7 +594,7 @@
                                 return true;
                             });
                         @endphp
-                                --}}
+
                         @if ($activeTherapistsInState->isNotEmpty())
                             <optgroup label="{{ $state }}">
                                 @foreach ($activeTherapistsInState as $therapist)
