@@ -24,7 +24,7 @@
                         <strong>{{ $message }}</strong>
                     </div>
                 @endif
-                <form action="{{ route('fileStore') }}"
+                <form action="{{ route('fileStore', ['id' => $therapist->id]) }}"
                     method="POST"
                     enctype="multipart/form-data">
                     @csrf
