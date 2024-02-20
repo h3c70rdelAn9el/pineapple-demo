@@ -587,14 +587,14 @@
                     @endphp
 
                     @foreach ($groupedTherapists as $state => $therapistsInState)
-                    
+
                         @php
                             $activeTherapistsInState = $therapistsInState->filter(function ($therapist) {
                                 //return $therapist->active_status == 0;
                                 return true;
                             });
                         @endphp
-                                
+
                         @if ($activeTherapistsInState->isNotEmpty())
                             <optgroup label="{{ $state }}">
                                 @foreach ($activeTherapistsInState as $therapist)
