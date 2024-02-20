@@ -133,7 +133,7 @@ class FileUploadController extends Controller
 
 
 
-        return view('therapist-forms', ['id' => $id, 'file_name' => $file_name, 'user' => $user, 'therapist' => $therapist, 'therapistForm' => $therapistForm]);
+        return view('therapist.forms', ['id' => $id, 'file_name' => $file_name, 'user' => $user, 'therapist' => $therapist, 'therapistForm' => $therapistForm]);
     }
 
 
@@ -181,7 +181,7 @@ class FileUploadController extends Controller
             'pinned' => $request->has('pinned'),
         ]);
 
-        return redirect()->route('therapist-forms', ['id' => $form->user_id]);
+        return redirect()->route('therapist.forms', ['id' => $form->user_id]);
     }
 
     /**
