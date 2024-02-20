@@ -13,6 +13,7 @@ use App\Http\Controllers\TherapistsController;
 use Illuminate\Support\Facades\Storage;
 
 
+
 class FileUploadController extends Controller
 {
     /**
@@ -181,7 +182,10 @@ class FileUploadController extends Controller
             'pinned' => $request->has('pinned'),
         ]);
 
-        return redirect()->route('therapist.forms', ['id' => $form->user_id]);
+        $therapist = User::find($form->user_id);
+
+        //return redirect()->route('therapist.forms', ['id' => $form->user_id]);
+        return redirect()->route('therapist.forms', ['therapist' => $therapist]);
     }
 
     /**
