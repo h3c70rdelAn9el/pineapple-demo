@@ -264,8 +264,12 @@ class TherapySessionController extends Controller
     public function destroy(TherapySession $therapySession)
     {
         $therapySession->delete();
-
-        return redirect()->route('dashboard')
+        return redirect()->route('therapy-sessions', ['user' => $therapySession->user_id])
             ->with('success', 'Therapy session deleted successfully');
+    
+
+
+        //return redirect()->route('dashboard')
+          //  ->with('success', 'Therapy session deleted successfully');
     }
 }
