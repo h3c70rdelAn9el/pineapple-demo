@@ -35,6 +35,7 @@ class NewClientNotification extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
+            ->subject('Pineapple Support Portal Change')
             ->line('Hello, we are informing you that something has changed on your portal.')
             ->action('Please log in to your dashboard.', url('/login'))
             ->line('Thank you.');
