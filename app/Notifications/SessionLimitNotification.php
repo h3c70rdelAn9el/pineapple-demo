@@ -41,7 +41,7 @@ class SessionLimitNotification extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-            ->subject('Your session limit has been reached')
+            ->subject('Pineapple Support - Session Limit Notice')
             ->line('Dear ' . $notifiable->name . ',')
             ->line('You have reached 14 therapy sessions.')
             ->line('Please contact your therapist for further details.')

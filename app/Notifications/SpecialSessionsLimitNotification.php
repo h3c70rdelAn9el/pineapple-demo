@@ -35,6 +35,7 @@ class SpecialSessionsLimitNotification extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
+            ->subject('Pineapple Support- Special Session Limit')
             ->line('Hello!')
             ->line('You currently have one special session remaining.')
             ->line('We appreciate your commitment to your well-being.')
