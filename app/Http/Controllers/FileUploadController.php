@@ -113,17 +113,14 @@ class FileUploadController extends Controller
         if($user->admin ==1)
         {
             return redirect('therapist/forms/' . $therapist->id)
-            ->with('alert', 'success')
-            ->with('message', 'Thank you. You have uploaded your file.')
+            ->with('success', 'File uploaded successfully')
             ->with('file_name', $fileName);
 
         }
         else
         {
-
         return redirect('user/profile')
-            ->with('alert', 'success')
-            ->with('message', 'Thank you. You have uploaded your file.')
+            ->with('success', 'File uploaded successfully')
             ->with('file_name', $fileName);
         }
     }
