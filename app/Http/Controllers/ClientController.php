@@ -400,7 +400,12 @@ class ClientController extends Controller
             }
         }
 
-        return redirect()->route('dashboard');
+
+        // return redirect('therapist/forms/' . $therapist->id)
+        // ->with('success', 'File uploaded successfully')
+        // ->with('file_name', $fileName);
+        return redirect()->route('dashboard')
+            ->with('success', 'Client added successfully');
     }
 
 
@@ -505,7 +510,8 @@ class ClientController extends Controller
         }
 
 
-        return redirect()->route('dashboard');
+        return redirect()->route('dashboard')
+            ->with('success', 'Client updated successfully');
     }
 
 
