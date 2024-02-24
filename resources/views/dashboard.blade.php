@@ -6,9 +6,7 @@
     @endif
 
     @if (session('success'))
-        <div class="m-4 mx-auto w-1/2 rounded-md bg-green-500 p-4 text-center text-white shadow-sm">
-            {{ session('success') }}
-        </div>
+        <x-success-message></x-success-message>
     @endif
 
     <div class="ml-7 flex flex-row pt-2">
