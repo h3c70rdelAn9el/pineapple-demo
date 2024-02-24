@@ -1,9 +1,6 @@
 <x-app-layout>
     @if (session('success'))
-        <div class="m-4 mx-auto w-1/2 flex-col rounded-md bg-green-500 p-4 text-center text-white shadow-sm">
-            <p> {{ session('success') }}</p>
-            <p>{{ session('file_name') ? 'File: ' . session('file_name') : '' }}</p>
-        </div>
+        <x-success-message></x-success-message>
     @endif
 
     <div class="h-full overflow-scroll">
