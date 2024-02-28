@@ -1,4 +1,14 @@
 <x-app-layout>
+    @if (session('error'))
+        <div class="m-4 mx-auto w-1/2 rounded-md bg-red-500 p-4 text-center text-white shadow-sm">
+            {{ session('error') }}
+        </div>
+    @endif
+
+    @if (session('success'))
+        <x-success-message></x-success-message>
+    @endif
+
     <div class="ml-7 mt-2 w-fit">
         <table class="ml-4 w-full">
             <tbody class="text-sm">
@@ -27,7 +37,7 @@
 
     @if ($unreadMessagesCount > 0)
         <div
-            class="mx-auto ml-14 mt-2 flex w-52 rounded-md hover:bg-blue-500 bg-blue-200 transition duration-200 max-w-6xl flex-row items-center justify-center border border-blue-400 px-4 py-1 font-medium">
+            class="mx-auto ml-14 mt-2 flex w-52 max-w-6xl flex-row items-center justify-center rounded-md border border-blue-400 bg-blue-200 px-4 py-1 font-medium transition duration-200 hover:bg-blue-500">
             <a href="/messages">
                 <p class="text-center">Unread Messages:<span class="ml-2 font-bold">
                         {{ $unreadMessagesCount }}</span>

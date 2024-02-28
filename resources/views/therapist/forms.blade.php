@@ -1,4 +1,8 @@
 <x-app-layout>
+    @if (session('success'))
+        <x-success-message></x-success-message>
+    @endif
+
     <div class="h-full overflow-scroll">
         <div class="flex w-full flex-row flex-wrap">
             <div class="flex w-full flex-col">

@@ -262,6 +262,7 @@
                 value="{{ __('Clinical License Verification Portal') }}" />
             <x-jet-input class="mr-1 mt-0.5 w-full" name="clinical_license_verification_portal"
                 id="clinical_license_verification_portal" type="text"
+                value="{{ $user->clinical_license_verification_portal }}"
                 wire:model.defer="state.clinical_license_verification_portal"
                 autocomplete="clinical_license_verification_portal" />
             <p class="ml-1 mt-[3px] text-xs font-light">(Optional)</p>
