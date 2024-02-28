@@ -51,21 +51,20 @@ class UserController extends Controller
 
         ]);
 
-        // Handle selectedGenders separately
         if ($request->has('selectedGenders')) {
             $validatedData['gender'] = implode(', ', $validatedData['selectedGenders']);
         } else {
-            // If none are selected, set gender to null or an empty string as needed
-            $validatedData['gender'] = null; // or $validatedData['gender'] = '';
+            $validatedData['gender'] = null;
         }
 
-        // Update the user record
         $user->update($validatedData);
 
-        // add a notification to the admin
+
+        $updatedFields = array_intersect_key($validatedData, $user->getChanges());
+
         $admins = User::where('admin', 1)->get();
         foreach ($admins as $admin) {
-            $admin->notify(new TherapistProfileUpdated($user));
+            $admin->notify(new TherapistProfileUpdated($user, $updatedFields));
         }
 
 
@@ -76,12 +75,10 @@ class UserController extends Controller
     {
         $user = User::find(auth()->user()->id);
 
-        // Validate the request
         $validatedData = $request->validate([
             'selectedGenders' => 'nullable|array',
         ]);
 
-        // Update the gender field
         $user->update(['gender' => implode(', ', $validatedData['selectedGenders'])]);
 
         return redirect()->back()->with('success', 'Gender updated successfully.');
