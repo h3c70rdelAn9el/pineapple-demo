@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Notifications\TherapistProfileUpdated;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -60,6 +61,13 @@ class UserController extends Controller
 
         // Update the user record
         $user->update($validatedData);
+
+        // add a notification to the admin
+        $admins = User::where('admin', 1)->get();
+        foreach ($admins as $admin) {
+            $admin->notify(new TherapistProfileUpdated($user));
+        }
+
 
         return redirect()->back()->with('success', 'Profile updated successfully.');
     }
