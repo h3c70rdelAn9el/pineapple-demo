@@ -137,8 +137,6 @@ class FileUploadController extends Controller
         $therapist = User::find($user->id);
         $id = $user->id;
 
-
-
         return view('therapist.forms', ['id' => $id, 'file_name' => $file_name, 'user' => $user, 'therapist' => $therapist, 'therapistForm' => $therapistForm]);
     }
 
@@ -153,13 +151,14 @@ class FileUploadController extends Controller
     {
 
         $form = FileUpload::findOrFail($id);
+        $therapist = User::find($form->user_id);
 
         $user = auth()->user();
         if (!$user->admin && $form->user_id !== $user->id) {
             return redirect()->back()->with('error', 'You are not authorized to edit this form.');
         }
 
-        return view('therapist.forms-edit', compact('form', 'user'));
+        return view('therapist.forms-edit', compact('form', 'user', 'therapist'));
     }
 
     /**

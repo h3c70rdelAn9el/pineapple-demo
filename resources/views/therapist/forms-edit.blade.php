@@ -1,5 +1,10 @@
 <x-app-layout>
     <h1 class="mx-auto w-1/2 text-center text-lg">Edit Form</h1>
+    <p class="text-center text-xs capitalize">{{ $therapist->name }}</p>
+    <a href="{{ route('therapist.forms', $therapist->id) }}"
+        class="button">
+        Back
+    </a>
     <div class="my-4 flex flex-col items-center justify-center bg-gray-100">
         <div class="items-center justify-center">
             @if (Str::contains($form->file_name, '.pdf'))
@@ -29,24 +34,6 @@
     </div>
 
     <div class="mx-auto flex w-2/3 flex-col text-sm md:w-1/2">
-        {{-- <div class="mt-2 flex flex-row">
-            <p class="">Date:</p>
-            <p class="ml-4">{{ $form->date }}</p>
-        </div>
-        <div class="mt-2 flex flex-row flex-wrap">
-            <p class="">Document Type:</p>
-            <p class="ml-4">{{ $form->document_type }}License</p>
-        </div>
-        <div class="mt-2 flex w-full flex-col">
-            <p class="">Notes:</p>
-            @if (!empty($form->notes))
-                <p class="rounded-md border border-gray-200">
-                    {{ $form->notes }}
-                </p>
-            @else
-                <p class="rounded-md border border-gray-200 font-light">No notes available.</p>
-            @endif
-        </div> --}}
         <form action="{{ route('fileUpdate', $form->id) }}"
             method="POST">
             @csrf
