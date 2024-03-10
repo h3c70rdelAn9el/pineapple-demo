@@ -110,18 +110,15 @@ class FileUploadController extends Controller
             $adminUsers = User::where('admin', 1)->get();
             Notification::send($adminUsers, new TherapistFileUploaded($user));
         }
-        if($user->admin ==1)
-        {
+        if ($user->admin == 1) {
             return redirect('therapist/forms/' . $therapist->id)
-            ->with('success', 'File uploaded successfully')
-            ->with('file_name', $fileName);
+                ->with('success', 'File uploaded successfully')
+                ->with('file_name', $fileName);
 
-        }
-        else
-        {
-        return redirect('user/profile')
-            ->with('success', 'File uploaded successfully')
-            ->with('file_name', $fileName);
+        } else {
+            return redirect('user/profile')
+                ->with('success', 'File uploaded successfully')
+                ->with('file_name', $fileName);
         }
     }
 
@@ -172,6 +169,85 @@ class FileUploadController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+    // public function update(Request $request, $id)
+    // {
+    //     $user = auth()->user();
+
+    //     // $therapist = User::find($user->id);
+
+    //     if (!$user->admin) {
+    //         return redirect('therapist.forms');
+    //     }
+
+    //     $request->validate([
+    //         // 'verified' => 'nullable|in:1',
+    //         // 'verified' => $request->boolean('verified'),
+    //         'verified' => 'nullable|boolean',
+
+    //         // 'file_path' => $path,
+    //         // 'file_name' => $request->file_name,
+    //         'document_type' => $request->document_type,
+    //         'date' => $request->date,
+    //         'note' => $request->note,
+    //         'file_title' => $request->file_title,
+    //         // 'user_id' => $therapist->id,
+    //         ''
+    //     ]);
+
+    //     $form = FileUpload::findOrFail($id);
+    //     $form->update([
+    //         // make the field nullable
+    //         // 'verified' => $request->input('verified', null),
+    //         // 'verified' => $request->has('verified'),
+    //         'verified' => 'nullable|boolean',
+    //         // 'verified' => $request->boolean('verified'),
+
+    //         'pinned' => $request->has('pinned'),
+    //         'file_title' => $request->file_title,
+    //         'document_type' => $request->document_type,
+    //         'date' => $request->date,
+    //         'note' => $request->note,
+    //         // 'user_id' => $therapist->id,
+
+    //     ]);
+
+    //     $therapist = User::find($form->user_id);
+
+    //     //return redirect()->route('therapist.forms', ['id' => $form->user_id]);
+    //     return redirect()->route('therapist.forms', ['therapist' => $therapist]);
+    // }
+
+    // public function update(Request $request, $id)
+    // {
+    //     $user = auth()->user();
+
+    //     if (!$user->admin) {
+    //         return redirect('therapist.forms');
+    //     }
+
+    //     $request->validate([
+    //         'document_type' => 'nullable|string',
+    //         'date' => 'nullable|date',
+    //         'file_title' => 'nullable|string',
+    //     ]);
+
+    //     $form = FileUpload::findOrFail($id);
+
+    //     $form->update([
+    //         'document_type' => $request->document_type,
+    //         'date' => $request->date,
+    //         'file_title' => $request->file_title,
+    //         'note' => $request->note,
+    //         'verified' => $request->has('verified') ? $request->verified : $form->verified,
+    //         'pinned' => $request->has('pinned') ? $request->pinned : $form->pinned,
+    //     ]);
+
+
+
+    //     // Redirect back to the therapist forms page
+    //     return redirect()->route('therapist.forms', ['therapist' => $form->user_id]);
+    // }
+
     public function update(Request $request, $id)
     {
         $user = auth()->user();
@@ -181,20 +257,68 @@ class FileUploadController extends Controller
         }
 
         $request->validate([
-            'verified' => 'nullable|in:1',
+            'document_type' => 'nullable|string',
+            'date' => 'nullable|date',
+            'file_title' => 'nullable|string',
         ]);
 
         $form = FileUpload::findOrFail($id);
+
+        $therapist = $form->user;
+
         $form->update([
-            'verified' => $request->has('verified'),
-            'pinned' => $request->has('pinned'),
+            'document_type' => $request->document_type ?? $form->document_type,
+            'date' => $request->date ?? $form->date,
+            'file_title' => $request->file_title ?? $form->file_title,
+            'note' => $request->note ?? $form->note,
+            // 'verified' => $request->has('verified') ? $request->verified : $form->verified,
+            'pinned' => $request->has('pinned') ? $request->pinned : $form->pinned,
         ]);
 
-        $therapist = User::find($form->user_id);
+        if ($request->has('verified') && $user->admin) {
+            $form->verified = $request->verified;
+        }
 
-        //return redirect()->route('therapist.forms', ['id' => $form->user_id]);
-        return redirect()->route('therapist.forms', ['therapist' => $therapist]);
+        $therapist->title = $request->input('title', $therapist->title);
+        $therapist->notes = $request->input('notes', $therapist->notes);
+        $therapist->save();
+
+        return redirect()->route('therapist.forms', ['therapist' => $form->user_id]);
     }
+
+
+
+
+    // public function update(Request $request, $id)
+    // {
+    //     $user = auth()->user();
+
+    //     if (!$user->admin) {
+    //         return redirect('therapist.forms');
+    //     }
+
+    //     $request->validate([
+    //         'document_type' => 'required',
+    //         'date' => 'nullable|date',
+    //     ]);
+
+    //     $form = FileUpload::findOrFail($id);
+
+    //     $form->update([
+    //         'document_type' => $request->document_type,
+    //         'date' => $request->date,
+    //         'verified' => $request->has('verified') ? $request->verified : $form->verified,
+    //         'pinned' => $request->has('pinned') ? $request->pinned : $form->pinned,
+    //         'file_title' => $request->filled('file_title') ? $request->file_title : $form->file_title,
+    //         'note' => $request->filled('note') ? $request->note : $form->note,
+    //     ]);
+
+    //     // Redirect back to the therapist forms page
+    //     return redirect()->route('therapist.forms', ['therapist' => $form->user_id]);
+    // }
+
+
+
 
     /**
      * Remove the specified resource from storage.
