@@ -180,6 +180,7 @@ class FileUploadController extends Controller
             'document_type' => 'nullable|string',
             'date' => 'nullable|date',
             'file_title' => 'nullable|string',
+            'verified' => 'nullable|boolean',
         ]);
 
         $form = FileUpload::findOrFail($id);
@@ -191,7 +192,7 @@ class FileUploadController extends Controller
             'date' => $request->date ?? $form->date,
             'file_title' => $request->file_title ?? $form->file_title,
             'note' => $request->note ?? $form->note,
-            // 'verified' => $request->has('verified') ? $request->verified : $form->verified,
+            'verified' => $request->has('verified') ? $request->verified : $form->verified,
             'pinned' => $request->has('pinned') ? $request->pinned : $form->pinned,
         ]);
 
