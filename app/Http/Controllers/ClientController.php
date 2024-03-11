@@ -563,7 +563,7 @@ class ClientController extends Controller
             $categories = $this->getCategories();
             $states = $this->getStates();
             $id = $client->id;
-            $therapist = User::find($client->user_id);
+            $therapist = User::firstorNew(['id' => $client->user_id]);
             $therapists = User::where('admin', 0)->orderBy('name', 'asc')->get();
             $user_id = $client->user_id;
             $genders = $this->getGenders();
