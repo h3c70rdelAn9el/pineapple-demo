@@ -45,23 +45,18 @@ class MissedTherapySessions extends Notification
     public function toMail($notifiable)
     {
         if ($notifiable instanceof User && $notifiable->admin == 1) {
-            // Message for admin
             return (new MailMessage)
                 ->subject('Missed sessions - Admin')
-                ->line('A user: (' . $this->client->name . ') has missed more than two therapy sessions.')
+                ->line('A user: (' . $this->client->client_code . ') has missed more than two therapy sessions.')
                 ->line('Please follow up with the user to address the issue.')
                 ->line('Thank you for your attention.');
         } else {
-            // Message for therapist
             return (new MailMessage)
                 ->subject('Missed sessions - Client')
                 ->line('Our records show that you have missed two therapy sessions.')
                 ->line('Please reach out to your therapist to reschedule or address any issues.')
                 ->line('Thank you for your attention.');
         }
-
-        // If not an admin user, don't send any notification
-        // return null;
     }
 
 }
