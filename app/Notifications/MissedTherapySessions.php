@@ -2,23 +2,27 @@
 
 namespace App\Notifications;
 
+use App\Models\User;
+use App\Models\Client;
 use Illuminate\Bus\Queueable;
+use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
-use Illuminate\Notifications\Notification;
 
 class MissedTherapySessions extends Notification
 {
     use Queueable;
+
+    protected $client;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(Client $client)
     {
-        //
+        $this->client = $client;
     }
 
     /**
@@ -40,22 +44,24 @@ class MissedTherapySessions extends Notification
      */
     public function toMail($notifiable)
     {
-        return (new MailMessage)
-            ->line('You have missed more than 3 consecutive therapy sessions.')
-            ->line('Please contact your therapist to reschedule your sessions.')
-            ->line('Thank you for your attention.');
+        if ($notifiable instanceof User && $notifiable->admin == 1) {
+            // Message for admin
+            return (new MailMessage)
+                ->subject('Missed sessions - Admin')
+                ->line('A user: (' . $this->client->name . ') has missed more than two therapy sessions.')
+                ->line('Please follow up with the user to address the issue.')
+                ->line('Thank you for your attention.');
+        } else {
+            // Message for therapist
+            return (new MailMessage)
+                ->subject('Missed sessions - Client')
+                ->line('Our records show that you have missed two therapy sessions.')
+                ->line('Please reach out to your therapist to reschedule or address any issues.')
+                ->line('Thank you for your attention.');
+        }
+
+        // If not an admin user, don't send any notification
+        // return null;
     }
 
-    /**
-     * Get the array representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     * @return array
-     */
-    public function toArray($notifiable)
-    {
-        return [
-            //
-        ];
-    }
 }

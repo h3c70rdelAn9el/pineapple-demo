@@ -2,7 +2,7 @@
     "private": true,
     "scripts": {
         "dev": "vite",
-        "start-all": "concurrently \"vite\" \"mailhog\" \"meilisearch\"",
+        "start-all": "concurrently \"vite\" \"mailhog\"  ",
         "build": "vite build"
     },
     "devDependencies": {

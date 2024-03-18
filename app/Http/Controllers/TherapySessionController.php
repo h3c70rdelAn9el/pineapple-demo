@@ -166,17 +166,33 @@ class TherapySessionController extends Controller
 
 
 
-            $consecutiveNoShows = 0;
-            foreach ($client->therapySessions()->latest()->take(5)->get() as $session) {
+            // $consecutiveNoShows = 0;
+            // foreach ($client->therapySessions()->latest()->take(5)->get() as $session) {
+            //     if ($session->attendance === 'no-show') {
+            //         $consecutiveNoShows++;
+            //     } else {
+            //         break;
+            //     }
+            // }
+
+            // if ($consecutiveNoShows >= 3) {
+            //     $client->notify(new MissedTherapySessions());
+            // }
+            $missedSessions = 0;
+
+
+            foreach ($client->therapySessions as $session) {
                 if ($session->attendance === 'no-show') {
-                    $consecutiveNoShows++;
-                } else {
-                    break;
+                    $missedSessions++;
                 }
             }
 
-            if ($consecutiveNoShows >= 3) {
-                $client->notify(new MissedTherapySessions());
+            if ($missedSessions >= 2) {
+               $client->notify(new MissedTherapySessions($client)); // Pass the $client instance
+                  $adminUsers = User::where('admin', 1)->get();
+                  foreach ($adminUsers as $adminUser) {
+                      $adminUser->notify(new MissedTherapySessions($client)); // Pass the $client instance
+                  }
             }
 
             return redirect()->back()->with('success', 'Session ashowed successfully.');
@@ -266,7 +282,7 @@ class TherapySessionController extends Controller
         $therapySession->delete();
         return redirect()->route('therapy-sessions', ['user' => $therapySession->user_id])
             ->with('success', 'Therapy session deleted successfully');
-    
+
 
 
         //return redirect()->route('dashboard')
