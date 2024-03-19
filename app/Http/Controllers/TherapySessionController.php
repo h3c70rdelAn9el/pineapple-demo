@@ -195,7 +195,7 @@ class TherapySessionController extends Controller
                   }
             }
 
-            return redirect()->back()->with('success', 'Session ashowed successfully.');
+            return redirect()->back()->with('success', 'Session added successfully.');
         } else {
             Session::flash('error', 'You have reached the maximum number of sessions for this client.');
             return redirect()->back();
