@@ -1,4 +1,7 @@
 <x-app-layout>
+    @if (session('success'))
+        <x-success-message></x-success-message>
+    @endif
     <div x-data="{ showLimitModal: {{ $client->therapySessions()->whereIn('attendance', ['attended', 'no-show'])->count() >= 16? 'true': 'false' }} }">
         <div class="relative">
             <div class="fixed inset-0 z-50 flex items-center justify-center overflow-auto bg-gray-800 bg-opacity-50"
@@ -15,14 +18,14 @@
             </div>
         </div>
     </div>
-    <div class="mx-auto grid w-full grid-cols-1 gap-3 rounded-lg p-2 px-6 md:grid-cols-2 h-full">
+    <div class="mx-auto grid h-full w-full grid-cols-1 gap-3 rounded-lg p-2 px-6 md:grid-cols-2">
         {{-- left side --}}
 
         <div class="col-span-1 h-full">@include('partials.client-fields')</div>
 
 
         {{-- right side --}}
-        <div class="mt-2 flex flex-col h-full rounded-md border border-purple-500 p-1 shadow-md shadow-blue-100">
+        <div class="mt-2 flex h-full flex-col rounded-md border border-purple-500 p-1 shadow-md shadow-blue-100">
             <h2 class="text-center text-lg font-bold">Client Sessions</h2>
             <p class="ml-2 text-xs">Assigned Sessions: {{ $client->max_sessions }}</p>
             <div class="mx-auto flex w-2/3 flex-row">
