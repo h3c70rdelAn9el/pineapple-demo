@@ -6,6 +6,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use Illuminate\Support\HtmlString;
 
 class NewClientNotification extends Notification
 {
@@ -35,8 +36,9 @@ class NewClientNotification extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->subject('Pineapple Support Portal Change')
-            ->line('Hello, we are informing you that something has changed on your portal.')
+            ->subject('Pineapple Support - New Client')
+            ->line('Hello, we are informing you that you have been assigned a new client. Please log in to your dashboard to view the client.')
+            ->line(new htmlString('<strong>Pineapple Support updated onboarding – please remember to assess and grant the client 8, 12 or 16 sessions depending on the level of support required. Pineapple Support is working at maximum capacity and your support is needed to help us reduce our waitlist for therapy services.</strong>'))
             ->action('Please log in to your dashboard.', url('/login'))
             ->line('Thank you.');
     }
