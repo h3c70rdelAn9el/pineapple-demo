@@ -25,7 +25,7 @@
 
 
         {{-- right side --}}
-        <div class="mt-2 flex h-full flex-col rounded-md border border-purple-500 p-1 shadow-md shadow-blue-100">
+        <div class="mt-2 flex h-[80vh] flex-col rounded-md border border-purple-500 p-1">
             <h2 class="text-center text-lg font-bold">Client Sessions</h2>
             <p class="ml-2 text-xs">Assigned Sessions: {{ $client->max_sessions }}</p>
             <div class="mx-auto flex w-2/3 flex-row">
@@ -68,7 +68,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="mx-auto flex h-96 w-full flex-row flex-wrap overflow-y-scroll rounded-md p-2 shadow-md">
+                <div class="mx-auto flex w-full flex-row flex-wrap overflow-y-scroll rounded-md p-2">
                     @forelse ($client->therapySessions as $therapySession)
                         <x-session-card :therapySession='$therapySession' :therapist='$therapist' />
                     @empty
