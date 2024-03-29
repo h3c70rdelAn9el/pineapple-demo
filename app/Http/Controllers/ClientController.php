@@ -11,6 +11,7 @@ use App\Models\TherapySession;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use App\Notifications\NewClientNotification;
+use App\Notifications\ClientRemovedNotification;
 
 
 
@@ -420,7 +421,6 @@ class ClientController extends Controller
      */
     public function update(Request $request, Client $client)
     {
-        // Validate the request data
         $validatedData = $request->validate([
             'client_code' => 'nullable',
             'legal_name' => 'nullable',
@@ -453,9 +453,7 @@ class ClientController extends Controller
         $client->sexual_orientation = implode(', ', $request->input('sexual_orientation', []));
         $client->possible_support_needed = implode(', ', $request->input('possible_support_needed', []));
 
-
-
-        // Update the client fields
+        $oldTherapist = $client->user_id;
 
         $client->update([
             'client_code' => $request->input('client_code'),
@@ -486,10 +484,6 @@ class ClientController extends Controller
             'special_sessions' => $request->input('special_sessions', 0),
         ]);
 
-        // $client->update($validatedData);
-        // Update the client fields (excluding 'status')
-        // unset($validatedData['status']);
-
         if ($request->input('special_sessions')) {
             $client->special_sessions = 6;
             $client->max_sessions = 10;
@@ -503,10 +497,12 @@ class ClientController extends Controller
             $client->save();
         }
 
-        // Notify the therapist
-        if ($request->user_id) {
-            $therapist = User::find($request->user_id);
-            $therapist->notify(new NewClientNotification());
+        // notify the therapists of the change
+        if ((int)$request->user_id !== (int)$oldTherapist) {
+            $newTherapist = User::find($request->user_id);
+            $newTherapist->notify(new NewClientNotification());
+            $previousTherapist = User::find($oldTherapist);
+            $previousTherapist->notify(new ClientRemovedNotification($client->preferred_name));
         }
 
 
@@ -571,7 +567,6 @@ class ClientController extends Controller
             $pronouns = $this->getPronouns();
             $selectedPossibleSupport = $this->getCategories();
             // dd($client);
-
 
             return view('clients.edit')->with(['client' => $client, 'countries' => $countries, 'categories' => $categories, 'states' => $states, 'id' => $id, 'therapist' => $therapist, 'therapists' => $therapists, 'user_id' => $user_id, 'genders' => $genders, 'sexualOrientations' => $sexualOrientations, 'pronouns' => $pronouns, 'selectedPossibleSupport' => $selectedPossibleSupport]);
         } else {
