@@ -6,18 +6,21 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
-use Illuminate\Support\HtmlString;
+use App\Models\Client;
 
-class NewClientNotification extends Notification
+class ClientRemovedNotification extends Notification
 {
     use Queueable;
 
     /**
      * Create a new notification instance.
      */
-    public function __construct()
+
+    public $clientName;
+
+    public function __construct($clientName)
     {
-        //
+        $this->clientName = $clientName;
     }
 
     /**
@@ -33,14 +36,12 @@ class NewClientNotification extends Notification
     /**
      * Get the mail representation of the notification.
      */
-    public function toMail(object $notifiable): MailMessage
+    public function toMail($notifiable)
     {
         return (new MailMessage)
-            ->subject('Pineapple Support - New Client')
-            ->line('Hello, we are informing you that you have been assigned a new client. Please log in to your dashboard to view the client.')
-            ->line(new htmlString('<strong>Pineapple Support updated onboarding – please remember to assess and grant the client 8, 12 or 16 sessions depending on the level of support required. Pineapple Support is working at maximum capacity and your support is needed to help us reduce our waitlist for therapy services.</strong>'))
-            ->action('Please log in to your dashboard.', url('/login'))
-            ->line('Thank you.');
+            ->subject('Pineapple Support - Client Reassigned')
+            ->line('The client ' . $this->clientName . ' assigned to you has been reassigned to another therapist.')
+            ->line('Thank you for your attention!');
     }
 
     /**
