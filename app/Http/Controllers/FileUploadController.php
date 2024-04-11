@@ -78,6 +78,33 @@ class FileUploadController extends Controller
         $path = 'uploads/forms/therapist/' . $user->id . '/';
         $request->file->storeAs($path, $fileName);
 
+        // update the user fields:
+        switch($request->document_type) {
+            case 'photographic_id':
+                $therapist->update(['id_uploaded' => true]);
+                break;
+            case 'W9':
+                $therapist->update(['W9_or_WBEN_uploaded' => true]);
+                break;
+            case 'clinical_license':
+                $therapist->update(['license_uploaded' => true]);
+                break;
+            case 'public_liability_insurance':
+                $therapist->update(['insurance_uploaded' => true]);
+                break;
+            case 'headshot':
+                $therapist->update(['headshot_uploaded' => true]);
+                break;
+            case 'W8BENE':
+                $therapist->update(['W9_or_WBEN_uploaded' => true]);
+                break;
+            case 'W8BEN':
+                $therapist->update(['W9_or_WBEN_uploaded' => true]);
+                break;
+            default:
+                break;
+        }
+
         if ($user->admin == 1) {
             $therapist->fileUploads()->create([
                 'file_path' => $path,
