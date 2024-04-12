@@ -100,10 +100,11 @@ class DashboardController extends Controller
 
         if ($user) {
             $fieldsToCheck = [
-                'contract_signed' => $user->contract_signed,
-                'leah_signed' => $user->leah_signed,
-                // 'public_liability_insurance' => $user->public_liability_insurance,
-                'all_documents' => $user->all_documents,
+                'id_uploaded' => $user->id_uploaded,
+                'W9_or_WBEN_uploaded' => $user->W9_or_WBEN_uploaded,
+                'license_uploaded' => $user->license_uploaded,
+                'insurance_uploaded' => $user->insurance_uploaded,
+                'headshot_uploaded' => $user->headshot_uploaded,
             ];
 
             foreach ($fieldsToCheck as $field) {

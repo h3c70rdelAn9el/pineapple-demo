@@ -12,7 +12,7 @@
                     {{ $therapist->preferred_name ? $therapist->preferred_name : $therapist->name }}
                 </p>
            {{-- @if( $therapist->contract_signed === null || $therapist->public_liability_insurance === null || $therapist->all_documents === null || $therapist->signed_documents === null || $therapist->leah_signed === null) --}}
-           @if($incompleteTherapists)
+           @if($incompleteTherapist)
                     <p class="text-red-600 text-xs">Incomplete</p>
                 @endif
                 {{-- @php

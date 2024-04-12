@@ -56,7 +56,7 @@
                             <div class="flex items-center justify-between font-bold">
                                 <a href="{{ route('therapists.index') }}" class=""><button
                                         class="mb-1 rounded-md border-2 border-blue-300 px-2 py-1 transition duration-300 ease-in-out hover:bg-blue-400">Therapists:</button></a>
-                                <p>{{ $therapists->count() }}</p>
+                                <p>{{ $therapists->total() }}</p>
                             </div>
                             <div class="flex justify-between text-blue-600">
                                 <p>Active:</p>
@@ -81,8 +81,12 @@
                             </div>
                             <div class="h-96 overflow-y-scroll">
                                 @foreach ($therapists as $therapist)
-                                    <x-therapists-card :therapist="$therapist" incompleteTherapist="$incompleteTherapist"
-                                        incompleteTherapists="$incompleteTherapists"></x-therapists-card>
+                                    <x-therapists-card :therapist="$therapist" :incompleteTherapist="!$therapist->id_uploaded ||
+                                        !$therapist->W9_or_WBEN_uploaded ||
+                                        !$therapist->license_uploaded ||
+                                        !$therapist->insurance_uploaded ||
+                                        !$therapist->headshot_uploaded">
+                                    </x-therapists-card>
                                 @endforeach
                             </div>
                             <div>
