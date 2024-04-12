@@ -115,6 +115,16 @@ class DashboardController extends Controller
             }
         }
 
+        $incompleteTherapistsCount = User::where('admin', 0)
+        ->where(function ($query) {
+            $query->where('id_uploaded', false)
+            ->orWhere('W9_or_WBEN_uploaded', false)
+            ->orWhere('license_uploaded', false)
+            ->orWhere('insurance_uploaded', false)
+            ->orWhere('headshot_uploaded', false);
+        })
+            ->count();
+
 
         if ($user->admin) {
             return view('dashboard_admin', [
@@ -131,7 +141,7 @@ class DashboardController extends Controller
                 'missedSessions' => $missedSessions,
                 'inactiveTherapists' => $inactiveTherapists,
                 'activeTherapists' => $activeTherapists,
-                'incompleteTherapists' => $incompleteTherapists,
+                // 'incompleteTherapists' => $incompleteTherapists,
                 'incompleteTherapist' => $incompleteTherapist,
                 'totalSessionCost' => $totalSessionCost,
                 'totalClientContribution' => $totalClientContribution,
@@ -144,6 +154,7 @@ class DashboardController extends Controller
                 'allSpecialSessions' => $allSpecialSessions,
                 'recentActiveClients' => $recentActiveClients,
                 'unreadMessagesCount' => $unreadMessagesCount,
+                'incompleteTherapistsCount' => $incompleteTherapistsCount
             ]);
         } else {
             return view('dashboard', [

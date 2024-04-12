@@ -68,7 +68,9 @@
                             </div>
                             <div class="flex justify-between text-red-600">
                                 <p>Incomplete Profiles:</p>
-                                <p>{{ $incompleteTherapists->count() }}</p>
+                                {{-- <p>{{ $incompleteTherapists->count() }}</p> --}}
+                                <p>{{ $incompleteTherapistsCount }}</p>
+
                             </div>
                         </div>
                     </x-slot>
