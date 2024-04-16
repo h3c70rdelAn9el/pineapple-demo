@@ -86,7 +86,10 @@ class User extends Authenticatable
         'currency',
         'client_extensions',
         'active_status',
-
+        'id_uploaded',
+        'W9_or_WBEN_uploaded',
+        'license_uploaded',
+        'headshot_uploaded',
     ];
 
     // tried guarded and it didn't work

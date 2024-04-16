@@ -8,6 +8,7 @@ use App\Models\Patient;
 use App\Models\FileUpload;
 use Illuminate\Http\Request;
 use App\Models\TherapySession;
+use Illuminate\Support\Facades\DB;
 // use Illuminate\\Notification;
 use Illuminate\Validation\Rule;
 use App\Notifications\TherapistFileUploaded;
@@ -17,45 +18,75 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
 class TherapistsController extends Controller
 {
-
-
     public function index()
     {
         $user = auth()->user();
-        $therapists = User::where('admin', 0)->paginate(15);
-        $inactiveTherapists = User::where('admin', 0)->where('active_status', 1)->paginate(15);
 
-        // Filter therapists with incomplete data
-        $incompleteTherapists = $therapists->filter(function ($therapist) {
-            $fieldsToCheck = [
-                'contract_signed' => $therapist->contract_signed,
-                'public_liability_insurance' => $therapist->public_liability_insurance,
-                'all_documents' => $therapist->all_documents,
-                'signed_documents' => $therapist->signed_documents,
-                'leah_signed' => $therapist->leah_signed,
-            ];
+        $therapists = User::where('admin', 0)
+            ->orderBy(DB::raw('COALESCE(preferred_name, name)')) // Order by preferred name or name
+            ->paginate(30, ['*'], 'therapists');
 
-            foreach ($fieldsToCheck as $field) {
-                if (is_null($field) || $field === false) {
-                    return true;
+        $inactiveTherapists = User::where('admin', 0)
+            ->where('active_status', 1)
+            ->orderBy(DB::raw('COALESCE(preferred_name, name)')) // Order by preferred name or name
+            ->paginate(30, ['*'], 'therapists');
+
+        $activeTherapists = User::where('admin', 0)
+            ->where('active_status', 0)
+            ->orderBy(DB::raw('COALESCE(preferred_name, name)')) // Order by preferred name or name
+            ->paginate(30, ['*'], 'therapists');
+
+
+        if ($therapists) {
+            $incompleteTherapists = $therapists->filter(function ($therapist) {
+                $fieldsToCheck = [
+                    'id_uploaded' => $therapist->id_uploaded,
+                    'W9_or_WBEN_uploaded' => $therapist->W9_or_WBEN_uploaded,
+                    'license_uploaded' => $therapist->license_uploaded,
+                    'insurance_uploaded' => $therapist->insurance_uploaded,
+                    'headshot_uploaded' => $therapist->headshot_uploaded,
+                ];
+
+                $isNotAdmin = $therapist->admin != 1;
+
+                $incomplete = false;
+
+                foreach ($fieldsToCheck as $field) {
+                    if (is_null($field) || $field == false) {
+                        $incomplete = true;
+                        break;
+                    }
                 }
-            }
+                return $incomplete && $isNotAdmin;
+            });
+        } else {
+            $incompleteTherapists = collect();
+        }
 
-            return false;
-        });
 
-        $inactiveTherapist = User::where('admin', 0)->where('active_status', 1);
-        $inactiveTherapistsCount = $inactiveTherapists->total();
 
-        // Check if the authenticated user (therapist) has incomplete data
+
+        // $incompleteTherapistsCount = $incompleteTherapists->count();
+        $incompleteTherapistsCount = User::where('admin', 0)
+            ->where(function ($query) {
+                $query->where('id_uploaded', false)
+                    ->orWhere('W9_or_WBEN_uploaded', false)
+                    ->orWhere('license_uploaded', false)
+                    ->orWhere('insurance_uploaded', false)
+                    ->orWhere('headshot_uploaded', false);
+            })
+            ->count();
+
         $therapist = User::find($user->id);
-        $incompleteTherapist = false;
 
+        $incompleteTherapist = false;
         if ($therapist) {
             $fieldsToCheck = [
-                'contract_signed' => $therapist->contract_signed,
-                'public_liability_insurance' => $therapist->public_liability_insurance,
-                'all_documents_received' => $therapist->all_documents_received,
+                'id_uploaded' => $therapist->id_uploaded,
+                'W9_or_WBEN_uploaded' => $therapist->W9_or_WBEN_uploaded,
+                'license_uploaded' => $therapist->license_uploaded,
+                'insurance_uploaded' => $therapist->insurance_uploaded,
+                'headshot_uploaded' => $therapist->headshot_uploaded,
             ];
 
             foreach ($fieldsToCheck as $field) {
@@ -66,18 +97,28 @@ class TherapistsController extends Controller
             }
         }
 
+        $inactiveTherapist = User::where(
+            'admin',
+            0
+        )
+            ->where('active_status', 1)
+            ->orderBy(DB::raw('COALESCE(preferred_name, name)')) // Order by preferred name or name
+            ->first();
+
+        $inactiveTherapistsCount = $inactiveTherapists->count();
+
         return view('therapist.index')->with([
             'therapists' => $therapists,
             'therapist' => $user,
             'inactiveTherapists' => $inactiveTherapists,
+            'inactiveTherapist' => $inactiveTherapist,
             'inactiveTherapistsCount' => $inactiveTherapistsCount,
             'incompleteTherapists' => $incompleteTherapists,
             'incompleteTherapist' => $incompleteTherapist,
-            'inactiveTherapist' => $inactiveTherapist,
+            'incompleteTherapistsCount' => $incompleteTherapistsCount,
+            'activeTherapists' => $activeTherapists,
         ]);
     }
-
-
 
     public function show($id)
     {
@@ -130,8 +171,6 @@ class TherapistsController extends Controller
     {
         $user = auth()->user();
         if ($user && $user->admin == 1) {
-
-
             $therapist = User::find($id);
             $form = $therapist->therapist;
             // dd($therapist);
