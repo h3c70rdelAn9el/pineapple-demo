@@ -98,6 +98,7 @@ class DashboardController extends Controller
         } else {
             $incompleteTherapists = collect();
         }
+
         $incompleteTherapist = false;
 
         if ($user) {
