@@ -8,7 +8,7 @@
             <h2 class="text-center text-2xl">Therapists</h2>
         </div>
         <div class="container mx-auto mt-4 flex flex-row justify-between px-4 md:w-2/3 md:flex-row">
-            <div class="mx-auto w-full md:w-1/2">
+            <div class="mx-auto w-full">
                 <button
                     x-on:click="showAllTherapists = true, showInactiveTherapists = false, showIncompleteTherapists = false"
                     class="mx-auto flex w-1/2 flex-row gap-2">
