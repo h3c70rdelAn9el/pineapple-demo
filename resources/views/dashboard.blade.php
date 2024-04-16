@@ -10,6 +10,27 @@
     @endif
 
     <div class="ml-7 flex flex-row pt-2">
+        @if ($user)
+            @php
+                $fieldsToCheck = [
+                    'id_uploaded' => $user->id_uploaded ?? null,
+                    'W9_or_WBEN_uploaded' => $user->W9_or_WBEN_uploaded ?? null,
+                    'license_uploaded' => $user->license_uploaded ?? null,
+                    'insurance_uploaded' => $user->insurance_uploaded ?? null,
+                    'headshot_uploaded' => $user->headshot_uploaded ?? null,
+                ];
+
+                $incompleteTherapist = false;
+
+                foreach ($fieldsToCheck as $field) {
+                    if (is_null($field) || $field == false) {
+                        $incompleteTherapist = true;
+                        break;
+                    }
+                }
+            @endphp
+        @endif
+
         @if ($incompleteTherapist)
             <div
                 class="mx-auto flex flex-col rounded-md border border-red-800 bg-red-100 p-2 text-center text-lg text-red-600">
