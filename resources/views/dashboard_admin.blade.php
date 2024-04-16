@@ -51,7 +51,6 @@
             <x-container-content>
                 <div class="w-full">
                     <x-slot name="title">
-                        {{-- Therapists: --}}
                         <div class="flex w-full flex-col text-base lg:w-1/2">
                             <div class="flex items-center justify-between font-bold">
                                 <a href="{{ route('therapists.index') }}" class=""><button
@@ -68,9 +67,7 @@
                             </div>
                             <div class="flex justify-between text-red-600">
                                 <p>Incomplete Profiles:</p>
-                                {{-- <p>{{ $incompleteTherapists->count() }}</p> --}}
                                 <p>{{ $incompleteTherapistsCount }}</p>
-
                             </div>
                         </div>
                     </x-slot>
@@ -155,29 +152,7 @@
                                     <p>Clients</p>
                                 </a>
                             </button>
-                            {{-- <p>{{ $totalClientCount }}</p> --}}
                         </div>
-
-                        {{-- <div class="flex justify-between">
-                            <p>Inactive:</p>
-                            <p class="text-orange-500">{{ $inactiveClients->count() }}</p>
-                        </div> --}}
-
-
-                        <!--
-                        <div
-                            class="flex w-full flex-row gap-2 text-orange-500">
-                            {{-- <a href="javascript:void(0)" class="w-full flex flex-row"> --}}
-                                    {{-- <button x-on:click="navigateToClients('inactive')" class="flex flex-row"> --}}
-
-                                    <p>Inactive Clients:</p>
-                                    <p class="text-orange-500">{{ $inactiveClients->count() }}</p>
-                                {{-- </button> --}}
-                                {{-- </a> --}}
-
-                        </div>
-                    -->
-
                     </div>
 
                 </x-slot>
@@ -190,16 +165,8 @@
                 </x-slot>
 
                 <x-slot name="content">
-                    {{-- <div>
-                        {{ $allClients->links() }}
-                    </div> --}}
-                    {{-- @foreach ($allClients as $client) --}}
-                    {{-- <x-client-card :client="$client" :therapist="$therapist" :user="$user"></x-client-card> --}}
-                    {{-- <x-client-table :client="$client" :therapist="$therapist" :user="$user" :clients="$clients"></x-client-table> --}}
                     <p class="inline-block min-w-full py-2 sm:px-6 lg:px-8">Latest Active Clients</p>
-
                     <x-client-table :clients="$recentActiveClients" :attendedSessions="$attendedSessions" :missedSessions="$missedSessions" :client="$client" />
-
                 </x-slot>
             </x-container-content>
         </section>

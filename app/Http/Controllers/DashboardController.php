@@ -11,8 +11,6 @@ use Symfony\Component\Mime\Message;
 use App\Http\Controllers\Controller;
 use Illuminate\Pagination\LengthAwarePaginator;
 use App\Models\ChMessage as ChatMessage;
-
-
 class DashboardController extends Controller
 {
     //
@@ -60,6 +58,7 @@ class DashboardController extends Controller
         $therapist = Client::find($user_id)?->therapist;
         $inactiveTherapists = User::where('admin', 0)->where('active_status', 1)->get();
         $activeTherapists = User::where('admin', 0)->where('active_status', 0)->get();
+        $allTherapists = User::where('admin', 0)->where('active_status', 0)->get();
 
         $file = file_get_contents(storage_path('states.json'));
         $states = json_decode($file, true);
@@ -71,40 +70,43 @@ class DashboardController extends Controller
             ->paginate(10);
 
         $unreadMessagesCount = ChatMessage::where('to_id', $user->id)
-        ->where('seen', 0)
-        ->count();
+            ->where('seen', 0)
+            ->count();
 
-        if ($therapists) {
-            $incompleteTherapists = $therapists->filter(function ($therapist) {
+        if ($allTherapists) {
+            $incompleteTherapists = $allTherapists->filter(function ($therapist) {
                 $fieldsToCheck = [
-                    'contract_signed' => $therapist->contract_signed,
-                    'public_liability_insurance' => $therapist->public_liability_insurance,
-                    'all_documents' => $therapist->all_documents,
-                    'signed_documents' => $therapist->signed_documents,
-                    'leah_signed' => $therapist->leah_signed,
+                    'id_uploaded' => $therapist->id_uploaded,
+                    'W9_or_WBEN_uploaded' => $therapist->W9_or_WBEN_uploaded,
+                    'license_uploaded' => $therapist->license_uploaded,
+                    'insurance_uploaded' => $therapist->insurance_uploaded,
+                    'headshot_uploaded' => $therapist->headshot_uploaded,
                 ];
 
+                $isNotAdmin = $therapist->admin != 1;
+
+                $incomplete = false;
+
                 foreach ($fieldsToCheck as $field) {
-                    if (is_null($field) || $field === false) {
-                        return true;
+                    if (is_null($field) || $field == false) {
+                        $incomplete = true;
+                        break;
                     }
                 }
-
-                return false;
+                return $incomplete && $isNotAdmin;
             });
         } else {
             $incompleteTherapists = collect();
         }
-
         $incompleteTherapist = false;
 
         if ($user) {
             $fieldsToCheck = [
-                'id_uploaded' => $user->id_uploaded,
-                'W9_or_WBEN_uploaded' => $user->W9_or_WBEN_uploaded,
-                'license_uploaded' => $user->license_uploaded,
-                'insurance_uploaded' => $user->insurance_uploaded,
-                'headshot_uploaded' => $user->headshot_uploaded,
+                'id_uploaded' => $therapist->id_uploaded ?? null,
+                'W9_or_WBEN_uploaded' => $therapist->W9_or_WBEN_uploaded ?? null,
+                'license_uploaded' => $therapist->license_uploaded ?? null,
+                'insurance_uploaded' => $therapist->insurance_uploaded ?? null,
+                'headshot_uploaded' => $therapist->headshot_uploaded ?? null,
             ];
 
             foreach ($fieldsToCheck as $field) {
@@ -116,13 +118,13 @@ class DashboardController extends Controller
         }
 
         $incompleteTherapistsCount = User::where('admin', 0)
-        ->where(function ($query) {
-            $query->where('id_uploaded', false)
-            ->orWhere('W9_or_WBEN_uploaded', false)
-            ->orWhere('license_uploaded', false)
-            ->orWhere('insurance_uploaded', false)
-            ->orWhere('headshot_uploaded', false);
-        })
+            ->where(function ($query) {
+                $query->where('id_uploaded', false)
+                    ->orWhere('W9_or_WBEN_uploaded', false)
+                    ->orWhere('license_uploaded', false)
+                    ->orWhere('insurance_uploaded', false)
+                    ->orWhere('headshot_uploaded', false);
+            })
             ->count();
 
 
@@ -141,7 +143,7 @@ class DashboardController extends Controller
                 'missedSessions' => $missedSessions,
                 'inactiveTherapists' => $inactiveTherapists,
                 'activeTherapists' => $activeTherapists,
-                // 'incompleteTherapists' => $incompleteTherapists,
+                'incompleteTherapists' => $incompleteTherapists,
                 'incompleteTherapist' => $incompleteTherapist,
                 'totalSessionCost' => $totalSessionCost,
                 'totalClientContribution' => $totalClientContribution,
@@ -154,7 +156,7 @@ class DashboardController extends Controller
                 'allSpecialSessions' => $allSpecialSessions,
                 'recentActiveClients' => $recentActiveClients,
                 'unreadMessagesCount' => $unreadMessagesCount,
-                'incompleteTherapistsCount' => $incompleteTherapistsCount
+                'incompleteTherapistsCount' => $incompleteTherapistsCount,
             ]);
         } else {
             return view('dashboard', [

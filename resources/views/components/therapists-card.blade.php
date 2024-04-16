@@ -1,28 +1,36 @@
-<div class="w-full flex flex-col">
+@php
+    $user = Auth::user();
+    // $inactiveTherapists = $user->where('active_status', 1)->count();
+    $adminTherapistsCount = $user->where('admin', 0)->count();
+    // dd($adminTherapistsCount);
+    // $incompleteTherapist =
+@endphp
+
+<div class="flex w-full flex-col">
     <a class="m-2 rounded-lg border-2 border-blue-900 p-2 shadow-md transition-all duration-200 ease-in hover:border-blue-400 hover:shadow-lg"
-        href="{{ route('therapist.show', $therapist->id) }}"
-        x-data="{ isActive: {{ $therapist->active_status === 0 ? 'true' : 'false' }} }"
-        :class="{ ' bg-blue-200 border-blue-400 hover:border-blue-600 border hover:bg-blue-300 transition-all duration-200': isActive, 'bg-red-200 border-red-400 border hover:bg-red-300  transition-all ease-in-out duration-200':
-                !isActive
-                }"
-                >
-        <div class="ml-1 flex  flex-row justify-between">
+        href="{{ route('therapist.show', $therapist->id) }}" x-data="{
+            isActive: {{ $therapist->active_status !== 1 ? 'true' : 'false' }},
+            isIncomplete: {{ $incompleteTherapist ? 'true' : 'false' }},
+            isAdmin: {{ $user->admin === 1 ? 'true' : 'false' }}
+        }"
+        :class="{
+            'bg-blue-200 border-blue-400 hover:border-blue-600 border hover:bg-blue-300 transition-all duration-200': isActive,
+            'bg-gray-300 border-gray-400 border hover:bg-gray-500 transition-all ease-in-out duration-200': !
+                isIncomplete && !isActive,
+            'bg-red-300 border-red-300 border hover:bg-red-500 transition-all ease-in-out duration-200': isIncomplete &&
+                !isAdmin && isActive,
+            'bg-gray-300 border-red-400 border hover:bg-red-500 transition-all ease-in-out duration-200': isIncomplete &&
+                !isAdmin && !isActive
+        }">
+
+        <div class="ml-1 flex flex-row justify-between">
             <div class="ml-2">
-                <p class=" capitalize">
+                <p class="capitalize">
                     {{ $therapist->preferred_name ? $therapist->preferred_name : $therapist->name }}
                 </p>
-           {{-- @if( $therapist->contract_signed === null || $therapist->public_liability_insurance === null || $therapist->all_documents === null || $therapist->signed_documents === null || $therapist->leah_signed === null) --}}
-           @if($incompleteTherapist)
-                    <p class="text-red-600 text-xs">Incomplete</p>
+                @if ($incompleteTherapist)
+                    <p class="text-xs text-red-600">Incomplete</p>
                 @endif
-                {{-- @php
-                    dd($incompleteTherapists);
-                @endphp --}}
-        {{-- <p class="text-red-600 text-xs">Incomplete</p>
-    @endif
-    @php
-        dd($incompleteTherapists);
-    @endphp --}}
             </div>
             <p class="mr-2 inline-block">
                 Clients:
