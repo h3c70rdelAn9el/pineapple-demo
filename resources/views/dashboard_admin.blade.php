@@ -84,7 +84,10 @@
                                         !$therapist->W9_or_WBEN_uploaded ||
                                         !$therapist->license_uploaded ||
                                         !$therapist->insurance_uploaded ||
-                                        !$therapist->headshot_uploaded">
+                                        !$therapist->headshot_uploaded"
+                                        :unverifiedTherapist="!$therapist->all_documents ||
+                                        !$therapist->contract_signed"
+                                        >
                                     </x-therapists-card>
                                 @endforeach
                             </div>
