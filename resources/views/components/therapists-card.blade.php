@@ -28,9 +28,14 @@
                 <p class="capitalize">
                     {{ $therapist->preferred_name ? $therapist->preferred_name : $therapist->name }}
                 </p>
-                @if ($incompleteTherapist)
-                    <p class="text-xs text-red-600">Incomplete</p>
-                @endif
+                <div class="flex flex-row gap-2 text-xs">
+                    @if ($incompleteTherapist)
+                        <p class="text-xs text-red-600">Incomplete</p>
+                    @endif
+                    @if ($unverifiedTherapist)
+                        <p class="text-yellow-700">Unverified</p>
+                    @endif
+                </div>
             </div>
             <p class="mr-2 inline-block">
                 Clients:

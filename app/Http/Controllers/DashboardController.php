@@ -118,6 +118,22 @@ class DashboardController extends Controller
             }
         }
 
+        $unverifiedTherapist = false;
+
+        if ($user) {
+            $fieldsToCheck = [
+                'contract_signed' => $therapist->contract_signed ?? null,
+                'all_documents' => $therapist->all_documents ?? null,
+            ];
+
+            foreach ($fieldsToCheck as $field) {
+                if (is_null($field) || $field === false) {
+                    $unverifiedTherapist = true;
+                    break;
+                }
+            }
+        }
+
         $incompleteTherapistsCount = User::where('admin', 0)
             ->where(function ($query) {
                 $query->where('id_uploaded', false)
@@ -158,6 +174,7 @@ class DashboardController extends Controller
                 'recentActiveClients' => $recentActiveClients,
                 'unreadMessagesCount' => $unreadMessagesCount,
                 'incompleteTherapistsCount' => $incompleteTherapistsCount,
+                'unverifiedTherapist' => $unverifiedTherapist
             ]);
         } else {
             return view('dashboard', [
