@@ -3,6 +3,7 @@
         showAllTherapists: true,
         showInactiveTherapists: false,
         showIncompleteTherapists: false,
+        showUnverifiedTherapists: false
     }">
         <div>
             <h2 class="text-center text-2xl">Therapists</h2>
@@ -36,8 +37,18 @@
                         <div
                             class="flex flex-row justify-between gap-2 text-red-500 transition-all duration-200 ease-in-out hover:text-orange-700">
                             <p>Incomplete Therapists:</p>
-
                             <p>{{ $incompleteTherapistsCount }}</p>
+                        </div>
+                    </button>
+                </div>
+                <div class="flex flex-row gap-2">
+                    <button
+                        x-on:click="showUnverifiedTherapists = true, showAllTherapists = false, showInactiveTherapists = false"
+                        class="mx-auto w-1/2 justify-between">
+                        <div
+                            class="flex flex-row justify-between gap-2 text-yellow-600 transition-all duration-200 ease-in-out hover:text-yellow-700">
+                            <p>Unverified Therapists:</p>
+                            <p>{{ $unverifiedTherapistCount }}</p>
                         </div>
                     </button>
                 </div>
@@ -56,7 +67,7 @@
                                     !$therapist->W9_or_WBEN_uploaded ||
                                     !$therapist->license_uploaded ||
                                     !$therapist->insurance_uploaded ||
-                                    !$therapist->headshot_uploaded">
+                                    !$therapist->headshot_uploaded" :unverifiedTherapist="!$therapist->all_documents || !$therapist->contract_signed">
                                 </x-therapists-card>
                             @endforeach
                             <div>
@@ -70,7 +81,7 @@
                                     !$therapist->W9_or_WBEN_uploaded ||
                                     !$therapist->license_uploaded ||
                                     !$therapist->insurance_uploaded ||
-                                    !$therapist->headshot_uploaded">
+                                    !$therapist->headshot_uploaded" :unverifiedTherapist="!$therapist->all_documents || !$therapist->contract_signed">
                                 </x-therapists-card>
                             @endforeach
                             <div>
@@ -78,13 +89,22 @@
                             </div>
                         </div>
                         <div class="flex w-full flex-wrap justify-center" x-show="showIncompleteTherapists" x-cloak>
-
                             @foreach ($incompleteTherapists as $therapist)
                                 <x-therapists-card :therapist="$therapist" :incompleteTherapist="!$therapist->id_uploaded ||
                                     !$therapist->W9_or_WBEN_uploaded ||
                                     !$therapist->license_uploaded ||
                                     !$therapist->insurance_uploaded ||
-                                    !$therapist->headshot_uploaded">
+                                    !$therapist->headshot_uploaded" :unverifiedTherapist="!$therapist->all_documents || !$therapist->contract_signed">
+                                </x-therapists-card>
+                            @endforeach
+                        </div>
+                        <div class="flex w-full flex-wrap justify-center" x-show="showUnverifiedTherapists" x-cloak>
+                            @foreach ($unverifiedTherapists as $therapist)
+                                <x-therapists-card :therapist="$therapist" :incompleteTherapist="!$therapist->id_uploaded ||
+                                    !$therapist->W9_or_WBEN_uploaded ||
+                                    !$therapist->license_uploaded ||
+                                    !$therapist->insurance_uploaded ||
+                                    !$therapist->headshot_uploaded" :unverifiedTherapist="!$therapist->all_documents || !$therapist->contract_signed">
                                 </x-therapists-card>
                             @endforeach
                         </div>

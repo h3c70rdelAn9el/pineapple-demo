@@ -61,9 +61,13 @@
                                 <p>Active:</p>
                                 <p>{{ $activeTherapists->count() }}</p>
                             </div>
-                            <div class="flex justify-between text-slate-500">
+                            {{-- <div class="flex justify-between text-slate-500">
                                 <p>Inactive:</p>
                                 <p class="">{{ $inactiveTherapists->count() }}</p>
+                            </div> --}}
+                             <div class="flex justify-between text-red-600">
+                                <p>Unverified Profiles:</p>
+                                <p>{{ $unverifiedTherapistCount }}</p>
                             </div>
                             <div class="flex justify-between text-red-600">
                                 <p>Incomplete Profiles:</p>

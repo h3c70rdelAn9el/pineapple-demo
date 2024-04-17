@@ -63,9 +63,6 @@ class TherapistsController extends Controller
             $incompleteTherapists = collect();
         }
 
-
-
-
         // $incompleteTherapistsCount = $incompleteTherapists->count();
         $incompleteTherapistsCount = User::where('admin', 0)
             ->where(function ($query) {
@@ -102,10 +99,55 @@ class TherapistsController extends Controller
             0
         )
             ->where('active_status', 1)
-            ->orderBy(DB::raw('COALESCE(preferred_name, name)')) // Order by preferred name or name
+            ->orderBy(DB::raw('COALESCE(preferred_name, name)'))
             ->first();
 
         $inactiveTherapistsCount = $inactiveTherapists->count();
+
+        $unverifiedTherapist = false;
+
+        if ($user) {
+            $fieldsToCheck = [
+                'contract_signed' => $therapist->contract_signed ?? null,
+                'all_documents' => $therapist->all_documents ?? null,
+            ];
+
+            foreach ($fieldsToCheck as $field) {
+                if (is_null($field) || $field === false) {
+                    $unverifiedTherapist = true;
+                    break;
+                }
+            }
+        }
+
+        $unverifiedTherapists = false;
+        if ($therapists) {
+            $unverifiedTherapists = $therapists->filter(function ($therapist) {
+                $fieldsToCheck = [
+                    'contract_signed' => $therapist->contract_signed ?? null,
+                    'all_documents' => $therapist->all_documents ?? null,
+                ];
+
+                $isNotAdmin = $therapist->admin != 1;
+                $unverified = false;
+                foreach ($fieldsToCheck as $field) {
+                    if (is_null($field) || $field === false) {
+                        $unverified = true;
+                        break;
+                    }
+                }
+                return $unverified && $isNotAdmin;
+            });
+        } else {
+            $unverifiedTherapists = collect();
+        }
+
+        $unverifiedTherapistCount = User::where('admin', 0)
+        ->where(function ($query) {
+            $query->where('contract_signed', false)
+            ->orWhere('all_documents', false);
+        })
+            ->count();
 
         return view('therapist.index')->with([
             'therapists' => $therapists,
@@ -117,6 +159,9 @@ class TherapistsController extends Controller
             'incompleteTherapist' => $incompleteTherapist,
             'incompleteTherapistsCount' => $incompleteTherapistsCount,
             'activeTherapists' => $activeTherapists,
+            'unverifiedTherapist' => $unverifiedTherapist,
+            'unverifiedTherapistCount' => $unverifiedTherapistCount,
+            'unverifiedTherapists' => $unverifiedTherapists,
         ]);
     }
 
