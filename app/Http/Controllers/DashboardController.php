@@ -134,6 +134,13 @@ class DashboardController extends Controller
             }
         }
 
+        $unverifiedTherapistCount= User::where('admin', 0)
+            ->where(function ($query) {
+                $query->where('contract_signed', false)
+                    ->orWhere('all_documents', false);
+            })
+            ->count();
+
         $incompleteTherapistsCount = User::where('admin', 0)
             ->where(function ($query) {
                 $query->where('id_uploaded', false)
@@ -174,7 +181,8 @@ class DashboardController extends Controller
                 'recentActiveClients' => $recentActiveClients,
                 'unreadMessagesCount' => $unreadMessagesCount,
                 'incompleteTherapistsCount' => $incompleteTherapistsCount,
-                'unverifiedTherapist' => $unverifiedTherapist
+                'unverifiedTherapist' => $unverifiedTherapist,
+                'unverifiedTherapistCount' => $unverifiedTherapistCount
             ]);
         } else {
             return view('dashboard', [
