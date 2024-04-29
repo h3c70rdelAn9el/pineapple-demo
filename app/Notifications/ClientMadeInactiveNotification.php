@@ -12,13 +12,15 @@ class ClientMadeInactiveNotification extends Notification
     use Queueable;
 
     protected $client;
+    protected $therapistName;
 
     /**
      * Create a new notification instance.
      */
-    public function __construct($client)
+    public function __construct($client, $therapistName)
     {
         $this->client = $client;
+        $this->therapistName = $therapistName;
     }
 
     /**
@@ -37,7 +39,7 @@ class ClientMadeInactiveNotification extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->line('The client ' . $this->client->preferred_name . ' has been made inactive.')
+            ->line('The client ' . $this->client->client_code . 'assigned to' . $this->therapistName . 'has been made inactive.')
             ->action('View Client', url('/clients/' . $this->client->id))
             ->line('Thank you.');
     }

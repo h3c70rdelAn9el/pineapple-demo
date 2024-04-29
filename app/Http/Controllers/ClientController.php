@@ -492,7 +492,7 @@ class ClientController extends Controller
             $client->special_sessions = 6;
             // $client->max_sessions = 10;
         } else {
-            $client->max_sessions = $request->inpugt('max_sessions');
+            $client->max_sessions = $request->input('max_sessions');
         }
 
         // Update 'status' separately
@@ -533,7 +533,8 @@ class ClientController extends Controller
         foreach ($adminUsers as $adminUser) {
             $adminUser->notify(new SessionsAssignedNotification($client, $sessionCount));
             if ($status === 'inactive') {
-                $adminUser->notify(new ClientMadeInactiveNotification($client));
+                $therapistName = $client->therapist->preferred_name ?? ' ';
+                $adminUser->notify(new ClientMadeInactiveNotification($client, $therapistName));
             }
         }
     }
