@@ -14,6 +14,7 @@ use App\Notifications\MissedTherapySessions;
 use App\Notifications\SessionLimitNotification;
 use App\Http\Requests\StoreTherapySessionRequest;
 use App\Http\Requests\UpdateTherapySessionRequest;
+use App\Notifications\SessionsAssignedNotification;
 use App\Notifications\SpecialSessionsLimitNotification;
 // use Log
 use Illuminate\Support\Facades\Log;
@@ -188,11 +189,18 @@ class TherapySessionController extends Controller
             }
 
             if ($missedSessions >= 2) {
-               $client->notify(new MissedTherapySessions($client)); // Pass the $client instance
-                  $adminUsers = User::where('admin', 1)->get();
-                  foreach ($adminUsers as $adminUser) {
-                      $adminUser->notify(new MissedTherapySessions($client)); // Pass the $client instance
-                  }
+                $client->notify(new MissedTherapySessions($client));
+                $adminUsers = User::where('admin', 1)->get();
+                foreach ($adminUsers as $adminUser) {
+                    $adminUser->notify(new MissedTherapySessions($client));
+                }
+            }
+
+            $adminUsers = User::where('admin', 1)->get();
+            $sessionCount = $request->max_sessions;
+
+            foreach ($adminUsers as $adminUser) {
+                $adminUser->notify(new SessionsAssignedNotification($client, $sessionCount));
             }
 
             return redirect()->back()->with('success', 'Session added successfully.');
@@ -286,6 +294,6 @@ class TherapySessionController extends Controller
 
 
         //return redirect()->route('dashboard')
-          //  ->with('success', 'Therapy session deleted successfully');
+        //  ->with('success', 'Therapy session deleted successfully');
     }
 }
