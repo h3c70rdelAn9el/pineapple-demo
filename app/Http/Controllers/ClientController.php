@@ -402,17 +402,9 @@ class ClientController extends Controller
         }
 
         // notify the admins of the max sessions
-        $adminUsers = User::where('admin', 1)->get();
         $sessionCount = $request->max_sessions;
 
-        foreach ($adminUsers as $adminUser) {
-            $adminUser->notify(new SessionsAssignedNotification($client, $sessionCount));
-            if ($request->has('status') && $request->input('status') === 'inactive') {
-                $adminUser->notify(new ClientMadeInactiveNotification($client));
-            }
-        }
-
-
+        $this->notifyAdmins($client, $sessionCount, $request->status);
 
         // return redirect('therapist/forms/' . $therapist->id)
         // ->with('success', 'File uploaded successfully')
@@ -518,24 +510,33 @@ class ClientController extends Controller
         }
 
         // notify the admins of the max sessions
-        $adminUsers = User::where('admin', 1)->get();
+        // $adminUsers = User::where('admin', 1)->get();
+        // $sessionCount = $request->max_sessions;
+
+        // foreach ($adminUsers as $adminUser) {
+        //     $adminUser->notify(new SessionsAssignedNotification($client, $sessionCount));
+        //     if ($request->has('status') && $request->input('status') === 'inactive') {
+        //         $adminUser->notify(new ClientMadeInactiveNotification($client));
+        //     }
+        // }
         $sessionCount = $request->max_sessions;
-
-        foreach ($adminUsers as $adminUser) {
-            $adminUser->notify(new SessionsAssignedNotification($client, $sessionCount));
-            if ($request->has('status') && $request->input('status') === 'inactive') {
-                $adminUser->notify(new ClientMadeInactiveNotification($client));
-            }
-        }
-
-
+        $this->notifyAdmins($client, $sessionCount, $request->status);
 
         return redirect()->route('dashboard')
             ->with('success', 'Client updated successfully');
     }
 
 
-
+    private function notifyAdmins($client, $sessionCount, $status)
+    {
+        $adminUsers = User::where('admin', 1)->get();
+        foreach ($adminUsers as $adminUser) {
+            $adminUser->notify(new SessionsAssignedNotification($client, $sessionCount));
+            if ($status === 'inactive') {
+                $adminUser->notify(new ClientMadeInactiveNotification($client));
+            }
+        }
+    }
 
     /**
      * Display the specified resource.
