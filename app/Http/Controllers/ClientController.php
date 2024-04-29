@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use App\Notifications\NewClientNotification;
 use App\Notifications\ClientRemovedNotification;
+use App\Notifications\SessionsAssignedNotification;
 
 
 
@@ -399,6 +400,15 @@ class ClientController extends Controller
             }
         }
 
+        // notify the admins of the max sessions
+        $adminUsers = User::where('admin', 1)->get();
+        $sessionCount = $request->max_sessions;
+
+        foreach ($adminUsers as $adminUser) {
+            $adminUser->notify(new SessionsAssignedNotification($client, $sessionCount));
+        }
+
+
 
         // return redirect('therapist/forms/' . $therapist->id)
         // ->with('success', 'File uploaded successfully')
@@ -502,6 +512,15 @@ class ClientController extends Controller
             $previousTherapist = User::find($oldTherapist);
             $previousTherapist->notify(new ClientRemovedNotification($client->preferred_name));
         }
+
+        // notify the admins of the max sessions
+        $adminUsers = User::where('admin', 1)->get();
+        $sessionCount = $request->max_sessions;
+
+        foreach ($adminUsers as $adminUser) {
+            $adminUser->notify(new SessionsAssignedNotification($client, $sessionCount));
+        }
+
 
 
         return redirect()->route('dashboard')

@@ -196,12 +196,6 @@ class TherapySessionController extends Controller
                 }
             }
 
-            $adminUsers = User::where('admin', 1)->get();
-            $sessionCount = $request->max_sessions;
-
-            foreach ($adminUsers as $adminUser) {
-                $adminUser->notify(new SessionsAssignedNotification($client, $sessionCount));
-            }
 
             return redirect()->back()->with('success', 'Session added successfully.');
         } else {
