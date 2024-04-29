@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use App\Notifications\NewClientNotification;
 use App\Notifications\ClientRemovedNotification;
+use App\Notifications\SessionsAssignedNotification;
+use App\Notifications\ClientMadeInactiveNotification;
 
 
 
@@ -363,10 +365,8 @@ class ClientController extends Controller
         $client->contact_method = $contactMethodString;
         $client->possible_support_needed = $possibleSupportNeededString;
         $client->sexual_orientation = $orientationString;
-        // $client->max_sessions = $request->max_sessions;
         $client->special_sessions = $request->input('special_sessions', false);
-        $client->max_sessions = $request->input('max_sessions', 16);
-
+        $client->max_sessions = $request->input('max_sessions');
         $client->waitlist = $request->input('waitlist', 0);
         $client->special_sessions = $request->input('special_sessions', 6);
 
@@ -380,9 +380,9 @@ class ClientController extends Controller
 
         if ($request->input('special_sessions')) {
             $client->special_sessions = 6;
-            $client->max_sessions = 16;
+            // $client->max_sessions = 16;
         } else {
-            $client->max_sessions = 16;
+            $client->max_sessions = $request->input('max_sessions');
         }
 
         // $c->ethnic_group = json_encode($ethnicGroupArray);
@@ -401,6 +401,10 @@ class ClientController extends Controller
             }
         }
 
+        // notify the admins of the max sessions
+        $sessionCount = $request->max_sessions;
+
+        $this->notifyAdmins($client, $sessionCount, $request->status);
 
         // return redirect('therapist/forms/' . $therapist->id)
         // ->with('success', 'File uploaded successfully')
@@ -475,8 +479,8 @@ class ClientController extends Controller
             'user_id' => $request->input('user_id'),
             'gender' => $client->gender,
             'contact_method' => $client->contact_method,
-            // 'max_sessions' => $request->input('max_sessions'),
-            'max_sessions' => $request->input('special_sessions') ? 10 : 16,
+            'max_sessions' => $request->input('max_sessions'),
+            // 'max_sessions' => $request->input('special_sessions') ? 10 : 16,
             'special_sessions' => $request->has('special_sessions') ? 6 : 0,
             'therapist' => $request->input('therapist'),
             'status' => $request->input('status'),
@@ -486,9 +490,9 @@ class ClientController extends Controller
 
         if ($request->input('special_sessions')) {
             $client->special_sessions = 6;
-            $client->max_sessions = 10;
+            // $client->max_sessions = 10;
         } else {
-            $client->max_sessions = 16;
+            $client->max_sessions = $request->input('max_sessions');
         }
 
         // Update 'status' separately
@@ -505,13 +509,35 @@ class ClientController extends Controller
             $previousTherapist->notify(new ClientRemovedNotification($client->preferred_name));
         }
 
+        // notify the admins of the max sessions
+        // $adminUsers = User::where('admin', 1)->get();
+        // $sessionCount = $request->max_sessions;
+
+        // foreach ($adminUsers as $adminUser) {
+        //     $adminUser->notify(new SessionsAssignedNotification($client, $sessionCount));
+        //     if ($request->has('status') && $request->input('status') === 'inactive') {
+        //         $adminUser->notify(new ClientMadeInactiveNotification($client));
+        //     }
+        // }
+        $sessionCount = $request->max_sessions;
+        $this->notifyAdmins($client, $sessionCount, $request->status);
 
         return redirect()->route('dashboard')
             ->with('success', 'Client updated successfully');
     }
 
 
-
+    private function notifyAdmins($client, $sessionCount, $status)
+    {
+        $adminUsers = User::where('admin', 1)->get();
+        foreach ($adminUsers as $adminUser) {
+            $adminUser->notify(new SessionsAssignedNotification($client, $sessionCount));
+            if ($status === 'inactive') {
+                $therapistName = $client->therapist->preferred_name ?? ' ';
+                $adminUser->notify(new ClientMadeInactiveNotification($client, $therapistName));
+            }
+        }
+    }
 
     /**
      * Display the specified resource.
