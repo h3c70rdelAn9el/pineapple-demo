@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\File;
 use App\Notifications\NewClientNotification;
 use App\Notifications\ClientRemovedNotification;
 use App\Notifications\SessionsAssignedNotification;
+use App\Notifications\ClientMadeInactiveNotification;
 
 
 
@@ -406,6 +407,9 @@ class ClientController extends Controller
 
         foreach ($adminUsers as $adminUser) {
             $adminUser->notify(new SessionsAssignedNotification($client, $sessionCount));
+            if ($request->has('status') && $request->input('status') === 'inactive') {
+                $adminUser->notify(new ClientMadeInactiveNotification($client));
+            }
         }
 
 
@@ -519,6 +523,9 @@ class ClientController extends Controller
 
         foreach ($adminUsers as $adminUser) {
             $adminUser->notify(new SessionsAssignedNotification($client, $sessionCount));
+            if ($request->has('status') && $request->input('status') === 'inactive') {
+                $adminUser->notify(new ClientMadeInactiveNotification($client));
+            }
         }
 
 
