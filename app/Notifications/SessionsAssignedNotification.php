@@ -20,7 +20,7 @@ class SessionsAssignedNotification extends Notification
     public function __construct($client)
     {
         $this->client = $client;
-        $this->sessionCount = $client->max_sessions->count();
+        $this->sessionCount = $client->max_sessions;
     }
 
     /**
