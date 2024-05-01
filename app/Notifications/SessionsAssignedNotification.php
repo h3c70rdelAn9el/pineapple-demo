@@ -40,7 +40,7 @@ class SessionsAssignedNotification extends Notification
     {
         return (new MailMessage)
                     ->line('The client' . $this->client->preferred_name. 'has been assigned '. $this->sessionCount.'therapy sessions.')
-                    ->action('View Client', url('/clients/'. $this->client->id));
+                    ->action('View Client', url('/clients/'. $this->client->id))
                     ->line('Thank you.');
     }
 
