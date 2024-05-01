@@ -178,4 +178,31 @@ class User extends Authenticatable
         return LogOptions::defaults()
             ->logAll();
     }
+    /**
+     * returns array of status = true or false for incomplete and if incomplete the reason
+     */
+    public function isIncomplete(): array
+    {
+        $incomplete_reason = '';
+        $incomplete = false;
+if($this->id_uploaded === 0){
+    $incomplete_reason .= 'ID, ';
+    $incomplete = true;
+}
+if($this->W9_or_WBEN_uploaded === 0){
+    $incomplete_reason .= 'W9 or WBEN, ';
+    $incomplete = true;
+}
+if($this->license_uploaded === 0){
+    $incomplete_reason .= 'License, ';
+    $incomplete = true;
+}
+if($this->headshot_uploaded === 0){
+    $incomplete_reason .= 'Headshot, ';
+    $incomplete = true;
+}
+$incomplete_reason = rtrim($incomplete_reason, ', ');
+
+        return ['status' =>$incomplete, 'reason' => $incomplete_reason];
+    }
 }

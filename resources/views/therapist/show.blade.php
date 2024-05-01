@@ -21,6 +21,14 @@
                             </span>
                         </td>
                     </tr>
+                    <tr>
+                        <td>incomplete status:</td>
+                        <td>
+                            <span class="font-bold ml-4 {{ $incomplete_status ? 'text-red-500' : '' }}">
+                                {{ $therapist->isIncomplete()['status'] ? 'Yes' : 'No' }}
+                                <br/>
+                                {{ $therapist->isIncomplete()['reason'] }}
+                            </span>
                 </tbody>
             </table>
         </div>
