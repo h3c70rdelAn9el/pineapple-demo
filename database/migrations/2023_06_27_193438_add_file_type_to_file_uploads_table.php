@@ -13,7 +13,7 @@ return new class extends Migration {
     public function up()
     {
         Schema::table('file_uploads', function (Blueprint $table) {
-            $table->enum('document_type', ['W9', 'Certificate'])->nullable();
+            $table->string('document_type')->nullable();
         });
     }
 
