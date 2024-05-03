@@ -185,19 +185,19 @@ class User extends Authenticatable
     {
         $incomplete_reason = '';
         $incomplete = false;
-if($this->id_uploaded === 0){
+if(!$this->isIdComplete()){
     $incomplete_reason .= 'ID, ';
     $incomplete = true;
 }
-if($this->W9_or_WBEN_uploaded === 0){
+if(!$this->isW9Complete()){
     $incomplete_reason .= 'W9 or WBEN, ';
     $incomplete = true;
 }
-if($this->license_uploaded === 0){
+if(!$this->isLicenseComplete()){
     $incomplete_reason .= 'License, ';
     $incomplete = true;
 }
-if($this->headshot_uploaded === 0){
+if(!$this->isHeadshotComplete()){
     $incomplete_reason .= 'Headshot, ';
     $incomplete = true;
 }
@@ -205,4 +205,25 @@ $incomplete_reason = rtrim($incomplete_reason, ', ');
 
         return ['status' =>$incomplete, 'reason' => $incomplete_reason];
     }
+    public function isIdComplete()
+    {
+
+       return $this->fileUploads()->where('document_type', 'photographic_id')->where('verified', 1)->first();
+    }
+    public function isW9Complete()
+    {
+
+       return $this->fileUploads()->where('document_type', 'W9')->orWhere('document_type', 'WBEN')->where('verified', 1)->first();
+    }
+    public function isLicenseComplete()
+    {
+
+       return $this->fileUploads()->where('document_type', 'clinical_license')->where('verified', 1)->first();
+    }
+    public function isHeadshotComplete()
+    {
+
+       return $this->fileUploads()->where('document_type', 'headshot')->where('verified', 1)->first();
+    }
+
 }
