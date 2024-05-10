@@ -373,7 +373,9 @@ class ClientController extends Controller
         if ($request->user_id) {
 
             $therapist = User::find($request->user_id);
-            $therapist->notify(new NewClientNotification());
+            if ($therapist) {
+                $therapist->notify(new NewClientNotification());
+            }
         }
 
         $client->previous_therapy = $request->previous_therapy ?? 0;
