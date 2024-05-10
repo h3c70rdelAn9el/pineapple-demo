@@ -60,17 +60,17 @@
             class="block w-full appearance-none rounded-md border border-blue-400 bg-white px-3 py-2 pr-8 leading-tight text-gray-700 focus:border-gray-500 focus:bg-white focus:outline-none"
             id="document_type" name="document_type" x-model="documentType">
             <option value="">Select Document Type</option>
-            <option value="photographic_id">Photographic ID</option>
-            <option value="W9">W9</option>
-            <option value="clinical_license">Clinical License</option>
-            <option value="public_liability_insurance">Public Liability Insurance</option>
-            <option value="W8BENE">W8BENE</option>
-            <option value="W8BEN">W8BEN</option>
-            <option value="Voided Check">Voided Check</option>
-            <option value="supervisor_approval_letter">Supervisor Approval Letter</option>
-            <option value="headshot">Headshot</option>
-            <option value="Bio">Bio</option>
-            <option value="Other">Other</option>
+            <option value="photographic_id" {{$form->document_type == 'photographic_id' ? 'selected' : ''}}>Photographic ID</option>
+            <option value="W9" {{$form->document_type == 'W9' ? 'selected' : ''}} >W9</option>
+            <option value="clinical_license" {{$form->document_type == 'clinical_license' ? 'selected' : ''}}>Clinical License</option>
+            <option value="public_liability_insurance" {{$form->document_type == 'public_liability_insurance' ? 'selected' : ''}}>Public Liability Insurance</option>
+            <option value="W8BENE" {{$form->document_type == 'W8BENE' ? 'selected' : ''}}>W8BENE</option>
+            <option value="W8BEN"> {{$form->document_type == 'W8BEN' ? 'selected' : ''}}W8BEN</option>
+            <option value="Voided Check" {{$form->document_type == 'Voided Check' ? 'selected' : ''}}>Voided Check</option>
+            <option value="supervisor_approval_letter" {{$form->document_type == 'supervisor_approval_letter' ? 'selected' : ''}}>Supervisor Approval Letter</option>
+            <option value="headshot" {{$form->document_type == 'headshot' ? 'selected' : ''}}>Headshot</option>
+            <option value="Bio" {{$form->document_type == 'Bio' ? 'selected' : ''}}>Bio</option>
+            <option value="Other" {{$form->document_type == 'Other' ? 'selected' : ''}}>Other</option>
         </select>
     </div>
             <div class="relative my-5">

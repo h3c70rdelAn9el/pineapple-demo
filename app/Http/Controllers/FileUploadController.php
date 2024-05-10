@@ -226,6 +226,31 @@ class FileUploadController extends Controller
         if ($request->has('verified') && $user->admin) {
             $form->verified = $request->verified;
         }
+        switch($request->document_type) {
+            case 'photographic_id':
+                $therapist->update(['id_uploaded' => true]);
+                break;
+            case 'W9':
+                $therapist->update(['W9_or_WBEN_uploaded' => true]);
+                break;
+            case 'clinical_license':
+                $therapist->update(['license_uploaded' => true]);
+                break;
+            case 'public_liability_insurance':
+                $therapist->update(['insurance_uploaded' => true]);
+                break;
+            case 'headshot':
+                $therapist->update(['headshot_uploaded' => true]);
+                break;
+            case 'W8BENE':
+                $therapist->update(['W9_or_WBEN_uploaded' => true]);
+                break;
+            case 'W8BEN':
+                $therapist->update(['W9_or_WBEN_uploaded' => true]);
+                break;
+            default:
+                break;
+        }
 
         $therapist->title = $request->input('title', $therapist->title);
         $therapist->notes = $request->input('notes', $therapist->notes);
