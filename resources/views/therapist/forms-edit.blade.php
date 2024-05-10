@@ -53,7 +53,26 @@
                         placeholder="Date" />
                 </div>
             </div>
-
+ {{-- document type --}}
+ <div class="mt-5 flex flex-col" x-data="{ documentType: '' }">
+    <div class="relative">
+        <select
+            class="block w-full appearance-none rounded-md border border-blue-400 bg-white px-3 py-2 pr-8 leading-tight text-gray-700 focus:border-gray-500 focus:bg-white focus:outline-none"
+            id="document_type" name="document_type" x-model="documentType">
+            <option value="">Select Document Type</option>
+            <option value="photographic_id">Photographic ID</option>
+            <option value="W9">W9</option>
+            <option value="clinical_license">Clinical License</option>
+            <option value="public_liability_insurance">Public Liability Insurance</option>
+            <option value="W8BENE">W8BENE</option>
+            <option value="W8BEN">W8BEN</option>
+            <option value="Voided Check">Voided Check</option>
+            <option value="supervisor_approval_letter">Supervisor Approval Letter</option>
+            <option value="headshot">Headshot</option>
+            <option value="Bio">Bio</option>
+            <option value="Other">Other</option>
+        </select>
+    </div>
             <div class="relative my-5">
                 <x-jet-label for="file_title"
                     value="File Title" />
