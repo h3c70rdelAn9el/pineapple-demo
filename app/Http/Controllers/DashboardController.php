@@ -75,25 +75,9 @@ class DashboardController extends Controller
 
         if ($allTherapists) {
             $incompleteTherapists = $allTherapists->filter(function ($therapist) {
-                $fieldsToCheck = [
-                    'id_uploaded' => $therapist->id_uploaded,
-                    'W9_or_WBEN_uploaded' => $therapist->W9_or_WBEN_uploaded,
-                    'license_uploaded' => $therapist->license_uploaded,
-                    'insurance_uploaded' => $therapist->insurance_uploaded,
-                    'headshot_uploaded' => $therapist->headshot_uploaded,
-                ];
-
-                $isNotAdmin = $therapist->admin != 1;
-
-                $incomplete = false;
-
-                foreach ($fieldsToCheck as $field) {
-                    if (is_null($field) || $field == false) {
-                        $incomplete = true;
-                        break;
-                    }
-                }
-                return $incomplete && $isNotAdmin;
+                $res = $therapist->isIncomplete();
+                $incomplete = $res['status'];
+                return $incomplete && !$therapist->isAdmin();
             });
         } else {
             $incompleteTherapists = collect();
@@ -101,13 +85,13 @@ class DashboardController extends Controller
 
         $incompleteTherapist = false;
 
-        if ($user) {
+        if ($therapist) {
             $fieldsToCheck = [
-                'id_uploaded' => $therapist->id_uploaded ?? null,
-                'W9_or_WBEN_uploaded' => $therapist->W9_or_WBEN_uploaded ?? null,
-                'license_uploaded' => $therapist->license_uploaded ?? null,
-                'insurance_uploaded' => $therapist->insurance_uploaded ?? null,
-                'headshot_uploaded' => $therapist->headshot_uploaded ?? null,
+                'id_uploaded' => $therapist->isIdUploaded() ?? null,
+                'W9_or_WBEN_uploaded' => $therapist->isW9Uploaded() ?? null,
+                'license_uploaded' => $therapist->isLicenseUploaded() ?? null,
+                'insurance_uploaded' => $therapist->isInsuranceUploaded() ?? null,
+                'headshot_uploaded' => $therapist->isHeadshotUploaded() ?? null,
             ];
 
             foreach ($fieldsToCheck as $field) {

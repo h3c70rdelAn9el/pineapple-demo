@@ -225,5 +225,30 @@ $incomplete_reason = rtrim($incomplete_reason, ', ');
 
        return $this->fileUploads()->where('document_type', 'headshot')->where('verified', 1)->first();
     }
+    public function isInsuranceComplete()
+    {
+
+       return $this->fileUploads()->where('document_type', 'public_liability_insurance')->where('verified', 1)->first();
+    }
+    public function isIdUploaded()
+    {
+        return $this->fileUploads()->where('document_type', 'photographic_id')->first();
+    }
+    public function isW9Uploaded()
+    {
+        return $this->fileUploads()->where('document_type', 'W9')->orWhere('document_type', 'WBEN')->first();
+    }
+    public function isLicenseUploaded()
+    {
+        return $this->fileUploads()->where('document_type', 'clinical_license')->first();
+    }
+    public function isHeadshotUploaded()
+    {
+        return $this->fileUploads()->where('document_type', 'headshot')->first();
+    }
+    public function isInsuranceUploaded()
+    {
+        return $this->fileUploads()->where('document_type', 'public_liability_insurance')->first();
+    }
 
 }
