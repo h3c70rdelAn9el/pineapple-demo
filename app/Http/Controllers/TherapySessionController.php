@@ -14,6 +14,7 @@ use App\Notifications\MissedTherapySessions;
 use App\Notifications\SessionLimitNotification;
 use App\Http\Requests\StoreTherapySessionRequest;
 use App\Http\Requests\UpdateTherapySessionRequest;
+use App\Notifications\SessionsAssignedNotification;
 use App\Notifications\SpecialSessionsLimitNotification;
 // use Log
 use Illuminate\Support\Facades\Log;
@@ -166,20 +167,37 @@ class TherapySessionController extends Controller
 
 
 
-            $consecutiveNoShows = 0;
-            foreach ($client->therapySessions()->latest()->take(5)->get() as $session) {
+            // $consecutiveNoShows = 0;
+            // foreach ($client->therapySessions()->latest()->take(5)->get() as $session) {
+            //     if ($session->attendance === 'no-show') {
+            //         $consecutiveNoShows++;
+            //     } else {
+            //         break;
+            //     }
+            // }
+
+            // if ($consecutiveNoShows >= 3) {
+            //     $client->notify(new MissedTherapySessions());
+            // }
+            $missedSessions = 0;
+
+
+            foreach ($client->therapySessions as $session) {
                 if ($session->attendance === 'no-show') {
-                    $consecutiveNoShows++;
-                } else {
-                    break;
+                    $missedSessions++;
                 }
             }
 
-            if ($consecutiveNoShows >= 3) {
-                $client->notify(new MissedTherapySessions());
+            if ($missedSessions >= 2) {
+                $client->notify(new MissedTherapySessions($client));
+                $adminUsers = User::where('admin', 1)->get();
+                foreach ($adminUsers as $adminUser) {
+                    $adminUser->notify(new MissedTherapySessions($client));
+                }
             }
 
-            return redirect()->back()->with('success', 'Session ashowed successfully.');
+
+            return redirect()->back()->with('success', 'Session added successfully.');
         } else {
             Session::flash('error', 'You have reached the maximum number of sessions for this client.');
             return redirect()->back();
@@ -264,8 +282,12 @@ class TherapySessionController extends Controller
     public function destroy(TherapySession $therapySession)
     {
         $therapySession->delete();
-
-        return redirect()->route('dashboard')
+        return redirect()->route('session.index', ['user' => $therapySession->user_id])
             ->with('success', 'Therapy session deleted successfully');
+
+
+
+        //return redirect()->route('dashboard')
+        //  ->with('success', 'Therapy session deleted successfully');
     }
 }

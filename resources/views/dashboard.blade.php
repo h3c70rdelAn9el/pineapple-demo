@@ -6,20 +6,60 @@
     @endif
 
     @if (session('success'))
-        <div class="m-4 mx-auto w-1/2 rounded-md bg-green-500 p-4 text-center text-white shadow-sm">
-            {{ session('success') }}
-        </div>
+        <x-success-message></x-success-message>
     @endif
 
-    <div class="ml-7 flex flex-row pt-2">
-        @if ($incompleteTherapist)
-            <div
-                class="mx-auto flex flex-col rounded-md border border-red-800 bg-red-100 p-2 text-center text-lg text-red-600">
-                <p>Your Profile Is Incomplete</p>
-                <p>Before clients are assigned, you must visit your profile page and complete it.</p>
-            </div>
+        @if ($user)
+            @php
+                $fieldsToCheck = [
+                    'id_uploaded' => $user->id_uploaded ?? null,
+                    'W9_or_WBEN_uploaded' => $user->W9_or_WBEN_uploaded ?? null,
+                    'license_uploaded' => $user->license_uploaded ?? null,
+                    'insurance_uploaded' => $user->insurance_uploaded ?? null,
+                    'headshot_uploaded' => $user->headshot_uploaded ?? null,
+                ];
+
+                $incompleteTherapist = false;
+
+                foreach ($fieldsToCheck as $field) {
+                    if (is_null($field) || $field == false) {
+                        $incompleteTherapist = true;
+                        break;
+                    }
+                }
+
+                $fieldsToCheck = [
+                    'contract_signed' => $user->contract_signed ?? null,
+                    'all_documents' => $user->all_documents ?? null,
+                ];
+
+                $unverifiedTherapist = false;
+
+                foreach ($fieldsToCheck as $field) {
+                    if (is_null($field) || $field == false) {
+                        $unverifiedTherapist = true;
+                        break;
+                    }
+                }
+            @endphp
         @endif
-    </div>
+
+        <div class="mx-auto flex flex-col md:w-2/3">
+            @if ($incompleteTherapist)
+                <div
+                    class="mx-auto flex flex-col rounded-md border border-red-800 bg-red-100 p-2 text-center text-lg text-red-600">
+                    <p>Your Profile is Incomplete</p>
+                    <p>Before clients are assigned, you must visit your profile page and complete it.</p>
+                </div>
+            @endif
+            @if ($unverifiedTherapist)
+                <div
+                    class="mx-auto mt-2 flex flex-col rounded-md border border-yellow-800 bg-yellow-100 p-2 text-center text-lg text-yellow-700">
+                    <p>Your Profile is currently unverified</p>
+                    <p>Please contact admin to complete verification.</p>
+                </div>
+            @endif
+        </div>
 
     @if ($unreadMessagesCount > 0)
         <div

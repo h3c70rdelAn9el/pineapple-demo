@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Notifications\TherapistProfileUpdated;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -32,7 +33,7 @@ class UserController extends Controller
             'contract_signed' => 'nullable|boolean',
             'all_documents' => 'nullable|string|max:255',
             'full' => 'nullable|boolean',
-            'session_cost' => 'nullable|numeric',
+            'session_cost' => 'nullable|numeric|max:100',
             'contact_for_promotionals' => 'nullable|boolean',
             'number_of_potential_clients' => 'nullable|string|max:255',
             'out_of_state_coaching' => 'nullable|boolean',
@@ -50,16 +51,22 @@ class UserController extends Controller
 
         ]);
 
-        // Handle selectedGenders separately
         if ($request->has('selectedGenders')) {
             $validatedData['gender'] = implode(', ', $validatedData['selectedGenders']);
         } else {
-            // If none are selected, set gender to null or an empty string as needed
-            $validatedData['gender'] = null; // or $validatedData['gender'] = '';
+            $validatedData['gender'] = null;
         }
 
-        // Update the user record
         $user->update($validatedData);
+
+
+        $updatedFields = array_intersect_key($validatedData, $user->getChanges());
+
+        $admins = User::where('admin', 1)->get();
+        foreach ($admins as $admin) {
+            $admin->notify(new TherapistProfileUpdated($user, $updatedFields));
+        }
+
 
         return redirect()->back()->with('success', 'Profile updated successfully.');
     }
@@ -68,12 +75,10 @@ class UserController extends Controller
     {
         $user = User::find(auth()->user()->id);
 
-        // Validate the request
         $validatedData = $request->validate([
             'selectedGenders' => 'nullable|array',
         ]);
 
-        // Update the gender field
         $user->update(['gender' => implode(', ', $validatedData['selectedGenders'])]);
 
         return redirect()->back()->with('success', 'Gender updated successfully.');

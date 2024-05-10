@@ -11,8 +11,6 @@ use Symfony\Component\Mime\Message;
 use App\Http\Controllers\Controller;
 use Illuminate\Pagination\LengthAwarePaginator;
 use App\Models\ChMessage as ChatMessage;
-
-
 class DashboardController extends Controller
 {
     //
@@ -60,6 +58,7 @@ class DashboardController extends Controller
         $therapist = Client::find($user_id)?->therapist;
         $inactiveTherapists = User::where('admin', 0)->where('active_status', 1)->get();
         $activeTherapists = User::where('admin', 0)->where('active_status', 0)->get();
+        $allTherapists = User::where('admin', 0)->where('active_status', 0)->get();
 
         $file = file_get_contents(storage_path('states.json'));
         $states = json_decode($file, true);
@@ -71,26 +70,30 @@ class DashboardController extends Controller
             ->paginate(10);
 
         $unreadMessagesCount = ChatMessage::where('to_id', $user->id)
-        ->where('seen', 0)
-        ->count();
+            ->where('seen', 0)
+            ->count();
 
-        if ($therapists) {
-            $incompleteTherapists = $therapists->filter(function ($therapist) {
+        if ($allTherapists) {
+            $incompleteTherapists = $allTherapists->filter(function ($therapist) {
                 $fieldsToCheck = [
-                    'contract_signed' => $therapist->contract_signed,
-                    'public_liability_insurance' => $therapist->public_liability_insurance,
-                    'all_documents' => $therapist->all_documents,
-                    'signed_documents' => $therapist->signed_documents,
-                    'leah_signed' => $therapist->leah_signed,
+                    'id_uploaded' => $therapist->id_uploaded,
+                    'W9_or_WBEN_uploaded' => $therapist->W9_or_WBEN_uploaded,
+                    'license_uploaded' => $therapist->license_uploaded,
+                    'insurance_uploaded' => $therapist->insurance_uploaded,
+                    'headshot_uploaded' => $therapist->headshot_uploaded,
                 ];
 
+                $isNotAdmin = $therapist->admin != 1;
+
+                $incomplete = false;
+
                 foreach ($fieldsToCheck as $field) {
-                    if (is_null($field) || $field === false) {
-                        return true;
+                    if (is_null($field) || $field == false) {
+                        $incomplete = true;
+                        break;
                     }
                 }
-
-                return false;
+                return $incomplete && $isNotAdmin;
             });
         } else {
             $incompleteTherapists = collect();
@@ -100,10 +103,11 @@ class DashboardController extends Controller
 
         if ($user) {
             $fieldsToCheck = [
-                'contract_signed' => $user->contract_signed,
-                'leah_signed' => $user->leah_signed,
-                // 'public_liability_insurance' => $user->public_liability_insurance,
-                'all_documents' => $user->all_documents,
+                'id_uploaded' => $therapist->id_uploaded ?? null,
+                'W9_or_WBEN_uploaded' => $therapist->W9_or_WBEN_uploaded ?? null,
+                'license_uploaded' => $therapist->license_uploaded ?? null,
+                'insurance_uploaded' => $therapist->insurance_uploaded ?? null,
+                'headshot_uploaded' => $therapist->headshot_uploaded ?? null,
             ];
 
             foreach ($fieldsToCheck as $field) {
@@ -113,6 +117,39 @@ class DashboardController extends Controller
                 }
             }
         }
+
+        $unverifiedTherapist = false;
+
+        if ($user) {
+            $fieldsToCheck = [
+                'contract_signed' => $therapist->contract_signed ?? null,
+                'all_documents' => $therapist->all_documents ?? null,
+            ];
+
+            foreach ($fieldsToCheck as $field) {
+                if (is_null($field) || $field === false) {
+                    $unverifiedTherapist = true;
+                    break;
+                }
+            }
+        }
+
+        $unverifiedTherapistCount= User::where('admin', 0)
+            ->where(function ($query) {
+                $query->where('contract_signed', false)
+                    ->orWhere('all_documents', false);
+            })
+            ->count();
+
+        $incompleteTherapistsCount = User::where('admin', 0)
+            ->where(function ($query) {
+                $query->where('id_uploaded', false)
+                    ->orWhere('W9_or_WBEN_uploaded', false)
+                    ->orWhere('license_uploaded', false)
+                    ->orWhere('insurance_uploaded', false)
+                    ->orWhere('headshot_uploaded', false);
+            })
+            ->count();
 
 
         if ($user->admin) {
@@ -143,6 +180,9 @@ class DashboardController extends Controller
                 'allSpecialSessions' => $allSpecialSessions,
                 'recentActiveClients' => $recentActiveClients,
                 'unreadMessagesCount' => $unreadMessagesCount,
+                'incompleteTherapistsCount' => $incompleteTherapistsCount,
+                'unverifiedTherapist' => $unverifiedTherapist,
+                'unverifiedTherapistCount' => $unverifiedTherapistCount
             ]);
         } else {
             return view('dashboard', [

@@ -6,17 +6,21 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use App\Models\Client;
 
-class SpecialSessionsLimitNotification extends Notification
+class ClientRemovedNotification extends Notification
 {
     use Queueable;
 
     /**
      * Create a new notification instance.
      */
-    public function __construct()
+
+    public $clientName;
+
+    public function __construct($clientName)
     {
-        //
+        $this->clientName = $clientName;
     }
 
     /**
@@ -32,15 +36,12 @@ class SpecialSessionsLimitNotification extends Notification
     /**
      * Get the mail representation of the notification.
      */
-    public function toMail(object $notifiable): MailMessage
+    public function toMail($notifiable)
     {
         return (new MailMessage)
-            ->subject('Pineapple Support- Special Session Limit')
-            ->line('Hello!')
-            ->line('You currently have one special session remaining.')
-            ->line('We appreciate your commitment to your well-being.')
-            ->action('Please contact us for assistance', 'mailto:kellie@pineapplesupport.org')
-            ->line('Thank you for choosing our services.');
+            ->subject('Pineapple Support - Client Reassigned')
+            ->line('The client ' . $this->clientName . ' assigned to you has been reassigned to another therapist.')
+            ->line('Thank you for your attention!');
     }
 
     /**

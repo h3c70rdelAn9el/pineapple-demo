@@ -16,10 +16,12 @@ class TherapistProfileUpdated extends Notification
      */
 
     protected $user;
+    protected $updatedFields;
 
-    public function __construct($user)
+    public function __construct($user, $updatedFields)
     {
         $this->user = $user;
+        $this->updatedFields = $updatedFields;
     }
 
     /**
@@ -37,15 +39,25 @@ class TherapistProfileUpdated extends Notification
     /**
      * Get the mail representation of the notification.
      */
-    public function toMail(object $notifiable): MailMessage
+    // use Illuminate\Notifications\Messages\MailMessage;
+
+    public function toMail($notifiable)
     {
-        return (new MailMessage)
+        $message = (new MailMessage)
             ->line('A therapist has updated their profile:')
             ->line('Therapist Name: ' . $this->user->name)
             ->line('Therapist ID: ' . $this->user->id)
-            ->action('View Profile', url('/therapist/' . $this->user->id))
-            ->line('Thank you!');
+            ->line('Updated Fields:');
+
+        foreach ($this->updatedFields as $field => $value) {
+            $message->line(ucwords(str_replace('_', ' ', $field)) . ': ' . $value);
+        }
+
+        $message->action('View Profile', url('/therapist/' . $this->user->id));
+
+        return $message;
     }
+
 
     /**
      * Get the array representation of the notification.

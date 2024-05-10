@@ -26,7 +26,8 @@ class FileUpload extends Model
         'date',
         'note',
         'verified',
-        'file_title'
+        'file_title',
+        'pinned',
     ];
 
     public function user()

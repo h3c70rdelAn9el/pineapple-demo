@@ -13,6 +13,7 @@ use App\Http\Controllers\TherapistsController;
 use Illuminate\Support\Facades\Storage;
 
 
+
 class FileUploadController extends Controller
 {
     /**
@@ -31,11 +32,17 @@ class FileUploadController extends Controller
             return $file->date && $file->date < now();
         });
 
+        $pinnedForms = $file_name->where('user_id', $therapist->id)->where('pinned', 1)->sortByDesc('created_at');
+        $unPinnedForms = $file_name->where('user_id', $therapist->id)->where('pinned', 0)->sortByDesc('created_at');
+
         return view('therapist.forms', [
             'file_name' => $file_name,
             'therapist' => $therapist,
             'user' => $user,
             'expiredFiles' => $expiredFiles,
+            'pinnedForms' => $pinnedForms,
+            'unPinnedForms' => $unPinnedForms,
+
         ]);
     }
 
@@ -58,9 +65,9 @@ class FileUploadController extends Controller
 
 
 
-    public function store(Request $request, $therapist)
+    public function store(Request $request, $therapist_id)
     {
-        $therapist = User::find($therapist);
+        $therapist = User::find($therapist_id);
         // $user = $request->user();
         $user = auth()->user();
         $request->validate([
@@ -71,6 +78,33 @@ class FileUploadController extends Controller
         $path = 'uploads/forms/therapist/' . $user->id . '/';
         $request->file->storeAs($path, $fileName);
 
+        // update the user fields:
+        switch($request->document_type) {
+            case 'photographic_id':
+                $therapist->update(['id_uploaded' => true]);
+                break;
+            case 'W9':
+                $therapist->update(['W9_or_WBEN_uploaded' => true]);
+                break;
+            case 'clinical_license':
+                $therapist->update(['license_uploaded' => true]);
+                break;
+            case 'public_liability_insurance':
+                $therapist->update(['insurance_uploaded' => true]);
+                break;
+            case 'headshot':
+                $therapist->update(['headshot_uploaded' => true]);
+                break;
+            case 'W8BENE':
+                $therapist->update(['W9_or_WBEN_uploaded' => true]);
+                break;
+            case 'W8BEN':
+                $therapist->update(['W9_or_WBEN_uploaded' => true]);
+                break;
+            default:
+                break;
+        }
+
         if ($user->admin == 1) {
             $therapist->fileUploads()->create([
                 'file_path' => $path,
@@ -80,8 +114,8 @@ class FileUploadController extends Controller
                 'note' => $request->note,
                 'verified' => $verified,
                 'file_title' => $request->file_title,
-                // 'user_id' => $therapist->id,
-                'user_id' => $request->user_id,
+                'user_id' => $therapist->id,
+                //'user_id' => $request->user_id,
                 // 'therapist_id' => $therapist->id,
             ]);
         } else {
@@ -103,11 +137,16 @@ class FileUploadController extends Controller
             $adminUsers = User::where('admin', 1)->get();
             Notification::send($adminUsers, new TherapistFileUploaded($user));
         }
+        if ($user->admin == 1) {
+            return redirect('therapist/forms/' . $therapist->id)
+                ->with('success', 'File uploaded successfully')
+                ->with('file_name', $fileName);
 
-        return redirect('user/profile')
-            ->with('alert', 'success')
-            ->with('message', 'Thank you. You have uploaded your file.')
-            ->with('file_name', $fileName);
+        } else {
+            return redirect('user/profile')
+                ->with('success', 'File uploaded successfully')
+                ->with('file_name', $fileName);
+        }
     }
 
 
@@ -125,7 +164,7 @@ class FileUploadController extends Controller
         $therapist = User::find($user->id);
         $id = $user->id;
 
-        return view('therapist-forms', ['id' => $id, 'file_name' => $file_name, 'user' => $user, 'therapist' => $therapist]);
+        return view('therapist.forms', ['id' => $id, 'file_name' => $file_name, 'user' => $user, 'therapist' => $therapist, 'therapistForm' => $therapistForm]);
     }
 
 
@@ -134,18 +173,19 @@ class FileUploadController extends Controller
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
-    //  */
+     */
     public function edit($id)
     {
 
         $form = FileUpload::findOrFail($id);
+        $therapist = User::find($form->user_id);
 
         $user = auth()->user();
         if (!$user->admin && $form->user_id !== $user->id) {
             return redirect()->back()->with('error', 'You are not authorized to edit this form.');
         }
 
-        return view('therapist.forms-edit', compact('form', 'user'));
+        return view('therapist.forms-edit', compact('form', 'user', 'therapist'));
     }
 
     /**
@@ -164,15 +204,34 @@ class FileUploadController extends Controller
         }
 
         $request->validate([
-            'verified' => 'nullable|in:1',
+            'document_type' => 'nullable|string',
+            'date' => 'nullable|date',
+            'file_title' => 'nullable|string',
+            'verified' => 'nullable|boolean',
         ]);
 
         $form = FileUpload::findOrFail($id);
+
+        $therapist = $form->user;
+
         $form->update([
-            'verified' => $request->has('verified'),
+            'document_type' => $request->document_type ?? $form->document_type,
+            'date' => $request->date ?? $form->date,
+            'file_title' => $request->file_title ?? $form->file_title,
+            'note' => $request->note ?? $form->note,
+            'verified' => $request->has('verified') ? $request->verified : $form->verified,
+            'pinned' => $request->has('pinned') ? $request->pinned : $form->pinned,
         ]);
 
-        return redirect()->route('therapist.show', $form->user_id);
+        if ($request->has('verified') && $user->admin) {
+            $form->verified = $request->verified;
+        }
+
+        $therapist->title = $request->input('title', $therapist->title);
+        $therapist->notes = $request->input('notes', $therapist->notes);
+        $therapist->save();
+
+        return redirect()->route('therapist.forms', ['therapist' => $form->user_id]);
     }
 
     /**

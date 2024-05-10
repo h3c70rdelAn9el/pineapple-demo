@@ -1,4 +1,4 @@
- <div class="p-1 px-3 mt-2 overflow-x-scroll custom-special-sessions border border-green-500 rounded-md shadow-md h-[500px] bg-blue-50 shadow-blue-100">
+ <div class="p-1 px-3 mt-2 overflow-x-scroll custom-special-sessions border border-green-500 rounded-md shadow-md h-[80vh] bg-blue-50 shadow-blue-100">
      <h2 class="text-lg font-bold text-center">Client: {{ $client->preferred_name }}</h2>
         @if (auth()->user()->admin == 1)
         <div class="flex flex-row justify-end">
@@ -14,6 +14,7 @@
         'Therapist' => $client->user ? $client->user->name : '',
         'Max Sessions' => $client->max_sessions ?: 'Max Sessions needed',
         'Phone' => $client->phone ?: 'Phone needed',
+        'Email' => $client->email ?: 'Email needed',
         'Contact by' => $client->contact_method ?: 'Contact method needed',
         'Client Status' => $client->status === 1 ? 'Inactive' : 'Active',
         'Pronouns' => $client->pronouns ?: 'Pronouns needed',

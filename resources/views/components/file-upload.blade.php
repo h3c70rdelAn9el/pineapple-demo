@@ -37,7 +37,7 @@
                     {{-- <form action="{{ route('fileStore', ['therapistId' => $therapist->id]) }}" method="POST" enctype="multipart/form-data"> --}}
                     {{-- <form action="{{ route('fileStore') }}" method="POST" enctype="multipart/form-data"> --}}
                     {{-- <form action="{{ route('fileStore', ['id' => $therapist->id]) }}" method="POST" enctype="multipart/form-data"> --}}
-                    <form action="{{ route('fileStore', ['id' => $user->id]) }}" method="POST"
+                    <form action="{{ route('fileStore', ['id' => $therapist ? $therapist->id : $user->id]) }}" method="POST"
                         enctype="multipart/form-data">
 
                         @csrf
@@ -76,11 +76,11 @@
                             <div class="relative mb-5 mt-4">
                                 <x-jet-label for="date" value="{{ __('Expiration Date') }}"
                                     x-bind:required="documentType == 'clinical_license' || documentType ==
-                                        'public_liability_insurance'" />
+                                        'public_liability_insurance' || documentType == 'photographic_id'" />
                                 <div class="relative">
                                     <x-jet-input class="mt-1 block w-[100%]" id="date" name="date"
                                         type="date"
-                                        x-bind:required="['clinical_license', 'public_liability_insurance'].includes(documentType)"
+                                        x-bind:required="['clinical_license', 'public_liability_insurance', 'photographic_id'].includes(documentType)"
                                         :value="old('date')" placeholder="Date" />
                                 </div>
                             </div>

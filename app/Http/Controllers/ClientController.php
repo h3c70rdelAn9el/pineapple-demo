@@ -11,6 +11,9 @@ use App\Models\TherapySession;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use App\Notifications\NewClientNotification;
+use App\Notifications\ClientRemovedNotification;
+use App\Notifications\SessionsAssignedNotification;
+use App\Notifications\ClientMadeInactiveNotification;
 
 
 
@@ -362,10 +365,8 @@ class ClientController extends Controller
         $client->contact_method = $contactMethodString;
         $client->possible_support_needed = $possibleSupportNeededString;
         $client->sexual_orientation = $orientationString;
-        // $client->max_sessions = $request->max_sessions;
         $client->special_sessions = $request->input('special_sessions', false);
-        $client->max_sessions = $request->input('max_sessions', 16);
-
+        $client->max_sessions = $request->input('max_sessions');
         $client->waitlist = $request->input('waitlist', 0);
         $client->special_sessions = $request->input('special_sessions', 6);
 
@@ -381,9 +382,9 @@ class ClientController extends Controller
 
         if ($request->input('special_sessions')) {
             $client->special_sessions = 6;
-            $client->max_sessions = 16;
+            // $client->max_sessions = 16;
         } else {
-            $client->max_sessions = 16;
+            $client->max_sessions = $request->input('max_sessions');
         }
 
         // $c->ethnic_group = json_encode($ethnicGroupArray);
@@ -402,7 +403,16 @@ class ClientController extends Controller
             }
         }
 
-        return redirect()->route('dashboard');
+        // notify the admins of the max sessions
+        $sessionCount = $request->max_sessions;
+
+        $this->notifyAdmins($client, $sessionCount, $request->status);
+
+        // return redirect('therapist/forms/' . $therapist->id)
+        // ->with('success', 'File uploaded successfully')
+        // ->with('file_name', $fileName);
+        return redirect()->route('dashboard')
+            ->with('success', 'Client added successfully');
     }
 
 
@@ -417,7 +427,6 @@ class ClientController extends Controller
      */
     public function update(Request $request, Client $client)
     {
-        // Validate the request data
         $validatedData = $request->validate([
             'client_code' => 'nullable',
             'legal_name' => 'nullable',
@@ -450,9 +459,7 @@ class ClientController extends Controller
         $client->sexual_orientation = implode(', ', $request->input('sexual_orientation', []));
         $client->possible_support_needed = implode(', ', $request->input('possible_support_needed', []));
 
-
-
-        // Update the client fields
+        $oldTherapist = $client->user_id;
 
         $client->update([
             'client_code' => $request->input('client_code'),
@@ -474,8 +481,8 @@ class ClientController extends Controller
             'user_id' => $request->input('user_id'),
             'gender' => $client->gender,
             'contact_method' => $client->contact_method,
-            // 'max_sessions' => $request->input('max_sessions'),
-            'max_sessions' => $request->input('special_sessions') ? 10 : 16,
+            'max_sessions' => $request->input('max_sessions'),
+            // 'max_sessions' => $request->input('special_sessions') ? 10 : 16,
             'special_sessions' => $request->has('special_sessions') ? 6 : 0,
             'therapist' => $request->input('therapist'),
             'status' => $request->input('status'),
@@ -483,15 +490,11 @@ class ClientController extends Controller
             'special_sessions' => $request->input('special_sessions', 0),
         ]);
 
-        // $client->update($validatedData);
-        // Update the client fields (excluding 'status')
-        // unset($validatedData['status']);
-
         if ($request->input('special_sessions')) {
             $client->special_sessions = 6;
-            $client->max_sessions = 10;
+            // $client->max_sessions = 10;
         } else {
-            $client->max_sessions = 16;
+            $client->max_sessions = $request->input('max_sessions');
         }
 
         // Update 'status' separately
@@ -500,18 +503,43 @@ class ClientController extends Controller
             $client->save();
         }
 
-        // Notify the therapist
-        if ($request->user_id) {
-            $therapist = User::find($request->user_id);
-            $therapist->notify(new NewClientNotification());
+        // notify the therapists of the change
+        if ((int)$request->user_id !== (int)$oldTherapist) {
+            $newTherapist = User::find($request->user_id);
+            $newTherapist->notify(new NewClientNotification());
+            $previousTherapist = User::find($oldTherapist);
+            $previousTherapist->notify(new ClientRemovedNotification($client->preferred_name));
         }
 
+        // notify the admins of the max sessions
+        // $adminUsers = User::where('admin', 1)->get();
+        // $sessionCount = $request->max_sessions;
 
-        return redirect()->route('dashboard');
+        // foreach ($adminUsers as $adminUser) {
+        //     $adminUser->notify(new SessionsAssignedNotification($client, $sessionCount));
+        //     if ($request->has('status') && $request->input('status') === 'inactive') {
+        //         $adminUser->notify(new ClientMadeInactiveNotification($client));
+        //     }
+        // }
+        $sessionCount = $request->max_sessions;
+        $this->notifyAdmins($client, $sessionCount, $request->status);
+
+        return redirect()->route('dashboard')
+            ->with('success', 'Client updated successfully');
     }
 
 
-
+    private function notifyAdmins($client, $sessionCount, $status)
+    {
+        $adminUsers = User::where('admin', 1)->get();
+        foreach ($adminUsers as $adminUser) {
+            $adminUser->notify(new SessionsAssignedNotification($client, $sessionCount));
+            if ($status === 'inactive') {
+                $therapistName = $client->therapist->preferred_name ?? ' ';
+                $adminUser->notify(new ClientMadeInactiveNotification($client, $therapistName));
+            }
+        }
+    }
 
     /**
      * Display the specified resource.
@@ -559,7 +587,7 @@ class ClientController extends Controller
             $categories = $this->getCategories();
             $states = $this->getStates();
             $id = $client->id;
-            $therapist = User::find($client->user_id);
+            $therapist = User::firstorNew(['id' => $client->user_id]);
             $therapists = User::where('admin', 0)->orderBy('name', 'asc')->get();
             $user_id = $client->user_id;
             $genders = $this->getGenders();
@@ -567,7 +595,6 @@ class ClientController extends Controller
             $pronouns = $this->getPronouns();
             $selectedPossibleSupport = $this->getCategories();
             // dd($client);
-
 
             return view('clients.edit')->with(['client' => $client, 'countries' => $countries, 'categories' => $categories, 'states' => $states, 'id' => $id, 'therapist' => $therapist, 'therapists' => $therapists, 'user_id' => $user_id, 'genders' => $genders, 'sexualOrientations' => $sexualOrientations, 'pronouns' => $pronouns, 'selectedPossibleSupport' => $selectedPossibleSupport]);
         } else {

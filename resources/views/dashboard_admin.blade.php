@@ -1,4 +1,14 @@
 <x-app-layout>
+    @if (session('error'))
+        <div class="m-4 mx-auto w-1/2 rounded-md bg-red-500 p-4 text-center text-white shadow-sm">
+            {{ session('error') }}
+        </div>
+    @endif
+
+    @if (session('success'))
+        <x-success-message></x-success-message>
+    @endif
+
     <div class="ml-7 mt-2 w-fit">
         <table class="ml-4 w-full">
             <tbody class="text-sm">
@@ -27,7 +37,7 @@
 
     @if ($unreadMessagesCount > 0)
         <div
-            class="mx-auto ml-14 mt-2 flex w-52 rounded-md hover:bg-blue-500 bg-blue-200 transition duration-200 max-w-6xl flex-row items-center justify-center border border-blue-400 px-4 py-1 font-medium">
+            class="mx-auto ml-14 mt-2 flex w-52 max-w-6xl flex-row items-center justify-center rounded-md border border-blue-400 bg-blue-200 px-4 py-1 font-medium transition duration-200 hover:bg-blue-500">
             <a href="/messages">
                 <p class="text-center">Unread Messages:<span class="ml-2 font-bold">
                         {{ $unreadMessagesCount }}</span>
@@ -41,24 +51,27 @@
             <x-container-content>
                 <div class="w-full">
                     <x-slot name="title">
-                        {{-- Therapists: --}}
                         <div class="flex w-full flex-col text-base lg:w-1/2">
                             <div class="flex items-center justify-between font-bold">
                                 <a href="{{ route('therapists.index') }}" class=""><button
                                         class="mb-1 rounded-md border-2 border-blue-300 px-2 py-1 transition duration-300 ease-in-out hover:bg-blue-400">Therapists:</button></a>
-                                <p>{{ $therapists->count() }}</p>
+                                <p>{{ $therapists->total() }}</p>
                             </div>
                             <div class="flex justify-between text-blue-600">
                                 <p>Active:</p>
                                 <p>{{ $activeTherapists->count() }}</p>
                             </div>
-                            <div class="flex justify-between text-slate-500">
+                            {{-- <div class="flex justify-between text-slate-500">
                                 <p>Inactive:</p>
                                 <p class="">{{ $inactiveTherapists->count() }}</p>
+                            </div> --}}
+                             <div class="flex justify-between text-red-600">
+                                <p>Unverified Profiles:</p>
+                                <p>{{ $unverifiedTherapistCount }}</p>
                             </div>
                             <div class="flex justify-between text-red-600">
                                 <p>Incomplete Profiles:</p>
-                                <p>{{ $incompleteTherapists->count() }}</p>
+                                <p>{{ $incompleteTherapistsCount }}</p>
                             </div>
                         </div>
                     </x-slot>
@@ -71,8 +84,15 @@
                             </div>
                             <div class="h-96 overflow-y-scroll">
                                 @foreach ($therapists as $therapist)
-                                    <x-therapists-card :therapist="$therapist" incompleteTherapist="$incompleteTherapist"
-                                        incompleteTherapists="$incompleteTherapists"></x-therapists-card>
+                                    <x-therapists-card :therapist="$therapist" :incompleteTherapist="!$therapist->id_uploaded ||
+                                        !$therapist->W9_or_WBEN_uploaded ||
+                                        !$therapist->license_uploaded ||
+                                        !$therapist->insurance_uploaded ||
+                                        !$therapist->headshot_uploaded"
+                                        :unverifiedTherapist="!$therapist->all_documents ||
+                                        !$therapist->contract_signed"
+                                        >
+                                    </x-therapists-card>
                                 @endforeach
                             </div>
                             <div>
@@ -139,29 +159,7 @@
                                     <p>Clients</p>
                                 </a>
                             </button>
-                            {{-- <p>{{ $totalClientCount }}</p> --}}
                         </div>
-
-                        {{-- <div class="flex justify-between">
-                            <p>Inactive:</p>
-                            <p class="text-orange-500">{{ $inactiveClients->count() }}</p>
-                        </div> --}}
-
-
-                        <!--
-                        <div
-                            class="flex w-full flex-row gap-2 text-orange-500">
-                            {{-- <a href="javascript:void(0)" class="w-full flex flex-row"> --}}
-                                    {{-- <button x-on:click="navigateToClients('inactive')" class="flex flex-row"> --}}
-
-                                    <p>Inactive Clients:</p>
-                                    <p class="text-orange-500">{{ $inactiveClients->count() }}</p>
-                                {{-- </button> --}}
-                                {{-- </a> --}}
-
-                        </div>
-                    -->
-
                     </div>
 
                 </x-slot>
@@ -174,16 +172,8 @@
                 </x-slot>
 
                 <x-slot name="content">
-                    {{-- <div>
-                        {{ $allClients->links() }}
-                    </div> --}}
-                    {{-- @foreach ($allClients as $client) --}}
-                    {{-- <x-client-card :client="$client" :therapist="$therapist" :user="$user"></x-client-card> --}}
-                    {{-- <x-client-table :client="$client" :therapist="$therapist" :user="$user" :clients="$clients"></x-client-table> --}}
                     <p class="inline-block min-w-full py-2 sm:px-6 lg:px-8">Latest Active Clients</p>
-
                     <x-client-table :clients="$recentActiveClients" :attendedSessions="$attendedSessions" :missedSessions="$missedSessions" :client="$client" />
-
                 </x-slot>
             </x-container-content>
         </section>

@@ -7,16 +7,20 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class SpecialSessionsLimitNotification extends Notification
+class SessionsAssignedNotification extends Notification
 {
     use Queueable;
+
+    protected $client;
+    protected $sessionCount;
 
     /**
      * Create a new notification instance.
      */
-    public function __construct()
+    public function __construct($client)
     {
-        //
+        $this->client = $client;
+        $this->sessionCount = $client->max_sessions;
     }
 
     /**
@@ -35,12 +39,9 @@ class SpecialSessionsLimitNotification extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->subject('Pineapple Support- Special Session Limit')
-            ->line('Hello!')
-            ->line('You currently have one special session remaining.')
-            ->line('We appreciate your commitment to your well-being.')
-            ->action('Please contact us for assistance', 'mailto:kellie@pineapplesupport.org')
-            ->line('Thank you for choosing our services.');
+                    ->line('The client' . $this->client->preferred_name. 'has been assigned '. $this->sessionCount.'therapy sessions.')
+                    ->action('View Client', url('/clients/'. $this->client->id))
+                    ->line('Thank you.');
     }
 
     /**
