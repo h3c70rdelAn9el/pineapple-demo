@@ -181,51 +181,83 @@ class User extends Authenticatable
     /**
      * returns array of status = true or false for incomplete and if incomplete the reason
      */
-    public function isIncomplete(): array
+    public function isVerified(): array
     {
         $incomplete_reason = '';
         $incomplete = false;
-if(!$this->isIdComplete()){
+if(!$this->isIdVerified()){
     $incomplete_reason .= 'ID, ';
     $incomplete = true;
 }
-if(!$this->isW9Complete()){
+if(!$this->isW9Verified()){
     $incomplete_reason .= 'W9 or WBEN, ';
     $incomplete = true;
 }
-if(!$this->isLicenseComplete()){
+if(!$this->isLicenseVerified()){
     $incomplete_reason .= 'License, ';
     $incomplete = true;
 }
-if(!$this->isHeadshotComplete()){
+if(!$this->isHeadshotVerified()){
     $incomplete_reason .= 'Headshot, ';
     $incomplete = true;
 }
 $incomplete_reason = rtrim($incomplete_reason, ', ');
 
-        return ['status' =>$incomplete, 'reason' => $incomplete_reason];
+        return ['status' =>!$incomplete, 'reason' => $incomplete_reason];
     }
-    public function isIdComplete()
+
+    public function isComplete(): array
+    {
+        $incomplete_reason = '';
+        $incomplete = false;
+        if(!$this->isIdUploaded())
+        {
+            $incomplete_reason .= 'ID, ';
+            $incomplete = true;
+        }
+        if(!$this->isW9Uploaded())
+        {
+            $incomplete_reason .= 'W9 or WBEN, ';
+            $incomplete = true;
+        }
+        if(!$this->isLicenseUploaded())
+        {
+            $incomplete_reason .= 'License, ';
+            $incomplete = true;
+        }
+        if(!$this->isHeadshotUploaded())
+        {
+            $incomplete_reason .= 'Headshot, ';
+            $incomplete = true;
+        }
+        $incomplete_reason = rtrim($incomplete_reason, ', ');
+
+        return ['status' =>!$incomplete, 'reason' => $incomplete_reason];
+    }
+
+
+
+    public function isIdVerified()
     {
 
        return $this->fileUploads()->where('document_type', 'photographic_id')->where('verified', 1)->first();
     }
-    public function isW9Complete()
+    public function isW9Verified()
     {
 
        return $this->fileUploads()->where('document_type', 'W9')->orWhere('document_type', 'WBEN')->where('verified', 1)->first();
     }
-    public function isLicenseComplete()
+    public function isLicenseVerified()
     {
 
        return $this->fileUploads()->where('document_type', 'clinical_license')->where('verified', 1)->first();
     }
-    public function isHeadshotComplete()
+    public function isHeadshotVerified()
     {
 
        return $this->fileUploads()->where('document_type', 'headshot')->where('verified', 1)->first();
     }
-    public function isInsuranceComplete()
+    public function isInsuranceVerified()
     {
 
        return $this->fileUploads()->where('document_type', 'public_liability_insurance')->where('verified', 1)->first();

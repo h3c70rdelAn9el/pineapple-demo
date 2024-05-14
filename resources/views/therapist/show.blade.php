@@ -24,11 +24,23 @@
                     <tr>
                         <td>incomplete status:</td>
                         <td>
-                            <span class="font-bold ml-4 {{ $therapist->isIncomplete()['status'] ? 'text-red-500' : '' }}">
-                                {{ $therapist->isIncomplete()['status'] ? 'Yes' : 'No' }}
+                            <span class="font-bold ml-4 {{ !$therapist->isComplete()['status'] ? 'text-red-500' : '' }}">
+                                {{ $therapist->isComplete()['status'] ? 'Yes' : 'No' }}
                                 <br/>
-                                {{ $therapist->isIncomplete()['reason'] }}
+                                {{ $therapist->isComplete()['reason'] }}
                             </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>verified status:</td>
+                        <td>
+                            <span class="font-bold ml-4 {{ !$therapist->isVerified()['status'] ? 'text-red-500' : '' }}">
+                                {{ $therapist->isVerified()['status'] ? 'Yes' : 'No' }}
+                                <br/>
+                                {{ $therapist->isVerified   ()['reason'] }}
+                            </span>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
         </div>

@@ -75,8 +75,8 @@ class DashboardController extends Controller
 
         if ($allTherapists) {
             $incompleteTherapists = $allTherapists->filter(function ($therapist) {
-                $res = $therapist->isIncomplete();
-                $incomplete = $res['status'];
+                $res = $therapist->isComplete();
+                $incomplete = !$res['status'];
                 return $incomplete && !$therapist->isAdmin();
             });
         } else {
@@ -117,14 +117,20 @@ class DashboardController extends Controller
                 }
             }
         }
-
-        $unverifiedTherapistCount= User::where('admin', 0)
+/*
+ $unverifiedTherapistCount= User::where('admin', 0)
             ->where(function ($query) {
                 $query->where('contract_signed', false)
                     ->orWhere('all_documents', false);
             })
             ->count();
-
+            */
+        $unverifiedTherapistCount = User::where('admin', 0)->get()
+            ->filter(function ($user) {
+                return !$user->isVerified()['status'];
+            })
+            ->count();
+/*
         $incompleteTherapistsCount = User::where('admin', 0)
             ->where(function ($query) {
                 $query->where('id_uploaded', false)
@@ -134,7 +140,12 @@ class DashboardController extends Controller
                     ->orWhere('headshot_uploaded', false);
             })
             ->count();
-
+            */
+            $incompleteTherapistsCount = User::where('admin', 0)->get()
+            ->filter(function ($user) {
+                return !$user->isComplete()['status'];
+            })
+            ->count();
 
         if ($user->admin) {
             return view('dashboard_admin', [
