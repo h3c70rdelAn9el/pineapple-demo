@@ -54,11 +54,11 @@
 
 
                         {{-- document type --}}
-                        <div class="mt-5 flex flex-col" x-data="{ documentType: '' }">
+                        <div class="mt-5 flex flex-col" x-data="{ document_type: '' }">
                             <div class="relative">
                                 <select
                                     class="block w-full appearance-none rounded-md border border-blue-400 bg-white px-3 py-2 pr-8 leading-tight text-gray-700 focus:border-gray-500 focus:bg-white focus:outline-none"
-                                    id="document_type" name="document_type" x-model="documentType">
+                                    id="document_type" name="document_type" x-model="document_type" wire:model="document_type">
                                     <option value="">Select Document Type</option>
                                     <option value="photographic_id">Photographic ID</option>
                                     <option value="W9">W9</option>
@@ -75,12 +75,12 @@
                             </div>
                             <div class="relative mb-5 mt-4">
                                 <x-jet-label for="date" value="{{ __('Expiration Date') }}"
-                                    x-bind:required="documentType == 'clinical_license' || documentType ==
-                                        'public_liability_insurance' || documentType == 'photographic_id'" />
+                                    x-bind:required="document_type == 'clinical_license' || document_type ==
+                                        'public_liability_insurance' || document_type == 'photographic_id'" />
                                 <div class="relative">
                                     <x-jet-input class="mt-1 block w-[100%]" id="date" name="date"
                                         type="date"
-                                        x-bind:required="['clinical_license', 'public_liability_insurance', 'photographic_id'].includes(documentType)"
+                                        x-bind:required="['clinical_license', 'public_liability_insurance', 'photographic_id'].includes(document_type)"
                                         :value="old('date')" placeholder="Date" />
                                 </div>
                             </div>
