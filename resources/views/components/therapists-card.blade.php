@@ -10,7 +10,7 @@
     <a class="m-2 rounded-lg border-2 border-blue-900 p-2 shadow-md transition-all duration-200 ease-in hover:border-blue-400 hover:shadow-lg"
         href="{{ route('therapist.show', $therapist->id) }}" x-data="{
             isActive: {{ $therapist->active_status !== 1 ? 'true' : 'false' }},
-            isIncomplete: {{ $incompleteTherapist ? 'true' : 'false' }},
+            isIncomplete: {{ $therapist->isComplete()['status'] ? 'false' : 'true' }},
             isAdmin: {{ $user->admin === 1 ? 'true' : 'false' }}
         }"
         :class="{
@@ -29,10 +29,10 @@
                     {{ $therapist->preferred_name ? $therapist->preferred_name : $therapist->name }}
                 </p>
                 <div class="flex flex-row gap-2 text-xs">
-                    @if ($incompleteTherapist)
+                    @if (!$therapist->isComplete()['status'])
                         <p class="text-xs text-red-600">Incomplete</p>
                     @endif
-                    @if ($unverifiedTherapist)
+                    @if (!$therapist->isVerified()['status'])
                         <p class="text-yellow-700">Unverified</p>
                     @endif
                 </div>

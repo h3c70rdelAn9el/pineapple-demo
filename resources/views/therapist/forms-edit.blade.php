@@ -8,7 +8,7 @@
     <div class="my-4 flex flex-col items-center justify-center bg-gray-100">
         <div class="items-center justify-center">
             @if (Str::contains($form->file_name, '.pdf'))
-                <embed class="h-64 w-full rounded-md md:h-[300px] md:w-full"
+                <embed class="h-64 rounded-md md:h-[300px] md:w-full"
                     src="{{ asset('uploads/forms/therapist/' . $form->file_name) }}"
                     type="application/pdf"
                     alt="{{ $form->file_name }}" />
@@ -16,7 +16,7 @@
                     Str::contains($form->file_name, '.png') ||
                     Str::contains($form->file_name, '.jpeg') ||
                     Str::contains($form->file_name, '.JPEG'))
-                <img class="h-64 w-full rounded-md md:h-[300px] md:w-full"
+                <img class="h-64 rounded-md md:h-[300px] md:w-full"
                     src="{{ $form->url() }}"
                     alt="{{ $form->file_name }}" />
             @endif
