@@ -11,6 +11,8 @@
 
         @if ($user)
             @php
+             $incompleteTherapist = false;
+            /*
                 $fieldsToCheck = [
                     'id_uploaded' => $user->id_uploaded ?? null,
                     'W9_or_WBEN_uploaded' => $user->W9_or_WBEN_uploaded ?? null,
@@ -19,7 +21,7 @@
                     'headshot_uploaded' => $user->headshot_uploaded ?? null,
                 ];
 
-                $incompleteTherapist = false;
+
 
                 foreach ($fieldsToCheck as $field) {
                     if (is_null($field) || $field == false) {
@@ -27,6 +29,8 @@
                         break;
                     }
                 }
+                */
+                $incompleteTherapist = !$user->isComplete()['status'];
 
                 $fieldsToCheck = [
                     'contract_signed' => $user->contract_signed ?? null,
@@ -34,13 +38,15 @@
                 ];
 
                 $unverifiedTherapist = false;
-
+                $unverifiedTherapist = !$user->isVerified()['status'];
+                /*
                 foreach ($fieldsToCheck as $field) {
                     if (is_null($field) || $field == false) {
                         $unverifiedTherapist = true;
                         break;
                     }
                 }
+                */
             @endphp
         @endif
 
