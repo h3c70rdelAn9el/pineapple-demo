@@ -199,9 +199,7 @@ class FileUploadController extends Controller
     {
         $user = auth()->user();
 
-        if (!$user->admin) {
-            return redirect('therapist.forms');
-        }
+
 
         $request->validate([
             'document_type' => 'nullable|string',
@@ -211,6 +209,10 @@ class FileUploadController extends Controller
         ]);
 
         $form = FileUpload::findOrFail($id);
+        if ($form->user != $user && !$user->admin) {
+            //return redirect('therapist.forms');
+            return redirect()->route('dashboard');
+        }
 
         $therapist = $form->user;
 
