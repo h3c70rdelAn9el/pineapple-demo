@@ -209,7 +209,7 @@ class FileUploadController extends Controller
         ]);
 
         $form = FileUpload::findOrFail($id);
-        if ($form->user != $user && !$user->admin) {
+        if (($form->user_id != $user->id) || !$user->admin) {
             //return redirect('therapist.forms');
             return redirect()->route('dashboard');
         }
