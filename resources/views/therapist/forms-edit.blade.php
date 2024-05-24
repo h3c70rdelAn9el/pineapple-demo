@@ -58,7 +58,7 @@
     <div class="relative">
         <select
             class="block w-full appearance-none rounded-md border border-blue-400 bg-white px-3 py-2 pr-8 leading-tight text-gray-700 focus:border-gray-500 focus:bg-white focus:outline-none"
-            id="document_type" name="document_type" x-model="document_type" wire:model="document_type">
+            id="document_type" name="document_type" x-model="document_type" wire:model="document_type" required>
             <option value="">Select Document Type</option>
             <option value="photographic_id" {{$form->document_type == 'photographic_id' ? 'selected' : ''}}>Photographic ID</option>
             <option value="W9" {{$form->document_type == 'W9' ? 'selected' : ''}} >W9</option>
