@@ -21,7 +21,7 @@
                 @if (Auth::user()->admin)
                 <div class="flex flex-row">
                     <p class="mr-1">Therapist:</p>
-                    <p>{{ $therapySession->client->user->name }}</p>
+                    <p>{{ $therapySession->user->name }}</p>
                 </div>
                 @endif
             </div>
