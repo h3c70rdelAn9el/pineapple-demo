@@ -245,7 +245,11 @@ $incomplete_reason = rtrim($incomplete_reason, ', ');
     public function isW9Verified()
     {
 
-       return $this->fileUploads()->where('document_type', 'W9')->orWhere('document_type', 'WBEN')->where('verified', 1)->first();
+       $ret =  $this->fileUploads()->where('document_type', 'W9')->where('verified', 1)->first();
+       if(!$ret){
+           $ret = $this->fileUploads()->where('document_type', 'WBEN')->where('verified', 1)->first();
+       }
+         return $ret;
     }
     public function isLicenseVerified()
     {
@@ -268,7 +272,11 @@ $incomplete_reason = rtrim($incomplete_reason, ', ');
     }
     public function isW9Uploaded()
     {
-        return $this->fileUploads()->where('document_type', 'W9')->orWhere('document_type', 'WBEN')->first();
+        $ret =  $this->fileUploads()->where('document_type', 'W9')->first();
+        if(!$ret){
+            $ret = $this->fileUploads()->where('document_type', 'WBEN')->first();
+        }
+        return $ret;
     }
     public function isLicenseUploaded()
     {
