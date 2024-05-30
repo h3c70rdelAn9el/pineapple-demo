@@ -277,27 +277,27 @@ $incomplete_reason = rtrim($incomplete_reason, ', ');
     }
     public function isIdUploaded()
     {
-        return $this->fileUploads()->where('document_type', 'photographic_id')->first();
+        return $this->fileUploads()->where('document_type', 'photographic_id')->whereRaw('date > NOW()')->first();
     }
     public function isW9Uploaded()
     {
-        $ret =  $this->fileUploads()->where('document_type', 'W9')->first();
+        $ret =  $this->fileUploads()->where('document_type', 'W9')->whereRaw('date > NOW()')->first();
         if(!$ret){
-            $ret = $this->fileUploads()->where('document_type', 'WBEN')->first();
+            $ret = $this->fileUploads()->where('document_type', 'WBEN')->whereRaw('date > NOW()')->first();
         }
         return $ret;
     }
     public function isLicenseUploaded()
     {
-        return $this->fileUploads()->where('document_type', 'clinical_license')->first();
+        return $this->fileUploads()->where('document_type', 'clinical_license')->whereRaw('date > NOW()')->first();
     }
     public function isHeadshotUploaded()
     {
-        return $this->fileUploads()->where('document_type', 'headshot')->first();
+        return $this->fileUploads()->where('document_type', 'headshot')->whereRaw('date > NOW()')->first();
     }
     public function isInsuranceUploaded()
     {
-        return $this->fileUploads()->where('document_type', 'public_liability_insurance')->first();
+        return $this->fileUploads()->where('document_type', 'public_liability_insurance')->whereRaw('date > NOW()')->first();
     }
 
 }
