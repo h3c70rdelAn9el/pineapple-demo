@@ -283,7 +283,7 @@ $incomplete_reason = rtrim($incomplete_reason, ', ');
     {
         $ret =  $this->fileUploads()->where('document_type', 'W9')->first();
         if(!$ret){
-            $ret = $this->fileUploads()->where('document_type', 'WB8EN')->first();
+            $ret = $this->fileUploads()->where('document_type', 'W8BEN')->first();
         }
         return $ret;
     }
