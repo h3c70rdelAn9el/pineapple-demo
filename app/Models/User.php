@@ -256,7 +256,7 @@ $incomplete_reason = rtrim($incomplete_reason, ', ');
 
        $ret =  $this->fileUploads()->where('document_type', 'W9')->where('verified', 1)->first();
        if(!$ret){
-           $ret = $this->fileUploads()->where('document_type', 'WBEN')->where('verified', 1)->first();
+           $ret = $this->fileUploads()->where('document_type', 'W8BEN')->where('verified', 1)->first();
        }
          return $ret;
     }
@@ -283,7 +283,7 @@ $incomplete_reason = rtrim($incomplete_reason, ', ');
     {
         $ret =  $this->fileUploads()->where('document_type', 'W9')->first();
         if(!$ret){
-            $ret = $this->fileUploads()->where('document_type', 'WBEN')->first();
+            $ret = $this->fileUploads()->where('document_type', 'WB8EN')->first();
         }
         return $ret;
     }
