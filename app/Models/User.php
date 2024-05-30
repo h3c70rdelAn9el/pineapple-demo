@@ -201,6 +201,10 @@ if(!$this->isHeadshotVerified()){
     $incomplete_reason .= 'Headshot, ';
     $incomplete = true;
 }
+if(!$this->isInsuranceVerified()){
+    $incomplete_reason .= 'Insurance, ';
+    $incomplete = true;
+}
 $incomplete_reason = rtrim($incomplete_reason, ', ');
 
         return ['status' =>!$incomplete, 'reason' => $incomplete_reason];
@@ -228,6 +232,11 @@ $incomplete_reason = rtrim($incomplete_reason, ', ');
         if(!$this->isHeadshotUploaded())
         {
             $incomplete_reason .= 'Headshot, ';
+            $incomplete = true;
+        }
+        if(!$this->isInsuranceUploaded())
+        {
+            $incomplete_reason .= 'Insurance, ';
             $incomplete = true;
         }
         $incomplete_reason = rtrim($incomplete_reason, ', ');
