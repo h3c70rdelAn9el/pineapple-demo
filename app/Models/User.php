@@ -281,9 +281,9 @@ $incomplete_reason = rtrim($incomplete_reason, ', ');
     }
     public function isW9Uploaded()
     {
-        $ret =  $this->fileUploads()->where('document_type', 'W9')->whereRaw('date > NOW()')->first();
+        $ret =  $this->fileUploads()->where('document_type', 'W9')->first();
         if(!$ret){
-            $ret = $this->fileUploads()->where('document_type', 'WBEN')->whereRaw('date > NOW()')->first();
+            $ret = $this->fileUploads()->where('document_type', 'WBEN')->first();
         }
         return $ret;
     }
@@ -293,7 +293,7 @@ $incomplete_reason = rtrim($incomplete_reason, ', ');
     }
     public function isHeadshotUploaded()
     {
-        return $this->fileUploads()->where('document_type', 'headshot')->whereRaw('date > NOW()')->first();
+        return $this->fileUploads()->where('document_type', 'headshot')->first();
     }
     public function isInsuranceUploaded()
     {
