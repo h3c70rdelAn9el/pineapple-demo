@@ -122,7 +122,7 @@ class TherapySessionController extends Controller
                 $ts = new TherapySession();
                 $ts->client_id = $request->client_id;
                 $ts->session_cost = 0;
-                $ts->client_contribution = $request->client_contribution;
+                $ts->client_contribution = $client->client_contribution;
                 $ts->remaining_client_contribution = $client->client_contribution - $ts->session_cost;
                 $ts->created_at = $request->created_at;
                 $ts->user_id = $user->id;
@@ -136,7 +136,7 @@ class TherapySessionController extends Controller
                 $ts = new TherapySession();
                 $ts->client_id = $request->client_id;
                 $ts->session_cost = $therapist_session_cost;
-                $ts->client_contribution = $request->client_contribution;
+                $ts->client_contribution = $client->client_contribution;
                 $ts->remaining_client_contribution = $client->client_contribution - $ts->session_cost;
                 $ts->created_at = $request->created_at;
                 $ts->user_id = $user->id;
