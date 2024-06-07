@@ -15,7 +15,7 @@
         'Session ID' => $therapySession->id,
         'Session Date' => date('F d, Y', strtotime($therapySession->created_at)),
         'Session Cost' => $therapySession->session_cost,
-        'Original Client Contribution' => $client->client_contribution,
+        'Original Client Contribution' => $therapySession->client_contribution,
         'Remaining Client Contribution' => $therapySession->remaining_client_contribution,
         'Session Attendance' => $therapySession->attendance,
     ] as $label => $value)
@@ -42,7 +42,7 @@
     <form action="{{ route('session.destroy', $therapySession) }}" method="POST">
         @csrf
         @method('DELETE')
-        <button type="submit" class="btn btn-danger text-blue-500 hover:text-blue-800" 
+        <button type="submit" class="btn btn-danger text-blue-500 hover:text-blue-800"
             onclick="return confirm('Are you really sure that you want to delete this session?')">Delete</button>
     </form>
     @endif
