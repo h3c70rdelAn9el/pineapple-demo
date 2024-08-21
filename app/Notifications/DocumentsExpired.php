@@ -10,12 +10,15 @@ use Illuminate\Notifications\Notification;
 class DocumentsExpired extends Notification
 {
     use Queueable;
-
+    protected $documents;
     /**
      * Create a new notification instance.
      */
-    public function __construct()
+    public function __construct(String $documents)
     {
+        $this->documents = $documents;
+
+
         //
     }
 
@@ -35,9 +38,11 @@ class DocumentsExpired extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', url('/'))
-                    ->line('Thank you for using our application!');
+            ->line('Please note that we require your up-to-date documents to be updated on the portal. If you can log in and update as soon as possible.')
+            ->line('The following documents have expired:' . $this->documents)
+            ->action('Please log in and upload new documents', url(route('profile.show')))
+            ->line('Please note, should the document not be updated, we may not be able to allocate new clients to you.')
+            ->line('Should you have any queries please contact kellie@pineapplesupport.org');
     }
 
     /**
