@@ -40,11 +40,10 @@ class TherapistsController extends Controller
         if ($therapists) {
             $incompleteTherapists = $therapists->filter(function (User $therapist) {
 
-                    $res = $therapist->isComplete();
-                    $incomplete = !$res['status'];
-                    return $incomplete && !$therapist->isAdmin();
-                });
-
+                $res = $therapist->isComplete();
+                $incomplete = !$res['status'];
+                return $incomplete && !$therapist->isAdmin();
+            });
         } else {
             $incompleteTherapists = collect();
         }
@@ -122,7 +121,7 @@ class TherapistsController extends Controller
                 return !$user->isVerified()['status'];
             })
             ->count();
-/*
+        /*
         $unverifiedTherapistCount = User::where('admin', 0)
         ->where(function ($query) {
             $query->where('contract_signed', false)
@@ -230,6 +229,12 @@ class TherapistsController extends Controller
             $genderString = $selectedGenders;
         }
 
+        if ($user->admin == 1) {
+            $max_session_cost = 500;
+        } else {
+            $max_session_cost = 100;
+        }
+
         // Validate the request data
         $validatedData = $request->validate([
             'title' => 'nullable|string|max:255',
@@ -258,7 +263,7 @@ class TherapistsController extends Controller
             'all_documents' => 'nullable|string|max:255',
             'website' => 'nullable|boolean',
             'quickbooks' => 'nullable|string|max:255',
-            'session_cost' => 'nullable|numeric|max:100',
+            'session_cost' => 'nullable|numeric|max:' . $max_session_cost,
             // 'client_extensions' => 'nullable|boolean',
             'notes' => 'nullable|string|max:255',
             'number_of_potential_clients' => 'nullable|numeric',
