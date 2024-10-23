@@ -6,7 +6,7 @@
     // $states = json_decode($statesJson, true);
     $countriesJson = file_get_contents(resource_path('json/countries.json'));
     $clientCountries = json_decode($countriesJson, true);
-    $sexualOrientations = ['Heterosexual/Straight', 'Gay/Lesbian', 'Bisexual', 'Don\'t Know', 'Prefer Not to Say'];
+    $sexualOrientations = ['Heterosexual/Straight', 'Gay/Lesbian', 'Bisexual', 'Don\\\'t Know', 'Prefer Not to Say'];
     $pronouns = ['He/Him/His', 'She/Her/Hers', 'They/Them/Theirs', 'Per/Per/Pers', 'Ze/Hir/Hirs', 'Prefer Not to Say'];
     $contactMethods = ['Telephone Call', 'Text Message', 'Email'];
     $ethnicGroups = ['American Indian or Alaska Native', 'Asian', 'Black or African American', 'Hispanic or Latino', 'Native Hawaiian or Other Pacific Islander', 'White', 'Prefer Not to Say'];
@@ -41,8 +41,8 @@
             </div>
         @endif
 
-        <h2 class="mt-2 text-center text-lg font-normal">Edit client: {{ $client->preferred_name }}</h2>
-        <div class="mx-auto w-1/2 border-b border-gray-400 bg-gray-400">
+        <h2 class="mt-2 text-lg font-normal text-center">Edit client: {{ $client->preferred_name }}</h2>
+        <div class="w-1/2 mx-auto bg-gray-400 border-b border-gray-400">
         </div>
         <form class="form" action="{{ route('clients.update', $client->id) }}" method="POST" id="client-edit-form"
             @submit.prevent="submitForm">
@@ -53,17 +53,17 @@
 
             <input name="user_id" type="hidden" value="{{ $client->user_id }}">
 
-            <div class="mb-2 mt-4 w-full">
+            <div class="w-full mt-4 mb-2">
                 <x-jet-label for="client_code" value="{{ __('Client Code') }}" />
-                <input class="w-full rounded border border-blue-200 bg-gray-100" id="client_code" name="client_code"
+                <input class="w-full bg-gray-100 border border-blue-200 rounded" id="client_code" name="client_code"
                     type="text" value="{{ old('client_code', $client->client_code) }}"
                     placeholder="{{ old('client_code', $client->client_code) }}" autocomplete="off" />
                 <x-jet-input-error class="mt-2" for="client_code" />
             </div>
 
-            <div class="mb-2 mt-4 w-full">
+            <div class="w-full mt-4 mb-2">
                 <x-jet-label for="preferred_name" value="{{ __('Preferred Name') }}" />
-                <input class="w-full rounded border border-blue-200 bg-gray-100" id="preferred_name"
+                <input class="w-full bg-gray-100 border border-blue-200 rounded" id="preferred_name"
                     name="preferred_name" type="text" value="{{ old('preferred_name', $client->preferred_name) }}"
                     placeholder="{{ old('preferred_name', $client->preferred_name) }}" autocomplete="off" />
                 <x-jet-input-error class="mt-2" for="preferred_name" />
@@ -71,7 +71,7 @@
 
             {{-- max_sessions --}}
             <label for="max_sessions">Maximum Therapy Sessions:</label>
-            <input class="mx-2 w-16 rounded-md border-blue-200 bg-gray-100 p-1 text-center ring-0" id="max_sessions"
+            <input class="w-16 p-1 mx-2 text-center bg-gray-100 border-blue-200 rounded-md ring-0" id="max_sessions"
                 name="max_sessions" type="number" value="{{ $client->max_sessions }}">
 
             <div class="flex flex-row mt-4">
@@ -86,25 +86,25 @@
             </div>
 
             {{-- legal_name --}}
-            <div class="mb-2 mt-4 w-full">
+            <div class="w-full mt-4 mb-2">
                 <x-jet-label for="legal_name" value="{{ __('Legal Name') }}" />
-                <input class="w-full rounded border border-blue-200 bg-gray-100" id="legal_name" name="legal_name"
+                <input class="w-full bg-gray-100 border border-blue-200 rounded" id="legal_name" name="legal_name"
                     type="text" value="{{ old('legal_name', $client->legal_name) }}" {{-- value="{{ $client->legal_name }}" --}}
                     placeholder="{{ old('legal_name', $client->legal_name) }}" autocomplete="off" />
                 <x-jet-input-error class="mt-2" for="legal_name" />
             </div>
 
-            <div class="mb-2 mt-4 w-full">
+            <div class="w-full mt-4 mb-2">
                 <x-jet-label for="email" value="{{ __('Email') }}" />
-                <input class="w-full rounded border border-blue-200 bg-gray-100" id="email" name="email"
+                <input class="w-full bg-gray-100 border border-blue-200 rounded" id="email" name="email"
                     type="text" value="{{ old('email', $client->email) }}"
                     placeholder="{{ old('email', $client->email) }}" autocomplete="off" />
                 <x-jet-input-error class="mt-2" for="email" />
             </div>
 
-            <div class="mb-2 mt-4 w-full">
+            <div class="w-full mt-4 mb-2">
                 <x-jet-label for="phone" value="{{ __('Phone') }}" />
-                <input class="w-full rounded border border-blue-200 bg-gray-100" id="phone" name="phone"
+                <input class="w-full bg-gray-100 border border-blue-200 rounded" id="phone" name="phone"
                     type="text" value="{{ old('phone', $client->phone) }}"
                     placeholder="{{ old('phone', $client->phone) }}" autocomplete="off" />
                 <x-jet-input-error class="mt-2" for="phone" />
@@ -112,7 +112,7 @@
 
 
 
-            <div class="relative mb-4 mt-6 w-full"
+            <div class="relative w-full mt-6 mb-4"
                 x-data='{
                     showContactMethods: false,
                     selectedContactMethods: [],
@@ -132,7 +132,7 @@
                     {{ $client->contact_method }}
                 </x-form_label>
                 <div class="rounded-md" @click.away="showContactMethods = false">
-                    <div class="flex w-full justify-between rounded-md border border-blue-300 bg-gray-100 p-3">
+                    <div class="flex justify-between w-full p-3 bg-gray-100 border border-blue-300 rounded-md">
                         <button class="-m-0.5 flex w-full justify-between text-gray-700" type="button"
                             @click="showContactMethods = !showContactMethods">
                             Select Options:
@@ -147,7 +147,7 @@
                             </svg>
                         </button>
                     </div>
-                    <div class="-mt-1 w-full rounded-b-md rounded-t-none border-b border-l border-r border-blue-300 bg-gray-100 pt-1 text-gray-600 md:flex md:flex-wrap"
+                    <div class="w-full pt-1 -mt-1 text-gray-600 bg-gray-100 border-b border-l border-r border-blue-300 rounded-t-none rounded-b-md md:flex md:flex-wrap"
                         x-show="showContactMethods" x-transition.scale.origin.top x-transition.duration.300ms
                         x-transition.ease-in-out x-cloak>
                         @foreach ($contactMethods as $method)
@@ -165,10 +165,10 @@
 
 
 
-            <div class="my-4 rounded-lg border-2 border-blue-300 bg-blue-100 p-2">
+            <div class="p-2 my-4 bg-blue-100 border-2 border-blue-300 rounded-lg">
                 <p>Optional Fields</p>
 
-                <div class="relative mb-4 mt-6 w-full"
+                <div class="relative w-full mt-6 mb-4"
                     x-data='{
                         showGender: false,
                         selectedOptions: [],
@@ -200,7 +200,7 @@
                         Gender(s): (previous selection: {{ $client->gender }})
                     </x-form_label>
                     <div class="rounded-md" @click.away="showGender = false">
-                        <div class="flex w-full justify-between rounded-md border border-blue-300 bg-gray-100 p-3">
+                        <div class="flex justify-between w-full p-3 bg-gray-100 border border-blue-300 rounded-md">
                             <button class="-m-0.5 flex w-full justify-between text-gray-700" type="button"
                                 @click="showGender = !showGender">
                                 <span class="ml-0"
@@ -212,12 +212,12 @@
                                 </svg>
                             </button>
                         </div>
-                        <div class="-mt-1 w-full rounded-b-md rounded-t-none border-b border-l border-r border-blue-300 bg-gray-100 pt-1 text-gray-600 md:flex md:flex-wrap"
+                        <div class="w-full pt-1 -mt-1 text-gray-600 bg-gray-100 border-b border-l border-r border-blue-300 rounded-t-none rounded-b-md md:flex md:flex-wrap"
                             x-show="showGender" x-transition.scale.origin.top x-transition.duration.300ms
                             x-transition.ease-in-out x-cloak>
 
                             @foreach ($genders as $gender)
-                                <div class="m-3 flex flex-row">
+                                <div class="flex flex-row m-3">
                                     <input
                                         class="mr-0.5 mt-1 rounded-full transition duration-200 ease-in-out hover:bg-blue-500"
                                         name="gender[]" type="checkbox" value="{{ $gender }}"
@@ -236,7 +236,7 @@
                                 <label class="ml-2" for="otherGender">Other</label>
                             </div>
 
-                            <div class="m-3 flex flex-row">
+                            <div class="flex flex-row m-3">
                                 <input
                                     class="mr-0.5 mt-1 rounded-full transition duration-200 ease-in-out hover:bg-blue-500"
                                     id="otherGenderInput" name="gender[]" type="text" style="display: none;"
@@ -247,7 +247,7 @@
                 </div>
 
                 <div class="col-span-6 mt-0 sm:col-span-4">
-                    <div class="my-4 flex flex-col"
+                    <div class="flex flex-col my-4"
                         x-data='
                         {
                             openPronouns: false,
@@ -293,7 +293,7 @@
                             @endforeach
 
 
-                            <div class="m-3 flex flex-row" x-data="{ otherPronoun: '', showOtherPronounInput: false }">
+                            <div class="flex flex-row m-3" x-data="{ otherPronoun: '', showOtherPronounInput: false }">
 
                                 <input
                                     class="mr-0.5 mt-1 rounded-full transition duration-200 ease-in-out hover:bg-blue-500"
@@ -316,7 +316,7 @@
 
 
 
-                <div class="relative mb-4 mt-6 w-full"
+                <div class="relative w-full mt-6 mb-4"
                     x-data='{
                         showSexualOrientation: false,
                         selectedSexualOrientation: [],
@@ -349,7 +349,7 @@
                         {{ str_replace(['[', ']', '"', '\\'], '', $client->sexual_orientation) }})
                     </x-form_label>
                     <div class="rounded-md" @click.away="showSexualOrientation = false">
-                        <div class="flex w-full justify-between rounded-md border border-blue-300 bg-gray-100 p-3">
+                        <div class="flex justify-between w-full p-3 bg-gray-100 border border-blue-300 rounded-md">
                             <button class="-m-0.5 flex w-full justify-between text-gray-700" type="button"
                                 @click="showSexualOrientation = !showSexualOrientation">
                                 <span class="ml-0"
@@ -361,11 +361,11 @@
                                 </svg>
                             </button>
                         </div>
-                        <div class="-mt-1 w-full rounded-b-md rounded-t-none border-b border-l border-r border-blue-300 bg-gray-100 pt-1 text-gray-600 md:flex md:flex-wrap"
+                        <div class="w-full pt-1 -mt-1 text-gray-600 bg-gray-100 border-b border-l border-r border-blue-300 rounded-t-none rounded-b-md md:flex md:flex-wrap"
                             x-show="showSexualOrientation" x-transition.scale.origin.top x-transition.duration.300ms
                             x-transition.ease-in-out x-cloak>
                             @foreach ($sexualOrientations as $orientation)
-                                <div class="m-3 flex flex-row">
+                                <div class="flex flex-row m-3">
                                     <input
                                         class="mr-0.5 mt-1 rounded-full transition duration-200 ease-in-out hover:bg-blue-500"
                                         id="{{ $orientation }}" name="sexual_orientation[]" type="checkbox"
@@ -387,7 +387,7 @@
                                     :checked="selectedSexualOrientation.includes('Other')">
                                 <label class="ml-2" for="otherSexualOrientationCheckbox">Other</label>
 
-                                <div class="m-3 flex flex-row">
+                                <div class="flex flex-row m-3">
                                     <input
                                         class="mr-0.5 mt-1 rounded-full transition duration-200 ease-in-out hover:bg-blue-500"
                                         id="otherSexualOrientationInput" name="sexual_orientation[]" type="text"
@@ -401,7 +401,7 @@
 
 
 
-                <div class="my-4 flex flex-col" x-data="{ openEthnicGroup: false, selectedEthnicGroups: [] }">
+                <div class="flex flex-col my-4" x-data="{ openEthnicGroup: false, selectedEthnicGroups: [] }">
                     <x-form_label>
                         Ethnic Group(s): (previous selection:
                         {{ str_replace(['[', ']', '"'], '', $client->ethnic_group) }})
@@ -441,7 +441,7 @@
                                 <label class="ml-2" for="otherEthnicGroup">Other</label>
                             </div>
 
-                            <div class="m-3 flex flex-row">
+                            <div class="flex flex-row m-3">
                                 <input
                                     class="mr-0.5 mt-1 rounded-full transition duration-200 ease-in-out hover:bg-blue-500"
                                     id="otherEthnicGroupInput" name="ethnic_group[]" type="text"
@@ -453,11 +453,11 @@
                     </div>
                 </div>
 
-                <div class="relative mb-4 mt-6 w-full">
+                <div class="relative w-full mt-6 mb-4">
                     <x-form_label for="home_address_state">
                         State: (previous selection: {{ $client->home_address_state }})
                     </x-form_label>
-                    <select class="peer mt-2 w-full rounded-md border-blue-200 bg-gray-100 p-2 ring-0"
+                    <select class="w-full p-2 mt-2 bg-gray-100 border-blue-200 rounded-md peer ring-0"
                         id="home_address_state" name="home_address_state">
                         <option value="" disabled selected hidden>Previous: {{ $client->home_address_state }}
                         </option>
@@ -469,11 +469,11 @@
                     </select>
                 </div>
 
-                <div class="relative mb-4 mt-6 w-full">
+                <div class="relative w-full mt-6 mb-4">
                     <x-form_label for="home_address_country">
                         Country: (previous selection: {{ $client->home_address_country }})
                     </x-form_label>
-                    <select class="peer mt-2 w-full rounded-md border-blue-200 bg-gray-100 p-2 ring-0" id=""
+                    <select class="w-full p-2 mt-2 bg-gray-100 border-blue-200 rounded-md peer ring-0" id=""
                         name="home_address_country">
                         <option value="" disabled selected hidden>Previous: {{ $client->home_address_country }}
                         </option>
@@ -494,7 +494,7 @@
                     wire:model.defer="state.previous_therapy" autocomplete="off" />
                 <x-jet-input-error class="mt-2" for="previous_therapy" />
             </div> --}}
-            <div class="mb-2 mt-4 w-full">
+            <div class="w-full mt-4 mb-2">
                 <x-form_label for="previous_therapy">
                     Previous Therapy
                 </x-form_label>
@@ -514,16 +514,16 @@
 
             {{-- Possible Support Needed --}}
             <div class="col-span-6 mt-0 sm:col-span-4">
-                <div class="relative mb-4 mt-6 w-full" x-data="{ showDropdown: false, selectedPossibleSupportNeeded: [] }">
+                <div class="relative w-full mt-6 mb-4" x-data="{ showDropdown: false, selectedPossibleSupportNeeded: [] }">
                     <x-form_label>
                         Possible Support Needed: (previous selection:
                         {{ str_replace(['[', ']', '"', '\\'], '', $client->possible_support_needed) }})
                     </x-form_label>
                     <div class="rounded-md" @click.away="showDropdown = false">
                         <div class="flex w-full justify-between rounded-md border border-blue-300 bg-gray-100 p-1.5">
-                            <button class="flex w-full flex-row justify-between" type="button"
+                            <button class="flex flex-row justify-between w-full" type="button"
                                 @click="showDropdown = !showDropdown">
-                                <p class="ml-1 p-1">Select Options</p>
+                                <p class="p-1 ml-1">Select Options</p>
                                 <svg class="mt-1 h-[18px] w-[18px] text-gray-700" fill="none"
                                     stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -533,7 +533,7 @@
                         </div>
                         <div class="rounded-md bg-gray-50 md:flex md:flex-wrap" x-show="showDropdown"
                             x-transition.scale.origin.top x-cloak>
-                            <div class="items-center p-2 flex flex-wrap">
+                            <div class="flex flex-wrap items-center p-2">
                                 @foreach ($categories as $category)
                                     <div class="m-2 mr-0.5 mt-1 rounded-full p-2">
                                         <input
@@ -555,7 +555,7 @@
                                     <label class="mb-0.5 ml-0.5" for="otherPossibleSupport">Other</label>
                                 </div>
 
-                                <div class="m-3 flex flex-row">
+                                <div class="flex flex-row m-3">
                                     <input class="mr-0.5 mt-1 rounded-full " id="otherPossibleSupportInput"
                                         name="otherPossibleSupport" type="text" style="display: none;">
                                 </div>
@@ -569,7 +569,7 @@
             <div class="col-span-6 mt-0 sm:col-span-4">
                 <x-jet-label for="client_contribution" class="w-full"
                     value="Client Contribution:  previous: {{ $client->client_contribution }}" />
-                <x-jet-input class="rounded-md w-full mt-2 bg-gray-100" id="client_contribution" type="number"
+                <x-jet-input class="w-full mt-2 bg-gray-100 rounded-md" id="client_contribution" type="number"
                     value="{{ $client->client_contribution }}" name="client_contribution" min="0"
                     step="1.00" autocomplete="off" />
                 <x-jet-input-error class="mt-2" for="client_contribution" />
@@ -577,7 +577,7 @@
 
             <div class="col-span-6 mt-4 sm:col-span-4">
                 <x-jet-label for="therapist" value="Therapist:  previous: {{ $therapist->name }}" />
-                <select class="peer mt-2 w-full rounded-md border-blue-200 bg-gray-100 p-2 capitalize ring-0"
+                <select class="w-full p-2 mt-2 capitalize bg-gray-100 border-blue-200 rounded-md peer ring-0"
                     id="user_id" name="user_id">
                     <option value="" disabled selected hidden>Previous: {{ $therapist->name }}</option>
                     <option value="no_therapist">No Therapist Assigned</option>
@@ -614,7 +614,7 @@
             </div>
 
             {{-- Status --}}
-            <div class="mb-2 mt-4 w-full">
+            <div class="w-full mt-4 mb-2">
                 <x-form_label for="status">
                     Status
                 </x-form_label>
@@ -650,9 +650,9 @@
                 <x-jet-input-error for="waitlist" class="mt-2" />
             </div>
 
-            <div class="mb-2 mt-4 w-full">
+            <div class="w-full mt-4 mb-2">
                 <x-jet-label for="notes" value="{{ __('Notes') }}" />
-                <textarea class="w-full rounded border border-blue-200 bg-gray-100" id="notes" cols="30" width: 100%;"
+                <textarea class="w-full bg-gray-100 border border-blue-200 rounded" id="notes" cols="30" width: 100%;"
                     placeholder="Enter notes here..." autocomplete="off" name="additional_notes" rows="5"
                     value="{{ old('notes', $client->notes) }}">{{ $client->additional_notes }}</textarea>
                 <x-jet-input-error class="mt-2" for="notes" />
@@ -669,23 +669,23 @@
                 </x-jet-button>
             </div>
 
-            <div class="fixed z-10 inset-0 overflow-y-auto" x-show="open" x-cloak>
-                <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <div class="fixed inset-0 z-10 overflow-y-auto" x-show="open" x-cloak>
+                <div class="flex items-end justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
                     <div class="fixed inset-0 transition-opacity" aria-hidden="true" @click="open = false">
                         <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
                     </div>
 
                     <div
-                        class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-                        <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                        class="inline-block overflow-hidden text-left align-bottom transition-all transform bg-white rounded-lg shadow-xl sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                        <div class="px-4 pt-5 pb-4 bg-white sm:p-6 sm:pb-4">
                             <div class="sm:flex sm:items-start">
                                 <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-                                    <div class="flex flex-row justify-between items-center">
-                                        <h3 class="text-lg leading-6 font-medium text-gray-900">
+                                    <div class="flex flex-row items-center justify-between">
+                                        <h3 class="text-lg font-medium leading-6 text-gray-900">
                                             Are you sure?
                                         </h3>
                                         <button type="button"
-                                            class="mt-3  inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm w-fit"
+                                            class="inline-flex justify-center px-4 py-2 mt-3 text-base font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm w-fit"
                                             @click="open = false">
                                             Cancel
                                         </button>
@@ -699,7 +699,7 @@
                             </div>
                         </div>
                         <form action="{{ route('clients.delete', $client->id) }}" method="POST"
-                            class="mx-auto w-1/2 flex my-4">
+                            class="flex w-1/2 mx-auto my-4">
                             @csrf
                             @method('DELETE')
                             <x-jet-button class="mx-auto bg-red-500 hover:bg-red-700" type="submit">
@@ -713,7 +713,17 @@
         </div>
     </x-main-container>
 </x-app-layout>
-
+<!-- Select2 JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#user_id').select2({
+            placeholder: "Select a therapist",
+            allowClear: true
+        });
+    });
+</script>
 <script src="{{ asset('js/intlTelInput.js') }}"></script>
 <script src="{{ asset('js/utils.js') }}"></script>
 
