@@ -38,27 +38,23 @@
                                 Waitlist
                             </th>
                             <th scope="col" class="th-table-header text-sm font-bold">
-                                Action
+                                Created At
                             </th>
                         </tr>
                     </thead>
                     {{-- <tbody> --}}
 
                     @foreach ($clients as $client)
-                        <tr
+                        <tr onclick="window.location='{{ route('clients.show', $client->id) }}'"
                             class="{{ $client->status == 1
                                 ? 'bg-orange-300'
                                 : ($client->waitlist == 1
                                     ? 'bg-blue-300'
                                     : ($client->special_sessions > 0
                                         ? 'bg-purple-300'
-                                        : 'bg-green-300')) }} border-b-4">
+                                        : 'bg-green-300')) }} border border-transparent hover:rounded hover:border-blue-500 hover:border cursor-pointer">
                             <td class="td-table-data">
-                                <a href="{{ route('clients.show', $client->id) }}"
-                                    class="text-blue-600 hover:text-blue-800">
-
-                                    {{ $client->client_code }}
-                                </a>
+                                {{ $client->client_code }}
                             </td>
                             <td class="td-table-data">
                                 {{ $client && $client->user && $client->user->preferred_name ? $client->user->preferred_name : ($client && $client->user ? $client->user->name : '') }}
@@ -93,8 +89,7 @@
                                 {{ $client->waitlist == 1 ? 'Yes' : 'No' }}
                             </td>
                             <td class="td-table-data">
-                                <a href="{{ route('clients.show', $client->id) }}"
-                                    class="text-indigo-600 hover:text-indigo-900">View</a>
+                                {{ $client->created_at ? $client->created_at->format('d/m/Y') : 'Created At needed' }}
                             </td>
                         </tr>
                     @endforeach
