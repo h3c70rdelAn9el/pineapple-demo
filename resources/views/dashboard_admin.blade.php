@@ -1,6 +1,6 @@
 <x-app-layout>
     @if (session('error'))
-        <div class="m-4 mx-auto w-1/2 rounded-md bg-red-500 p-4 text-center text-white shadow-sm">
+        <div class="w-1/2 p-4 m-4 mx-auto text-center text-white bg-red-500 rounded-md shadow-sm">
             {{ session('error') }}
         </div>
     @endif
@@ -9,8 +9,8 @@
         <x-success-message></x-success-message>
     @endif
 
-    <div class="ml-7 mt-2 w-fit">
-        <table class="ml-4 w-full">
+    <div class="mt-2 ml-7 w-fit">
+        <table class="w-full ml-4">
             <tbody class="text-sm">
                 <tr>
                     <td>Total Sessions' Cost:</td>
@@ -37,7 +37,7 @@
 
     @if ($unreadMessagesCount > 0)
         <div
-            class="mx-auto ml-14 mt-2 flex w-52 max-w-6xl flex-row items-center justify-center rounded-md border border-blue-400 bg-blue-200 px-4 py-1 font-medium transition duration-200 hover:bg-blue-500">
+            class="flex flex-row items-center justify-center max-w-6xl px-4 py-1 mx-auto mt-2 font-medium transition duration-200 bg-blue-200 border border-blue-400 rounded-md ml-14 w-52 hover:bg-blue-500">
             <a href="/messages">
                 <p class="text-center">Unread Messages:<span class="ml-2 font-bold">
                         {{ $unreadMessagesCount }}</span>
@@ -46,25 +46,25 @@
         </div>
     @endif
 
-    <div class="relative mx-auto mt-3 grid h-full w-full max-w-6xl grid-cols-1 gap-3 rounded-md p-4 md:grid-cols-2">
+    <div class="relative grid w-full h-full max-w-6xl grid-cols-1 gap-3 p-4 mx-auto mt-3 rounded-md md:grid-cols-2">
         <section class="col-span-1">
             <x-container-content>
                 <div class="w-full">
                     <x-slot name="title">
-                        <div class="flex w-full flex-col text-base lg:w-1/2">
+                        <div class="flex flex-col w-full text-base lg:w-1/2">
                             <div class="flex items-center justify-between font-bold">
                                 <a href="{{ route('therapists.index') }}" class=""><button
-                                        class="mb-1 rounded-md border-2 border-blue-300 px-2 py-1 transition duration-300 ease-in-out hover:bg-blue-400">Therapists:</button></a>
+                                        class="px-2 py-1 mb-1 transition duration-300 ease-in-out border-2 border-blue-300 rounded-md hover:bg-blue-400">Therapists:</button></a>
                                 <p>{{ $therapists->total() }}</p>
                             </div>
                             <div class="flex justify-between text-blue-600">
                                 <p>Active:</p>
                                 <p>{{ $activeTherapists->count() }}</p>
                             </div>
-                            {{-- <div class="flex justify-between text-slate-500">
+                            <div class="flex justify-between text-slate-500">
                                 <p>Inactive:</p>
                                 <p class="">{{ $inactiveTherapists->count() }}</p>
-                            </div> --}}
+                            </div>
                              <div class="flex justify-between text-red-600">
                                 <p>Unverified Profiles:</p>
                                 <p>{{ $unverifiedTherapistCount }}</p>
@@ -78,11 +78,11 @@
                     <x-slot name="count">
                     </x-slot>
                     <x-slot name="content">
-                        <div class="h-60 w-full">
+                        <div class="w-full h-60">
                             <div>
                                 {{ $therapists->links() }}
                             </div>
-                            <div class="h-96 overflow-y-scroll">
+                            <div class="overflow-y-scroll h-96">
                                 @foreach ($therapists as $therapist)
                                     <x-therapists-card :therapist="$therapist" :incompleteTherapist="!$therapist->id_uploaded ||
                                         !$therapist->W9_or_WBEN_uploaded ||
@@ -109,11 +109,11 @@
             <x-container-content>
                 <div class="w-full">
                     <x-slot name="title">
-                        <div class="flex w-full flex-col text-base lg:w-1/2">
+                        <div class="flex flex-col w-full text-base lg:w-1/2">
                             <div class="flex items-center justify-between font-bold">
                                 <a href="{{ route('session.index') }}" class="">
                                     <button
-                                        class="mb-1 rounded-md border-2 border-blue-300 px-2 py-1 transition duration-300 ease-in-out hover:bg-blue-400">Therapy
+                                        class="px-2 py-1 mb-1 transition duration-300 ease-in-out border-2 border-blue-300 rounded-md hover:bg-blue-400">Therapy
                                         Sessions:
                                     </button>
                                 </a>
@@ -132,9 +132,9 @@
                     <x-slot name="count">
                     </x-slot>
                     <x-slot name="content">
-                        <div class="h-60 w-full">
+                        <div class="w-full h-60">
                             <p>Latest 10 Sessions:</p>
-                            <div class="h-96 overflow-y-auto">
+                            <div class="overflow-y-auto h-96">
                                 @foreach ($allTherapySessions->take(10) as $ts)
                                     <x-session-card :therapySession="$ts">
                                     </x-session-card>
@@ -151,10 +151,10 @@
             {{-- TODO: only display the latest 10 clients that have had  with the latest therapy sessions --}}
             <x-container-content>
                 <x-slot name="title">
-                    <div class="mt-4 flex w-1/3 flex-col text-base">
+                    <div class="flex flex-col w-1/3 mt-4 text-base">
                         <div class="flex justify-between font-bold">
                             <button
-                                class="mb-1 rounded-md border-2 border-blue-300 px-2 py-1 transition duration-300 ease-in-out hover:bg-blue-400">
+                                class="px-2 py-1 mb-1 transition duration-300 ease-in-out border-2 border-blue-300 rounded-md hover:bg-blue-400">
                                 <a href="{{ route('clients.index') }}">
                                     <p>Clients</p>
                                 </a>
@@ -164,7 +164,7 @@
 
                 </x-slot>
                 <x-slot name="count">
-                    <button class="button-secondary mt-4">
+                    <button class="mt-4 button-secondary">
                         <a class="text-sm" href="{{ route('clients.create') }}">
                             Add Client
                         </a>

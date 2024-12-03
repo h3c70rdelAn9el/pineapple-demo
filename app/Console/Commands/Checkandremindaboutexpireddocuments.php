@@ -59,7 +59,7 @@ class Checkandremindaboutexpireddocuments extends Command
         }
         foreach ($userswithexpireddocuments as $userid => $documents) {
             $user = User::find($userid);
-            //$user->notify(new DocumentsExpired(rtrim($documents)));
+            $user->notify(new DocumentsExpired(rtrim($documents)));
             print("User " . $user->name . " has expired documents: " . rtrim($documents) . "\n");
         }
     }
