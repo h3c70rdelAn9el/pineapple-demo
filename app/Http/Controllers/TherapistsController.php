@@ -84,7 +84,8 @@ class TherapistsController extends Controller
             ->orderBy(DB::raw('COALESCE(preferred_name, name)'))
             ->first();
 
-        $inactiveTherapistsCount = $inactiveTherapists->count();
+        $inactiveTherapistsCount = User::where('admin', 0)
+            ->where('active_status', 1)->count();
 
 
         $unverifiedTherapist = false;
