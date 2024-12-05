@@ -30,7 +30,7 @@ class Checkandremindaboutexpireddocuments extends Command
     {
         //go through each user, check for expired documents and send email reminders
         $userswithexpireddocuments = [];
-        $users = User::all();
+        $users = User::where('active_status', 1)->get();
         foreach ($users as $user) {
             $cl = $user->fileUploads()->where('document_type', 'clinical_license')->orderby('date', 'desc')->first();
             if ($cl && $cl->date < now()) {

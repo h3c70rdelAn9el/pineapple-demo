@@ -48,7 +48,7 @@ class TherapistsController extends Controller
             $incompleteTherapists = collect();
         }
 
-        $incompleteTherapistsCount = $incompleteTherapists->count();
+        //$incompleteTherapistsCount = $incompleteTherapists->count();
         $incompleteTherapistsCount = User::where('admin', 0)->get()
             ->filter(function ($user) {
                 return !$user->isComplete()['status'];
