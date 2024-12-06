@@ -59,7 +59,9 @@ class Checkandremindaboutexpireddocuments extends Command
             }
                 */
             $w9 = $user->isW9Uploaded();
-            $userswithexpireddocuments[$user->id] = 'W9 or W8BEN, ';
+            if ($w9) {
+                $userswithexpireddocuments[$user->id] = 'W9 or W8BEN, ';
+            }
         }
         foreach ($userswithexpireddocuments as $userid => $documents) {
             $user = User::find($userid);
