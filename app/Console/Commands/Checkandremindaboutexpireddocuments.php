@@ -30,7 +30,7 @@ class Checkandremindaboutexpireddocuments extends Command
     {
         //go through each user, check for expired documents and send email reminders
         $userswithexpireddocuments = [];
-        $users = User::where('active_status', 1)->get();
+        $users = User::where('active_status', 0)->get();
         foreach ($users as $user) {
             $cl = $user->fileUploads()->where('document_type', 'clinical_license')->orderby('date', 'desc')->first();
             if ($cl && $cl->date < now()) {
@@ -44,6 +44,7 @@ class Checkandremindaboutexpireddocuments extends Command
                 //print "User " . $user->name . " has an expired photographic id that expired on " . $photographic_id->date . "\n";
                 $userswithexpireddocuments[$user->id] = 'photographic id, ';
             }
+            /*
             $w9 = $user->fileUploads()->where('document_type', 'W9')->orderby('date', 'desc')->first();
             if ($w9 && $w9->date < now()) {
                 //$user->notify(new DocumentsExpired());
@@ -55,6 +56,11 @@ class Checkandremindaboutexpireddocuments extends Command
                 //$user->notify(new DocumentsExpired());
                 //print "User " . $user->name . " has an expired W8BEN that expired on " . $w8ben->date . "\n";
                 $userswithexpireddocuments[$user->id] = 'W8BEN, ';
+            }
+                */
+            $w9 = $user->isW9Uploaded();
+            if ($w9) {
+                $userswithexpireddocuments[$user->id] = 'W9 or W8BEN, ';
             }
         }
         foreach ($userswithexpireddocuments as $userid => $documents) {
