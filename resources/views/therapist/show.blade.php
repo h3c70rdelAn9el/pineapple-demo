@@ -1,16 +1,16 @@
 <x-app-layout>
 
 
-        <div class="ml-7 mt-2 w-fit ">
+        <div class="mt-2 ml-7 w-fit ">
             <table class="w-full ml-4">
                 <tbody class="text-sm">
                     <tr>
                         <td>Total Sessions' Cost:</td>
-                        <td><span class="font-bold ml-4">{{ $totalSessionCost }}</span></td>
+                        <td><span class="ml-4 font-bold">{{ $totalSessionCost }}</span></td>
                     </tr>
                     <tr>
                         <td>Total Clients' Contribution:</td>
-                        <td><span class="font-bold ml-4 text-blue-500">{{ $totalClientContribution }}</span></td>
+                        <td><span class="ml-4 font-bold text-blue-500">{{ $totalClientContribution }}</span></td>
                     </tr>
 
                     <tr>
@@ -45,18 +45,18 @@
             </table>
         </div>
 
-        <div class="mx-auto mt-3 flex h-full w-full max-w-6xl flex-col rounded-md p-4 md:flex-row">
+        <div class="flex flex-col w-full h-full max-w-6xl p-4 mx-auto mt-3 rounded-md md:flex-row">
             {{-- left/top --}}
             <x-container-content :user="$user">\
                 <x-slot name="title">
-                    <div class="flex w-full flex-row items-center justify-between">
+                    <div class="flex flex-row items-center justify-between w-full">
                         <div class="flex flex-col text-left">
                             <p>{{ $therapist->name }}</p>
                             <p class="text-sm">{{ $therapist->gender }}</p>
                         </div>
                         @if (auth()->user()->admin == 1)
                             <div class="flex flex-row justify-end">
-                                <a class="button mt-1"
+                                <a class="mt-1 button"
                                     href="{{ route('therapist.edit', $therapist->id) }}">Edit</a>
                             </div>
                         @endif
@@ -94,17 +94,26 @@
                                 'notes' => $therapist->notes ?: 'Notes needed',
                             ] as $label => $value)
                             <div class="flex flex-row">
-                                <div class="w-1/2 border-b border-r border-gray-400 p-2">{{ $label }}:</div>
-                                <div class="w-1/2 border-b border-gray-400 p-2">{{ $value }}</div>
+                                <div class="w-1/2 p-2 border-b border-r border-gray-400">{{ $label }}:</div>
+                                <div class="w-1/2 p-2 border-b border-gray-400">{{ $value }}</div>
                             </div>
                         @endforeach
 
-                        <div class="mt-5 flex flex-wrap">
+                        <div class="flex flex-wrap mt-5">
                             <div class="relative">
                                 <a class="text-blue-500 hover:text-blue-800"
                                     href="{{ route('therapist.forms', $therapist) }}">View Forms</a>
                             </div>
                         </div>
+                        @if (auth()->user()->admin == 1)
+                        <div class="flex flex-row justify-end">
+                            <form action="{{ route('therapist.destroy', $therapist->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this therapist?');">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="bg-red-600 btn btn-danger">Delete Therapist</button>
+                            </form>
+                        </div>
+                    @endif
                     </div>
                 </x-slot>
             </x-container-content>

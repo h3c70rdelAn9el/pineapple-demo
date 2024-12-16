@@ -296,4 +296,19 @@ class TherapistsController extends Controller
 
         return redirect()->back()->with('success', 'Profile updated!');
     }
+
+    public function destroy($id)
+    {
+        $user = auth()->user();
+        if ($user && $user->admin == 1) {
+            $therapist = User::find($id);
+            if ($therapist) {
+                $therapist->delete();
+                return redirect()->route('therapists.index')->with('success', 'Therapist deleted successfully.');
+            }
+            return redirect()->route('therapists.index')->with('error', 'Therapist not found.');
+        } else {
+            return redirect()->route('dashboard')->with('error', 'You are not authorized to delete this therapist');
+        }
+    }
 }

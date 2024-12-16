@@ -95,6 +95,7 @@ Route::middleware([
         return response()->view('errors.503', [], 503);
     });
 
+    Route::delete('/therapist/{id}', [TherapistsController::class, 'destroy'])->name('therapist.destroy');
 });
 
 Route::middleware([
