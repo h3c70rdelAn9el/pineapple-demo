@@ -10,6 +10,7 @@
         'Preferred Name' => $client->preferred_name ?: 'Preferred Name needed',
         'Legal Name' => $client->legal_name ?: 'Legal Name needed',
         'Status' => $client->status === 1 ? 'Inactive' : 'Active',
+        'Created At' => $client->created_at ? $client->created_at->format('d/m/Y') : 'Created At needed',
         'Special Sessions' => $client->special_sessions > 0 ? 'Yes' : 'No' ,
         'Therapist' => $client->user ? $client->user->name : '',
         'Max Sessions' => $client->max_sessions ?: 'Max Sessions needed',

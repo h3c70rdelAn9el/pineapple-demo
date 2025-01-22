@@ -48,7 +48,7 @@ class TherapistsController extends Controller
             $incompleteTherapists = collect();
         }
 
-        $incompleteTherapistsCount = $incompleteTherapists->count();
+        //$incompleteTherapistsCount = $incompleteTherapists->count();
         $incompleteTherapistsCount = User::where('admin', 0)->get()
             ->filter(function ($user) {
                 return !$user->isComplete()['status'];
@@ -84,7 +84,8 @@ class TherapistsController extends Controller
             ->orderBy(DB::raw('COALESCE(preferred_name, name)'))
             ->first();
 
-        $inactiveTherapistsCount = $inactiveTherapists->count();
+        $inactiveTherapistsCount = User::where('admin', 0)
+            ->where('active_status', 1)->count();
 
 
         $unverifiedTherapist = false;
@@ -294,5 +295,20 @@ class TherapistsController extends Controller
         $user->update($validatedData);
 
         return redirect()->back()->with('success', 'Profile updated!');
+    }
+
+    public function destroy($id)
+    {
+        $user = auth()->user();
+        if ($user && $user->admin == 1) {
+            $therapist = User::find($id);
+            if ($therapist) {
+                $therapist->delete();
+                return redirect()->route('therapists.index')->with('success', 'Therapist deleted successfully.');
+            }
+            return redirect()->route('therapists.index')->with('error', 'Therapist not found.');
+        } else {
+            return redirect()->route('dashboard')->with('error', 'You are not authorized to delete this therapist');
+        }
     }
 }

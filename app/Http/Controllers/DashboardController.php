@@ -11,6 +11,7 @@ use Symfony\Component\Mime\Message;
 use App\Http\Controllers\Controller;
 use Illuminate\Pagination\LengthAwarePaginator;
 use App\Models\ChMessage as ChatMessage;
+
 class DashboardController extends Controller
 {
     //
@@ -18,15 +19,15 @@ class DashboardController extends Controller
     {
         $user = auth()->user();
         $user_id = $user->id;
-        $clients = User::find($user_id)->clients()->orderBy('client_code', 'asc')->paginate(15, ['*'], 'clients');
+        $clients = User::find($user_id)->clients()->orderBy('client_code', 'asc')->paginate(20, ['*'], 'clients');
         $totalClientCount = Client::count();
         $totalSessionCost = TherapySession::sum('session_cost');
         $totalClientContribution = Client::sum('client_contribution');
         $client = Client::find($user_id);
-        $allClients = Client::orderBy('client_code', 'asc')->paginate(10, ['*'], 'clients');
+        $allClients = Client::orderBy('client_code', 'asc')->paginate(20, ['*'], 'clients');
         $activeClients = Client::where('status', '0')->get()->sortBy('client_code');
         $inactiveClients = Client::where('status', '1')->get()->sortBy('client_code');
-        $therapistClients = User::find($user_id)->clients()->orderBy('client_code')->paginate(10, ['*'], 'therapistClients');
+        $therapistClients = User::find($user_id)->clients()->orderBy('client_code')->paginate(20, ['*'], 'therapistClients');
         $inactiveTherapistClientsCount = User::find($user_id)->clients()->where('status', '1')->count();
         $recentClientWithSessions = TherapySession::orderBy('created_at', 'desc')->take(10)->with('client')->get()->pluck('client')->unique('id');
         $latestActiveClient = Client::where('status', '0')->orderBy('created_at', 'desc')->first();
@@ -117,7 +118,7 @@ class DashboardController extends Controller
                 }
             }
         }
-/*
+        /*
  $unverifiedTherapistCount= User::where('admin', 0)
             ->where(function ($query) {
                 $query->where('contract_signed', false)
@@ -130,7 +131,7 @@ class DashboardController extends Controller
                 return !$user->isVerified()['status'];
             })
             ->count();
-/*
+        /*
         $incompleteTherapistsCount = User::where('admin', 0)
             ->where(function ($query) {
                 $query->where('id_uploaded', false)
@@ -141,7 +142,7 @@ class DashboardController extends Controller
             })
             ->count();
             */
-            $incompleteTherapistsCount = User::where('admin', 0)->get()
+        $incompleteTherapistsCount = User::where('admin', 0)->get()
             ->filter(function ($user) {
                 return !$user->isComplete()['status'];
             })
