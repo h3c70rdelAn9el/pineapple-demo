@@ -1,11 +1,11 @@
 <x-app-layout>
-    <h1 class="mx-auto w-1/2 text-center text-lg">Edit Form</h1>
-    <p class="text-center text-xs capitalize">{{ $therapist->name }}</p>
+    <h1 class="w-1/2 mx-auto text-lg text-center">Edit Form</h1>
+    <p class="text-xs text-center capitalize">{{ $therapist->name }}</p>
     <a href="{{ route('therapist.forms', $therapist->id) }}"
         class="button">
         Back
     </a>
-    <div class="my-4 flex flex-col items-center justify-center bg-gray-100">
+    <div class="flex flex-col items-center justify-center my-4 bg-gray-100">
         <div class="items-center justify-center">
             @if (Str::contains($form->file_name, '.pdf'))
                 <embed class="h-64 rounded-md md:h-[300px] md:w-full"
@@ -23,7 +23,7 @@
 
             @if ($user->admin == 1)
                 <div class="mt-4">
-                    <a class="button text-xs"
+                    <a class="text-xs button"
                         href="{{ $form->url() }}"
                         download>
                         Download
@@ -33,12 +33,12 @@
         </div>
     </div>
 
-    <div class="mx-auto flex w-2/3 flex-col text-sm md:w-1/2">
+    <div class="flex flex-col w-2/3 mx-auto text-sm md:w-1/2">
         <form action="{{ route('fileUpdate', $form->id) }}"
             method="POST">
             @csrf
             @method('PUT')
-            <div class="relative mb-5 mt-4">
+            <div class="relative mt-4 mb-5">
                 <x-jet-label for="date"
                     value="{{ __('Expiration Date') }}"
                     x-bind:required="documentType == 'clinical_license' || documentType ==
@@ -54,10 +54,10 @@
                 </div>
             </div>
  {{-- document type --}}
- <div class="mt-5 flex flex-col" x-data="{ documentType: '' }">
+ <div class="flex flex-col mt-5" x-data="{ documentType: '' }">
     <div class="relative">
         <select
-            class="block w-full appearance-none rounded-md border border-blue-400 bg-white px-3 py-2 pr-8 leading-tight text-gray-700 focus:border-gray-500 focus:bg-white focus:outline-none"
+            class="block w-full px-3 py-2 pr-8 leading-tight text-gray-700 bg-white border border-blue-400 rounded-md appearance-none focus:border-gray-500 focus:bg-white focus:outline-none"
             id="document_type" name="document_type" x-model="document_type" wire:model="document_type" required>
             <option value="">Select Document Type</option>
             <option value="photographic_id" {{$form->document_type == 'photographic_id' ? 'selected' : ''}}>Photographic ID</option>
@@ -91,7 +91,7 @@
                 <x-jet-label for="note"
                     value="{{ __('Note (optional)') }}" />
                 <textarea
-                    class="block w-full appearance-none rounded border border-blue-300 bg-gray-100 px-3 py-2 pr-8 leading-tight text-gray-700 focus:border-gray-500 focus:bg-white focus:outline-none"
+                    class="block w-full px-3 py-2 pr-8 leading-tight text-gray-700 bg-gray-100 border border-blue-300 rounded appearance-none focus:border-gray-500 focus:bg-white focus:outline-none"
                     id="note"
                     name="note"
                     cols="40"
@@ -99,13 +99,13 @@
                     placeholder="{{ $form->note }}"></textarea>
             </div>
 
-            <x-jet-button class="right-0 mb-3 mr-6 mt-3"
+            <x-jet-button class="right-0 mt-3 mb-3 mr-6"
                 type="submit">
                 Update
             </x-jet-button>
         </form>
         @if ($form->verified == 1)
-            <p class="mt-3 pb-2">Document has been verified</p>
+            <p class="pb-2 mt-3">Document has been verified</p>
         @else
             @if ($user->admin == 1)
                 <form action="{{ route('fileUpdate', $form->id) }}"
@@ -124,9 +124,9 @@
                 </form>
             @endif
         @endif
-
+                {{--
         @if ($form->pinned == 1)
-            <p class="mt-3 pb-2">Document has been pinned</p>
+            <p class="pb-2 mt-3">Document has been pinned</p>
         @else
             <form action="{{ route('fileUpdate', $form->id) }}"
                 method="POST">
@@ -144,5 +144,6 @@
                 <button type="submit">Submit</button>
             </form>
         @endif
+        --}}
     </div>
 </x-app-layout>
