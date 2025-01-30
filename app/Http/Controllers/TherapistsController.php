@@ -122,6 +122,9 @@ class TherapistsController extends Controller
                 return !$user->isVerified()['status'];
             })
             ->count();
+        $activeTherapistsCount = User::where('admin', 0)
+            ->where('active_status', 0)
+            ->orderBy(DB::raw('COALESCE(preferred_name, name)'))->count();
         /*
         $unverifiedTherapistCount = User::where('admin', 0)
         ->where(function ($query) {
@@ -140,6 +143,7 @@ class TherapistsController extends Controller
             'incompleteTherapist' => $incompleteTherapist,
             'incompleteTherapistsCount' => $incompleteTherapistsCount,
             'activeTherapists' => $activeTherapists,
+            'activeTherapistsCount' => $activeTherapistsCount,
             'unverifiedTherapist' => $unverifiedTherapist,
             'unverifiedTherapistCount' => $unverifiedTherapistCount,
             'unverifiedTherapists' => $unverifiedTherapists,
