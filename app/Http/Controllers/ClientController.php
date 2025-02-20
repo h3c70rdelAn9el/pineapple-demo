@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\ClientWelcome;
 use Log;
 use App\Models\User;
 use App\Models\Client;
@@ -14,6 +15,8 @@ use App\Notifications\NewClientNotification;
 use App\Notifications\ClientRemovedNotification;
 use App\Notifications\SessionsAssignedNotification;
 use App\Notifications\ClientMadeInactiveNotification;
+use Illuminate\Support\Facades\Mail;
+
 
 
 
@@ -407,6 +410,7 @@ class ClientController extends Controller
         $sessionCount = $request->max_sessions;
 
         $this->notifyAdmins($client, $sessionCount, $request->status);
+        Mail::to($client->email)->send(new ClientWelcome($client->preferred_name));
 
         // return redirect('therapist/forms/' . $therapist->id)
         // ->with('success', 'File uploaded successfully')
