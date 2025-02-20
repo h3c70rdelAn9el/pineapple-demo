@@ -452,7 +452,7 @@
                 <div class="rounded-md bg-gray-50 md:flex md:flex-wrap" x-show="showDropdown"
                     x-transition.scale.origin.top x-cloak>
                     <div class="items-center p-2 flex flex-wrap">
-                        @foreach ($categories as $category)
+                        @foreach ($support_types as $category)
                             <div class="m-2 mr-0.5 mt-1 rounded-full p-2">
                                 <input
                                     class="m-2 mr-0.5 mt-1 rounded-full p-2 transition duration-200 ease-in-out hover:cursor-pointer hover:bg-blue-400"

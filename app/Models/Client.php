@@ -44,6 +44,16 @@ class Client extends Model
         'user_id',
         'waitlist',
         'special_sessions',
+        'category',
+    ];
+
+    public static $categories = [
+        'Active',
+        'Active - with intern',
+        'Corporate',
+        'Latin America',
+        'Sexual Trauma',
+        'HIV',
     ];
 
     public function user()

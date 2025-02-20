@@ -27,6 +27,7 @@
         'Possible Support Needed' => $client->possible_support_needed ?: 'Possible Support Needed not provided',
         'Client Contribution' => $client->client_contribution ?: 'Client Contribution not provided',
         'Additional Notes' => $client->additional_notes ?: 'Additional Notes not provided',
+        'Category' => $client->category ?: 'Category not provided',
     ] as $label => $value)
         <div class="flex flex-row text-sm {{ $label === 'Special Sessions' ? 'text-purple-700' : '' }} {{ $value === 'Active' ? 'text-green-600' : '' }} mb-2">
             <div class="w-1/2 p-2 border-b border-r border-gray-400">{{ $label }}:</div>

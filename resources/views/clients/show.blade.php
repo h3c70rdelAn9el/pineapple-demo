@@ -21,7 +21,10 @@
     <div class="mx-auto grid h-full w-full grid-cols-1 gap-3 rounded-lg p-2 px-6 md:grid-cols-2">
         {{-- left side --}}
 
-        <div class="col-span-1 h-full">@include('partials.client-fields')</div>
+        <div class="col-span-1 h-full">
+            @include('partials.client-fields')
+            
+        </div>
 
 
         {{-- right side --}}
