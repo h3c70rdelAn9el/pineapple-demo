@@ -110,7 +110,15 @@
                 <x-jet-input-error class="mt-2" for="phone" />
             </div>
 
-
+            <div class="w-full mt-4 mb-2">
+                <x-jet-label for="category" value="{{ __('Category') }}" />
+                <select class="w-full bg-gray-100 border border-blue-200 rounded" id="category" name="category">
+                    @foreach (App\Models\Client::$categories as $category)
+                        <option value="{{ $category }}" {{ old('category', $client->category) == $category ? 'selected' : '' }}>{{ $category }}</option>
+                    @endforeach
+                </select>
+                <x-jet-input-error class="mt-2" for="category" />
+            </div>
 
             <div class="relative w-full mt-6 mb-4"
                 x-data='{
@@ -533,17 +541,18 @@
                         </div>
                         <div class="rounded-md bg-gray-50 md:flex md:flex-wrap" x-show="showDropdown"
                             x-transition.scale.origin.top x-cloak>
+                            
                             <div class="flex flex-wrap items-center p-2">
-                                @foreach ($categories as $category)
+                                @foreach ($support_types as $st)
                                     <div class="m-2 mr-0.5 mt-1 rounded-full p-2">
                                         <input
                                             class="m-2 mr-0.5 mt-1 rounded-full p-2 transition duration-200 ease-in-out hover:cursor-pointer hover:bg-blue-400"
                                             name="possible_support_needed[]" type="checkbox"
-                                            value="{{ $category }}"
-                                            @if (in_array($category, $selectedPossibleSupportNeeded ?? [])) checked @endif
-                                            @click="toggleSelectedPossibleSupportNeeded('{{ $category }}')">
+                                            value="{{ $st }}"
+                                            @if (in_array($st, $selectedPossibleSupportNeeded ?? [])) checked @endif
+                                            @click="toggleSelectedPossibleSupportNeeded('{{ $st }}')">
                                         <label class=""
-                                            for="possible_support_needed">{{ $category }}</label>
+                                            for="possible_support_needed">{{ $st }}</label>
                                     </div>
                                 @endforeach
 

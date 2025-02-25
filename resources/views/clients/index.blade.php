@@ -15,6 +15,7 @@
         showInactiveClients: false,
         showWaitlistClients: false,
         showSpecialSessionsClients: false,
+        showCategoryClients: null,
     }" x-init="showAllClients = {{ json_encode(request('tab') !== 'inactive') }};
     showInactiveClients = {{ json_encode(request('tab') === 'inactive') }};
     showWaitlistClients = false">
@@ -23,9 +24,8 @@
         </div>
         <div class="container mx-auto flex flex-row justify-between px-4 md:w-2/3 md:flex-row">
             <div class="w-full md:w-1/2">
-
                 <button
-                    x-on:click="showAllClients = true, showInactiveClients = false, showWaitlistClients = false, showSpecialSessionsClients = false"
+                    x-on:click="showAllClients = true, showInactiveClients = false, showWaitlistClients = false, showSpecialSessionsClients = false, showCategoryClients = null"
                     class="flex flex-row gap-2">
                     <div class="flex flex-row gap-2 transition-all duration-200 ease-in-out hover:text-blue-800">
                         <p>All Clients:</p>
@@ -40,7 +40,7 @@
                 <div class="flex flex-row gap-2">
 
                     <button
-                        x-on:click="showInactiveClients = true, showAllClients = false, showWaitlistClients = false, showSpecialSessionsClients = false">
+                        x-on:click="showInactiveClients = true, showAllClients = false, showWaitlistClients = false, showSpecialSessionsClients = false, showCategoryClients = null">
                         <div
                             class="flex w-full flex-row gap-2 text-orange-500 transition-all duration-200 ease-in-out hover:text-orange-700">
                             <p>Inactive Clients:</p>
@@ -53,7 +53,7 @@
                     </button>
                 </div>
                 <button
-                    x-on:click="showWaitlistClients = true, showAllClients = false, showInactiveClients = false, showSpecialSessionsClients = false">
+                    x-on:click="showWaitlistClients = true, showAllClients = false, showInactiveClients = false, showSpecialSessionsClients = false, showCategoryClients = null">
                     <div
                         class="flex flex-row gap-2 text-blue-500 transition-all duration-200 ease-in-out hover:text-blue-700">
                         <p>Waitlisted</p>
@@ -68,7 +68,7 @@
                 <div class="flex flex-row gap-2">
 
                     <button
-                        x-on:click="showSpecialSessionsClients = true, showAllClients = false, showInactiveClients = false, showWaitlistClients = false">
+                        x-on:click="showSpecialSessionsClients = true, showAllClients = false, showInactiveClients = false, showWaitlistClients = false, showCategoryClients = null">
                         <div
                             class="flex flex-row gap-2 text-purple-500 transition-all duration-200 ease-in-out hover:text-purple-700">
                             <p>Special Sessions</p>
@@ -80,6 +80,17 @@
                         </div>
                     </button>
                 </div>
+
+                @foreach ($clientsByCategory as $category => $clients)
+                    <div class="flex flex-row gap-2">
+                        <button x-on:click="showCategoryClients = '{{ $category }}', showAllClients = false, showInactiveClients = false, showWaitlistClients = false, showSpecialSessionsClients = false">
+                            <div class="flex flex-row gap-2 text-green-500 transition-all duration-200 ease-in-out hover:text-green-700">
+                                <p>{{ $category }} Clients:</p>
+                                <p>{{ $clients->total() }}</p>
+                            </div>
+                        </button>
+                    </div>
+                @endforeach
 
             </div>
             <div>
@@ -108,6 +119,13 @@
             <section x-show="showSpecialSessionsClients" x-cloak>
                 <x-client-table :clients="$allSpecialSessionClients" :attendedSessions="$attendedSessions" :missedSessions="$missedSessions" :client="$client" />
             </section>
+
+            @foreach ($clientsByCategory as $category => $clients)
+                <section x-show="showCategoryClients === '{{ $category }}'" x-cloak>
+                    <x-client-table :clients="$clients" :attendedSessions="$attendedSessions" :missedSessions="$missedSessions" :client="$client" />
+                </section>
+            @endforeach
+
         @else
             <section x-show="showAllClients" x-cloak>
                 <x-client-table :clients="$clients" :attendedSessions="$attendedSessions" :missedSessions="$missedSessions" :client="$client" />
@@ -125,6 +143,13 @@
             <section x-show="showSpecialSessionsClients" x-cloak>
                 <x-client-table :clients="$specialSessionsClients" :attendedSessions="$attendedSessions" :missedSessions="$missedSessions" :client="$client" />
             </section>
+
+            @foreach ($clientsByCategory as $category => $clients)
+                <section x-show="showCategoryClients === '{{ $category }}'" x-cloak>
+                    <x-client-table :clients="$clients" :attendedSessions="$attendedSessions" :missedSessions="$missedSessions" :client="$client" />
+                </section>
+            @endforeach
+
         @endif
     </div>
 </x-app-layout>

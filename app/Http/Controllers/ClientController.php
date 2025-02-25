@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\ClientWelcome;
 use Log;
 use App\Models\User;
 use App\Models\Client;
@@ -14,6 +15,8 @@ use App\Notifications\NewClientNotification;
 use App\Notifications\ClientRemovedNotification;
 use App\Notifications\SessionsAssignedNotification;
 use App\Notifications\ClientMadeInactiveNotification;
+use Illuminate\Support\Facades\Mail;
+
 
 
 
@@ -55,6 +58,12 @@ class ClientController extends Controller
         $missedSessions = TherapySession::whereIn('client_id', $clients->pluck('id'))
             ->where('attendance', 'no-show')->count();
 
+        $categories = Client::$categories;
+        $clientsByCategory = [];
+        foreach ($categories as $category) {
+            $clientsByCategory[$category] = Client::where('category', $category)->paginate(15, ['*'], 'clients_' . str_replace(' ', '_', strtolower($category)));
+        }
+
         return view('clients.index', [
             'user' => $user,
             'clients' => $clients,
@@ -73,6 +82,7 @@ class ClientController extends Controller
             'allInactiveClients' => $allInactiveClients,
             'allWaitlistClients' => $allWaitlistClients,
             'allSpecialSessionClients' => $allSpecialSessionClients,
+            'clientsByCategory' => $clientsByCategory,
         ]);
     }
 
@@ -99,7 +109,7 @@ class ClientController extends Controller
             $inactiveTherapists = User::where('admin', 0)->where('active_status', 1)->orderBy('name', 'asc')->get();
             $therapists = User::where('admin', 0)->orderBy('name', 'asc')->get();
             $countries = $this->getCountries();
-            $categories = $this->getCategories();
+            $support_types = $this->getSupportTypes();
             $states = $this->getStates();
             $ethnicGroups = [
                 'American Indian or Alaska Native',
@@ -136,7 +146,7 @@ class ClientController extends Controller
             $maxSessions = Client::max('max_sessions');
 
 
-            return view('clients.create')->with(['therapists' => $therapists, 'therapist' => $therapist, 'countries' => $countries, 'categories' => $categories, 'states' => $states, 'ethnicGroups' => $ethnicGroups, 'pronouns' => $pronouns, 'genders' => $genders, 'optionKey' => $optionKey, 'activeTherapists' => $activeTherapists, 'inactiveTherapists' => $inactiveTherapists, 'maxSessions' => $maxSessions]);
+            return view('clients.create')->with(['therapists' => $therapists, 'therapist' => $therapist, 'countries' => $countries, 'support_types' => $support_types, 'states' => $states, 'ethnicGroups' => $ethnicGroups, 'pronouns' => $pronouns, 'genders' => $genders, 'optionKey' => $optionKey, 'activeTherapists' => $activeTherapists, 'inactiveTherapists' => $inactiveTherapists, 'maxSessions' => $maxSessions]);
         } else {
             return redirect()->route('dashboard')->with('error', '**You do not have permission to access that page**');
         }
@@ -205,7 +215,7 @@ class ClientController extends Controller
         return $countries;
     }
 
-    private function getCategories()
+    private function getSupportTypes()
     {
         $path = resource_path('json/categories.json');
         $jsonContents = File::get($path);
@@ -234,7 +244,7 @@ class ClientController extends Controller
         $user = $request->user();
 
         $countries = $this->getCountries();
-        $categories = $this->getCategories();
+        $support_types = $this->getSupportTypes();
         $client = new Client();
 
         $selectedOrientations = $request->input('sexual_orientation');
@@ -369,6 +379,7 @@ class ClientController extends Controller
         $client->max_sessions = $request->input('max_sessions');
         $client->waitlist = $request->input('waitlist', 0);
         $client->special_sessions = $request->input('special_sessions', 6);
+        $client->category = $request->input('category');
 
         if ($request->user_id) {
 
@@ -407,11 +418,12 @@ class ClientController extends Controller
         $sessionCount = $request->max_sessions;
 
         $this->notifyAdmins($client, $sessionCount, $request->status);
+        Mail::to($client->email)->send(new ClientWelcome($client->preferred_name));
 
         // return redirect('therapist/forms/' . $therapist->id)
         // ->with('success', 'File uploaded successfully')
         // ->with('file_name', $fileName);
-        return redirect()->route('dashboard')
+        return redirect()->route('clients.index')
             ->with('success', 'Client added successfully');
     }
 
@@ -488,6 +500,7 @@ class ClientController extends Controller
             'status' => $request->input('status'),
             'waitlist' => $request->input('waitlist', 0),
             'special_sessions' => $request->input('special_sessions', 0),
+            'category' => $request->input('category'),
         ]);
 
         if ($request->input('special_sessions')) {
@@ -524,7 +537,7 @@ class ClientController extends Controller
         $sessionCount = $request->max_sessions;
         $this->notifyAdmins($client, $sessionCount, $request->status);
 
-        return redirect()->route('dashboard')
+        return redirect()->route('clients.index')
             ->with('success', 'Client updated successfully');
     }
 
@@ -584,7 +597,7 @@ class ClientController extends Controller
         if (auth()->user() && auth()->user()->admin == 1) {
             $client = Client::find($id);
             $countries = $this->getCountries();
-            $categories = $this->getCategories();
+            $support_types = $this->getSupportTypes();
             $states = $this->getStates();
             $id = $client->id;
             $therapist = User::firstorNew(['id' => $client->user_id]);
@@ -593,10 +606,11 @@ class ClientController extends Controller
             $genders = $this->getGenders();
             $sexualOrientations = $this->getSexualOrientations();
             $pronouns = $this->getPronouns();
-            $selectedPossibleSupport = $this->getCategories();
-            // dd($client);
+            $selectedPossibleSupport = $this->getSupportTypes();
+            // Prepare support types for the view
+            $supportTypes = $this->getSupportTypes();
 
-            return view('clients.edit')->with(['client' => $client, 'countries' => $countries, 'categories' => $categories, 'states' => $states, 'id' => $id, 'therapist' => $therapist, 'therapists' => $therapists, 'user_id' => $user_id, 'genders' => $genders, 'sexualOrientations' => $sexualOrientations, 'pronouns' => $pronouns, 'selectedPossibleSupport' => $selectedPossibleSupport]);
+            return view('clients.edit')->with(['client' => $client, 'countries' => $countries, 'support_types' => $support_types, 'states' => $states, 'id' => $id, 'therapist' => $therapist, 'therapists' => $therapists, 'user_id' => $user_id, 'genders' => $genders, 'sexualOrientations' => $sexualOrientations, 'pronouns' => $pronouns, 'selectedPossibleSupport' => $selectedPossibleSupport]);
         } else {
             return redirect()->route('dashboard')->with('error', '**You do not have permission to access that page**');
         }

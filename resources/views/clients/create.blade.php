@@ -5,7 +5,7 @@
             :method="'POST'"
             :therapists="$therapists"
             :countries="$countries"
-            :categories="$categories"
+            :support_types="$support_types"
             :states="$states"
             :ethnic-groups="$ethnicGroups"
             :pronouns="$pronouns"
