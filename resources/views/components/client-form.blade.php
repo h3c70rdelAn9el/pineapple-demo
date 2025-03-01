@@ -45,6 +45,15 @@
         <option value="0">Active</option>
         <option value="1">Inactive</option>
     </select>
+    <div class="w-full mt-4 mb-2">
+        <x-jet-label for="category" value="{{ __('Category') }}" />
+        <select class="w-full bg-gray-100 border border-blue-200 rounded" id="category" name="category">
+            @foreach (App\Models\Client::$categories as $category)
+                <option value="{{ $category }}" >{{ $category }}</option>
+            @endforeach
+        </select>
+        <x-jet-input-error class="mt-2" for="category" />
+    </div>
 
     {{-- email --}}
     <x-form_label for="email">
@@ -452,7 +461,7 @@
                 <div class="rounded-md bg-gray-50 md:flex md:flex-wrap" x-show="showDropdown"
                     x-transition.scale.origin.top x-cloak>
                     <div class="items-center p-2 flex flex-wrap">
-                        @foreach ($support_types as $category)
+                        @foreach ($attributes['support_types'] as $category)
                             <div class="m-2 mr-0.5 mt-1 rounded-full p-2">
                                 <input
                                     class="m-2 mr-0.5 mt-1 rounded-full p-2 transition duration-200 ease-in-out hover:cursor-pointer hover:bg-blue-400"

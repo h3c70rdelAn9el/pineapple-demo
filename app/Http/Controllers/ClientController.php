@@ -146,6 +146,8 @@ class ClientController extends Controller
             $maxSessions = Client::max('max_sessions');
 
 
+           
+
             return view('clients.create')->with(['therapists' => $therapists, 'therapist' => $therapist, 'countries' => $countries, 'support_types' => $support_types, 'states' => $states, 'ethnicGroups' => $ethnicGroups, 'pronouns' => $pronouns, 'genders' => $genders, 'optionKey' => $optionKey, 'activeTherapists' => $activeTherapists, 'inactiveTherapists' => $inactiveTherapists, 'maxSessions' => $maxSessions]);
         } else {
             return redirect()->route('dashboard')->with('error', '**You do not have permission to access that page**');
@@ -608,7 +610,7 @@ class ClientController extends Controller
             $pronouns = $this->getPronouns();
             $selectedPossibleSupport = $this->getSupportTypes();
             // Prepare support types for the view
-            $supportTypes = $this->getSupportTypes();
+            $support_types = $this->getSupportTypes();
 
             return view('clients.edit')->with(['client' => $client, 'countries' => $countries, 'support_types' => $support_types, 'states' => $states, 'id' => $id, 'therapist' => $therapist, 'therapists' => $therapists, 'user_id' => $user_id, 'genders' => $genders, 'sexualOrientations' => $sexualOrientations, 'pronouns' => $pronouns, 'selectedPossibleSupport' => $selectedPossibleSupport]);
         } else {
