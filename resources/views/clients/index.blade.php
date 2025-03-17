@@ -80,7 +80,7 @@
                         </div>
                     </button>
                 </div>
-
+                @if($user->admin == 1)
                 @foreach ($clientsByCategory as $category => $clients)
                     <div class="flex flex-row gap-2">
                         <button x-on:click="showCategoryClients = '{{ $category }}', showAllClients = false, showInactiveClients = false, showWaitlistClients = false, showSpecialSessionsClients = false">
@@ -91,6 +91,7 @@
                         </button>
                     </div>
                 @endforeach
+                @endif
 
             </div>
             <div>
