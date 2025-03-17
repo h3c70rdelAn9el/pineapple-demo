@@ -97,7 +97,7 @@
                     {{ $therapistClients->links() }}
                 </div>
 
-                @foreach ($clients as $client)
+                @foreach ($therapistClients as $client)
                     <x-client-card :client="$client" :therapist="$therapist" :user="$user"></x-client-card>
                 @endforeach
                 <div class="flex flex-col">
