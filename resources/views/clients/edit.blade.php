@@ -646,13 +646,13 @@
                 <div class="flex items-center mt-2">
                     <label for="waitlist_yes" class="mr-4">
                         <input id="waitlist_yes" type="radio" name="waitlist" value="1"
-                            {{ $therapist->waitlist == 1 ? 'checked' : '' }} autofocus />
+                            {{ $client->waitlist == 1 ? 'checked' : '' }} autofocus />
                         <span class="ml-2 text-sm text-gray-600">Yes</span>
                     </label>
 
                     <label for="waitlist_no">
                         <input id="waitlist_no" type="radio" name="waitlist" value="0"
-                            {{ $therapist->waitlist == 0 ? 'checked' : '' }} />
+                            {{ $client->waitlist == 0 ? 'checked' : '' }} />
                         <span class="ml-2 text-sm text-gray-600">No</span>
                     </label>
                 </div>

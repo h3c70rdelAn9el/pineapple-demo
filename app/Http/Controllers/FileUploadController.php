@@ -11,6 +11,7 @@ use App\Notifications\TherapistFileUploaded;
 use Illuminate\Support\Facades\Notification;
 use App\Http\Controllers\TherapistsController;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Mail;
 
 
 
@@ -137,6 +138,19 @@ class FileUploadController extends Controller
             $adminUsers = User::where('admin', 1)->get();
             Notification::send($adminUsers, new TherapistFileUploaded($user));
         }
+
+        //if document_type is w9, w8ben or w8bene, email this document to accounts@pineapplesupport.org
+        if (in_array($request->document_type, ['W9', 'W8BEN', 'W8BENE'])) {
+            $filePath = storage_path('app/' . $path . $fileName);
+            $email = '
+                Please find the attached document for ' . $request->document_type . '.';
+            Mail::raw($email, function($message) use ($filePath) {
+                $message->to('accounts@pineapplesupport.org')
+                        ->subject('Document Submission')
+                        ->attach($filePath);
+            });
+        }
+
         if ($user->admin == 1) {
             return redirect('therapist/forms/' . $therapist->id)
                 ->with('success', 'File uploaded successfully')

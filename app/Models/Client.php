@@ -53,7 +53,8 @@ class Client extends Model
         'Corporate',
         'Latin America',
         'Sexual Trauma',
-        'HIV',
+	'HIV',
+	'Romanian clients'
     ];
 
     public function user()
