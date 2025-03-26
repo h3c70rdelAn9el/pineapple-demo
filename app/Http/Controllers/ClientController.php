@@ -371,7 +371,7 @@ class ClientController extends Controller
         // $c->pronouns = $request->pronouns;
         $client->email = $request->email;
         $client->phone = $request->phone;
-        $client->user_id = $request->user_id;
+        $client->user_id = ($request->user_id == 'no_therapist') ? 0 : $request->user_id;
         $client->client_contribution = $request->client_contribution;
         $client->gender = $genderString;
         $client->ethnic_group = $ethnicGroupString;
