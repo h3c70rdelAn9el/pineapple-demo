@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\ClientSessionsAllocated;
 use App\Mail\ClientWelcome;
 use Log;
 use App\Models\User;
@@ -16,6 +17,7 @@ use App\Notifications\ClientRemovedNotification;
 use App\Notifications\SessionsAssignedNotification;
 use App\Notifications\ClientMadeInactiveNotification;
 use Illuminate\Support\Facades\Mail;
+use App\Mail\ClientTherapistAssigned;
 
 
 
@@ -474,6 +476,7 @@ class ClientController extends Controller
         $client->possible_support_needed = implode(', ', $request->input('possible_support_needed', []));
 
         $oldTherapist = $client->user_id;
+	$oldmaxsessions = $client->max_sessions;
 
         $client->update([
             'client_code' => $request->input('client_code'),
@@ -524,6 +527,16 @@ class ClientController extends Controller
             $newTherapist->notify(new NewClientNotification());
             $previousTherapist = User::find($oldTherapist);
             $previousTherapist->notify(new ClientRemovedNotification($client->preferred_name));
+	    //if number of sessions was less than 2 and now is greater than 3 send the connected to therapist email to the client
+	    //this may be better to check if the old therapist user id was 'no state' which is like id 234 or something and that the new therapist is not that
+	    if ($oldTherapist == 200 || $oldTherapist == 0) {
+
+		Mail::to($client->email)->send(new ClientTherapistAssigned($client->preferred_name));
+	    }
+
+        }
+        if ($oldmaxsessions< 2 && $client->max_sessions > 2) {
+            Mail::to($client->email)->send(new ClientSessionsAllocated($client->preferred_name, $client->max_sessions));
         }
 
         // notify the admins of the max sessions
