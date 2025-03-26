@@ -141,14 +141,15 @@ class FileUploadController extends Controller
 
         //if document_type is w9, w8ben or w8bene, email this document to accounts@pineapplesupport.org
         if (in_array($request->document_type, ['W9', 'W8BEN', 'W8BENE'])) {
-            $filePath = storage_path('app/' . $path . $fileName);
+            $fileData = $request->file('file')->get();
             $email = '
-                Please find the attached document for ' . $request->document_type . '.';
-            Mail::raw($email, function($message) use ($filePath) {
-                $message->to('accounts@pineapplesupport.org')
-                        ->subject('Document Submission')
-                        ->attach($filePath);
+            Please find the attached document for ' . $request->document_type . '.';
+            Mail::raw($email, function($message) use ($fileData, $fileName) {
+            $message->to('accounts@pineapplesupport.org')
+                ->subject('Document Submission')
+                ->attachData($fileData, $fileName);
             });
+        
         }
 
         if ($user->admin == 1) {
