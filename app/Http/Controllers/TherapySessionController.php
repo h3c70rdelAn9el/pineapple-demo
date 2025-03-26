@@ -14,10 +14,14 @@ use App\Notifications\MissedTherapySessions;
 use App\Notifications\SessionLimitNotification;
 use App\Http\Requests\StoreTherapySessionRequest;
 use App\Http\Requests\UpdateTherapySessionRequest;
+use App\Mail\ClientMissedOneSession;
+use App\Mail\ClientMissedThreeSessions;
+use App\Mail\ClientMissedTwoSessions;
 use App\Notifications\SessionsAssignedNotification;
 use App\Notifications\SpecialSessionsLimitNotification;
 // use Log
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 
 class TherapySessionController extends Controller
 {
@@ -194,6 +198,18 @@ class TherapySessionController extends Controller
                 foreach ($adminUsers as $adminUser) {
                     $adminUser->notify(new MissedTherapySessions($client));
                 }
+            }
+            if($missedSessions == 1)
+            {
+                Mail::to($client->email)->send(new ClientMissedOneSession($client->preferred_name));
+            }
+            else if($missedSessions == 2)
+            {
+                Mail::to($client->email)->send(new ClientMissedTwoSessions($client->preferred_name));
+            }
+            else if($missedSessions == 3)
+            {
+                Mail::to($client->email)->send(new ClientMissedThreeSessions($client->preferred_name));
             }
 
 
