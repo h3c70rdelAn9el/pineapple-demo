@@ -73,13 +73,10 @@
                                     <option value="Other">Other</option>
                                 </select>
                             </div>
-                            <div class="relative mb-5 mt-4">
-                                <x-jet-label for="date" value="{{ __('Expiration Date') }}"
-                                    x-bind:required="document_type == 'clinical_license' || document_type ==
-                                        'public_liability_insurance' || document_type == 'photographic_id'" />
+                            <div class="relative mb-5 mt-4" x-show="!['W9', 'W8BEN', 'W8BENE'].includes(document_type)">
+                                <x-jet-label for="date" value="{{ __('Expiration Date') }}" />
                                 <div class="relative">
-                                    <x-jet-input class="mt-1 block w-[100%]" id="date" name="date"
-                                        type="date"
+                                    <x-jet-input class="mt-1 block w-[100%]" id="date" name="date" type="date"
                                         x-bind:required="['clinical_license', 'public_liability_insurance', 'photographic_id'].includes(document_type)"
                                         :value="old('date')" placeholder="Date" />
                                 </div>
