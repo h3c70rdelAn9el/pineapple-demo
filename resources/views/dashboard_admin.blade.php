@@ -85,25 +85,45 @@
                     <x-slot name="content">
                         <div class="w-full h-60">
                             <div id="therapist-container" x-show="currentView === 'all'" x-cloak >
+                                <div>
+                                    {{ $therapists->links() }}
+                                </div>
                                 
-                                    <div>
+                                <div class="overflow-y-auto h-96">
                                         @foreach ($therapists as $therapist)
                                             @include('components.therapists-card', ['therapist' => $therapist])
                                         @endforeach
                                     </div>
+                                    <div>
+                                        {{ $therapists->links() }}
+                                    </div>
+        
                                 </div>
                                 <div id="therapist-container" x-show="currentView === 'active'" x-cloak>
                                     <div>
+                                        {{ $activeTherapists->links() }}
+                                    </div>
+        
+                                    <div class="overflow-y-auto h-96">
                                         @foreach ($activeTherapists as $therapist)
                                             @include('components.therapists-card', ['therapist' => $therapist])
                                         @endforeach
                                     </div>
+                                    <div>
+                                        {{ $activeTherapists->links() }}
+                                        </div>
                                 </div>
                                 <div id="therapist-container" x-show="currentView === 'inactive'" x-cloak>
                                     <div>
+                                        {{ $inactiveTherapists->links() }}
+                                    </div>
+                                    <div class="overflow-y-auto h-96">
                                         @foreach ($inactiveTherapists as $therapist)
                                             @include('components.therapists-card', ['therapist' => $therapist])
                                         @endforeach
+                                    </div>
+                                    <div>
+                                        {{ $inactiveTherapists->links() }}
                                     </div>
                                 </div>
                             </div>
