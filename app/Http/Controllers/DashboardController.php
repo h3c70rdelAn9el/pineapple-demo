@@ -58,8 +58,8 @@ class DashboardController extends Controller
             ->orderBy(DB::raw('COALESCE(preferred_name, name)'))
             ->paginate(15, ['*'], 'therapists');
         $therapist = Client::find($user_id)?->therapist;
-        $inactiveTherapists = User::where('admin', 0)->where('active_status', 1)->get();
-        $activeTherapists = User::where('admin', 0)->where('active_status', 0)->get();
+        $inactiveTherapists = User::where('admin', 0)->where('active_status', 1)->paginate(15, ['*'], 'inactiveTherapists');;
+        $activeTherapists = User::where('admin', 0)->where('active_status', 0)->paginate(15, ['*'], 'activeTherapists');
         $allTherapists = User::where('admin', 0)->where('active_status', 0)->get();
 
         $file = file_get_contents(storage_path('states.json'));
