@@ -1,4 +1,9 @@
 <x-app-layout>
+    <div x-data="{
+        currentView: 'all',
+
+    }">
+        <div>
     @if (session('error'))
         <div class="w-1/2 p-4 m-4 mx-auto text-center text-white bg-red-500 rounded-md shadow-sm">
             {{ session('error') }}
@@ -58,12 +63,12 @@
                                 <p>{{ $therapists->total() }}</p>
                             </div>
                             <div class="flex justify-between text-blue-600">
-                                <p>Active:</p>
+                                <p><a href="#" id="active-link" class="hover:underline" x-on:click="currentView = 'active'">Active:</a></p>
                                 <p>{{ $activeTherapists->count() }}</p>
                             </div>
                             <div class="flex justify-between text-slate-500">
-                                <p>Inactive:</p>
-                                <p class="">{{ $inactiveTherapists->count() }}</p>
+                                <p><a href="#" id="inactive-link" class="hover:underline" x-on:click="currentView = 'inactive'">Inactive:</a></p>
+                                <p>{{ $inactiveTherapists->count() }}</p>
                             </div>
                              <div class="flex justify-between text-red-600">
                                 <p>Unverified Profiles:</p>
@@ -79,26 +84,49 @@
                     </x-slot>
                     <x-slot name="content">
                         <div class="w-full h-60">
-                            <div>
-                                {{ $therapists->links() }}
+                            <div id="therapist-container" x-show="currentView === 'all'" x-cloak >
+                                <div>
+                                    {{ $therapists->links() }}
+                                </div>
+                                
+                                <div class="overflow-y-auto h-96">
+                                        @foreach ($therapists as $therapist)
+                                            @include('components.therapists-card', ['therapist' => $therapist])
+                                        @endforeach
+                                    </div>
+                                    <div>
+                                        {{ $therapists->links() }}
+                                    </div>
+        
+                                </div>
+                                <div id="therapist-container" x-show="currentView === 'active'" x-cloak>
+                                    <div>
+                                        {{ $activeTherapists->links() }}
+                                    </div>
+        
+                                    <div class="overflow-y-auto h-96">
+                                        @foreach ($activeTherapists as $therapist)
+                                            @include('components.therapists-card', ['therapist' => $therapist])
+                                        @endforeach
+                                    </div>
+                                    <div>
+                                        {{ $activeTherapists->links() }}
+                                        </div>
+                                </div>
+                                <div id="therapist-container" x-show="currentView === 'inactive'" x-cloak>
+                                    <div>
+                                        {{ $inactiveTherapists->links() }}
+                                    </div>
+                                    <div class="overflow-y-auto h-96">
+                                        @foreach ($inactiveTherapists as $therapist)
+                                            @include('components.therapists-card', ['therapist' => $therapist])
+                                        @endforeach
+                                    </div>
+                                    <div>
+                                        {{ $inactiveTherapists->links() }}
+                                    </div>
+                                </div>
                             </div>
-                            <div class="overflow-y-scroll h-96">
-                                @foreach ($therapists as $therapist)
-                                    <x-therapists-card :therapist="$therapist" :incompleteTherapist="!$therapist->id_uploaded ||
-                                        !$therapist->W9_or_WBEN_uploaded ||
-                                        !$therapist->license_uploaded ||
-                                        !$therapist->insurance_uploaded ||
-                                        !$therapist->headshot_uploaded"
-                                        :unverifiedTherapist="!$therapist->all_documents ||
-                                        !$therapist->contract_signed"
-                                        >
-                                    </x-therapists-card>
-                                @endforeach
-                            </div>
-                            <div>
-                                {{ $therapists->links() }}
-                            </div>
-
                         </div>
                     </x-slot>
                 </div>
@@ -178,6 +206,7 @@
             </x-container-content>
         </section>
     </div>
+<script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 </x-app-layout>
 
 <script>
