@@ -205,30 +205,30 @@
 
             <div class="mt-3 space-y-1">
                 <!-- Account Management -->
-                <x-jet-responsive-nav-link class="text-gray-50" href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
+                <x-jet-responsive-nav-link class="text-gray-500" href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
                     {{ __('Dashboard') }}
                 </x-jet-responsive-nav-link>
 
                 @if ($user->admin == 1)
-                    <x-jet-responsive-nav-link class="text-gray-50" href="{{ route('therapists.index') }}"
+                    <x-jet-responsive-nav-link class="text-gray-500" href="{{ route('therapists.index') }}"
                         :active="request()->routeIs('therapists.index')">
                         {{ __('Therapists') }}
                     </x-jet-responsive-nav-link>
                 @endif
 
-                <x-jet-responsive-nav-link class="text-gray-50" href="{{ route('clients.index') }}" :active="request()->routeIs('clients.index')">
+                <x-jet-responsive-nav-link class="text-gray-500" href="{{ route('clients.index') }}" :active="request()->routeIs('clients.index')">
                     {{ __('Clients') }}
                 </x-jet-responsive-nav-link>
 
-                <x-jet-responsive-nav-link class="text-gray-50" href="{{ route('session.index') }}" :active="request()->routeIs('session.index')">
+                <x-jet-responsive-nav-link class="text-gray-5000" href="{{ route('session.index') }}" :active="request()->routeIs('session.index')">
                     {{ __('Sessions') }}
                 </x-jet-responsive-nav-link>
 
-                <x-jet-responsive-nav-link class="text-gray-50" href="/messages" :active="request()->routeIs('session.index')">
+                <x-jet-responsive-nav-link class="text-gray-500" href="/messages" :active="request()->routeIs('session.index')">
                     {{ __('Messages') }}
                 </x-jet-responsive-nav-link>
 
-                <x-jet-responsive-nav-link class="text-gray-50" href="{{ route('profile.show') }}" :active="request()->routeIs('profile.show')">
+                <x-jet-responsive-nav-link class="text-gray-500" href="{{ route('profile.show') }}" :active="request()->routeIs('profile.show')">
                     {{ __('Profile') }}
                 </x-jet-responsive-nav-link>
 
@@ -236,7 +236,7 @@
                 <form method="POST" action="{{ route('logout') }}" x-data>
                     @csrf
 
-                    <x-jet-responsive-nav-link class="text-gray-50" href="{{ route('logout') }}"
+                    <x-jet-responsive-nav-link class="text-gray-500" href="{{ route('logout') }}"
                         @click.prevent="$root.submit();">
                         {{ __('Log Out') }}
                     </x-jet-responsive-nav-link>
