@@ -6,6 +6,7 @@ use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use App\Models\Client;
 use App\Mail\ClientNoTherapistResponse;
+use App\Mail\ClientWaitinglistTouchbase;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Log;
 
@@ -29,7 +30,7 @@ class Kernel extends ConsoleKernel
 
             foreach ($clients as $client) {
                 try {
-                    Mail::to($client->email)->send(new ClientNoTherapistResponse($client->preferred_name));
+                    Mail::to($client->email)->send(new ClientWaitinglistTouchbase($client->preferred_name));
                     $client->update(['updated_at' => now()]);
                 } catch (\Exception $e) {
                     Log::error("Failed to send email to client ID {$client->id}: " . $e->getMessage());
