@@ -25,6 +25,7 @@ class Kernel extends ConsoleKernel
 
         $schedule->call(function () {
             $clients = Client::whereIn('user_id', [0, 200])
+            ->where('waitlist', 1)
                 ->where('updated_at', '<', now()->subWeeks(2))
                 ->get();
 
@@ -32,6 +33,9 @@ class Kernel extends ConsoleKernel
                 try {
                     Mail::to($client->email)->send(new ClientWaitinglistTouchbase($client->preferred_name));
                     $client->update(['updated_at' => now()]);
+                    $client->touch();
+                    $client->save();
+                    Log::error("Email waitinglist touch base sent to client ID {$client->id} at {$client->email}");
                 } catch (\Exception $e) {
                     Log::error("Failed to send email to client ID {$client->id}: " . $e->getMessage());
                 }
