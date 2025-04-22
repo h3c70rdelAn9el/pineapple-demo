@@ -28,20 +28,22 @@ class Kernel extends ConsoleKernel
             ->where('waitlist', 1)
                 ->where('updated_at', '<', now()->subWeeks(2))
                 ->get();
-
+            $log_message = '';
             foreach ($clients as $client) {
                 try {
                     /*
                     Mail::to($client->email)->send(new ClientWaitinglistTouchbase($client->preferred_name));
+                    */
                     $client->update(['updated_at' => now()]);
                     $client->touch();
                     $client->save();
-                    */
-                    Log::error("Email waitinglist touch base sent to client ID {$client->id} at {$client->email}");
+                    
+                   $log_message .= "Email waitinglist touch base sent to client ID {$client->id} at {$client->email}\n";
                 } catch (\Exception $e) {
                     Log::error("Failed to send email to client ID {$client->id}: " . $e->getMessage());
                 }
             }
+            Log::error($log_message);
         })->daily();
     }
 
