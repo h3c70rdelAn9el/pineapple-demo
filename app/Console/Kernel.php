@@ -31,9 +31,9 @@ class Kernel extends ConsoleKernel
             $log_message = '';
             foreach ($clients as $client) {
                 try {
-                    /*
+                    
                     Mail::to($client->email)->send(new ClientWaitinglistTouchbase($client->preferred_name));
-                    */
+                    
                     $client->update(['updated_at' => now()]);
                     $client->touch();
                     $client->save();
