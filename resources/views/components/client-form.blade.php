@@ -1,7 +1,7 @@
 {{-- ! commented code out are fields they wanted ommitted. I kept them in place incase someone decides to put them back --}}
 {{-- give the merror message  --}}
 @if ($errors->any())
-    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+    <div class="relative px-4 py-3 mb-4 text-red-700 bg-red-100 border border-red-400 rounded" role="alert">
         <ul>
             @foreach ($errors->all() as $error)
                 <li class="text-sm">{{ $error }}</li>
@@ -11,7 +11,7 @@
 
 @endif
 
-<form class="z-50 mx-auto mb-4 mt-2 h-full w-5/6 rounded-md border border-blue-600 bg-blue-200 p-4 shadow-lg md:w-2/3"
+<form class="z-50 w-5/6 h-full p-4 mx-auto mt-2 mb-4 bg-blue-200 border border-blue-600 rounded-md shadow-lg md:w-2/3"
     style="z-index: 99999;" action="{{ route('client.store') }}" method="POST">
     @csrf
     <x-form_label for="client_code">
@@ -39,7 +39,7 @@
     <x-form_label for="status">
         Status
     </x-form_label>
-    <select class="peer mt-2 w-full rounded-md border-b-2 border-blue-200 p-3 ring-0" id="status" name="status"
+    <select class="w-full p-3 mt-2 border-b-2 border-blue-200 rounded-md peer ring-0" id="status" name="status"
         type="text">
         <option value="" disabled selected hidden>Select Status</option>
         <option value="0">Active</option>
@@ -68,7 +68,7 @@
     <x-form_input id="phone" name="phone" type="tel" required />
 
     {{-- contact_method --}}
-    <div class="my-4 flex flex-col" x-data="{ openContact: false }">
+    <div class="flex flex-col my-4" x-data="{ openContact: false }">
         <x-jet-label>Contact Method:</x-jet-label>
         <button
             class="-m-0.5 flex w-full justify-between rounded-md border border-blue-300 bg-gray-100 p-3 text-gray-700 focus:border-blue-500"
@@ -100,10 +100,10 @@
         </div>
     </div>
 
-    <div class="my-4 rounded-lg border-2 border-blue-300 bg-blue-100 p-2">
+    <div class="p-2 my-4 bg-blue-100 border-2 border-blue-300 rounded-lg">
         <h3>Optional Fields</h3>
         {{-- Gender --}}
-        <div class="my-4 flex flex-col" x-data="{ openGender: false }">
+        <div class="flex flex-col my-4" x-data="{ openGender: false }">
             <x-jet-label>Gender</x-jet-label>
             <button
                 class="-m-0.5 flex w-full justify-between rounded-md border border-blue-300 bg-gray-100 p-3 text-gray-700 focus:border-blue-500"
@@ -156,7 +156,7 @@
                     <label class="ml-2" for="otherGender">Other</label>
                 </div>
 
-                <div class="m-3 flex flex-row">
+                <div class="flex flex-row m-3">
                     <input class="mr-0.5 mt-1 rounded-full transition duration-200 ease-in-out hover:bg-blue-500"
                         id="otherGenderInput" name="otherGender" type="text" style="display: none;">
                 </div>
@@ -165,7 +165,7 @@
 
         {{-- Pronouns --}}
         <div class="col-span-6 mt-0 sm:col-span-4">
-            <div class="my-4 flex flex-col" x-data="{ openPronouns: false, selectedPronouns: [] }">
+            <div class="flex flex-col my-4" x-data="{ openPronouns: false, selectedPronouns: [] }">
                 <x-form_label>
                     Pronoun(s):
                 </x-form_label>
@@ -221,7 +221,7 @@
                         <label class="ml-2" for="otherPronoun">Other</label>
                     </div>
 
-                    <div class="m-3 flex flex-row">
+                    <div class="flex flex-row m-3">
                         <input class="mr-0.5 mt-1 rounded-full transition duration-200 ease-in-out hover:bg-blue-500"
                             id="otherPronounInput" name="otherPronoun" type="text" style="display: none;">
                     </div>
@@ -231,7 +231,7 @@
 
         {{-- Sexual Orientation --}}
         <div class="col-span-6 mt-0 sm:col-span-4">
-            <div class="my-4 flex flex-col" x-data="{ openSexualOrientation: false, selectedSexualOrientation: [] }">
+            <div class="flex flex-col my-4" x-data="{ openSexualOrientation: false, selectedSexualOrientation: [] }">
                 <x-form_label>
                     Sexual Orientation(s):
                 </x-form_label>
@@ -279,13 +279,23 @@
                             type="checkbox" value="Prefer Not To Say">
                         <label class="ml-2" for="prefer-not-to-say-orientation">Prefer Not To Say</label>
                     </div>
+                     <div class="select-input-div">
+                        <input class="select-input" id="pansexual" name="sexual_orientation[]"
+                            type="checkbox" value="Pansexual">
+                        <label class="ml-2" for="pansexual">Pansexual</label>
+                    </div>
+                     <div class="select-input-div">
+                        <input class="select-input" id="queer" name="sexual_orientation[]"
+                            type="checkbox" value="Queer">
+                        <label class="ml-2" for="queer">Queer</label>
+                    </div>
                     <div class="select-input-div">
                         <input class="select-input" id="otherSexualOrientationCheckbox" name="sexual_orientation[]"
                             type="checkbox" value="Other">
                         <label class="ml-2" for="otherSexualOrientation">Other</label>
                     </div>
 
-                    <div class="m-3 flex flex-row">
+                    <div class="flex flex-row m-3">
                         <input class="mr-0.5 mt-1 rounded-full transition duration-200 ease-in-out hover:bg-blue-500"
                             id="otherSexualOrientationInput" name="otherSexualOrientation" type="text"
                             style="display: none;">
@@ -294,7 +304,7 @@
             </div>
         </div>
 
-        <div class="my-4 flex flex-col" x-data="{ openEthnicGroup: false, selectedEthnicGroups: [] }">
+        <div class="flex flex-col my-4" x-data="{ openEthnicGroup: false, selectedEthnicGroups: [] }">
             <x-form_label>
                 Ethnic Group(s):
             </x-form_label>
@@ -353,7 +363,7 @@
                     <label class="ml-2" for="otherEthnicGroup">Other</label>
                 </div>
 
-                <div class="m-3 flex flex-row">
+                <div class="flex flex-row m-3">
                     <input class="mr-0.5 mt-1 rounded-full transition duration-200 ease-in-out hover:bg-blue-500"
                         id="otherEthnicGroupInput" name="otherEthnicGroup" type="text" style="display: none;">
                 </div>
@@ -364,7 +374,7 @@
         <x-form_label for="home_address_state">
             State (optional)
         </x-form_label>
-        <select class="peer mt-2 w-full rounded-md border-b-2 border-blue-200 p-3 ring-0" id="home_address_state"
+        <select class="w-full p-3 mt-2 border-b-2 border-blue-200 rounded-md peer ring-0" id="home_address_state"
             name="home_address_state" type="text">
             <option value="" disabled selected hidden>Select State</option>
             <option value="">N/A</option>
@@ -378,7 +388,7 @@
         <x-form_label for="country">
             Country
         </x-form_label>
-        <select class="peer mt-2 w-full rounded-md border-b-2 border-blue-200 p-3 ring-0" id="home_address_country"
+        <select class="w-full p-3 mt-2 border-b-2 border-blue-200 rounded-md peer ring-0" id="home_address_country"
             name="home_address_country" type="text">
             <option value="" disabled selected hidden>Select Country</option>
             @if (isset($countries) && is_array($countries))
@@ -391,7 +401,7 @@
 
     {{-- Previous therapy --}}
     <x-form_label for="previous_therapy">Previous Therapy from Pineapple</x-form_label>
-    <select class="form-select p-3" id="previous_therapy" name="previous_therapy" type="text">
+    <select class="p-3 form-select" id="previous_therapy" name="previous_therapy" type="text">
         <option value="" disabled selected hidden>Select One</option>
         <option>Yes</option>
         <option>No</option>
@@ -399,7 +409,7 @@
 
     {{-- possible_support_needed --}}
     {{-- <div class="col-span-6 mt-0 sm:col-span-4">
-        <div class="relative mb-4 mt-6 w-full"
+        <div class="relative w-full mt-6 mb-4"
             x-data="{ showDropdown: false }">
             <x-form_label for="possible_support_needed">
                 <p>Possible Support Needed: <span class="ml-2 text-xs"></p>
@@ -407,10 +417,10 @@
             <div class="rounded-md"
                 @click.away="showDropdown = false">
                 <div class="flex w-full justify-between rounded-md border border-blue-300 bg-gray-100 p-1.5">
-                    <button class="flex w-full flex-row justify-between"
+                    <button class="flex flex-row justify-between w-full"
                         type="button"
                         @click="showDropdown = !showDropdown">
-                        <p class="ml-1 p-1">Select Options</p>
+                        <p class="p-1 ml-1">Select Options</p>
                         <svg class="mt-1 h-[18px] w-[18px] text-gray-700"
                             fill="none"
                             stroke="currentColor"
@@ -442,15 +452,15 @@
         </div>
     </div> --}}
     <div class="col-span-6 mt-0 sm:col-span-4">
-        <div class="relative mb-4 mt-6 w-full" x-data="{ showDropdown: false }">
+        <div class="relative w-full mt-6 mb-4" x-data="{ showDropdown: false }">
             <x-form_label>
                 Possible Support Needed:
             </x-form_label>
             <div class="rounded-md" @click.away="showDropdown = false">
                 <div class="flex w-full justify-between rounded-md border border-blue-300 bg-gray-100 p-1.5">
-                    <button class="flex w-full flex-row justify-between" type="button"
+                    <button class="flex flex-row justify-between w-full" type="button"
                         @click="showDropdown = !showDropdown">
-                        <p class="ml-1 p-1">Select Options</p>
+                        <p class="p-1 ml-1">Select Options</p>
                         <svg class="mt-1 h-[18px] w-[18px] text-gray-700" fill="none" stroke="currentColor"
                             viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7">
@@ -460,7 +470,7 @@
                 </div>
                 <div class="rounded-md bg-gray-50 md:flex md:flex-wrap" x-show="showDropdown"
                     x-transition.scale.origin.top x-cloak>
-                    <div class="items-center p-2 flex flex-wrap">
+                    <div class="flex flex-wrap items-center p-2">
                         @foreach ($attributes['support_types'] as $category)
                             <div class="m-2 mr-0.5 mt-1 rounded-full p-2">
                                 <input
@@ -479,7 +489,7 @@
                             <label class="mb-0.5 ml-0.5" for="otherPossibleSupport">Other</label>
                         </div>
 
-                        <div class="m-3 flex flex-row">
+                        <div class="flex flex-row m-3">
                             <input class="mr-0.5 mt-1 rounded-full " id="otherPossibleSupportInput"
                                 name="otherPossibleSupport" type="text" style="display: none;">
                         </div>
@@ -487,7 +497,7 @@
                     </div>
                     {{-- @endforeach --}}
                     {{-- @foreach ($categories as $category)
-                                <div class="m-3 flex flex-row">
+                                <div class="flex flex-row m-3">
                                     <input
                                         class="mr-0.5 mt-1 rounded-full transition duration-200 ease-in-out hover:bg-blue-500"
                                         name="possible_support_needed[]"$client->waitlist = $request->input('waitlist', 0);
@@ -508,7 +518,7 @@
                                     for="otherPossibleSupport">Other</label>
                             </div>
 
-                            <div class="m-3 flex flex-row">
+                            <div class="flex flex-row m-3">
                                 <input
                                     class="mr-0.5 mt-1 rounded-full transition duration-200 ease-in-out hover:bg-blue-500"
                                     id="otherPossibleSupportInput"
@@ -529,7 +539,7 @@
         inputmode="numeric" pattern="[0-9]*" />
 
     <x-form_label for="max_sessions">Maximum Therapy Sessions:</x-form_label>
-    <input class="mx-2 w-16 rounded-md border-blue-200 bg-gray-100 p-1 text-center ring-0" id="max_sessions"
+    <input class="w-16 p-1 mx-2 text-center bg-gray-100 border-blue-200 rounded-md ring-0" id="max_sessions"
         name="max_sessions" type="number" value="16">
 
     {{-- additional_notes --}}
@@ -539,14 +549,14 @@
     {{-- <x-form_input id="additional_notes"
         name="additional_notes"
         type="text" /> --}}
-    <textarea class="peer mt-2 w-full rounded-md border-b-2 border-blue-200 p-3 ring-0" id="additional_notes"
+    <textarea class="w-full p-3 mt-2 border-b-2 border-blue-200 rounded-md peer ring-0" id="additional_notes"
         name="addtional_notes" cols="30" rows="3"></textarea>
 
     {{-- Therapist --}}
     <x-form_label for="therapist">
         Therapist
     </x-form_label>
-    <select class="peer mt-2 w-full rounded-md border-b-2 border-blue-200 p-3 capitalize ring-0" id="user_id"
+    <select class="w-full p-3 mt-2 capitalize border-b-2 border-blue-200 rounded-md peer ring-0" id="user_id"
         name="user_id" required>
         <option value="" disabled selected hidden>Therapist</option>
 
@@ -621,8 +631,8 @@
 
 
 
-    <div class="mt-2 flex">
-        <button class="button-secondary mx-auto">Add</button>
+    <div class="flex mt-2">
+        <button class="mx-auto button-secondary">Add</button>
     </div>
 </form>
 
