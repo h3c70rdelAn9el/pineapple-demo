@@ -127,6 +127,10 @@
                                 <x-jet-dropdown-link href="{{ route('therapists.index') }}">
                                     {{ __('Therapists') }}
                                 </x-jet-dropdown-link>
+                                
+                                <x-jet-dropdown-link href="{{ route('admin.email-therapists') }}">
+                                    {{ __('Email Therapists') }}
+                                </x-jet-dropdown-link>
                             @endif
 
 
@@ -213,6 +217,11 @@
                     <x-jet-responsive-nav-link class="text-gray-500" href="{{ route('therapists.index') }}"
                         :active="request()->routeIs('therapists.index')">
                         {{ __('Therapists') }}
+                    </x-jet-responsive-nav-link>
+                    
+                    <x-jet-responsive-nav-link class="text-gray-500" href="{{ route('admin.email-therapists') }}"
+                        :active="request()->routeIs('admin.email-therapists')">
+                        {{ __('Email Therapists') }}
                     </x-jet-responsive-nav-link>
                 @endif
 

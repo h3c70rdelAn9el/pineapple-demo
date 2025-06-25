@@ -10,6 +10,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FileUploadController;
 use App\Http\Controllers\TherapistsController;
 use App\Http\Controllers\TherapySessionController;
+use App\Http\Controllers\AdminEmailController;
 
 /*
 |--------------------------------------------------------------------------
@@ -130,3 +131,13 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified'
 ])->get('/therapist/{id}', [TherapistsController::class, 'show'])->name('therapist.show');
+
+// Admin email routes
+Route::middleware([
+    'auth:sanctum',
+    config('jetstream.auth_session'),
+    'verified'
+])->group(function () {
+    Route::get('/admin/email-therapists', [AdminEmailController::class, 'index'])->name('admin.email-therapists');
+    Route::post('/admin/email-therapists/send', [AdminEmailController::class, 'send'])->name('admin.email-therapists.send');
+});
