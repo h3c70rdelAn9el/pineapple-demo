@@ -300,4 +300,10 @@ $incomplete_reason = rtrim($incomplete_reason, ', ');
         return $this->fileUploads()->where('document_type', 'public_liability_insurance')->whereRaw('date > NOW()')->first();
     }
 
+    //has many therapy_sessions
+    public function therapy_sessions()
+    {
+        return $this->hasMany(TherapySession::class);
+    }
+
 }

@@ -45,6 +45,8 @@ class Kernel extends ConsoleKernel
             }
             Log::error($log_message);
         })->daily();
+
+        $schedule->command('invoices:generate-therapists')->monthlyOn(1, '02:00');
     }
 
     /**
