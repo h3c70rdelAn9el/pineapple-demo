@@ -7,11 +7,18 @@
         <x-clock class="bg-blue-500 text-base font-bold text-white"></x-clock>
     </div>
     <div class="flex flex-row">
-        <button class="button">
+        <button class="button relative">
             <a href="/chatify">
                 Messenger
             </a>
+            @php
+                $unreadCount = \App\Models\ChMessage::where('to_id', $user->id)->where('seen', 0)->count();
+            @endphp
+            @if($unreadCount > 0)
+                <span class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                    {{ $unreadCount > 9 ? '9+' : $unreadCount }}
+                </span>
+            @endif
         </button>
-        {{-- TODO: add unseen message count --}}
     </div>
 </section>
