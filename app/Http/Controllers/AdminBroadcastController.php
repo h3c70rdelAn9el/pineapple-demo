@@ -64,7 +64,7 @@ class AdminBroadcastController extends Controller
                 $message = Chatify::newMessage([
                     'from_id' => Auth::user()->id,
                     'to_id' => $recipient->id,
-                    'body' => htmlentities(trim($request->message), ENT_QUOTES, 'UTF-8'),
+                    'body' => e(trim($request->message)),
                     'attachment' => null,
                 ]);
 
