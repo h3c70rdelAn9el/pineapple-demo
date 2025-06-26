@@ -17,12 +17,12 @@
 <body class="font-sans antialiased bg-gray-50">
     <x-app-layout>
         <x-slot name="header">
-            <div class="flex justify-between items-center">
-                <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            <div class="flex items-center justify-between">
+                <h2 class="text-xl font-semibold leading-tight text-gray-800">
                     {{ __('Broadcast Message to All Users') }}
                 </h2>
                 <a href="{{ route('admin.broadcast-history') }}" 
-                   class="px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500">
+                   class="px-4 py-2 text-white bg-gray-600 rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500">
                     View Message History
                 </a>
             </div>
@@ -30,23 +30,23 @@
 
         <div class="py-12">
             <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
-                <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
+                <div class="overflow-hidden bg-white shadow-xl sm:rounded-lg">
                     <div class="p-6">
                         <!-- Success/Error Messages -->
                         @if (session('success'))
-                            <div class="mb-4 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative">
+                            <div class="relative px-4 py-3 mb-4 text-green-700 bg-green-100 border border-green-400 rounded">
                                 <span class="block sm:inline">{{ session('success') }}</span>
                             </div>
                         @endif
 
                         @if (session('error'))
-                            <div class="mb-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative">
+                            <div class="relative px-4 py-3 mb-4 text-red-700 bg-red-100 border border-red-400 rounded">
                                 <span class="block sm:inline">{{ session('error') }}</span>
                             </div>
                         @endif
 
                         @if ($errors->any())
-                            <div class="mb-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+                            <div class="px-4 py-3 mb-4 text-red-700 bg-red-100 border border-red-400 rounded">
                                 <ul class="list-disc list-inside">
                                     @foreach ($errors->all() as $error)
                                         <li>{{ $error }}</li>
@@ -61,11 +61,11 @@
 
                             <!-- Recipient Selection -->
                             <div>
-                                <label for="recipient_type" class="block text-sm font-medium text-gray-700 mb-2">
+                                <label for="recipient_type" class="block mb-2 text-sm font-medium text-gray-700">
                                     Send Message To:
                                 </label>
                                 <select name="recipient_type" id="recipient_type" required
-                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                                        class="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                                     <option value="all">All Users (Admins and Therapists)</option>
                                     <option value="therapists">All Therapists Only</option>
                                     <option value="admins">All Admins Only</option>
@@ -74,21 +74,21 @@
 
                             <!-- Message Content -->
                             <div>
-                                <label for="message" class="block text-sm font-medium text-gray-700 mb-2">
+                                <label for="message" class="block mb-2 text-sm font-medium text-gray-700">
                                     Message Content:
                                 </label>
                                 <textarea name="message" id="message" rows="6" required
                                           placeholder="Enter your broadcast message here..."
-                                          class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">{{ old('message') }}</textarea>
+                                          class="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500">{{ old('message') }}</textarea>
                             </div>
 
                             <!-- Preview Recipients -->
-                            <div class="bg-gray-50 p-4 rounded-md">
-                                <h4 class="text-sm font-medium text-gray-700 mb-2">Message Preview:</h4>
+                            <div class="p-4 rounded-md bg-gray-50">
+                                <h4 class="mb-2 text-sm font-medium text-gray-700">Message Preview:</h4>
                                 <p class="text-sm text-gray-600" id="recipient-preview">
                                     This message will be sent to all users via the messaging system.
                                 </p>
-                                <p class="text-xs text-gray-500 mt-2">
+                                <p class="mt-2 text-xs text-gray-500">
                                     Recipients will receive this message in their Chatify messenger and will be able to reply to you directly.
                                 </p>
                             </div>
@@ -96,8 +96,8 @@
                             <!-- Test Message Option -->
                             <div class="flex items-center">
                                 <input type="checkbox" name="test_message" id="test_message" value="1"
-                                       class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
-                                <label for="test_message" class="ml-2 block text-sm text-gray-700">
+                                       class="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
+                                <label for="test_message" class="block ml-2 text-sm text-gray-700">
                                     Send test message to myself only
                                 </label>
                             </div>
@@ -105,20 +105,20 @@
                             <!-- Submit Buttons -->
                             <div class="flex justify-end space-x-3">
                                 <a href="{{ route('dashboard') }}" 
-                                   class="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                   class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                                     Cancel
                                 </a>
                                 <button type="submit" 
-                                        class="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                        class="px-4 py-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                                     Send Broadcast Message
                                 </button>
                             </div>
                         </form>
 
                         <!-- Instructions -->
-                        <div class="mt-8 bg-blue-50 p-4 rounded-md">
-                            <h4 class="text-sm font-medium text-blue-800 mb-2">How Broadcast Messaging Works:</h4>
-                            <ul class="text-sm text-blue-700 list-disc list-inside space-y-1">
+                        <div class="p-4 mt-8 rounded-md bg-blue-50">
+                            <h4 class="mb-2 text-sm font-medium text-blue-800">How Broadcast Messaging Works:</h4>
+                            <ul class="space-y-1 text-sm text-blue-700 list-disc list-inside">
                                 <li>Messages are sent directly to users' Chatify messenger</li>
                                 <li>Recipients can reply to you individually in their messenger</li>
                                 <li>All messages appear in the regular chat interface with an "Admin" badge</li>
@@ -129,19 +129,19 @@
                         </div>
 
                         <!-- Quick Access -->
-                        <div class="mt-4 bg-gray-50 p-4 rounded-md">
-                            <h4 class="text-sm font-medium text-gray-800 mb-2">Quick Access:</h4>
+                        <div class="p-4 mt-4 rounded-md bg-gray-50">
+                            <h4 class="mb-2 text-sm font-medium text-gray-800">Quick Access:</h4>
                             <div class="flex space-x-4">
                                 <a href="/chatify" 
-                                   class="text-sm text-indigo-600 hover:text-indigo-800 underline">
+                                   class="text-sm text-indigo-600 underline hover:text-indigo-800">
                                     Open Messenger
                                 </a>
                                 <a href="{{ route('admin.broadcast-history') }}" 
-                                   class="text-sm text-indigo-600 hover:text-indigo-800 underline">
+                                   class="text-sm text-indigo-600 underline hover:text-indigo-800">
                                     View Message History
                                 </a>
                                 <a href="{{ route('admin.email-therapists') }}" 
-                                   class="text-sm text-indigo-600 hover:text-indigo-800 underline">
+                                   class="text-sm text-indigo-600 underline hover:text-indigo-800">
                                     Send Email Instead
                                 </a>
                             </div>
