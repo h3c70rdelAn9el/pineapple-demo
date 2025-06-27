@@ -92,6 +92,12 @@
                             <p class="text-xs font-light">Document Type:</p>
                             <p class="pl-2 text-xs font-light">{{ $form->document_type }}</p>
                         </div>
+                        @if($form->document_type === 'clinical_license' && $form->region)
+                        <div class="flex flex-row">
+                            <p class="text-xs font-light">Region:</p>
+                            <p class="pl-2 text-xs font-light">{{ $form->region }}</p>
+                        </div>
+                        @endif
                         <div class="flex flex-row">
                             {{-- TODO: STYLE THIS --}}
                             <a class="text-lg" href="{{ route('fileEdit', $form->id) }}">View</a>
@@ -180,6 +186,12 @@
                         <p class="text-xs font-light">Document Type:</p>
                         <p class="pl-2 text-xs font-light">{{ $form->document_type }}</p>
                     </div>
+                    @if($form->document_type === 'clinical_license' && $form->region)
+                    <div class="flex flex-row">
+                        <p class="text-xs font-light">Region:</p>
+                        <p class="pl-2 text-xs font-light">{{ $form->region }}</p>
+                    </div>
+                    @endif
                     <div class="flex flex-row">
                         {{-- TODO: STYLE THIS --}}
                         <a class="text-lg" href="{{ route('fileEdit', $form->id) }}">View</a>
