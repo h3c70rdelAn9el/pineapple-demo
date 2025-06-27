@@ -23,6 +23,7 @@ class FileUpload extends Model
         'file_path',
         'file_name',
         'document_type',
+        'region',
         'date',
         'note',
         'verified',
