@@ -86,7 +86,7 @@ class GenerateMonthlyTherapistInvoices extends Command
             });
            
             $this->info("Invoice sent to therapist ID {$therapist->id} at {$therapist->email}");
-            exit;
+            
         }
 
         $this->info('Monthly therapist invoices generated and sent.');
