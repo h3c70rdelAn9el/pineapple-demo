@@ -22,130 +22,77 @@ class TherapistsController extends Controller
     {
         $user = auth()->user();
 
-        $therapists = User::where('admin', 0)
-            ->orderBy(DB::raw('COALESCE(preferred_name, name)')) // Order by preferred name or name
-            ->paginate(30, ['*'], 'therapists');
+        // Get all therapists for filtering
+        $alltherapists = User::where('admin', 0)
+            ->orderBy(DB::raw('COALESCE(preferred_name, name)'))
+            ->get();
 
-        $inactiveTherapists = User::where('admin', 0)
-            ->where('active_status', 1)
-            ->orderBy(DB::raw('COALESCE(preferred_name, name)')) // Order by preferred name or name
-            ->paginate(30, ['*'], 'therapists');
+        // Paginated results with different pagination parameters
+        $therapists = User::where('admin', 0)
+            ->orderBy(DB::raw('COALESCE(preferred_name, name)'))
+            ->paginate(30, ['*'], 'all_therapists');
 
         $activeTherapists = User::where('admin', 0)
+            ->where('active_status', 1)
+            ->orderBy(DB::raw('COALESCE(preferred_name, name)'))
+            ->paginate(30, ['*'], 'active_therapists');
+
+        $inactiveTherapists = User::where('admin', 0)
             ->where('active_status', 0)
-            ->orderBy(DB::raw('COALESCE(preferred_name, name)')) // Order by preferred name or name
-            ->paginate(30, ['*'], 'therapists');
+            ->orderBy(DB::raw('COALESCE(preferred_name, name)'))
+            ->paginate(30, ['*'], 'inactive_therapists');
 
-
-        if ($therapists) {
-            $incompleteTherapists = $therapists->filter(function (User $therapist) {
-
+        // Filter incomplete therapists from all therapists
+        $incompleteTherapists = collect();
+        if ($alltherapists) {
+            $incompleteTherapistsData = $alltherapists->filter(function (User $therapist) {
                 $res = $therapist->isComplete();
                 $incomplete = !$res['status'];
                 return $incomplete && !$therapist->isAdmin();
             });
-        } else {
-            $incompleteTherapists = collect();
+            
+            // Convert to paginated collection
+            $currentPage = request()->get('incomplete_therapists', 1);
+            $perPage = 30;
+            $currentPageItems = $incompleteTherapistsData->slice(($currentPage - 1) * $perPage, $perPage)->values();
+            
+            $incompleteTherapists = new LengthAwarePaginator(
+                $currentPageItems,
+                $incompleteTherapistsData->count(),
+                $perPage,
+                $currentPage,
+                ['path' => request()->url(), 'pageName' => 'incomplete_therapists']
+            );
         }
 
-        //$incompleteTherapistsCount = $incompleteTherapists->count();
-        $incompleteTherapistsCount = User::where('admin', 0)->get()
-            ->filter(function ($user) {
-                return !$user->isComplete()['status'];
-            })
-            ->count();
-
-
-        $therapist = User::find($user->id);
-
-        $incompleteTherapist = false;
-        if ($therapist) {
-            $fieldsToCheck = [
-                'id_uploaded' => $therapist->isIdUploaded() ?? null,
-                'W9_or_WBEN_uploaded' => $therapist->isW9Uploaded() ?? null,
-                'license_uploaded' => $therapist->isLicenseUploaded() ?? null,
-                'insurance_uploaded' => $therapist->isInsuranceUploaded() ?? null,
-                'headshot_uploaded' => $therapist->isHeadshotUploaded() ?? null,
-            ];
-
-            foreach ($fieldsToCheck as $field) {
-                if (is_null($field) || $field === false) {
-                    $incompleteTherapist = true;
-                    break;
-                }
-            }
-        }
-
-        $inactiveTherapist = User::where(
-            'admin',
-            0
-        )
-            ->where('active_status', 1)
-            ->orderBy(DB::raw('COALESCE(preferred_name, name)'))
-            ->first();
-
-        $inactiveTherapistsCount = User::where('admin', 0)
-            ->where('active_status', 1)->count();
-
-
-        $unverifiedTherapist = false;
-
-        if ($user) {
-            /*
-            $fieldsToCheck = [
-                'contract_signed' => $therapist->contract_signed ?? null,
-                'all_documents' => $therapist->all_documents ?? null,
-            ];
-
-            foreach ($fieldsToCheck as $field) {
-                if (is_null($field) || $field === false) {
-                    $unverifiedTherapist = true;
-                    break;
-                }
-            }
-            */
-            $unverifiedTherapist = !$user->isVerified()['status'];
-        }
-
-        $unverifiedTherapists = false;
-        if ($therapists) {
-            $unverifiedTherapists = $therapists->filter(function (User $therapist) {
+        // Filter unverified therapists from all therapists
+        $unverifiedTherapists = collect();
+        if ($alltherapists) {
+            $unverifiedTherapistsData = $alltherapists->filter(function (User $therapist) {
                 $unverified = !$therapist->isVerified()['status'];
                 return $unverified && !$therapist->isAdmin();
             });
-        } else {
-            $unverifiedTherapists = collect();
+            
+            // Convert to paginated collection
+            $currentPage = request()->get('unverified_therapists', 1);
+            $perPage = 30;
+            $currentPageItems = $unverifiedTherapistsData->slice(($currentPage - 1) * $perPage, $perPage)->values();
+            
+            $unverifiedTherapists = new LengthAwarePaginator(
+                $currentPageItems,
+                $unverifiedTherapistsData->count(),
+                $perPage,
+                $currentPage,
+                ['path' => request()->url(), 'pageName' => 'unverified_therapists']
+            );
         }
-        $unverifiedTherapistCount = $unverifiedTherapists->count();
-        $unverifiedTherapistCount = User::where('admin', 0)->get()
-            ->filter(function ($user) {
-                return !$user->isVerified()['status'];
-            })
-            ->count();
-        $activeTherapistsCount = User::where('admin', 0)
-            ->where('active_status', 0)
-            ->orderBy(DB::raw('COALESCE(preferred_name, name)'))->count();
-        /*
-        $unverifiedTherapistCount = User::where('admin', 0)
-        ->where(function ($query) {
-            $query->where('contract_signed', false)
-            ->orWhere('all_documents', false);
-        })
-            ->count();
-*/
+
         return view('therapist.index')->with([
             'therapists' => $therapists,
             'therapist' => $user,
             'inactiveTherapists' => $inactiveTherapists,
-            'inactiveTherapist' => $inactiveTherapist,
-            'inactiveTherapistsCount' => $inactiveTherapistsCount,
             'incompleteTherapists' => $incompleteTherapists,
-            'incompleteTherapist' => $incompleteTherapist,
-            'incompleteTherapistsCount' => $incompleteTherapistsCount,
             'activeTherapists' => $activeTherapists,
-            'activeTherapistsCount' => $activeTherapistsCount,
-            'unverifiedTherapist' => $unverifiedTherapist,
-            'unverifiedTherapistCount' => $unverifiedTherapistCount,
             'unverifiedTherapists' => $unverifiedTherapists,
         ]);
     }

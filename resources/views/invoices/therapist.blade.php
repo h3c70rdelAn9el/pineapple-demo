@@ -63,7 +63,7 @@
         @php $grandTotal = 0; @endphp
         @foreach($sessionSummary as $session)
             <tr>
-                <td>{{ $session['client_code'] }} </td>  }}
+                <td>{{ $session['client_code'] }}</td>
                 <td>{{ $session['type'] ?? 'Individual Session' }}</td>
                 
                 <td>{{ $session['quantity'] }}</td>

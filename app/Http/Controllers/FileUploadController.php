@@ -73,6 +73,7 @@ class FileUploadController extends Controller
         $user = auth()->user();
         $request->validate([
             'file' => 'required|mimes:pdf,jpg,jpeg,png|max:1048576',
+            'region' => 'required_if:document_type,clinical_license',
         ]);
         $fileName = time() . $request->file->getClientOriginalName();
         $verified = $user->admin ? 1 : 0;
@@ -111,6 +112,7 @@ class FileUploadController extends Controller
                 'file_path' => $path,
                 'file_name' => $fileName,
                 'document_type' => $request->document_type,
+                'region' => $request->region,
                 'date' => $request->date,
                 'note' => $request->note,
                 'verified' => $verified,
@@ -124,6 +126,7 @@ class FileUploadController extends Controller
                 'file_path' => $path,
                 'file_name' => $fileName,
                 'document_type' => $request->document_type,
+                'region' => $request->region,
                 'date' => $request->date,
                 'note' => $request->note,
                 'verified' => $verified,
@@ -218,6 +221,7 @@ class FileUploadController extends Controller
 
         $request->validate([
             'document_type' => 'nullable|string',
+            'region' => 'required_if:document_type,clinical_license',
             'date' => 'nullable|date',
             'file_title' => 'nullable|string',
             'verified' => 'nullable|boolean',
@@ -233,6 +237,7 @@ class FileUploadController extends Controller
 
         $form->update([
             'document_type' => $request->document_type ?? $form->document_type,
+            'region' => $request->region ?? $form->region,
             'date' => $request->date ?? $form->date,
             'file_title' => $request->file_title ?? $form->file_title,
             'note' => $request->note ?? $form->note,

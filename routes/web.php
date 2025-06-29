@@ -10,6 +10,8 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FileUploadController;
 use App\Http\Controllers\TherapistsController;
 use App\Http\Controllers\TherapySessionController;
+use App\Http\Controllers\AdminEmailController;
+use App\Http\Controllers\AdminBroadcastController;
 
 /*
 |--------------------------------------------------------------------------
@@ -130,3 +132,24 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified'
 ])->get('/therapist/{id}', [TherapistsController::class, 'show'])->name('therapist.show');
+
+// Admin email routes
+Route::middleware([
+    'auth:sanctum',
+    config('jetstream.auth_session'),
+    'verified'
+])->group(function () {
+    Route::get('/admin/email-therapists', [AdminEmailController::class, 'index'])->name('admin.email-therapists');
+    Route::post('/admin/email-therapists/send', [AdminEmailController::class, 'send'])->name('admin.email-therapists.send');
+});
+
+// Admin broadcast message routes
+Route::middleware([
+    'auth:sanctum',
+    config('jetstream.auth_session'),
+    'verified'
+])->group(function () {
+    Route::get('/admin/broadcast-message', [AdminBroadcastController::class, 'index'])->name('admin.broadcast-message');
+    Route::post('/admin/broadcast-message/send', [AdminBroadcastController::class, 'send'])->name('admin.broadcast-message.send');
+    Route::get('/admin/broadcast-history', [AdminBroadcastController::class, 'history'])->name('admin.broadcast-history');
+});
