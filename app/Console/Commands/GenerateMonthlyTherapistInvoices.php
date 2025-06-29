@@ -31,6 +31,7 @@ class GenerateMonthlyTherapistInvoices extends Command
            
 
         foreach ($therapists as $therapist) {
+            $this->info("Processing therapist ID {$therapist->id} - {$therapist->email}");
             $sessions = TherapySession::where('user_id', $therapist->id)
             ->whereBetween('created_at', [$start, $end])
             ->get()
@@ -56,6 +57,8 @@ class GenerateMonthlyTherapistInvoices extends Command
                 'total_remaining_contribution' => $totalRemainingContribution,
             ];
             }
+
+            $this->info("Found " . count($sessionSummary) . " clients with sessions for therapist ID {$therapist->id}");
 
             if (empty($sessionSummary)) continue;
 
