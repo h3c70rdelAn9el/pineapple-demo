@@ -22,11 +22,13 @@ class GenerateMonthlyTherapistInvoices extends Command
         $end = $now->copy()->subMonth()->endOfMonth();
 
         $therapists = User::where('admin', 0)
-            ->where('active_status', 0)
+            ->where('active_status', 1)
             ->whereHas('therapy_sessions', function ($q) use ($start, $end) {
                 $q->whereBetween('created_at', [$start, $end]);
             })
             ->get();
+
+           
 
         foreach ($therapists as $therapist) {
             $sessions = TherapySession::where('user_id', $therapist->id)
