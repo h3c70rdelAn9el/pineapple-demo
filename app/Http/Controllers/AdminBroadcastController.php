@@ -8,6 +8,7 @@ use App\Models\ChMessage as Message;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Queue;
 use Chatify\Facades\ChatifyMessenger as Chatify;
 
 class AdminBroadcastController extends Controller
@@ -54,35 +55,58 @@ class AdminBroadcastController extends Controller
             return back()->with('error', 'No recipients found for the selected criteria.');
         }
 
-        // Send messages to all recipients
+        // Send messages to all recipients with timeout protection
         $successCount = 0;
         $failCount = 0;
+        $batchSize = 10; // Process in batches to prevent memory issues
+        $maxExecutionTime = 30; // Prevent long-running processes
+        
+        // Set a reasonable time limit
+        set_time_limit($maxExecutionTime);
+        
+        $recipientChunks = $recipients->chunk($batchSize);
+        
+        foreach ($recipientChunks as $chunk) {
+            foreach ($chunk as $recipient) {
+                try {
+                    // Check if we're approaching time limit
+                    if ((time() - $_SERVER['REQUEST_TIME']) > ($maxExecutionTime - 5)) {
+                        Log::warning("Broadcast timeout approaching, stopping at user {$recipient->id}");
+                        break 2; // Break out of both loops
+                    }
+                    
+                    // Create message in database
+                    $message = Chatify::newMessage([
+                        'from_id' => Auth::user()->id,
+                        'to_id' => $recipient->id,
+                        'body' => e(trim($request->message)),
+                        'attachment' => null,
+                    ]);
 
-        foreach ($recipients as $recipient) {
-            try {
-                // Create message in database
-                $message = Chatify::newMessage([
-                    'from_id' => Auth::user()->id,
-                    'to_id' => $recipient->id,
-                    'body' => e(trim($request->message)),
-                    'attachment' => null,
-                ]);
+                    // Parse message for real-time broadcast
+                    $messageData = Chatify::parseMessage($message);
 
-                // Parse message for real-time broadcast
-                $messageData = Chatify::parseMessage($message);
+                    // Send real-time notification via Pusher with timeout protection
+                    try {
+                        Chatify::push("private-chatify.{$recipient->id}", 'messaging', [
+                            'from_id' => Auth::user()->id,
+                            'to_id' => $recipient->id,
+                            'message' => Chatify::messageCard($messageData, true)
+                        ]);
+                    } catch (\Exception $pusherException) {
+                        Log::warning("Pusher failed for user {$recipient->id}: " . $pusherException->getMessage());
+                        // Continue anyway since message is saved in DB
+                    }
 
-                // Send real-time notification via Pusher
-                Chatify::push("private-chatify.{$recipient->id}", 'messaging', [
-                    'from_id' => Auth::user()->id,
-                    'to_id' => $recipient->id,
-                    'message' => Chatify::messageCard($messageData, true)
-                ]);
-
-                $successCount++;
-            } catch (\Exception $e) {
-                $failCount++;
-                Log::error("Failed to send broadcast message to user {$recipient->id}: " . $e->getMessage());
+                    $successCount++;
+                } catch (\Exception $e) {
+                    $failCount++;
+                    Log::error("Failed to send broadcast message to user {$recipient->id}: " . $e->getMessage());
+                }
             }
+            
+            // Add small delay between batches to prevent overwhelming the system
+            usleep(100000); // 0.1 second delay
         }
 
         if ($failCount > 0) {
@@ -158,5 +182,55 @@ class AdminBroadcastController extends Controller
             ->paginate(20);
 
         return view('admin.broadcast-history', compact('broadcastMessages'));
+    }
+
+    /**
+     * Send broadcast message using queue for large recipient lists
+     */
+    public function sendQueued(Request $request)
+    {
+        $request->validate([
+            'message' => 'required|string|max:5000',
+            'recipient_type' => 'required|in:all,therapists,admins',
+        ]);
+
+        // Get recipients based on selection
+        $recipients = $this->getRecipients($request->recipient_type);
+
+        if ($recipients->isEmpty()) {
+            return back()->with('error', 'No recipients found for the selected criteria.');
+        }
+
+        // For large broadcasts (>50 users), use queue
+        if ($recipients->count() > 50) {
+            // Dispatch a job for each recipient
+            foreach ($recipients as $recipient) {
+                Queue::push(function() use ($request, $recipient) {
+                    try {
+                        $message = Chatify::newMessage([
+                            'from_id' => Auth::user()->id,
+                            'to_id' => $recipient->id,
+                            'body' => e(trim($request->message)),
+                            'attachment' => null,
+                        ]);
+
+                        $messageData = Chatify::parseMessage($message);
+
+                        Chatify::push("private-chatify.{$recipient->id}", 'messaging', [
+                            'from_id' => Auth::user()->id,
+                            'to_id' => $recipient->id,
+                            'message' => Chatify::messageCard($messageData, true)
+                        ]);
+                    } catch (\Exception $e) {
+                        Log::error("Queued broadcast failed for user {$recipient->id}: " . $e->getMessage());
+                    }
+                });
+            }
+            
+            return back()->with('success', "Broadcast message queued for {$recipients->count()} users! Messages will be delivered shortly.");
+        }
+
+        // For smaller broadcasts, use the regular method
+        return $this->send($request);
     }
 }
