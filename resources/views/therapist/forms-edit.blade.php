@@ -38,7 +38,7 @@
             method="POST">
             @csrf
             @method('PUT')
-            <div class="relative mt-4 mb-5">
+            <div class="relative mt-4 mb-5" x-show="!['W9', 'W8BEN', 'W8BENE', 'terms_of_business'].includes('{{ $form->document_type }}')">
                 <x-jet-label for="date"
                     value="{{ __('Expiration Date') }}"
                     x-bind:required="documentType == 'clinical_license' || documentType ==
@@ -48,8 +48,8 @@
                         id="date"
                         name="date"
                         type="date"
+                        value="{{ $form->date }}"
                         x-bind:required="['clinical_license', 'public_liability_insurance', 'photographic_id'].includes(documentType)"
-                        :value="old('date')"
                         placeholder="Date" />
                 </div>
             </div>
@@ -70,6 +70,7 @@
             <option value="supervisor_approval_letter" {{$form->document_type == 'supervisor_approval_letter' ? 'selected' : ''}}>Supervisor Approval Letter</option>
             <option value="headshot" {{$form->document_type == 'headshot' ? 'selected' : ''}}>Headshot</option>
             <option value="Bio" {{$form->document_type == 'Bio' ? 'selected' : ''}}>Bio</option>
+            <option value="terms_of_business" {{$form->document_type == 'terms_of_business' ? 'selected' : ''}}>Terms of Business</option>
             <option value="Other" {{$form->document_type == 'Other' ? 'selected' : ''}}>Other</option>
         </select>
     </div>

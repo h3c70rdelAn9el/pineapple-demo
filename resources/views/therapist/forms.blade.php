@@ -90,7 +90,21 @@
                         </div>
                         <div class="flex flex-row">
                             <p class="text-xs font-light">Document Type:</p>
-                            <p class="pl-2 text-xs font-light">{{ $form->document_type }}</p>
+                            <p class="pl-2 text-xs font-light">
+                                @if($form->document_type === 'terms_of_business')
+                                    Terms of Business
+                                @elseif($form->document_type === 'photographic_id')
+                                    Photographic ID
+                                @elseif($form->document_type === 'clinical_license')
+                                    Clinical License
+                                @elseif($form->document_type === 'public_liability_insurance')
+                                    Public Liability Insurance
+                                @elseif($form->document_type === 'supervisor_approval_letter')
+                                    Supervisor Approval Letter
+                                @else
+                                    {{ ucfirst(str_replace('_', ' ', $form->document_type)) }}
+                                @endif
+                            </p>
                         </div>
                         @if($form->document_type === 'clinical_license' && $form->region)
                         <div class="flex flex-row">
@@ -184,7 +198,21 @@
                     </div>
                     <div class="flex flex-row">
                         <p class="text-xs font-light">Document Type:</p>
-                        <p class="pl-2 text-xs font-light">{{ $form->document_type }}</p>
+                        <p class="pl-2 text-xs font-light">
+                            @if($form->document_type === 'terms_of_business')
+                                Terms of Business
+                            @elseif($form->document_type === 'photographic_id')
+                                Photographic ID
+                            @elseif($form->document_type === 'clinical_license')
+                                Clinical License
+                            @elseif($form->document_type === 'public_liability_insurance')
+                                Public Liability Insurance
+                            @elseif($form->document_type === 'supervisor_approval_letter')
+                                Supervisor Approval Letter
+                            @else
+                                {{ ucfirst(str_replace('_', ' ', $form->document_type)) }}
+                            @endif
+                        </p>
                     </div>
                     @if($form->document_type === 'clinical_license' && $form->region)
                     <div class="flex flex-row">
