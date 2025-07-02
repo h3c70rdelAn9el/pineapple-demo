@@ -70,6 +70,7 @@
                                     <option value="supervisor_approval_letter">Supervisor Approval Letter</option>
                                     <option value="headshot">Headshot</option>
                                     <option value="Bio">Bio</option>
+                                    <option value="terms_of_business">Terms of Business</option>
                                     <option value="Other">Other</option>
                                 </select>
                             </div>
@@ -141,7 +142,7 @@
                                 </select>
                             </div>
                             
-                            <div class="relative mb-5 mt-4" x-show="!['W9', 'W8BEN', 'W8BENE'].includes(document_type)">
+                            <div class="relative mb-5 mt-4" x-show="!['W9', 'W8BEN', 'W8BENE', 'terms_of_business'].includes(document_type)">
                                 <x-jet-label for="date" value="{{ __('Expiration Date') }}" />
                                 <div class="relative">
                                     <x-jet-input class="mt-1 block w-[100%]" id="date" name="date" type="date"
