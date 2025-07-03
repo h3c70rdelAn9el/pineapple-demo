@@ -1,21 +1,21 @@
 <section
-    class="mx-auto flex w-full flex-row items-center justify-around rounded-t-md bg-blue-500 text-white md:flex-row">
-    <div class="text-md flex flex-col p-4 text-center capitalize md:flex-row md:text-xl">
+    class="flex flex-row items-center justify-around w-full mx-auto text-white bg-blue-500 rounded-t-md md:flex-row">
+    <div class="flex flex-col p-4 text-center capitalize text-md md:flex-row md:text-xl">
         <p class="ml-1 font-bold md:ml-0">{{ $user->preferred_name ? $user->preferred_name : $user->name }}</p>
     </div>
-    <div class="min-w-min bg-blue-500 md:w-44">
-        <x-clock class="bg-blue-500 text-base font-bold text-white"></x-clock>
+    <div class="bg-blue-500 min-w-min md:w-44">
+        <x-clock class="text-base font-bold text-white bg-blue-500"></x-clock>
     </div>
     <div class="flex flex-row">
-        <button class="button relative">
-            <a href="/chatify">
+        <button class="relative button">
+            <a href="/messages">
                 Messenger
             </a>
             @php
                 $unreadCount = \App\Models\ChMessage::where('to_id', $user->id)->where('seen', 0)->count();
             @endphp
             @if($unreadCount > 0)
-                <span class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                <span class="absolute flex items-center justify-center w-5 h-5 text-xs text-white bg-red-500 rounded-full -top-2 -right-2">
                     {{ $unreadCount > 9 ? '9+' : $unreadCount }}
                 </span>
             @endif

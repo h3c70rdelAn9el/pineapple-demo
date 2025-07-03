@@ -132,7 +132,7 @@
                         <div class="p-4 mt-4 rounded-md bg-gray-50">
                             <h4 class="mb-2 text-sm font-medium text-gray-800">Quick Access:</h4>
                             <div class="flex space-x-4">
-                                <a href="/chatify" 
+                                <a href="/messages" 
                                    class="text-sm text-indigo-600 underline hover:text-indigo-800">
                                     Open Messenger
                                 </a>
