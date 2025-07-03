@@ -53,7 +53,6 @@ class Client extends Model
         'Corporate',
         'Latin America',
         'Sexual Trauma',
-	'HIV',
 	'Romanian clients'
     ];
 
