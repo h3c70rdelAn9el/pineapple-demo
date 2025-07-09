@@ -52,7 +52,7 @@ class Client extends Model
         'Active - with intern',
         'Corporate',
         'Latin America',
-        'Sexual Trauma',
+        
 	'Romanian clients'
     ];
 
