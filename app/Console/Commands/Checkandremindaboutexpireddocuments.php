@@ -2,10 +2,11 @@
 
 namespace App\Console\Commands;
 
-
 use Illuminate\Console\Command;
 use App\Models\User;
 use App\Notifications\DocumentsExpired;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class Checkandremindaboutexpireddocuments extends Command
 {
@@ -28,6 +29,13 @@ class Checkandremindaboutexpireddocuments extends Command
      */
     public function handle()
     {
+        // Log the start of the command execution
+        Log::channel('discord')->info('🔍 **Document Expiry Check Started**', [
+            'command' => 'Checkandremindaboutexpireddocuments',
+            'timestamp' => now()->toDateTimeString(),
+            'environment' => config('app.env')
+        ]);
+
         //go through each user, check for expired documents and send email reminders
         $userswithexpireddocuments = [];
         $users = User::where('active_status', 0)->get();
@@ -63,10 +71,46 @@ class Checkandremindaboutexpireddocuments extends Command
                 $userswithexpireddocuments[$user->id] = 'W9 or W8BEN, ';
             }
         }
-        foreach ($userswithexpireddocuments as $userid => $documents) {
-            $user = User::find($userid);
-            $user->notify(new DocumentsExpired(rtrim($documents)));
-            print("User " . $user->name . " has expired documents: " . rtrim($documents) . "\n");
+        
+        // Log details about notifications sent
+        if (count($userswithexpireddocuments) > 0) {
+            $notifiedTherapists = [];
+            
+            foreach ($userswithexpireddocuments as $userid => $documents) {
+                $user = User::find($userid);
+                $user->notify(new DocumentsExpired(rtrim($documents)));
+                print("User " . $user->name . " has expired documents: " . rtrim($documents) . "\n");
+                
+                $notifiedTherapists[] = [
+                    'name' => $user->name,
+                    'email' => $user->email,
+                    'expired_documents' => rtrim($documents, ', ')
+                ];
+            }
+            
+            // Log to Discord with details of notified therapists
+            Log::channel('discord')->warning('📧 **Document Expiry Notifications Sent**', [
+                'command' => 'Checkandremindaboutexpireddocuments',
+                'total_notifications' => count($userswithexpireddocuments),
+                'therapists_notified' => $notifiedTherapists,
+                'timestamp' => now()->toDateTimeString()
+            ]);
+        } else {
+            // Log when no expired documents are found
+            Log::channel('discord')->info('✅ **No Expired Documents Found**', [
+                'command' => 'Checkandremindaboutexpireddocuments',
+                'total_users_checked' => $users->count(),
+                'timestamp' => now()->toDateTimeString()
+            ]);
         }
+        
+        // Log the completion of the command
+        Log::channel('discord')->info('🏁 **Document Expiry Check Completed**', [
+            'command' => 'Checkandremindaboutexpireddocuments',
+            'total_users_checked' => $users->count(),
+            'notifications_sent' => count($userswithexpireddocuments),
+            'duration' => 'Command completed',
+            'timestamp' => now()->toDateTimeString()
+        ]);
     }
 }
