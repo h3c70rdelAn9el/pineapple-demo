@@ -93,6 +93,7 @@ class Checkandremindaboutexpireddocuments extends Command
                 'command' => 'Checkandremindaboutexpireddocuments',
                 'total_notifications' => count($userswithexpireddocuments),
                 'therapists_notified' => $notifiedTherapists,
+                'cc_recipient' => 'kellie@pineapplesupport.org',
                 'timestamp' => now()->toDateTimeString()
             ]);
         } else {

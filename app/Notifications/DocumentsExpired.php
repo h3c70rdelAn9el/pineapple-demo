@@ -38,6 +38,7 @@ class DocumentsExpired extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
+            ->cc('kellie@pineapplesupport.org')
             ->line('Please note that we require your up-to-date documents to be updated on the portal. If you can log in and update as soon as possible.')
             ->line('The following documents have expired:' . $this->documents)
             ->action('Please log in and upload new documents', url(route('profile.show')))
