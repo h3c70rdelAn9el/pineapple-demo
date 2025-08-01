@@ -28,8 +28,9 @@
     <h3>Bill To:</h3>
     <p>
         Pineapple Support<br>
-        123 Pineapple Lane<br>
-        Miami, FL 33101<br>
+        3411 Silverside Road<br/>
+        Tatnall Building #104<br/>
+        Wilmington, DE, 19810<br/>
         Email: kellie@pineapplesupport.org<br>
     </p>
 
