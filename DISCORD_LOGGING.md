@@ -1,6 +1,6 @@
 # Discord Logging Setup
 
-This project uses Discord logging to track important events, including document expiry checks.
+This project uses Discord logging to track important events, including document expiry and missing document checks.
 
 ## Setting up Discord Webhook
 
@@ -27,22 +27,52 @@ This project uses Discord logging to track important events, including document 
 
 The `Checkandremindaboutexpireddocuments` command will send the following Discord notifications:
 
-### 🔍 Document Expiry Check Started
+### 🔍 Document Check Started
 - Logs when the command begins execution
-- Includes timestamp and environment information
+- Includes timestamp, environment information, and what is being checked (expired and missing documents)
 
-### 📧 Document Expiry Notifications Sent (when expired documents found)
+### 📧 Document Notifications Sent (when issues found)
 - Lists all therapists who were notified
-- Shows which documents have expired for each therapist
-- Includes therapist names and email addresses
+- Shows which documents are expired or missing for each therapist
+- Includes therapist names, email addresses, and issue types
+- Shows breakdown of expired vs missing document notifications
+- Confirms that kellie@pineapplesupport.org is CC'd on all emails
 
-### ✅ No Expired Documents Found (when no expired documents)
+### ✅ No Document Issues Found (when no issues)
 - Confirms the command ran successfully
 - Shows how many users were checked
+- Indicates no expired or missing documents were found
 
-### 🏁 Document Expiry Check Completed
+### 🏁 Document Check Completed
 - Logs when the command finishes
-- Summarizes total users checked and notifications sent
+- Summarizes total users checked, expired notifications sent, missing notifications sent, and total notifications
+
+## Required Documents Checked
+
+The command checks for the following required documents:
+
+### Documents with Expiration Dates:
+- **Clinical License** - Must be current and not expired
+- **Photographic ID** - Must be current and not expired  
+- **Public Liability Insurance** - Must be current and not expired
+
+### Documents without Expiration Dates:
+- **Headshot** - Must be uploaded (no expiration check)
+- **W9 or W8BEN** - Tax documents, must be uploaded (no expiration check)
+
+## Email Notifications
+
+The system sends two types of email notifications:
+
+### DocumentsExpired
+- Sent when uploaded documents have passed their expiration date
+- CC's kellie@pineapplesupport.org
+- Directs users to update expired documents
+
+### DocumentsMissing  
+- Sent when required documents have never been uploaded
+- CC's kellie@pineapplesupport.org
+- Directs users to upload missing documents
 
 ## Webhook Security
 
