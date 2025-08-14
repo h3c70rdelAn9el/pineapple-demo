@@ -2,21 +2,20 @@
 
 namespace App\Models;
 
-use App\Models\User;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
-use Laravel\Scout\Searchable;
-use Spatie\Activitylog\Traits\LogsActivity;
-use Spatie\Activitylog\LogOptions;
 use Illuminate\Support\Facades\Storage;
+use Laravel\Scout\Searchable;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class FileUpload extends Model
 {
     use HasFactory;
-    use Searchable;
-    use Notifiable;
     use LogsActivity;
+    use Notifiable;
+    use Searchable;
 
     protected $fillable = [
         'user_id',
@@ -35,24 +34,24 @@ class FileUpload extends Model
     {
         return $this->belongsTo(User::class);
     }
+
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
             ->logAll();
     }
+
     public function url()
     {
 
-
-
         if (env('FILESYSTEM_DISK') == 's3') {
             $url = Storage::temporaryUrl(
-                $this->file_path . $this->file_name,
+                $this->file_path.$this->file_name,
                 now()->addMinutes(5)
             );
-         } else {
-             $url = Storage::url($this->file_path . $this->file_name);
-         }
+        } else {
+            $url = Storage::url($this->file_path.$this->file_name);
+        }
 
         return $url;
     }

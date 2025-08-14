@@ -3,10 +3,8 @@
 namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
-use App\Models\Client;
 
 class ClientRemovedNotification extends Notification
 {
@@ -15,7 +13,6 @@ class ClientRemovedNotification extends Notification
     /**
      * Create a new notification instance.
      */
-
     public $clientName;
 
     public function __construct($clientName)
@@ -40,7 +37,7 @@ class ClientRemovedNotification extends Notification
     {
         return (new MailMessage)
             ->subject('Pineapple Support - Client Reassigned')
-            ->line('The client ' . $this->clientName . ' assigned to you has been reassigned to another therapist.')
+            ->line('The client '.$this->clientName.' assigned to you has been reassigned to another therapist.')
             ->line('Thank you for your attention!');
     }
 

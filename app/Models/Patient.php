@@ -1,11 +1,11 @@
 <?php
+
 //this model is not used
+
 namespace App\Models;
 
-use App\Models\User;
-use App\Models\TherapySession;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class Patient extends Model
 {

@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Client;
-use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Http\Request;
 
 class SearchController extends Controller
 {
@@ -30,7 +30,7 @@ class SearchController extends Controller
         return view('search', [
             'results' => $results,
             'query' => $query,
-            'user' => $user
+            'user' => $user,
         ]);
     }
 }

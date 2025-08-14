@@ -2,19 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\User;
-use Illuminate\Support\Facades\Mail;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class AdminEmailController extends Controller
 {
     public function __construct()
     {
         $this->middleware(function ($request, $next) {
-            if (!Auth::check() || Auth::user()->admin != 1) {
+            if (! Auth::check() || Auth::user()->admin != 1) {
                 abort(403, 'Unauthorized');
             }
+
             return $next($request);
         });
     }
@@ -30,12 +31,13 @@ class AdminEmailController extends Controller
             'subject' => 'required|string|max:255',
             'messagebody' => 'required|string',
             'therapist_type' => 'required|in:all,active,inactive',
-            'test_email' => 'boolean'
+            'test_email' => 'boolean',
         ]);
 
         if ($request->test_email) {
             // Send test email to current admin user
             $this->sendTestEmail($request);
+
             return back()->with('success', 'Test email sent successfully!');
         }
 
@@ -51,10 +53,10 @@ class AdminEmailController extends Controller
             Mail::send('emails.therapist-notification', [
                 'therapist' => $therapist,
                 'messagebody' => $request->messagebody,
-                'subject' => $request->subject
+                'subject' => $request->subject,
             ], function ($message) use ($therapist, $request) {
                 $message->to($therapist->email)
-                        ->subject($request->subject);
+                    ->subject($request->subject);
             });
         }
 
@@ -64,14 +66,14 @@ class AdminEmailController extends Controller
     private function sendTestEmail(Request $request)
     {
         $admin = Auth::user();
-        
+
         Mail::send('emails.therapist-notification', [
             'therapist' => $admin,
             'messagebody' => $request->messagebody,
-            'subject' => $request->subject . ' (TEST EMAIL)'
+            'subject' => $request->subject.' (TEST EMAIL)',
         ], function ($message) use ($admin, $request) {
             $message->to($admin->email)
-                    ->subject($request->subject . ' (TEST EMAIL)');
+                ->subject($request->subject.' (TEST EMAIL)');
         });
     }
 

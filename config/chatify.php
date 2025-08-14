@@ -69,7 +69,7 @@ return [
     'gravatar' => [
         'enabled' => true,
         'image_size' => 200,
-        'imageset' => 'identicon'
+        'imageset' => 'identicon',
     ],
 
     /*
@@ -116,5 +116,5 @@ return [
         'enabled' => true,
         'public_path' => 'sounds/chatify',
         'new_message' => 'new-message-sound.mp3',
-    ]
+    ],
 ];

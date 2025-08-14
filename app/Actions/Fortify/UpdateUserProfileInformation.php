@@ -2,28 +2,22 @@
 
 namespace App\Actions\Fortify;
 
-use App\Http\Controllers\TherapistsController;
-use App\Models\User;
 use App\Models\FileUpload;
-use Illuminate\Validation\Rule;
-use Illuminate\Support\Facades\Validator;
+use App\Models\User;
 use App\Notifications\TherapistProfileUpdated;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 use Laravel\Fortify\Contracts\UpdatesUserProfileInformation;
-
 
 class UpdateUserProfileInformation implements UpdatesUserProfileInformation
 {
-
-
     /**
      * Validate and update the given user's profile information.
      *
      * @param  mixed  $user
-     * @param  array  $input
      * @return void
      */
-
     public function update($user, array $input)
     {
 
@@ -82,7 +76,6 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
 
         ])->validateWithBag('updateProfileInformation');
 
-
         if (isset($input['photo'])) {
             $user->updateProfilePhoto($input['photo']);
         }
@@ -107,8 +100,6 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
         }
         */
 
-
-
         if (
             $input['email'] !== $user->email &&
             $user instanceof MustVerifyEmail
@@ -116,60 +107,60 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
             $this->updateVerifiedUser($user, $input);
         } else {
             $user->forceFill([
-                "account_name" => $input['account_name'],
-                "account_number" => $input['account_number'],
-                "active_status" => $input['active_status'],
-                "admin" => $input['admin'],
-                "all_documents" => $input['all_documents'],
-                "annual_contact_about_complaints_uk_date" => $input['annual_contact_about_complaints_uk_date'],
-                "avatar" => $input['avatar'],
-                "bio" => $input['bio'],
-                "certificate" => $input['certificate'],
-                "client_extensions" => $input['client_extensions'],
-                "clinical_license" => $input['clinical_license'],
-                "clinical_license_verification_portal" => $input['clinical_license_verification_portal'],
-                "contact_for_promotionals" => $input['contact_for_promotionals'],
-                "country" => $input['country'],
-                "county_town" => $input['county_town'],
-                "dropbox" => $input['dropbox'],
-                "email" => $input['email'],
-                "expires_at" => $input['expires_at'],
-                "full" => $input['full'],
-                "gender" => $input["gender"],
-                "headshot" => $input['headshot'],
-                "iban_swift_code" => $input['iban_swift_code'],
-                "insurance" => $input['insurance'],
-                "intern" => $input['intern'],
-                "leah_signed" => $input['leah_signed'],
-                "license" => $input['license'],
-                "name" => $input['name'],
-                "out_of_state_coaching" => $input['out_of_state_coaching'],
-                "preferred_name" => $input['preferred_name'],
-                "quickbooks" => $input['quickbooks'],
-                "registered" => $input['registered'],
-                "response" => $input['response'],
-                "routing_number" => $input['routing_number'],
-                "session_cost" => $input['session_cost'],
-                "signed_documents" => $input['signed_documents'],
-                "space_for_new_clients" => $input['space_for_new_clients'],
-                "state" => $input['state'],
-                "state_license_board" => $input['state_license_board'],
-                "street_address" => $input['street_address'],
-                "supervisor_name" => $input['supervisor_name'],
-                "time_zone" => $input['time_zone'],
-                "title" => $input['title'],
-                "voided_cheque" => $input['voided_cheque'],
-                "w9" => $input['w9'],
-                "website" => $input['website'],
-                "zip_code_postal_code" => $input['zip_code_postal_code'],
-                "contract_signed" => $input['contract_signed'],
-                "number_of_potential_clients" => $input['number_of_potential_clients'],
-                "file_upload" => $input['file_upload'],
-                "currency" => $input['currencyCode'],
+                'account_name' => $input['account_name'],
+                'account_number' => $input['account_number'],
+                'active_status' => $input['active_status'],
+                'admin' => $input['admin'],
+                'all_documents' => $input['all_documents'],
+                'annual_contact_about_complaints_uk_date' => $input['annual_contact_about_complaints_uk_date'],
+                'avatar' => $input['avatar'],
+                'bio' => $input['bio'],
+                'certificate' => $input['certificate'],
+                'client_extensions' => $input['client_extensions'],
+                'clinical_license' => $input['clinical_license'],
+                'clinical_license_verification_portal' => $input['clinical_license_verification_portal'],
+                'contact_for_promotionals' => $input['contact_for_promotionals'],
+                'country' => $input['country'],
+                'county_town' => $input['county_town'],
+                'dropbox' => $input['dropbox'],
+                'email' => $input['email'],
+                'expires_at' => $input['expires_at'],
+                'full' => $input['full'],
+                'gender' => $input['gender'],
+                'headshot' => $input['headshot'],
+                'iban_swift_code' => $input['iban_swift_code'],
+                'insurance' => $input['insurance'],
+                'intern' => $input['intern'],
+                'leah_signed' => $input['leah_signed'],
+                'license' => $input['license'],
+                'name' => $input['name'],
+                'out_of_state_coaching' => $input['out_of_state_coaching'],
+                'preferred_name' => $input['preferred_name'],
+                'quickbooks' => $input['quickbooks'],
+                'registered' => $input['registered'],
+                'response' => $input['response'],
+                'routing_number' => $input['routing_number'],
+                'session_cost' => $input['session_cost'],
+                'signed_documents' => $input['signed_documents'],
+                'space_for_new_clients' => $input['space_for_new_clients'],
+                'state' => $input['state'],
+                'state_license_board' => $input['state_license_board'],
+                'street_address' => $input['street_address'],
+                'supervisor_name' => $input['supervisor_name'],
+                'time_zone' => $input['time_zone'],
+                'title' => $input['title'],
+                'voided_cheque' => $input['voided_cheque'],
+                'w9' => $input['w9'],
+                'website' => $input['website'],
+                'zip_code_postal_code' => $input['zip_code_postal_code'],
+                'contract_signed' => $input['contract_signed'],
+                'number_of_potential_clients' => $input['number_of_potential_clients'],
+                'file_upload' => $input['file_upload'],
+                'currency' => $input['currencyCode'],
 
             ])->save();
 
-            if (!$user->isAdmin()) {
+            if (! $user->isAdmin()) {
                 $admins = User::where('admin', 1)->get();
                 foreach ($admins as $admin) {
                     $admin->notify(new TherapistProfileUpdated($user));
@@ -181,16 +172,12 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
         }
     }
 
-
-
     /**
      * Update the given verified user's profile information.
      *
      * @param  mixed  $user
-     * @param  array  $input
      * @return void
      */
-
     protected function updateVerifiedUser($user, array $input)
     {
         $user->forceFill([
@@ -247,7 +234,7 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
 
         ])->save();
 
-        if (!$user->isAdmin()) {
+        if (! $user->isAdmin()) {
             $admins = User::where('admin', 1)->get();
             foreach ($admins as $admin) {
                 $admin->notify(new TherapistProfileUpdated($user));

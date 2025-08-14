@@ -17,8 +17,8 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('patient_id');
             $table->integer('user_id');
-            $table->decimal('total_bill', $precision = 10, $scale=2);
-            $table->decimal('covered_cost', $precision = 10, $scale=2);
+            $table->decimal('total_bill', $precision = 10, $scale = 2);
+            $table->decimal('covered_cost', $precision = 10, $scale = 2);
             $table->timestamps();
             $table->foreign('patient_id')->references('id')->on('patients')->onDelete('cascade');
         });

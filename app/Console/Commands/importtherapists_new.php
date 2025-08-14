@@ -31,18 +31,19 @@ class importtherapists_new extends Command
 
         //open the file
         $row = 1;
-        if (($handle = fopen("therapists20230815.csv", "r")) !== FALSE) {
-            while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
+        if (($handle = fopen('therapists20230815.csv', 'r')) !== false) {
+            while (($data = fgetcsv($handle, 1000, ',')) !== false) {
 
                 //$num = count($data);
                 if ($row == 1) {
                     $row++;
+
                     continue;
                 }
 
                 /*
     [0] => Name
-    [1] => Registered 
+    [1] => Registered
     [2] => State
     [3] => Time Zone
     [4] => County
@@ -51,10 +52,10 @@ class importtherapists_new extends Command
     [7] => Gender
     [8] => $
     [9] => Clinical License
-    [10] => State License Board 
+    [10] => State License Board
     [11] => Annual Contact about  Complaints UK date
     [12] => Response
-    [13] => Second State License 
+    [13] => Second State License
     [14] => Date
     [15] => State License Board
     [16] => Annual Contact about  Complaints
@@ -67,14 +68,14 @@ class importtherapists_new extends Command
     [23] => State License 4
     [24] => Date
     [25] => License Board
-    [26] => Annual Contact about complaints 
+    [26] => Annual Contact about complaints
     [27] => Response
     [28] => State License 5
     [29] => Date
     [30] => License Board
     [31] => Annual Contact about Complaints
     [32] => Response
-    [33] => Insurance 
+    [33] => Insurance
     [34] => Signed Documents
     [35] => Leah Signed
     [36] => Number of Potential Clients
@@ -163,7 +164,6 @@ class importtherapists_new extends Command
 
                 $row++;
             }
-
 
             fclose($handle);
         }

@@ -31,70 +31,69 @@ class importtherapists_us extends Command
 
         //open the file
         $row = 1;
-        if (($handle = fopen("therapists-us.csv", "r")) !== FALSE) {
-            while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) 
-            {
+        if (($handle = fopen('therapists-us.csv', 'r')) !== false) {
+            while (($data = fgetcsv($handle, 1000, ',')) !== false) {
                 //print_r($data);
                 //$num = count($data);
-                if($row == 1)
-                {
+                if ($row == 1) {
                     $row++;
+
                     continue;
                 }
 
-/*
-    [0] => Name
-    [1] => Registered 
-    [2] => State
-    [3] => Time Zone
-    [4] => County
-    [5] => Email
-    [6] => ID
-    [7] => Gender
-    [8] => $
-    [9] => Clinical License
-    [10] => State License Board 
-    [11] => Annual Contact about  Complaints UK date
-    [12] => Response
-    [13] => Second State License 
-    [14] => Date
-    [15] => State License Board
-    [16] => Annual Contact about  Complaints
-    [17] => Response
-    [18] => State License 3
-    [19] => Date
-    [20] => License Board
-    [21] => Annual contact about complaints
-    [22] => Response
-    [23] => State License 4
-    [24] => Date
-    [25] => License Board
-    [26] => Annual Contact about complaints 
-    [27] => Response
-    [28] => State License 5
-    [29] => Date
-    [30] => License Board
-    [31] => Annual Contact about Complaints
-    [32] => Response
-    [33] => Insurance 
-    [34] => Signed Documents
-    [35] => Leah Signed
-    [36] => Number of Potential Clients
-    [37] => Space for New clients
-    [38] => Out of State Coaching
-    [39] => W9
-    [40] => Headshot
-    [41] => Voided Cheque
-    [42] => BIO
-    [43] => Website
-    [44] => Quickbooks
-    [45] => Dropbox
-    [46] => Client Extensions
-    [47] => NOTES
-    [48] => COVID FUNDRAISER
-    */
+                /*
+                    [0] => Name
+                    [1] => Registered
+                    [2] => State
+                    [3] => Time Zone
+                    [4] => County
+                    [5] => Email
+                    [6] => ID
+                    [7] => Gender
+                    [8] => $
+                    [9] => Clinical License
+                    [10] => State License Board
+                    [11] => Annual Contact about  Complaints UK date
+                    [12] => Response
+                    [13] => Second State License
+                    [14] => Date
+                    [15] => State License Board
+                    [16] => Annual Contact about  Complaints
+                    [17] => Response
+                    [18] => State License 3
+                    [19] => Date
+                    [20] => License Board
+                    [21] => Annual contact about complaints
+                    [22] => Response
+                    [23] => State License 4
+                    [24] => Date
+                    [25] => License Board
+                    [26] => Annual Contact about complaints
+                    [27] => Response
+                    [28] => State License 5
+                    [29] => Date
+                    [30] => License Board
+                    [31] => Annual Contact about Complaints
+                    [32] => Response
+                    [33] => Insurance
+                    [34] => Signed Documents
+                    [35] => Leah Signed
+                    [36] => Number of Potential Clients
+                    [37] => Space for New clients
+                    [38] => Out of State Coaching
+                    [39] => W9
+                    [40] => Headshot
+                    [41] => Voided Cheque
+                    [42] => BIO
+                    [43] => Website
+                    [44] => Quickbooks
+                    [45] => Dropbox
+                    [46] => Client Extensions
+                    [47] => NOTES
+                    [48] => COVID FUNDRAISER
+                    */
                 //create new user from $data
-                $email = explode(" ", $data[5]);
+                $email = explode(' ', $data[5]);
                 $user = \App\Models\User::firstOrNew(['email' => $email[0]]);
                 $user->name = $data[0];
                 $user->email = $email[0];
@@ -125,13 +124,11 @@ class importtherapists_us extends Command
                 $user->notes = $data[47];
                 $user->covid_fundraise = $data[48];
 
-
                 $user->save();
 
                 $row++;
-            }  
-        
-            
+            }
+
             fclose($handle);
         }
 

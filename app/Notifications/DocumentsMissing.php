@@ -3,19 +3,19 @@
 namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
 class DocumentsMissing extends Notification
 {
     use Queueable;
+
     protected $documents;
-    
+
     /**
      * Create a new notification instance.
      */
-    public function __construct(String $documents)
+    public function __construct(string $documents)
     {
         $this->documents = $documents;
     }
@@ -39,7 +39,7 @@ class DocumentsMissing extends Notification
             ->cc('kellie@pineapplesupport.org')
             ->subject('Missing Required Documents - Action Required')
             ->line('We notice that you have not yet uploaded some required documents to your therapist portal.')
-            ->line('The following documents are missing: ' . $this->documents)
+            ->line('The following documents are missing: '.$this->documents)
             ->line('Please log in to your portal and upload these documents as soon as possible to continue receiving client referrals.')
             ->action('Upload Missing Documents', url(route('profile.show')))
             ->line('If you have any questions about the required documents, please contact kellie@pineapplesupport.org');

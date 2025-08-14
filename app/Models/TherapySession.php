@@ -2,13 +2,11 @@
 
 namespace App\Models;
 
-use App\Models\Client;
-use App\Models\Patient;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class TherapySession extends Model
 {
@@ -32,12 +30,11 @@ class TherapySession extends Model
         'special' => 'boolean',
     ];
 
-
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
             ->logAll();
     }
     // add delete function
-    
+
 }

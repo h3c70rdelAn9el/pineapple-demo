@@ -3,24 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Mail\ClientSessionsAllocated;
-use App\Mail\ClientWelcome;
-use Log;
-use App\Models\User;
-use App\Models\Client;
-use Illuminate\Support\Arr;
-use Illuminate\Http\Request;
-use App\Models\TherapySession;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\File;
-use App\Notifications\NewClientNotification;
-use App\Notifications\ClientRemovedNotification;
-use App\Notifications\SessionsAssignedNotification;
-use App\Notifications\ClientMadeInactiveNotification;
-use Illuminate\Support\Facades\Mail;
 use App\Mail\ClientTherapistAssigned;
-
-
-
+use App\Mail\ClientWelcome;
+use App\Models\Client;
+use App\Models\TherapySession;
+use App\Models\User;
+use App\Notifications\ClientMadeInactiveNotification;
+use App\Notifications\ClientRemovedNotification;
+use App\Notifications\NewClientNotification;
+use App\Notifications\SessionsAssignedNotification;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Mail;
 
 class ClientController extends Controller
 {
@@ -29,8 +23,6 @@ class ClientController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-
-
     public function index()
     {
         $user = auth()->user();
@@ -63,7 +55,7 @@ class ClientController extends Controller
         $categories = Client::$categories;
         $clientsByCategory = [];
         foreach ($categories as $category) {
-            $clientsByCategory[$category] = Client::where('category', $category)->paginate(15, ['*'], 'clients_' . str_replace(' ', '_', strtolower($category)));
+            $clientsByCategory[$category] = Client::where('category', $category)->paginate(15, ['*'], 'clients_'.str_replace(' ', '_', strtolower($category)));
         }
 
         return view('clients.index', [
@@ -88,9 +80,6 @@ class ClientController extends Controller
         ]);
     }
 
-
-
-
     /**
      * Show the form for creating a new resource.
      *
@@ -106,7 +95,6 @@ class ClientController extends Controller
                 ->orderBy('state')
                 ->orderBy('name')
                 ->get();
-
 
             $inactiveTherapists = User::where('admin', 0)->where('active_status', 1)->orderBy('name', 'asc')->get();
             $therapists = User::where('admin', 0)->orderBy('name', 'asc')->get();
@@ -129,7 +117,7 @@ class ClientController extends Controller
                 'per/per/pers',
                 'ze/hir/hirs',
                 'prefer not to say',
-                'Other'
+                'Other',
             ];
             $genders = [
                 'Male',
@@ -146,9 +134,6 @@ class ClientController extends Controller
             $optionKey = 'id';
             // $maxSessions = Client::all()->max('max_sessions');
             $maxSessions = Client::max('max_sessions');
-
-
-           
 
             return view('clients.create')->with(['therapists' => $therapists, 'therapist' => $therapist, 'countries' => $countries, 'support_types' => $support_types, 'states' => $states, 'ethnicGroups' => $ethnicGroups, 'pronouns' => $pronouns, 'genders' => $genders, 'optionKey' => $optionKey, 'activeTherapists' => $activeTherapists, 'inactiveTherapists' => $inactiveTherapists, 'maxSessions' => $maxSessions]);
         } else {
@@ -170,41 +155,44 @@ class ClientController extends Controller
             'Non-Binary',
             'Prefer Not To Say',
         ];
+
         return $genders;
     }
 
     private function getPronouns()
     {
         $pronouns = [
-            "He",
-            "She",
-            "They",
-            "Ze",
-            "Per",
-            "Him",
-            "Her",
-            "Them",
-            "Zir",
-            "Prefer Not To Say",
-            "Other"
+            'He',
+            'She',
+            'They',
+            'Ze',
+            'Per',
+            'Him',
+            'Her',
+            'Them',
+            'Zir',
+            'Prefer Not To Say',
+            'Other',
         ];
+
         return $pronouns;
     }
 
     private function getSexualOrientations()
     {
         $sexual_orientation = [
-            "Heterosexual",
-            "Homosexual",
-            "Bisexual",
-            "Pansexual",
-            "Asexual",
-            "Demisexual",
-            "Queer",
-            "Questioning",
-            "Prefer Not To Say",
-            "Other"
+            'Heterosexual',
+            'Homosexual',
+            'Bisexual',
+            'Pansexual',
+            'Asexual',
+            'Demisexual',
+            'Queer',
+            'Questioning',
+            'Prefer Not To Say',
+            'Other',
         ];
+
         return $sexual_orientation;
     }
 
@@ -236,10 +224,10 @@ class ClientController extends Controller
 
         return $states;
     }
+
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -253,7 +241,7 @@ class ClientController extends Controller
 
         $selectedOrientations = $request->input('sexual_orientation');
         $otherSexualOrientation = $request->input('otherSexualOrientation');
-        $orientationString = "";
+        $orientationString = '';
         if (is_array($selectedOrientations)) {
             if (in_array('Other', $selectedOrientations) && $otherSexualOrientation) {
                 $orientationString = implode(', ', array_map(function ($value) use ($otherSexualOrientation) {
@@ -268,7 +256,7 @@ class ClientController extends Controller
 
         $selectedPronouns = $request->input('pronouns');
         $otherPronoun = $request->input('otherPronoun');
-        $pronounsString = "";
+        $pronounsString = '';
         if (is_array($selectedPronouns)) {
             if (in_array('Other', $selectedPronouns) && $otherPronoun) {
                 $pronounsString = implode(', ', array_map(function ($value) use ($otherPronoun) {
@@ -283,7 +271,7 @@ class ClientController extends Controller
 
         $selectedGenders = $request->input('gender');
         $otherGender = $request->input('otherGender');
-        $genderString = "";
+        $genderString = '';
         if (is_array($selectedGenders)) {
             if (in_array('Other', $selectedGenders) && $otherGender) {
                 $genderString = implode(', ', array_map(function ($value) use ($otherGender) {
@@ -298,7 +286,7 @@ class ClientController extends Controller
 
         $selectedEthnicGroups = $request->input('ethnic_group');
         $otherEthnicGroup = $request->input('otherEthnicGroup');
-        $ethnicGroupString = "";
+        $ethnicGroupString = '';
 
         if (is_array($selectedEthnicGroups)) {
             if (in_array('Other', $selectedEthnicGroups) && $otherEthnicGroup) {
@@ -314,7 +302,7 @@ class ClientController extends Controller
 
         $selectedPossibleSupportNeeded = $request->input('possible_support_needed');
         $otherPossibleSupport = $request->input('otherPossibleSupport');
-        $possibleSupportNeededString = "";
+        $possibleSupportNeededString = '';
 
         if (is_array($selectedPossibleSupportNeeded)) {
             if (in_array('Other', $selectedPossibleSupportNeeded) && $otherPossibleSupport) {
@@ -328,16 +316,13 @@ class ClientController extends Controller
             $possibleSupportNeededString = $selectedPossibleSupportNeeded;
         }
 
-
         $selectedContactMethods = $request->input('contact_method') ?? [];
         $contactMethodString = implode(', ', $selectedContactMethods);
-        if (is_array($request->contact_method) && !empty($request->contact_method)) {
+        if (is_array($request->contact_method) && ! empty($request->contact_method)) {
             $contactMethodString = implode(', ', $request->contact_method);
         } else {
             $contactMethodString = '';
         }
-
-
 
         // if (is_array($selectedPossibleSupportNeeded) && !empty($selectedPossibleSupportNeeded)) {
         //     $possibleSupportNeededString = implode(', ', $selectedPossibleSupportNeeded);
@@ -408,7 +393,6 @@ class ClientController extends Controller
         // dd($client->gender);
         $client->save();
 
-
         if ($client->special_sessions) {
             for ($i = 0; $i < 6; $i++) {
                 $client->therapySessions()->create([
@@ -431,14 +415,11 @@ class ClientController extends Controller
             ->with('success', 'Client added successfully');
     }
 
-
     // ** THIS IS THE PREVIOUS UPDATE METHOD:
     // ** THIS IS THE PREVIOUS UPDATE METHOD:
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Client  $client
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Client $client)
@@ -476,7 +457,7 @@ class ClientController extends Controller
         $client->possible_support_needed = implode(', ', $request->input('possible_support_needed', []));
 
         $oldTherapist = $client->user_id;
-	$oldmaxsessions = $client->max_sessions;
+        $oldmaxsessions = $client->max_sessions;
 
         $client->update([
             'client_code' => $request->input('client_code'),
@@ -522,20 +503,20 @@ class ClientController extends Controller
         }
 
         // notify the therapists of the change
-        if ((int)$request->user_id !== (int)$oldTherapist) {
+        if ((int) $request->user_id !== (int) $oldTherapist) {
             $newTherapist = User::find($request->user_id);
             $newTherapist->notify(new NewClientNotification());
             $previousTherapist = User::find($oldTherapist);
             $previousTherapist->notify(new ClientRemovedNotification($client->preferred_name));
-	    //if number of sessions was less than 2 and now is greater than 3 send the connected to therapist email to the client
-	    //this may be better to check if the old therapist user id was 'no state' which is like id 234 or something and that the new therapist is not that
-	    if ($oldTherapist == 200 || $oldTherapist == 0) {
+            //if number of sessions was less than 2 and now is greater than 3 send the connected to therapist email to the client
+            //this may be better to check if the old therapist user id was 'no state' which is like id 234 or something and that the new therapist is not that
+            if ($oldTherapist == 200 || $oldTherapist == 0) {
 
-		Mail::to($client->email)->send(new ClientTherapistAssigned($client->preferred_name));
-	    }
+                Mail::to($client->email)->send(new ClientTherapistAssigned($client->preferred_name));
+            }
 
         }
-        if ($oldmaxsessions< 2 && $client->max_sessions > 2) {
+        if ($oldmaxsessions < 2 && $client->max_sessions > 2) {
             Mail::to($client->email)->send(new ClientSessionsAllocated($client->preferred_name, $client->max_sessions));
         }
 
@@ -555,7 +536,6 @@ class ClientController extends Controller
         return redirect()->route('clients.index')
             ->with('success', 'Client updated successfully');
     }
-
 
     private function notifyAdmins($client, $sessionCount, $status)
     {
@@ -631,16 +611,15 @@ class ClientController extends Controller
         }
     }
 
-
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Client  $client
      * @return \Illuminate\Http\Response
      */
     public function destroy(Client $client)
     {
         $client->delete();
+
         return redirect()->route('dashboard');
     }
 }

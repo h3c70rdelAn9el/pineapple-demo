@@ -2,11 +2,10 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
 use App\Models\User;
 use App\Notifications\DocumentsExpired;
 use App\Notifications\DocumentsMissing;
-use Illuminate\Support\Facades\Http;
+use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
 
 class Checkandremindaboutexpireddocuments extends Command
@@ -35,7 +34,7 @@ class Checkandremindaboutexpireddocuments extends Command
             'command' => 'Checkandremindaboutexpireddocuments',
             'checking_for' => 'expired and missing documents',
             'timestamp' => now()->toDateTimeString(),
-            'environment' => config('app.env')
+            'environment' => config('app.env'),
         ]);
 
         //go through each user, check for expired documents and send email reminders
@@ -45,35 +44,35 @@ class Checkandremindaboutexpireddocuments extends Command
         foreach ($users as $user) {
             $expiredDocs = '';
             $missingDocs = '';
-            
+
             // Check for expired documents
             $cl = $user->fileUploads()->where('document_type', 'clinical_license')->orderby('date', 'desc')->first();
             if ($cl && $cl->date < now()) {
                 $expiredDocs .= 'clinical license, ';
-            } elseif (!$cl) {
+            } elseif (! $cl) {
                 $missingDocs .= 'clinical license, ';
             }
-            
+
             $photographic_id = $user->fileUploads()->where('document_type', 'photographic_id')->orderby('date', 'desc')->first();
             if ($photographic_id && $photographic_id->date < now()) {
                 $expiredDocs .= 'photographic id, ';
-            } elseif (!$photographic_id) {
+            } elseif (! $photographic_id) {
                 $missingDocs .= 'photographic id, ';
             }
-            
+
             $public_insurance = $user->fileUploads()->where('document_type', 'public_liability_insurance')->orderby('date', 'desc')->first();
             if ($public_insurance && $public_insurance->date < now()) {
                 $expiredDocs .= 'public liability insurance, ';
-            } elseif (!$public_insurance) {
+            } elseif (! $public_insurance) {
                 $missingDocs .= 'public liability insurance, ';
             }
-            
+
             // Check for headshot (no expiration)
             $headshot = $user->fileUploads()->where('document_type', 'headshot')->first();
-            if (!$headshot) {
+            if (! $headshot) {
                 $missingDocs .= 'headshot, ';
             }
-            
+
             // Check W9/W8BEN (no expiration, but required)
             $w9 = $user->isW9Uploaded();
             if ($w9) {
@@ -81,51 +80,51 @@ class Checkandremindaboutexpireddocuments extends Command
             } else {
                 $missingDocs .= 'W9 or W8BEN, ';
             }
-            
+
             // Store users with expired documents
-            if (!empty($expiredDocs)) {
+            if (! empty($expiredDocs)) {
                 $userswithexpireddocuments[$user->id] = $expiredDocs;
             }
-            
+
             // Store users with missing documents
-            if (!empty($missingDocs)) {
+            if (! empty($missingDocs)) {
                 $userswithmissingdocuments[$user->id] = $missingDocs;
             }
         }
-        
+
         // Send notifications for expired documents
         $notifiedTherapists = [];
         if (count($userswithexpireddocuments) > 0) {
             foreach ($userswithexpireddocuments as $userid => $documents) {
                 $user = User::find($userid);
                 $user->notify(new DocumentsExpired(rtrim($documents, ', ')));
-                print("User " . $user->name . " has expired documents: " . rtrim($documents, ', ') . "\n");
-                
+                echo 'User '.$user->name.' has expired documents: '.rtrim($documents, ', ')."\n";
+
                 $notifiedTherapists[] = [
                     'name' => $user->name,
                     'email' => $user->email,
                     'issue_type' => 'expired',
-                    'documents' => rtrim($documents, ', ')
+                    'documents' => rtrim($documents, ', '),
                 ];
             }
         }
-        
+
         // Send notifications for missing documents
         if (count($userswithmissingdocuments) > 0) {
             foreach ($userswithmissingdocuments as $userid => $documents) {
                 $user = User::find($userid);
                 $user->notify(new DocumentsMissing(rtrim($documents, ', ')));
-                print("User " . $user->name . " has missing documents: " . rtrim($documents, ', ') . "\n");
-                
+                echo 'User '.$user->name.' has missing documents: '.rtrim($documents, ', ')."\n";
+
                 $notifiedTherapists[] = [
                     'name' => $user->name,
                     'email' => $user->email,
                     'issue_type' => 'missing',
-                    'documents' => rtrim($documents, ', ')
+                    'documents' => rtrim($documents, ', '),
                 ];
             }
         }
-        
+
         // Log details about notifications sent
         $totalNotifications = count($userswithexpireddocuments) + count($userswithmissingdocuments);
         if ($totalNotifications > 0) {
@@ -137,17 +136,17 @@ class Checkandremindaboutexpireddocuments extends Command
                 'missing_documents_notifications' => count($userswithmissingdocuments),
                 'therapists_notified' => $notifiedTherapists,
                 'cc_recipient' => 'kellie@pineapplesupport.org',
-                'timestamp' => now()->toDateTimeString()
+                'timestamp' => now()->toDateTimeString(),
             ]);
         } else {
             // Log when no issues are found
             Log::channel('discord')->info('✅ **No Document Issues Found**', [
                 'command' => 'Checkandremindaboutexpireddocuments',
                 'total_users_checked' => $users->count(),
-                'timestamp' => now()->toDateTimeString()
+                'timestamp' => now()->toDateTimeString(),
             ]);
         }
-        
+
         // Log the completion of the command
         Log::channel('discord')->info('🏁 **Document Check Completed**', [
             'command' => 'Checkandremindaboutexpireddocuments',
@@ -155,7 +154,7 @@ class Checkandremindaboutexpireddocuments extends Command
             'expired_notifications_sent' => count($userswithexpireddocuments),
             'missing_notifications_sent' => count($userswithmissingdocuments),
             'total_notifications' => $totalNotifications,
-            'timestamp' => now()->toDateTimeString()
+            'timestamp' => now()->toDateTimeString(),
         ]);
     }
 }

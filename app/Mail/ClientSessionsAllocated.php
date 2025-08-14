@@ -3,7 +3,6 @@
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
@@ -14,7 +13,9 @@ class ClientSessionsAllocated extends Mailable
     use Queueable, SerializesModels;
 
     private $preferred_name;
+
     private $number_of_sessions;
+
     /**
      * Create a new message instance.
      */
@@ -23,7 +24,6 @@ class ClientSessionsAllocated extends Mailable
         $this->preferred_name = $preferred_name;
         $this->number_of_sessions = $number_of_sessions;
     }
-
 
     /**
      * Get the message envelope.

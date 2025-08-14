@@ -47,7 +47,7 @@ class UserController extends Controller
             'state' => 'nullable|string|max:255',
             'time_zone' => 'nullable|string|max:255',
             'selectedGenders' => 'nullable|array',
-            'currency' => 'nullable|string|max:255'
+            'currency' => 'nullable|string|max:255',
 
         ]);
 
@@ -59,14 +59,12 @@ class UserController extends Controller
 
         $user->update($validatedData);
 
-
         $updatedFields = array_intersect_key($validatedData, $user->getChanges());
 
         $admins = User::where('admin', 1)->get();
         foreach ($admins as $admin) {
             $admin->notify(new TherapistProfileUpdated($user, $updatedFields));
         }
-
 
         return redirect()->back()->with('success', 'Profile updated successfully.');
     }
@@ -83,5 +81,4 @@ class UserController extends Controller
 
         return redirect()->back()->with('success', 'Gender updated successfully.');
     }
-
 }

@@ -2,23 +2,22 @@
 
 namespace App\Models;
 
-use App\Models\User;
-use App\Models\TherapySession;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Scout\Searchable;
-use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Activitylog\LogOptions;
-use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Client extends Model
 {
-    use Searchable;
     use HasFactory;
-    use Notifiable;
-    use SoftDeletes;
     use LogsActivity;
+    use Notifiable;
+    use Searchable;
+    use SoftDeletes;
+
     protected $fillable = [
         'client_code',
         'preferred_name',
@@ -52,14 +51,15 @@ class Client extends Model
         'Active - with intern',
         'Corporate',
         'Latin America',
-        
-	'Romanian clients'
+
+        'Romanian clients',
     ];
 
     public function user()
     {
         return $this->belongsTo(User::class);
     }
+
     public function therapist()
     {
         return $this->belongsTo(User::class);
@@ -69,6 +69,7 @@ class Client extends Model
     {
         return $this->hasMany(TherapySession::class);
     }
+
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()

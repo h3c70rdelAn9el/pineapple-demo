@@ -2,15 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
-use App\Models\Client;
-use Illuminate\Http\Request;
-use App\Models\TherapySession;
-use Illuminate\Support\Facades\DB;
-use Symfony\Component\Mime\Message;
-use App\Http\Controllers\Controller;
-use Illuminate\Pagination\LengthAwarePaginator;
 use App\Models\ChMessage as ChatMessage;
+use App\Models\Client;
+use App\Models\TherapySession;
+use App\Models\User;
+use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
@@ -49,7 +45,7 @@ class DashboardController extends Controller
             ->orderBy('created_at', 'desc')
             ->paginate('15', ['*'], 'missedSessions');
 
-        $allSpecialSessions = TherapySession::where('special',  1)->paginate('15', ['*'], 'specialSessions');
+        $allSpecialSessions = TherapySession::where('special', 1)->paginate('15', ['*'], 'specialSessions');
 
         $recentSessions = TherapySession::orderBy('created_at', 'desc')->take(100)->get();
         $recentActiveClients = Client::whereIn('id', $recentSessions->pluck('client_id')->unique())->orderBy('created_at', 'desc')->take(10)->get();
@@ -58,7 +54,7 @@ class DashboardController extends Controller
             ->orderBy(DB::raw('COALESCE(preferred_name, name)'))
             ->paginate(15, ['*'], 'therapists');
         $therapist = Client::find($user_id)?->therapist;
-        $inactiveTherapists = User::where('admin', 0)->where('active_status', 1)->paginate(15, ['*'], 'inactiveTherapists');;
+        $inactiveTherapists = User::where('admin', 0)->where('active_status', 1)->paginate(15, ['*'], 'inactiveTherapists');
         $activeTherapists = User::where('admin', 0)->where('active_status', 0)->paginate(15, ['*'], 'activeTherapists');
         $allTherapists = User::where('admin', 0)->where('active_status', 0)->get();
 
@@ -78,8 +74,9 @@ class DashboardController extends Controller
         if ($allTherapists) {
             $incompleteTherapists = $allTherapists->filter(function ($therapist) {
                 $res = $therapist->isComplete();
-                $incomplete = !$res['status'];
-                return $incomplete && !$therapist->isAdmin();
+                $incomplete = ! $res['status'];
+
+                return $incomplete && ! $therapist->isAdmin();
             });
         } else {
             $incompleteTherapists = collect();
@@ -129,7 +126,7 @@ class DashboardController extends Controller
             */
         $unverifiedTherapistCount = User::where('admin', 0)->get()
             ->filter(function ($user) {
-                return !$user->isVerified()['status'];
+                return ! $user->isVerified()['status'];
             })
             ->count();
         /*
@@ -145,7 +142,7 @@ class DashboardController extends Controller
             */
         $incompleteTherapistsCount = User::where('admin', 0)->get()
             ->filter(function ($user) {
-                return !$user->isComplete()['status'];
+                return ! $user->isComplete()['status'];
             })
             ->count();
 
@@ -179,7 +176,7 @@ class DashboardController extends Controller
                 'unreadMessagesCount' => $unreadMessagesCount,
                 'incompleteTherapistsCount' => $incompleteTherapistsCount,
                 'unverifiedTherapist' => $unverifiedTherapist,
-                'unverifiedTherapistCount' => $unverifiedTherapistCount
+                'unverifiedTherapistCount' => $unverifiedTherapistCount,
             ]);
         } else {
             return view('dashboard', [
