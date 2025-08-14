@@ -22,13 +22,16 @@ class GenerateMonthlyTherapistInvoices extends Command
         $end = $now->copy()->subMonth()->endOfMonth();
 
         $therapists = User::where('admin', 0)
-            ->where('active_status', 0)
+            ->where('active_status', 1)
             ->whereHas('therapy_sessions', function ($q) use ($start, $end) {
                 $q->whereBetween('created_at', [$start, $end]);
             })
             ->get();
 
+           
+
         foreach ($therapists as $therapist) {
+            $this->info("Processing therapist ID {$therapist->id} - {$therapist->email}");
             $sessions = TherapySession::where('user_id', $therapist->id)
                 ->whereBetween('created_at', [$start, $end])
                 ->get()
@@ -55,9 +58,11 @@ class GenerateMonthlyTherapistInvoices extends Command
                 ];
             }
 
-            if (empty($sessionSummary)) {
-                continue;
-            }
+
+            $this->info("Found " . count($sessionSummary) . " clients with sessions for therapist ID {$therapist->id}");
+
+            if (empty($sessionSummary)) continue;
+
 
             $invoiceNumber = 'INV-'.$therapist->id.'-'.$now->format('Ym');
             $invoiceDate = $now->format('Y-m-d');
@@ -83,7 +88,7 @@ class GenerateMonthlyTherapistInvoices extends Command
             });
 
             $this->info("Invoice sent to therapist ID {$therapist->id} at {$therapist->email}");
-            exit;
+            
         }
 
         $this->info('Monthly therapist invoices generated and sent.');
