@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use App\Models\Patient;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class PatientController extends Controller
@@ -19,12 +19,10 @@ class PatientController extends Controller
         // $patients = Patient::where('patient_id',$patient->id)->get();
         // dd($this->$patients);
         // $patients=Patient::all();
-        $patient=Patient::all()->where('patient_id', $patient->id)->get();
-
-
+        $patient = Patient::all()->where('patient_id', $patient->id)->get();
 
         // return view('patients', ['patients'=>$patients]);
-        return view('dashboard', ['patients'=>$patients]);
+        return view('dashboard', ['patients' => $patients]);
 
     }
 
@@ -41,7 +39,6 @@ class PatientController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -68,7 +65,6 @@ class PatientController extends Controller
 
         $p->save();
 
-
         if ($user->admin) {
             return redirect('/dashboard');
         } else {
@@ -82,21 +78,21 @@ class PatientController extends Controller
      * @param  \App\Models\Patient  $patient
      * @return \Illuminate\Http\Response
      */
-
- public function show(Request $request, $id)
+    public function show(Request $request, $id)
     {
 
         // $user = auth()->user();
         // $patient = Patient::where('slug', $patient->slug)->where('patient_id',$patient->id)->first();
 
         $patient = Patient::find($id);
+
         return view('patient')->with(['patient' => $patient]);
         // return view('patient');
     }
+
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Patient  $patient
      * @return \Illuminate\Http\Response
      */
     public function edit(Patient $patient)
@@ -107,8 +103,6 @@ class PatientController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Patient  $patient
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Patient $patient)
@@ -119,7 +113,6 @@ class PatientController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Patient  $patient
      * @return \Illuminate\Http\Response
      */
     public function destroy(Patient $patient)

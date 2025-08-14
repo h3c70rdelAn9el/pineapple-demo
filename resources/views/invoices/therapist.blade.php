@@ -87,5 +87,32 @@
     @else
         Please refer to your payment instructions on file. Contact us if you need to update your payment details.
     @endif
+
+    <h3>Banking Details for Payment</h3>
+    <div style="background-color: #f8f9fa; padding: 15px; border-radius: 5px; margin-top: 20px;">
+        @if($therapist->account_name || $therapist->bank_name || $therapist->account_number || $therapist->routing_number || $therapist->iban_swift_code)
+            @if($therapist->account_name)
+                <p><strong>Account Name:</strong> {{ $therapist->account_name }}</p>
+            @endif
+            
+            @if($therapist->bank_name)
+                <p><strong>Bank Name:</strong> {{ $therapist->bank_name }}</p>
+            @endif
+            
+            @if($therapist->account_number)
+                <p><strong>Account Number:</strong> {{ $therapist->account_number }}</p>
+            @endif
+            
+            @if($therapist->routing_number)
+                <p><strong>Routing Number:</strong> {{ $therapist->routing_number }}</p>
+            @endif
+            
+            @if($therapist->iban_swift_code)
+                <p><strong>IBAN/SWIFT Code:</strong> {{ $therapist->iban_swift_code }}</p>
+            @endif
+        @else
+            <p><em>Banking details not provided. Please contact us to update your payment information.</em></p>
+        @endif
+    </div>
 </body>
 </html>

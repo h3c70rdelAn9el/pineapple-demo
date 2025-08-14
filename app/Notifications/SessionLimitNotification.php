@@ -3,7 +3,6 @@
 namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
@@ -42,7 +41,7 @@ class SessionLimitNotification extends Notification
     {
         return (new MailMessage)
             ->subject('Pineapple Support - Session Limit Notice')
-            ->line('Dear ' . $notifiable->name . ',')
+            ->line('Dear '.$notifiable->name.',')
             ->line('You have reached 14 therapy sessions.')
             ->line('Please contact your therapist for further details.')
             ->line('Thank you for using Pineapple Support!');

@@ -1,15 +1,17 @@
 <?php
+
 $row = 1;
-if (($handle = fopen("therapists-uk.csv", "r")) !== FALSE) {
-    while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
-	    print_r($data);
+if (($handle = fopen('therapists-uk.csv', 'r')) !== false) {
+    while (($data = fgetcsv($handle, 1000, ',')) !== false) {
+        print_r($data);
         $num = count($data);
         $row++;
-        for ($c=0; $c < $num; $c++) {
-        //    echo $data[$c] . "<br />\n";
+        for ($c = 0; $c < $num; $c++) {
+            //    echo $data[$c] . "<br />\n";
         }
-	if($row > 1)
-		exit;
+        if ($row > 1) {
+            exit;
+        }
     }
     fclose($handle);
 }

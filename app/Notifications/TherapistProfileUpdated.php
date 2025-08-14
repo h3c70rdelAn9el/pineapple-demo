@@ -3,7 +3,6 @@
 namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
@@ -14,8 +13,8 @@ class TherapistProfileUpdated extends Notification
     /**
      * Create a new notification instance.
      */
-
     protected $user;
+
     protected $updatedFields;
 
     public function __construct($user, $updatedFields)
@@ -34,8 +33,6 @@ class TherapistProfileUpdated extends Notification
         return ['mail'];
     }
 
-
-
     /**
      * Get the mail representation of the notification.
      */
@@ -45,19 +42,18 @@ class TherapistProfileUpdated extends Notification
     {
         $message = (new MailMessage)
             ->line('A therapist has updated their profile:')
-            ->line('Therapist Name: ' . $this->user->name)
-            ->line('Therapist ID: ' . $this->user->id)
+            ->line('Therapist Name: '.$this->user->name)
+            ->line('Therapist ID: '.$this->user->id)
             ->line('Updated Fields:');
 
         foreach ($this->updatedFields as $field => $value) {
-            $message->line(ucwords(str_replace('_', ' ', $field)) . ': ' . $value);
+            $message->line(ucwords(str_replace('_', ' ', $field)).': '.$value);
         }
 
-        $message->action('View Profile', url('/therapist/' . $this->user->id));
+        $message->action('View Profile', url('/therapist/'.$this->user->id));
 
         return $message;
     }
-
 
     /**
      * Get the array representation of the notification.

@@ -2,18 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use App\Models\FileUpload;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use Illuminate\Contracts\View\View;
+use App\Models\User;
 use App\Notifications\TherapistFileUploaded;
-use Illuminate\Support\Facades\Notification;
-use App\Http\Controllers\TherapistsController;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
-
-
+use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\Storage;
 
 class FileUploadController extends Controller
 {
@@ -60,12 +56,8 @@ class FileUploadController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-
-
-
     public function store(Request $request, $therapist_id)
     {
         $therapist = User::find($therapist_id);
@@ -75,13 +67,13 @@ class FileUploadController extends Controller
             'file' => 'required|mimes:pdf,jpg,jpeg,png|max:1048576',
             'region' => 'required_if:document_type,clinical_license',
         ]);
-        $fileName = time() . $request->file->getClientOriginalName();
+        $fileName = time().$request->file->getClientOriginalName();
         $verified = $user->admin ? 1 : 0;
-        $path = 'uploads/forms/therapist/' . $user->id . '/';
+        $path = 'uploads/forms/therapist/'.$user->id.'/';
         $request->file->storeAs($path, $fileName);
 
         // update the user fields:
-        switch($request->document_type) {
+        switch ($request->document_type) {
             case 'photographic_id':
                 $therapist->update(['id_uploaded' => true]);
                 break;
@@ -146,17 +138,17 @@ class FileUploadController extends Controller
         if (in_array($request->document_type, ['W9', 'W8BEN', 'W8BENE'])) {
             $fileData = $request->file('file')->get();
             $email = '
-            Please find the attached document for ' . $request->document_type . '.';
-            Mail::raw($email, function($message) use ($fileData, $fileName) {
-            $message->to('accounts@pineapplesupport.org')
-                ->subject('Document Submission')
-                ->attachData($fileData, $fileName);
+            Please find the attached document for '.$request->document_type.'.';
+            Mail::raw($email, function ($message) use ($fileData, $fileName) {
+                $message->to('accounts@pineapplesupport.org')
+                    ->subject('Document Submission')
+                    ->attachData($fileData, $fileName);
             });
-        
+
         }
 
         if ($user->admin == 1) {
-            return redirect('therapist/forms/' . $therapist->id)
+            return redirect('therapist/forms/'.$therapist->id)
                 ->with('success', 'File uploaded successfully')
                 ->with('file_name', $fileName);
 
@@ -167,13 +159,12 @@ class FileUploadController extends Controller
         }
     }
 
-
     /**
      * Display the specified resource.
+     *
      * @param  int  $id
      * @return \Illuminate\Http\Response
     //  */
-
     public function show($id): View
     {
         $therapistForm = FileUpload::findOrFail($id);
@@ -184,7 +175,6 @@ class FileUploadController extends Controller
 
         return view('therapist.forms', ['id' => $id, 'file_name' => $file_name, 'user' => $user, 'therapist' => $therapist, 'therapistForm' => $therapistForm]);
     }
-
 
     /**
      * Show the form for editing the specified resource.
@@ -199,7 +189,7 @@ class FileUploadController extends Controller
         $therapist = User::find($form->user_id);
 
         $user = auth()->user();
-        if (!$user->admin && $form->user_id !== $user->id) {
+        if (! $user->admin && $form->user_id !== $user->id) {
             return redirect()->back()->with('error', 'You are not authorized to edit this form.');
         }
 
@@ -209,15 +199,12 @@ class FileUploadController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
     {
         $user = auth()->user();
-
-
 
         $request->validate([
             'document_type' => 'nullable|string',
@@ -228,7 +215,7 @@ class FileUploadController extends Controller
         ]);
 
         $form = FileUpload::findOrFail($id);
-        if (($form->user_id != $user->id) && !$user->admin) {
+        if (($form->user_id != $user->id) && ! $user->admin) {
             //return redirect('therapist.forms');
             return redirect()->route('dashboard');
         }
@@ -248,7 +235,7 @@ class FileUploadController extends Controller
         if ($request->has('verified') && $user->admin) {
             $form->verified = $request->verified;
         }
-        switch($request->document_type) {
+        switch ($request->document_type) {
             case 'photographic_id':
                 $therapist->update(['id_uploaded' => true]);
                 break;
@@ -300,7 +287,6 @@ class FileUploadController extends Controller
         $file_name = FileUpload::where('user_id', $therapist->id)
             ->where('file_name', 'LIKE', "%$searchQuery%")
             ->get();
-
 
         return view('therapist.forms', [
             'file_name' => $file_name,

@@ -15,14 +15,13 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             //
-           // Registered ,State,Time Zone,County,Email,ID,Gender,$,Clinical License,State License Board ,Annual Contact about  Complaints UK date,Response,Second State License ,Date,State License Board,Annual Contact about  Complaints,Response,State License 3,Date,License Board,Annual contact about complaints,Response,State License 4,Date,License Board,Annual Contact about complaints ,Response,State License 5,Date,License Board,Annual Contact about Complaints,Response,Insurance ,Signed Documents,Leah Signed,Number of Potential Clients,Space for New clients,Out of State Coaching,W9,Headshot,Voided Cheque,BIO,Website,Quickbooks,Dropbox,Client Extensions,NOTES,COVID FUNDRAISE
-           $table->string('country')->nullable();
+            // Registered ,State,Time Zone,County,Email,ID,Gender,$,Clinical License,State License Board ,Annual Contact about  Complaints UK date,Response,Second State License ,Date,State License Board,Annual Contact about  Complaints,Response,State License 3,Date,License Board,Annual contact about complaints,Response,State License 4,Date,License Board,Annual Contact about complaints ,Response,State License 5,Date,License Board,Annual Contact about Complaints,Response,Insurance ,Signed Documents,Leah Signed,Number of Potential Clients,Space for New clients,Out of State Coaching,W9,Headshot,Voided Cheque,BIO,Website,Quickbooks,Dropbox,Client Extensions,NOTES,COVID FUNDRAISE
+            $table->string('country')->nullable();
             $table->string('registered')->nullable();
             $table->string('state')->nullable();
             $table->string('time_zone')->nullable();
             $table->string('county')->nullable();
-           
-            
+
             $table->string('gender')->nullable();
             $table->string('clinical_license')->nullable();
             $table->string('state_license_board')->nullable();
@@ -67,7 +66,6 @@ return new class extends Migration
             $table->string('notes')->nullable();
             $table->string('covid_fundraise')->nullable();
 
-            
         });
     }
 

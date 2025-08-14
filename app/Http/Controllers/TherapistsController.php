@@ -2,19 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use App\Models\Client;
-use App\Models\Patient;
 use App\Models\FileUpload;
-use Illuminate\Http\Request;
 use App\Models\TherapySession;
-use Illuminate\Support\Facades\DB;
-// use Illuminate\\Notification;
-use Illuminate\Validation\Rule;
-use App\Notifications\TherapistFileUploaded;
-use Illuminate\Support\Facades\Notification;
-use Illuminate\Contracts\Pagination\Paginator;
+use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
+// use Illuminate\\Notification;
+use Illuminate\Support\Facades\DB;
 
 class TherapistsController extends Controller
 {
@@ -47,15 +42,16 @@ class TherapistsController extends Controller
         if ($alltherapists) {
             $incompleteTherapistsData = $alltherapists->filter(function (User $therapist) {
                 $res = $therapist->isComplete();
-                $incomplete = !$res['status'];
-                return $incomplete && !$therapist->isAdmin();
+                $incomplete = ! $res['status'];
+
+                return $incomplete && ! $therapist->isAdmin();
             });
-            
+
             // Convert to paginated collection
             $currentPage = request()->get('incomplete_therapists', 1);
             $perPage = 30;
             $currentPageItems = $incompleteTherapistsData->slice(($currentPage - 1) * $perPage, $perPage)->values();
-            
+
             $incompleteTherapists = new LengthAwarePaginator(
                 $currentPageItems,
                 $incompleteTherapistsData->count(),
@@ -69,15 +65,16 @@ class TherapistsController extends Controller
         $unverifiedTherapists = collect();
         if ($alltherapists) {
             $unverifiedTherapistsData = $alltherapists->filter(function (User $therapist) {
-                $unverified = !$therapist->isVerified()['status'];
-                return $unverified && !$therapist->isAdmin();
+                $unverified = ! $therapist->isVerified()['status'];
+
+                return $unverified && ! $therapist->isAdmin();
             });
-            
+
             // Convert to paginated collection
             $currentPage = request()->get('unverified_therapists', 1);
             $perPage = 30;
             $currentPageItems = $unverifiedTherapistsData->slice(($currentPage - 1) * $perPage, $perPage)->values();
-            
+
             $unverifiedTherapists = new LengthAwarePaginator(
                 $currentPageItems,
                 $unverifiedTherapistsData->count(),
@@ -103,7 +100,7 @@ class TherapistsController extends Controller
         $therapist = User::find($id);
         $clients = $therapist->clients()->get();
         //$clients = $therapist->clients()->orderBy('preferred_name', 'asc')->get();
-        $therapySessions = TherapySession::where("client_id", "=", $therapist->id)->get();
+        $therapySessions = TherapySession::where('client_id', '=', $therapist->id)->get();
         $file_name = FileUpload::find($id);
 
         $totalSessionCost = number_format($therapist->sum('session_cost'), 2, '.', '');
@@ -112,7 +109,7 @@ class TherapistsController extends Controller
 
         $totalClients = $clients->count();
 
-        $space_for_new_clients = (int)$therapist->number_of_potential_clients - $totalClients;
+        $space_for_new_clients = (int) $therapist->number_of_potential_clients - $totalClients;
 
         return view('therapist.show', [
             'therapist' => $therapist,
@@ -141,6 +138,7 @@ class TherapistsController extends Controller
             'Non-Binary',
             'Prefer Not To Say',
         ];
+
         return $genders;
     }
 
@@ -150,6 +148,7 @@ class TherapistsController extends Controller
         if ($user && $user->admin == 1) {
             $therapist = User::find($id);
             $form = $therapist->therapist;
+
             // dd($therapist);
             return view('therapist.edit', [
                 'therapist' => $therapist,
@@ -215,16 +214,14 @@ class TherapistsController extends Controller
             'all_documents' => 'nullable|string|max:255',
             'website' => 'nullable|boolean',
             'quickbooks' => 'nullable|string|max:255',
-            'session_cost' => 'nullable|numeric|max:' . $max_session_cost,
+            'session_cost' => 'nullable|numeric|max:'.$max_session_cost,
             // 'client_extensions' => 'nullable|boolean',
             'notes' => 'nullable|string|max:255',
             'number_of_potential_clients' => 'nullable|numeric',
             'currency' => 'nullable|string|max:255',
-            'client_extensions' => 'nullable|numeric'
-
+            'client_extensions' => 'nullable|numeric',
 
             // 'gender' => $genderString
-
 
         ]);
 
@@ -236,10 +233,7 @@ class TherapistsController extends Controller
 
         //$user->currency = $request->currencyCode;
 
-
-
-
-        if (!$user) {
+        if (! $user) {
             return redirect()->route('therapist.show', $id)->with('error', 'User not found');
         }
 
@@ -255,8 +249,10 @@ class TherapistsController extends Controller
             $therapist = User::find($id);
             if ($therapist) {
                 $therapist->delete();
+
                 return redirect()->route('therapists.index')->with('success', 'Therapist deleted successfully.');
             }
+
             return redirect()->route('therapists.index')->with('error', 'Therapist not found.');
         } else {
             return redirect()->route('dashboard')->with('error', 'You are not authorized to delete this therapist');

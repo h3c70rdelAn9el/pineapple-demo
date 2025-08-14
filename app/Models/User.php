@@ -2,21 +2,16 @@
 
 namespace App\Models;
 
-use App\Models\Client;
-use App\Models\Patient;
-use App\Models\FileUpload;
-use Laravel\Scout\Searchable;
-use Laravel\Sanctum\HasApiTokens;
-use Laravel\Jetstream\HasProfilePhoto;
-use Illuminate\Notifications\Notifiable;
-use Laravel\Fortify\TwoFactorAuthenticatable;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Laravel\Fortify\TwoFactorAuthenticatable;
+use Laravel\Jetstream\HasProfilePhoto;
+use Laravel\Sanctum\HasApiTokens;
+use Laravel\Scout\Searchable;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
-
 
 // NOTE:  look at user-fields markup file for the fields that have been omitted from the user model
 
@@ -25,11 +20,11 @@ class User extends Authenticatable
     use HasApiTokens;
     use HasFactory;
     use HasProfilePhoto;
-    use Notifiable;
-    use TwoFactorAuthenticatable;
-    use Searchable;
     use LogsActivity;
+    use Notifiable;
+    use Searchable;
     use SoftDeletes;
+    use TwoFactorAuthenticatable;
 
     /**
      * The attributes that are mass assignable.
@@ -178,6 +173,7 @@ class User extends Authenticatable
         return LogOptions::defaults()
             ->logAll();
     }
+
     /**
      * returns array of status = true or false for incomplete and if incomplete the reason
      */
@@ -185,116 +181,120 @@ class User extends Authenticatable
     {
         $incomplete_reason = '';
         $incomplete = false;
-if(!$this->isIdVerified()){
-    $incomplete_reason .= 'ID, ';
-    $incomplete = true;
-}
-if(!$this->isW9Verified()){
-    $incomplete_reason .= 'W9 or WBEN, ';
-    $incomplete = true;
-}
-if(!$this->isLicenseVerified()){
-    $incomplete_reason .= 'License, ';
-    $incomplete = true;
-}
-if(!$this->isHeadshotVerified()){
-    $incomplete_reason .= 'Headshot, ';
-    $incomplete = true;
-}
-if(!$this->isInsuranceVerified()){
-    $incomplete_reason .= 'Insurance, ';
-    $incomplete = true;
-}
-$incomplete_reason = rtrim($incomplete_reason, ', ');
+        if (! $this->isIdVerified()) {
+            $incomplete_reason .= 'ID, ';
+            $incomplete = true;
+        }
+        if (! $this->isW9Verified()) {
+            $incomplete_reason .= 'W9 or WBEN, ';
+            $incomplete = true;
+        }
+        if (! $this->isLicenseVerified()) {
+            $incomplete_reason .= 'License, ';
+            $incomplete = true;
+        }
+        if (! $this->isHeadshotVerified()) {
+            $incomplete_reason .= 'Headshot, ';
+            $incomplete = true;
+        }
+        if (! $this->isInsuranceVerified()) {
+            $incomplete_reason .= 'Insurance, ';
+            $incomplete = true;
+        }
+        $incomplete_reason = rtrim($incomplete_reason, ', ');
 
-        return ['status' =>!$incomplete, 'reason' => $incomplete_reason];
+        return ['status' => ! $incomplete, 'reason' => $incomplete_reason];
     }
 
     public function isComplete(): array
     {
         $incomplete_reason = '';
         $incomplete = false;
-        if(!$this->isIdUploaded())
-        {
+        if (! $this->isIdUploaded()) {
             $incomplete_reason .= 'ID, ';
             $incomplete = true;
         }
-        if(!$this->isW9Uploaded())
-        {
+        if (! $this->isW9Uploaded()) {
             $incomplete_reason .= 'W9 or WBEN, ';
             $incomplete = true;
         }
-        if(!$this->isLicenseUploaded())
-        {
+        if (! $this->isLicenseUploaded()) {
             $incomplete_reason .= 'License, ';
             $incomplete = true;
         }
-        if(!$this->isHeadshotUploaded())
-        {
+        if (! $this->isHeadshotUploaded()) {
             $incomplete_reason .= 'Headshot, ';
             $incomplete = true;
         }
-        if(!$this->isInsuranceUploaded())
-        {
+        if (! $this->isInsuranceUploaded()) {
             $incomplete_reason .= 'Insurance, ';
             $incomplete = true;
         }
         $incomplete_reason = rtrim($incomplete_reason, ', ');
 
-        return ['status' =>!$incomplete, 'reason' => $incomplete_reason];
+        return ['status' => ! $incomplete, 'reason' => $incomplete_reason];
     }
-
-
 
     public function isIdVerified()
     {
 
-       return $this->fileUploads()->where('document_type', 'photographic_id')->where('verified', 1)->first();
+        return $this->fileUploads()->where('document_type', 'photographic_id')->where('verified', 1)->first();
     }
+
     public function isW9Verified()
     {
 
-       $ret =  $this->fileUploads()->where('document_type', 'W9')->where('verified', 1)->first();
-       if(!$ret){
-           $ret = $this->fileUploads()->where('document_type', 'W8BEN')->where('verified', 1)->first();
-       }
-         return $ret;
+        $ret = $this->fileUploads()->where('document_type', 'W9')->where('verified', 1)->first();
+        if (! $ret) {
+            $ret = $this->fileUploads()->where('document_type', 'W8BEN')->where('verified', 1)->first();
+        }
+
+        return $ret;
     }
+
     public function isLicenseVerified()
     {
 
-       return $this->fileUploads()->where('document_type', 'clinical_license')->where('verified', 1)->first();
+        return $this->fileUploads()->where('document_type', 'clinical_license')->where('verified', 1)->first();
     }
+
     public function isHeadshotVerified()
     {
 
-       return $this->fileUploads()->where('document_type', 'headshot')->where('verified', 1)->first();
+        return $this->fileUploads()->where('document_type', 'headshot')->where('verified', 1)->first();
     }
+
     public function isInsuranceVerified()
     {
 
-       return $this->fileUploads()->where('document_type', 'public_liability_insurance')->where('verified', 1)->first();
+        return $this->fileUploads()->where('document_type', 'public_liability_insurance')->where('verified', 1)->first();
     }
+
     public function isIdUploaded()
     {
         return $this->fileUploads()->where('document_type', 'photographic_id')->whereRaw('date > NOW()')->first();
     }
+
     public function isW9Uploaded()
     {
-        $ret =  $this->fileUploads()->where('document_type', 'W9')->first();
-        if(!$ret){
+        $ret = $this->fileUploads()->where('document_type', 'W9')->first();
+        if (! $ret) {
             $ret = $this->fileUploads()->where('document_type', 'W8BEN')->first();
         }
+
         return $ret;
     }
+
     public function isLicenseUploaded()
     {
         return $this->fileUploads()->where('document_type', 'clinical_license')->whereRaw('date > NOW()')->first();
     }
+
     public function isHeadshotUploaded()
     {
         return $this->fileUploads()->where('document_type', 'headshot')->first();
     }
+
     public function isInsuranceUploaded()
     {
         return $this->fileUploads()->where('document_type', 'public_liability_insurance')->whereRaw('date > NOW()')->first();
@@ -305,5 +305,4 @@ $incomplete_reason = rtrim($incomplete_reason, ', ');
     {
         return $this->hasMany(TherapySession::class);
     }
-
 }
