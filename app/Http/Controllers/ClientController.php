@@ -23,23 +23,39 @@ class ClientController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $user = auth()->user();
-        $clientsQuery = Client::where('user_id', $user->id)->orderBy('client_code', 'asc');
+
+        // Get sorting parameters
+        $sortBy = $request->get('sort', 'client_code');
+        $sortDirection = $request->get('direction', 'asc');
+
+        // Validate sort fields
+        $allowedSortFields = ['client_code', 'created_at', 'email', 'preferred_name', 'status', 'legal_name'];
+        if (! in_array($sortBy, $allowedSortFields)) {
+            $sortBy = 'client_code';
+        }
+
+        // Validate sort direction
+        if (! in_array($sortDirection, ['asc', 'desc'])) {
+            $sortDirection = 'asc';
+        }
+
+        $clientsQuery = Client::where('user_id', $user->id)->orderBy($sortBy, $sortDirection);
 
         $clients = $clientsQuery->with('therapySessions')->paginate(15, ['*'], 'clients');
-        $allClients = Client::orderBy('client_code', 'asc')->paginate(15, ['*'], 'allClients');
+        $allClients = Client::orderBy($sortBy, $sortDirection)->paginate(15, ['*'], 'allClients');
 
         $therapists = User::where('admin', 0)->get();
 
-        $inactiveClients = Client::where('user_id', $user->id)->where('status', 1)->paginate(15, ['*'], 'inactiveClients');
-        $waitlistClients = Client::where('user_id', $user->id)->where('waitlist', 1)->paginate(15, ['*'], 'waitlistClients');
-        $specialSessionsClients = Client::where('user_id', $user->id)->where('special_sessions', '>', 0)->orderBy('client_code')->paginate(15, ['*'], 'specialSessionsClients');
+        $inactiveClients = Client::where('user_id', $user->id)->where('status', 1)->orderBy($sortBy, $sortDirection)->paginate(15, ['*'], 'inactiveClients');
+        $waitlistClients = Client::where('user_id', $user->id)->where('waitlist', 1)->orderBy($sortBy, $sortDirection)->paginate(15, ['*'], 'waitlistClients');
+        $specialSessionsClients = Client::where('user_id', $user->id)->where('special_sessions', '>', 0)->orderBy($sortBy, $sortDirection)->paginate(15, ['*'], 'specialSessionsClients');
 
-        $allInactiveClients = Client::where('status', 1)->paginate(15, ['*'], 'inactiveClients');
-        $allWaitlistClients = Client::where('waitlist', 1)->paginate(15, ['*'], 'waitlistClients');
-        $allSpecialSessionClients = Client::where('special_sessions', '>', 0)->orderBy('client_code')->paginate(15, ['*'], 'specialSessionsClients');
+        $allInactiveClients = Client::where('status', 1)->orderBy($sortBy, $sortDirection)->paginate(15, ['*'], 'inactiveClients');
+        $allWaitlistClients = Client::where('waitlist', 1)->orderBy($sortBy, $sortDirection)->paginate(15, ['*'], 'waitlistClients');
+        $allSpecialSessionClients = Client::where('special_sessions', '>', 0)->orderBy($sortBy, $sortDirection)->paginate(15, ['*'], 'specialSessionsClients');
 
         $inactiveClientsCount = $inactiveClients->total();
         $waitlistClientsCount = $waitlistClients->total();
@@ -55,7 +71,7 @@ class ClientController extends Controller
         $categories = Client::$categories;
         $clientsByCategory = [];
         foreach ($categories as $category) {
-            $clientsByCategory[$category] = Client::where('category', $category)->paginate(15, ['*'], 'clients_'.str_replace(' ', '_', strtolower($category)));
+            $clientsByCategory[$category] = Client::where('category', $category)->orderBy($sortBy, $sortDirection)->paginate(15, ['*'], 'clients_'.str_replace(' ', '_', strtolower($category)));
         }
 
         return view('clients.index', [
@@ -77,6 +93,8 @@ class ClientController extends Controller
             'allWaitlistClients' => $allWaitlistClients,
             'allSpecialSessionClients' => $allSpecialSessionClients,
             'clientsByCategory' => $clientsByCategory,
+            'sortBy' => $sortBy,
+            'sortDirection' => $sortDirection,
         ]);
     }
 
