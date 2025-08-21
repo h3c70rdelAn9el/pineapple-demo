@@ -51,8 +51,9 @@ class Client extends Model
         'Active - with intern',
         'Corporate',
         'Latin America',
-
         'Romanian clients',
+        'Support Groups',
+        'Well Being',
     ];
 
     public function user()
