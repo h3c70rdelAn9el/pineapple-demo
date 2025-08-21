@@ -118,7 +118,7 @@ class TherapySessionController extends Controller
 
             if ($client->special_sessions && $specialSessionsCount < 6) {
                 // Special session
-                $ts = new TherapySession();
+                $ts = new TherapySession;
                 $ts->client_id = $request->client_id;
                 $ts->session_cost = 0;
                 $ts->client_contribution = $client->client_contribution;
@@ -132,7 +132,7 @@ class TherapySessionController extends Controller
                 $ts->save();
             } else {
                 // Regular session
-                $ts = new TherapySession();
+                $ts = new TherapySession;
                 $ts->client_id = $request->client_id;
                 $ts->session_cost = $therapist_session_cost;
                 $ts->client_contribution = $client->client_contribution;
@@ -145,7 +145,7 @@ class TherapySessionController extends Controller
                 $ts->save();
             }
 
-            if ($client->therapySessions()->whereIn('attendance', ['attended', 'no-show'])->count() >= 16) {
+            if ($client->therapySessions()->whereIn('attendance', ['attended', 'no-show'])->count() >= $client->max_sessions) {
                 $client->status = 1;
                 $client->save();
             } else {
@@ -156,12 +156,12 @@ class TherapySessionController extends Controller
             $user_id = $ts->user_id;
             $therapist = User::find($user_id);
 
-            if ($client->therapySessions()->whereIn('attendance', ['attended', 'no-show'])->count() === 14) {
-                $client->notify(new SessionLimitNotification());
+            if ($client->therapySessions()->whereIn('attendance', ['attended', 'no-show'])->count() === ($client->max_sessions - 2)) {
+                $client->notify(new SessionLimitNotification);
             }
 
             if ($client->special_sessions == 1) {
-                $therapist->notify(new SpecialSessionsLimitNotification());
+                $therapist->notify(new SpecialSessionsLimitNotification);
             }
 
             // $consecutiveNoShows = 0;
@@ -276,7 +276,7 @@ class TherapySessionController extends Controller
         return redirect()->route('session.index', ['user' => $therapySession->user_id])
             ->with('success', 'Therapy session deleted successfully');
 
-        //return redirect()->route('dashboard')
+        // return redirect()->route('dashboard')
         //  ->with('success', 'Therapy session deleted successfully');
     }
 }
