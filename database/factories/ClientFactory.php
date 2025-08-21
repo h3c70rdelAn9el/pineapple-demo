@@ -17,7 +17,7 @@ class ClientFactory extends Factory
     public function definition(): array
     {
         return [
-            'client_code' => 'CLIENT' . $this->faker->unique()->numberBetween(1000, 9999),
+            'client_code' => 'CLIENT'.$this->faker->unique()->numberBetween(1000, 9999),
             'preferred_name' => $this->faker->firstName(),
             'legal_name' => $this->faker->name(),
             'email' => $this->faker->unique()->safeEmail(),
@@ -39,6 +39,7 @@ class ClientFactory extends Factory
             'previous_therapy' => $this->faker->boolean(),
             'preferred_language' => 'English',
             'additional_notes' => $this->faker->optional()->sentence(),
+            'has_been_contacted' => false,
         ];
     }
 }

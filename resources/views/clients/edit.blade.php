@@ -120,6 +120,16 @@
                 <x-jet-input-error class="mt-2" for="category" />
             </div>
 
+            {{-- has_been_contacted --}}
+            <div class="w-full mt-4 mb-2">
+                <div class="flex items-center">
+                    <input class="mr-2 rounded" id="has_been_contacted" name="has_been_contacted" type="checkbox" 
+                           value="1" {{ old('has_been_contacted', $client->has_been_contacted) ? 'checked' : '' }}>
+                    <x-jet-label for="has_been_contacted" value="{{ __('Client has been contacted') }}" />
+                </div>
+                <x-jet-input-error class="mt-2" for="has_been_contacted" />
+            </div>
+
             <div class="relative w-full mt-6 mb-4"
                 x-data='{
                     showContactMethods: false,

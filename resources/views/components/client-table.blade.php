@@ -37,6 +37,11 @@
                             <th scope="col" class="td-table-header w-6 text-sm">
                                 Waitlist
                             </th>
+                            @if (auth()->user() && auth()->user()->admin == 1)
+                                <th scope="col" class="td-table-header w-6 text-sm">
+                                    Contacted
+                                </th>
+                            @endif
                             <th scope="col" class="th-table-header text-sm font-bold">
                                 Created At
                             </th>
@@ -88,6 +93,11 @@
                             <td class="td-table-data">
                                 {{ $client->waitlist == 1 ? 'Yes' : 'No' }}
                             </td>
+                            @if (auth()->user() && auth()->user()->admin == 1)
+                                <td class="td-table-data">
+                                    {{ $client->has_been_contacted ? 'Yes' : 'No' }}
+                                </td>
+                            @endif
                             <td class="td-table-data">
                                 {{ $client->created_at ? $client->created_at->format('d/m/Y') : 'Created At needed' }}
                             </td>
@@ -95,7 +105,7 @@
                     @endforeach
                     </tbody>
                     <tfoot class="w-full border-b bg-white">
-                        <td colspan="12" class="td-table-data">
+                        <td colspan="{{ auth()->user() && auth()->user()->admin == 1 ? '13' : '12' }}" class="td-table-data">
                             @if ($clients->count() > 10)
                                 {{ $clients->links() }}
                             @endif

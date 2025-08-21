@@ -44,6 +44,7 @@ class Client extends Model
         'waitlist',
         'special_sessions',
         'category',
+        'has_been_contacted',
     ];
 
     public static $categories = [
