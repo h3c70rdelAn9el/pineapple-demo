@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Client;
+use App\Mail\TherapistAddressUpdatedW9Reminder;
 use App\Models\FileUpload;
 use App\Models\TherapySession;
 use App\Models\User;
@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 // use Illuminate\\Notification;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 class TherapistsController extends Controller
 {
@@ -99,7 +100,7 @@ class TherapistsController extends Controller
         $user = auth()->user();
         $therapist = User::find($id);
         $clients = $therapist->clients()->get();
-        //$clients = $therapist->clients()->orderBy('preferred_name', 'asc')->get();
+        // $clients = $therapist->clients()->orderBy('preferred_name', 'asc')->get();
         $therapySessions = TherapySession::where('client_id', '=', $therapist->id)->get();
         $file_name = FileUpload::find($id);
 
@@ -231,13 +232,21 @@ class TherapistsController extends Controller
 
         $validatedData['gender'] = $genderString;
 
-        //$user->currency = $request->currencyCode;
+        // $user->currency = $request->currencyCode;
 
         if (! $user) {
             return redirect()->route('therapist.show', $id)->with('error', 'User not found');
         }
 
+        // Check if address fields have changed before updating
+        $addressFieldsChanged = $this->hasAddressChanged($user, $validatedData);
+
         $user->update($validatedData);
+
+        // Send W9/W8BEN reminder email if address changed and user is not an admin
+        if ($addressFieldsChanged && ! $user->isAdmin()) {
+            Mail::to($user->email)->send(new TherapistAddressUpdatedW9Reminder($user));
+        }
 
         return redirect()->back()->with('success', 'Profile updated!');
     }
@@ -257,5 +266,27 @@ class TherapistsController extends Controller
         } else {
             return redirect()->route('dashboard')->with('error', 'You are not authorized to delete this therapist');
         }
+    }
+
+    /**
+     * Check if any address-related fields have changed.
+     */
+    private function hasAddressChanged(User $user, array $validatedData): bool
+    {
+        $addressFields = [
+            'street_address',
+            'county_town',
+            'state',
+            'zip_code_postal_code',
+            'country',
+        ];
+
+        foreach ($addressFields as $field) {
+            if (isset($validatedData[$field]) && $validatedData[$field] !== $user->$field) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

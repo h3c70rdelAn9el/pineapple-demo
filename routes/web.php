@@ -147,3 +147,19 @@ Route::middleware([
     Route::post('/admin/broadcast-message/send', [AdminBroadcastController::class, 'send'])->name('admin.broadcast-message.send');
     Route::get('/admin/broadcast-history', [AdminBroadcastController::class, 'history'])->name('admin.broadcast-history');
 });
+
+// Email preview route (for development/testing)
+Route::get('/preview-w9-email', function () {
+    $user = new \App\Models\User([
+        'name' => 'Dr. Jane Smith',
+        'preferred_name' => 'Jane',
+        'email' => 'jane.smith@example.com',
+        'street_address' => '123 New Therapy Lane',
+        'county_town' => 'Mental Health City',
+        'state' => 'CA',
+        'zip_code_postal_code' => '90210',
+        'country' => 'United States',
+    ]);
+
+    return (new \App\Mail\TherapistAddressUpdatedW9Reminder($user))->render();
+})->name('preview.w9.email');

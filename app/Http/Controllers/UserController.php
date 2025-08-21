@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\TherapistAddressUpdatedW9Reminder;
 use App\Models\User;
 use App\Notifications\TherapistProfileUpdated;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class UserController extends Controller
 {
@@ -57,7 +59,15 @@ class UserController extends Controller
             $validatedData['gender'] = null;
         }
 
+        // Check if address fields have changed before updating
+        $addressFieldsChanged = $this->hasAddressChanged($user, $validatedData);
+
         $user->update($validatedData);
+
+        // Send W9/W8BEN reminder email if address changed and user is not an admin
+        if ($addressFieldsChanged && ! $user->isAdmin()) {
+            Mail::to($user->email)->send(new TherapistAddressUpdatedW9Reminder($user));
+        }
 
         $updatedFields = array_intersect_key($validatedData, $user->getChanges());
 
@@ -80,5 +90,27 @@ class UserController extends Controller
         $user->update(['gender' => implode(', ', $validatedData['selectedGenders'])]);
 
         return redirect()->back()->with('success', 'Gender updated successfully.');
+    }
+
+    /**
+     * Check if any address-related fields have changed.
+     */
+    private function hasAddressChanged(User $user, array $validatedData): bool
+    {
+        $addressFields = [
+            'street_address',
+            'county_town',
+            'state',
+            'zip_code_postal_code',
+            'country',
+        ];
+
+        foreach ($addressFields as $field) {
+            if (isset($validatedData[$field]) && $validatedData[$field] !== $user->$field) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
