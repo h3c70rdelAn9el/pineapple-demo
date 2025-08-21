@@ -85,6 +85,7 @@ class User extends Authenticatable
         'W9_or_WBEN_uploaded',
         'license_uploaded',
         'headshot_uploaded',
+        'bio_uploaded',
     ];
 
     // tried guarded and it didn't work
@@ -130,7 +131,7 @@ class User extends Authenticatable
      */
     protected $appends = [
         'profile_photo_url',
-        //'on_vacation',
+        // 'on_vacation',
     ];
 
     protected $attributes = [
@@ -226,6 +227,10 @@ class User extends Authenticatable
             $incomplete_reason .= 'Headshot, ';
             $incomplete = true;
         }
+        if (! $this->isBioUploaded()) {
+            $incomplete_reason .= 'Bio, ';
+            $incomplete = true;
+        }
         if (! $this->isInsuranceUploaded()) {
             $incomplete_reason .= 'Insurance, ';
             $incomplete = true;
@@ -295,12 +300,17 @@ class User extends Authenticatable
         return $this->fileUploads()->where('document_type', 'headshot')->first();
     }
 
+    public function isBioUploaded()
+    {
+        return $this->fileUploads()->where('document_type', 'Bio')->first();
+    }
+
     public function isInsuranceUploaded()
     {
         return $this->fileUploads()->where('document_type', 'public_liability_insurance')->whereRaw('date > NOW()')->first();
     }
 
-    //has many therapy_sessions
+    // has many therapy_sessions
     public function therapy_sessions()
     {
         return $this->hasMany(TherapySession::class);

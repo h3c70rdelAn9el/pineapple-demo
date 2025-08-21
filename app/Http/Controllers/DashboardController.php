@@ -24,7 +24,7 @@ class DashboardController extends Controller
         $activeClients = Client::where('status', '0')->get()->sortBy('client_code');
         $inactiveClients = Client::where('status', '1')->get()->sortBy('client_code');
         $therapistClients = User::find($user_id)->clients()->orderBy('client_code')->paginate(20, ['*'], 'therapistClients');
-        //$therapistClients = User::find($user_id)->clients()->orderBy('client_code')->orderBy('id')->paginate(10, ['*'], 'therapistClients');
+        // $therapistClients = User::find($user_id)->clients()->orderBy('client_code')->orderBy('id')->paginate(10, ['*'], 'therapistClients');
         $inactiveTherapistClientsCount = User::find($user_id)->clients()->where('status', '1')->count();
         $recentClientWithSessions = TherapySession::orderBy('created_at', 'desc')->take(10)->with('client')->get()->pluck('client')->unique('id');
         $latestActiveClient = Client::where('status', '0')->orderBy('created_at', 'desc')->first();
@@ -91,6 +91,7 @@ class DashboardController extends Controller
                 'license_uploaded' => $therapist->isLicenseUploaded() ?? null,
                 'insurance_uploaded' => $therapist->isInsuranceUploaded() ?? null,
                 'headshot_uploaded' => $therapist->isHeadshotUploaded() ?? null,
+                'bio_uploaded' => $therapist->isBioUploaded() ?? null,
             ];
 
             foreach ($fieldsToCheck as $field) {

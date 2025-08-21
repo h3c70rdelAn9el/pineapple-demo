@@ -8,6 +8,8 @@
                 <p>Photographic ID Document</p>
                 <p>Public Liability Insurance</p>
                 <p>W9/W8BENE/W8BEN</p>
+                <p>Headshot</p>
+                <p>Bio</p>
             </div>
         </div>
     </div>
