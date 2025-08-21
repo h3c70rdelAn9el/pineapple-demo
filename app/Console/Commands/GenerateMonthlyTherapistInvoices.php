@@ -81,8 +81,9 @@ class GenerateMonthlyTherapistInvoices extends Command
                 'therapist' => $therapist,
                 'invoiceNumber' => $invoiceNumber,
                 'invoiceDate' => $invoiceDate,
-            ], function ($message) use ($pdf, $filename) {
+            ], function ($message) use ($pdf, $filename, $therapist) {
                 $message->to('kellie@pineapplesupport.org')
+                    ->cc($therapist->email)
                     ->subject('Therapist Invoice')
                     ->attachData($pdf->output(), $filename);
             });
