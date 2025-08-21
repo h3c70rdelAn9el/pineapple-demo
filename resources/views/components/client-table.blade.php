@@ -1,3 +1,8 @@
+@php
+    $currentSort = request('sort', 'client_code');
+    $currentDirection = request('direction', 'asc');
+@endphp
+
 <div class="flex flex-col">
     <div class="overflow-x-auto sm:mx-0.5 lg:mx-0.5">
         <div class="inline-block min-w-full py-2 sm:px-6 lg:px-8">
@@ -6,13 +11,29 @@
                     <thead class="border-b bg-white">
                         <tr>
                             <th scope="col" class="td-table-header text-sm">
-                                Client Code
+                                <a href="{{ request()->fullUrlWithQuery(['sort' => 'client_code', 'direction' => ($currentSort === 'client_code' && $currentDirection === 'asc') ? 'desc' : 'asc']) }}" 
+                                   class="flex items-center gap-1 hover:text-blue-600">
+                                    Client Code
+                                    @if ($currentSort === 'client_code')
+                                        <span class="text-xs">{{ $currentDirection === 'asc' ? '↑' : '↓' }}</span>
+                                    @else
+                                        <span class="text-xs opacity-50">↕</span>
+                                    @endif
+                                </a>
                             </th>
                             <th scope="col" class="td-table-header text-sm">
                                 Therapist
                             </th>
                             <th scope="col" class="max-w-20 td-table-header text-sm">
-                                Email
+                                <a href="{{ request()->fullUrlWithQuery(['sort' => 'email', 'direction' => ($currentSort === 'email' && $currentDirection === 'asc') ? 'desc' : 'asc']) }}" 
+                                   class="flex items-center gap-1 hover:text-blue-600">
+                                    Email
+                                    @if ($currentSort === 'email')
+                                        <span class="text-xs">{{ $currentDirection === 'asc' ? '↑' : '↓' }}</span>
+                                    @else
+                                        <span class="text-xs opacity-50">↕</span>
+                                    @endif
+                                </a>
                             </th>
                             <th scope="col" class="max-w-20 td-table-header text-sm">
                                 Possible Support
@@ -32,7 +53,15 @@
                             </th>
 
                             <th scope="col" class="td-table-header w-6 text-sm">
-                                Status
+                                <a href="{{ request()->fullUrlWithQuery(['sort' => 'status', 'direction' => ($currentSort === 'status' && $currentDirection === 'asc') ? 'desc' : 'asc']) }}" 
+                                   class="flex items-center gap-1 hover:text-blue-600">
+                                    Status
+                                    @if ($currentSort === 'status')
+                                        <span class="text-xs">{{ $currentDirection === 'asc' ? '↑' : '↓' }}</span>
+                                    @else
+                                        <span class="text-xs opacity-50">↕</span>
+                                    @endif
+                                </a>
                             </th>
                             <th scope="col" class="td-table-header w-6 text-sm">
                                 Waitlist
@@ -43,7 +72,15 @@
                                 </th>
                             @endif
                             <th scope="col" class="th-table-header text-sm font-bold">
-                                Created At
+                                <a href="{{ request()->fullUrlWithQuery(['sort' => 'created_at', 'direction' => ($currentSort === 'created_at' && $currentDirection === 'asc') ? 'desc' : 'asc']) }}" 
+                                   class="flex items-center gap-1 hover:text-blue-600">
+                                    Created At
+                                    @if ($currentSort === 'created_at')
+                                        <span class="text-xs">{{ $currentDirection === 'asc' ? '↑' : '↓' }}</span>
+                                    @else
+                                        <span class="text-xs opacity-50">↕</span>
+                                    @endif
+                                </a>
                             </th>
                         </tr>
                     </thead>
@@ -107,7 +144,7 @@
                     <tfoot class="w-full border-b bg-white">
                         <td colspan="{{ auth()->user() && auth()->user()->admin == 1 ? '13' : '12' }}" class="td-table-data">
                             @if ($clients->count() > 10)
-                                {{ $clients->links() }}
+                                {{ $clients->appends(request()->query())->links() }}
                             @endif
                         </td>
                     </tfoot>
