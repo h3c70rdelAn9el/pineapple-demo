@@ -237,7 +237,7 @@ class ClientController extends Controller
 
         $countries = $this->getCountries();
         $support_types = $this->getSupportTypes();
-        $client = new Client();
+        $client = new Client;
 
         $selectedOrientations = $request->input('sexual_orientation');
         $otherSexualOrientation = $request->input('otherSexualOrientation');
@@ -369,12 +369,13 @@ class ClientController extends Controller
         $client->waitlist = $request->input('waitlist', 0);
         $client->special_sessions = $request->input('special_sessions', 6);
         $client->category = $request->input('category');
+        $client->has_been_contacted = $request->has('has_been_contacted') ? 1 : 0;
 
         if ($request->user_id) {
 
             $therapist = User::find($request->user_id);
             if ($therapist) {
-                $therapist->notify(new NewClientNotification());
+                $therapist->notify(new NewClientNotification);
             }
         }
 
@@ -446,6 +447,7 @@ class ClientController extends Controller
             'therapist' => 'nullable',
             'status' => 'nullable',
             'waitlist' => 'nullable',
+            'has_been_contacted' => 'nullable|boolean',
         ]);
 
         $client->gender = implode(', ', $request->input('gender', []));
@@ -487,6 +489,7 @@ class ClientController extends Controller
             'waitlist' => $request->input('waitlist', 0),
             'special_sessions' => $request->input('special_sessions', 0),
             'category' => $request->input('category'),
+            'has_been_contacted' => $request->has('has_been_contacted') ? 1 : 0,
         ]);
 
         if ($request->input('special_sessions')) {
@@ -505,11 +508,11 @@ class ClientController extends Controller
         // notify the therapists of the change
         if ((int) $request->user_id !== (int) $oldTherapist) {
             $newTherapist = User::find($request->user_id);
-            $newTherapist->notify(new NewClientNotification());
+            $newTherapist->notify(new NewClientNotification);
             $previousTherapist = User::find($oldTherapist);
             $previousTherapist->notify(new ClientRemovedNotification($client->preferred_name));
-            //if number of sessions was less than 2 and now is greater than 3 send the connected to therapist email to the client
-            //this may be better to check if the old therapist user id was 'no state' which is like id 234 or something and that the new therapist is not that
+            // if number of sessions was less than 2 and now is greater than 3 send the connected to therapist email to the client
+            // this may be better to check if the old therapist user id was 'no state' which is like id 234 or something and that the new therapist is not that
             if ($oldTherapist == 200 || $oldTherapist == 0) {
 
                 Mail::to($client->email)->send(new ClientTherapistAssigned($client->preferred_name));
@@ -566,8 +569,8 @@ class ClientController extends Controller
         $user = $request->user();
         $id = $client->id;
         // $therapist = User::find($user_id);
-        //$therapist = User::where('id', $user_id)->first();
-        $therapist = $client->user ?? new User();
+        // $therapist = User::where('id', $user_id)->first();
+        $therapist = $client->user ?? new User;
 
         return view('clients.show')->with(['client' => $client, 'therapySessions' => $therapySessions, 'therapist' => $therapist, 'attendedSessions' => $attendedSessions, 'user' => $user, 'id' => $id]);
     }

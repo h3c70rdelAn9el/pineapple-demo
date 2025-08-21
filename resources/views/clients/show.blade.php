@@ -2,15 +2,15 @@
     @if (session('success'))
         <x-success-message></x-success-message>
     @endif
-    <div x-data="{ showLimitModal: {{ $client->therapySessions()->whereIn('attendance', ['attended', 'no-show'])->count() >= 16? 'true': 'false' }} }">
+    <div x-data="{ showLimitModal: {{ $client->therapySessions()->whereIn('attendance', ['attended', 'no-show'])->count() >= $client->max_sessions ? 'true': 'false' }} }">
         <div class="relative">
             <div class="fixed inset-0 z-50 flex items-center justify-center overflow-auto bg-gray-800 bg-opacity-50"
                 x-show="showLimitModal" x-transition.duration.300ms x-cloak>
                 <div
                     class="fixed z-50 flex flex-col rounded-lg border-2 border-blue-700 bg-gray-200 p-8 text-center shadow-md">
 
-                    <h2 class="mb-4 text-2xl font-bold">Client Reached 16 Sessions</h2>
-                    <p>Client has completed 16 sessions.</p>
+                    <h2 class="mb-4 text-2xl font-bold">Client Reached {{ $client->max_sessions }} Sessions</h2>
+                    <p>Client has completed {{ $client->max_sessions }} sessions.</p>
                     <button class="button-secondary mx-auto mt-4" @click="showLimitModal = false">
                         Close
                     </button>
