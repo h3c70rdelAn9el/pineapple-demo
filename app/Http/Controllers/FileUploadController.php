@@ -89,6 +89,9 @@ class FileUploadController extends Controller
             case 'headshot':
                 $therapist->update(['headshot_uploaded' => true]);
                 break;
+            case 'Bio':
+                $therapist->update(['bio_uploaded' => true]);
+                break;
             case 'W8BENE':
                 $therapist->update(['W9_or_WBEN_uploaded' => true]);
                 break;
@@ -110,7 +113,7 @@ class FileUploadController extends Controller
                 'verified' => $verified,
                 'file_title' => $request->file_title,
                 'user_id' => $therapist->id,
-                //'user_id' => $request->user_id,
+                // 'user_id' => $request->user_id,
                 // 'therapist_id' => $therapist->id,
             ]);
         } else {
@@ -134,7 +137,7 @@ class FileUploadController extends Controller
             Notification::send($adminUsers, new TherapistFileUploaded($user));
         }
 
-        //if document_type is w9, w8ben or w8bene, email this document to accounts@pineapplesupport.org
+        // if document_type is w9, w8ben or w8bene, email this document to accounts@pineapplesupport.org
         if (in_array($request->document_type, ['W9', 'W8BEN', 'W8BENE'])) {
             $fileData = $request->file('file')->get();
             $email = '
@@ -216,7 +219,7 @@ class FileUploadController extends Controller
 
         $form = FileUpload::findOrFail($id);
         if (($form->user_id != $user->id) && ! $user->admin) {
-            //return redirect('therapist.forms');
+            // return redirect('therapist.forms');
             return redirect()->route('dashboard');
         }
 
@@ -250,6 +253,9 @@ class FileUploadController extends Controller
                 break;
             case 'headshot':
                 $therapist->update(['headshot_uploaded' => true]);
+                break;
+            case 'Bio':
+                $therapist->update(['bio_uploaded' => true]);
                 break;
             case 'W8BENE':
                 $therapist->update(['W9_or_WBEN_uploaded' => true]);
