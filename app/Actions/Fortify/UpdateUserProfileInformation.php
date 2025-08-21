@@ -2,10 +2,12 @@
 
 namespace App\Actions\Fortify;
 
+use App\Mail\TherapistAddressUpdatedW9Reminder;
 use App\Models\FileUpload;
 use App\Models\User;
 use App\Notifications\TherapistProfileUpdated;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Laravel\Fortify\Contracts\UpdatesUserProfileInformation;
@@ -106,6 +108,9 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
         ) {
             $this->updateVerifiedUser($user, $input);
         } else {
+            // Check if address fields have changed before updating
+            $addressFieldsChanged = $this->hasAddressChanged($user, $input);
+
             $user->forceFill([
                 'account_name' => $input['account_name'],
                 'account_number' => $input['account_number'],
@@ -160,14 +165,19 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
 
             ])->save();
 
+            // Send W9/W8BEN reminder email if address changed and user is not an admin
+            if ($addressFieldsChanged && ! $user->isAdmin()) {
+                Mail::to($user->email)->send(new TherapistAddressUpdatedW9Reminder($user));
+            }
+
             if (! $user->isAdmin()) {
                 $admins = User::where('admin', 1)->get();
                 foreach ($admins as $admin) {
-                    $admin->notify(new TherapistProfileUpdated($user));
+                    $admin->notify(new TherapistProfileUpdated($user, []));
                 }
             }
 
-            $user->notify(new TherapistProfileUpdated($user));
+            $user->notify(new TherapistProfileUpdated($user, []));
 
         }
     }
@@ -180,6 +190,9 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
      */
     protected function updateVerifiedUser($user, array $input)
     {
+        // Check if address fields have changed before updating
+        $addressFieldsChanged = $this->hasAddressChanged($user, $input);
+
         $user->forceFill([
             'account_name' => $input['account_name'],
             'account_number' => $input['account_number'],
@@ -234,13 +247,40 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
 
         ])->save();
 
+        // Send W9/W8BEN reminder email if address changed and user is not an admin
+        if ($addressFieldsChanged && ! $user->isAdmin()) {
+            Mail::to($user->email)->send(new TherapistAddressUpdatedW9Reminder($user));
+        }
+
         if (! $user->isAdmin()) {
             $admins = User::where('admin', 1)->get();
             foreach ($admins as $admin) {
-                $admin->notify(new TherapistProfileUpdated($user));
+                $admin->notify(new TherapistProfileUpdated($user, []));
             }
         }
 
         $user->sendEmailVerificationNotification();
+    }
+
+    /**
+     * Check if any address-related fields have changed.
+     */
+    private function hasAddressChanged($user, array $input): bool
+    {
+        $addressFields = [
+            'street_address',
+            'county_town',
+            'state',
+            'zip_code_postal_code',
+            'country',
+        ];
+
+        foreach ($addressFields as $field) {
+            if (isset($input[$field]) && $input[$field] !== $user->$field) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
