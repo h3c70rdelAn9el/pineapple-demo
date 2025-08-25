@@ -2,7 +2,7 @@
     @if (session('success'))
         <x-success-message></x-success-message>
     @endif
-    <div x-data="{ showLimitModal: {{ $client->therapySessions()->whereIn('attendance', ['attended', 'no-show'])->count() >= $client->max_sessions ? 'true': 'false' }} }">
+    <div x-data="{ showLimitModal: {{ ($client->max_sessions > 15 && $client->therapySessions()->whereIn('attendance', ['attended', 'no-show'])->count() >= $client->max_sessions) ? 'true': 'false' }} }">
         <div class="relative">
             <div class="fixed inset-0 z-50 flex items-center justify-center overflow-auto bg-gray-800 bg-opacity-50"
                 x-show="showLimitModal" x-transition.duration.300ms x-cloak>

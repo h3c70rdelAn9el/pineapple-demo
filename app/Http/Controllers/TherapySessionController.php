@@ -145,7 +145,7 @@ class TherapySessionController extends Controller
                 $ts->save();
             }
 
-            if ($client->therapySessions()->whereIn('attendance', ['attended', 'no-show'])->count() >= $client->max_sessions) {
+            if ($client->max_sessions > 15 && $client->therapySessions()->whereIn('attendance', ['attended', 'no-show'])->count() >= $client->max_sessions) {
                 $client->status = 1;
                 $client->save();
             } else {
@@ -156,7 +156,7 @@ class TherapySessionController extends Controller
             $user_id = $ts->user_id;
             $therapist = User::find($user_id);
 
-            if ($client->therapySessions()->whereIn('attendance', ['attended', 'no-show'])->count() === ($client->max_sessions - 2)) {
+            if ($client->max_sessions > 15 && $client->therapySessions()->whereIn('attendance', ['attended', 'no-show'])->count() === ($client->max_sessions - 2)) {
                 $client->notify(new SessionLimitNotification);
             }
 
