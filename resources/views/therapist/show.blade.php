@@ -55,7 +55,14 @@
                             <p class="text-sm">{{ $therapist->gender }}</p>
                         </div>
                         @if (auth()->user()->admin == 1)
-                            <div class="flex flex-row justify-end">
+                            <div class="flex flex-row justify-end gap-2">
+                                <form action="{{ route('therapist.send-invoice', $therapist->id) }}" method="POST" 
+                                      onsubmit="return confirm('Are you sure you want to send the last month\'s invoice for {{ $therapist->name }} to your email?');">
+                                    @csrf
+                                    <button type="submit" class="px-4 py-2 text-sm text-white bg-green-600 rounded hover:bg-green-700">
+                                        Send Last Month Invoice
+                                    </button>
+                                </form>
                                 <a class="mt-1 button"
                                     href="{{ route('therapist.edit', $therapist->id) }}">Edit</a>
                             </div>

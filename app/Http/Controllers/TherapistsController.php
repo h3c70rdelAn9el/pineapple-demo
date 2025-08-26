@@ -6,6 +6,8 @@ use App\Mail\TherapistAddressUpdatedW9Reminder;
 use App\Models\FileUpload;
 use App\Models\TherapySession;
 use App\Models\User;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 // use Illuminate\\Notification;
@@ -249,6 +251,87 @@ class TherapistsController extends Controller
         }
 
         return redirect()->back()->with('success', 'Profile updated!');
+    }
+
+    public function sendLastMonthInvoice($id)
+    {
+        $user = auth()->user();
+
+        // Check if user is admin
+        if (! $user || $user->admin != 1) {
+            return redirect()->back()->with('error', 'You are not authorized to send invoices.');
+        }
+
+        $therapist = User::find($id);
+        if (! $therapist) {
+            return redirect()->back()->with('error', 'Therapist not found.');
+        }
+
+        $now = Carbon::now();
+        $start = $now->copy()->subMonth()->startOfMonth();
+        $end = $now->copy()->subMonth()->endOfMonth();
+
+        // Get sessions for the previous month
+        $sessions = TherapySession::where('user_id', $therapist->id)
+            ->whereBetween('created_at', [$start, $end])
+            ->get()
+            ->groupBy('client_id');
+
+        if ($sessions->isEmpty()) {
+            return redirect()->back()->with('error', 'No sessions found for last month for this therapist.');
+        }
+
+        // Prepare session summary per client
+        $sessionSummary = [];
+        foreach ($sessions as $clientId => $clientSessions) {
+            $client = $clientSessions->first()->client;
+
+            // Calculate totals for this client
+            $totalSessionCost = $clientSessions->sum('session_cost');
+            $totalClientContribution = $clientSessions->sum('client_contribution');
+            $totalRemainingContribution = $clientSessions->sum('remaining_client_contribution');
+
+            $sessionSummary[] = [
+                'client_id' => $clientId,
+                'client_code' => $client ? $client->client_code : null,
+                'quantity' => $clientSessions->count(),
+                'sessions' => $clientSessions,
+                'total_session_cost' => $totalSessionCost,
+                'total_client_contribution' => $totalClientContribution,
+                'total_remaining_contribution' => $totalRemainingContribution,
+            ];
+        }
+
+        $invoiceNumber = 'INV-'.$therapist->id.'-'.$now->format('Ym');
+        $invoiceDate = $now->format('Y-m-d');
+
+        // Generate PDF
+        $pdf = Pdf::loadView('invoices.therapist', [
+            'therapist' => $therapist,
+            'sessionSummary' => $sessionSummary,
+            'invoiceNumber' => $invoiceNumber,
+            'invoiceDate' => $invoiceDate,
+            'period' => [$start->format('Y-m-d'), $end->format('Y-m-d')],
+        ]);
+
+        $filename = 'Invoice_'.$therapist->id.'_'.$now->format('Ym').'.pdf';
+
+        // Send email to the current admin (who clicked the button)
+        try {
+            Mail::send('emails.therapist_invoice', [
+                'therapist' => $therapist,
+                'invoiceNumber' => $invoiceNumber,
+                'invoiceDate' => $invoiceDate,
+            ], function ($message) use ($pdf, $filename, $user) {
+                $message->to($user->email)
+                    ->subject('Therapist Invoice - Last Month')
+                    ->attachData($pdf->output(), $filename);
+            });
+
+            return redirect()->back()->with('success', "Last month's invoice for {$therapist->name} has been sent to your email ({$user->email}).");
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Failed to send invoice: '.$e->getMessage());
+        }
     }
 
     public function destroy($id)
