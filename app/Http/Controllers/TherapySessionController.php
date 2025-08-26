@@ -156,47 +156,39 @@ class TherapySessionController extends Controller
             $user_id = $ts->user_id;
             $therapist = User::find($user_id);
 
-            if ($client->max_sessions > 15 && $client->therapySessions()->whereIn('attendance', ['attended', 'no-show'])->count() === ($client->max_sessions - 2)) {
+            // Only send session limit notification if the current session being added puts them at the limit
+            $currentSessionCount = $client->therapySessions()->whereIn('attendance', ['attended', 'no-show'])->count();
+            if ($client->max_sessions > 15 && $currentSessionCount === ($client->max_sessions - 2) && in_array($ts->attendance, ['attended', 'no-show'])) {
                 $client->notify(new SessionLimitNotification);
             }
 
-            if ($client->special_sessions == 1) {
-                $therapist->notify(new SpecialSessionsLimitNotification);
-            }
-
-            // $consecutiveNoShows = 0;
-            // foreach ($client->therapySessions()->latest()->take(5)->get() as $session) {
-            //     if ($session->attendance === 'no-show') {
-            //         $consecutiveNoShows++;
-            //     } else {
-            //         break;
-            //     }
-            // }
-
-            // if ($consecutiveNoShows >= 3) {
-            //     $client->notify(new MissedTherapySessions());
-            // }
-            $missedSessions = 0;
-
-            foreach ($client->therapySessions as $session) {
-                if ($session->attendance === 'no-show') {
-                    $missedSessions++;
+            // Only send special session limit notification when a special session is actually added
+            if ($client->special_sessions == 1 && $ts->special) {
+                $currentSpecialSessionsCount = $client->therapySessions()->where('special', true)->count();
+                if ($currentSpecialSessionsCount === 6) { // Just reached the limit with this session
+                    $therapist->notify(new SpecialSessionsLimitNotification);
                 }
             }
 
-            if ($missedSessions >= 2) {
-                $client->notify(new MissedTherapySessions($client));
-                $adminUsers = User::where('admin', 1)->get();
-                foreach ($adminUsers as $adminUser) {
-                    $adminUser->notify(new MissedTherapySessions($client));
+            // Only send missed session emails if the CURRENT session being added is marked as 'no-show'
+            if ($ts->attendance === 'no-show') {
+                $missedSessions = $client->therapySessions()->where('attendance', 'no-show')->count();
+
+                if ($missedSessions >= 2) {
+                    $client->notify(new MissedTherapySessions($client));
+                    $adminUsers = User::where('admin', 1)->get();
+                    foreach ($adminUsers as $adminUser) {
+                        $adminUser->notify(new MissedTherapySessions($client));
+                    }
                 }
-            }
-            if ($missedSessions == 1) {
-                Mail::to($client->email)->send(new ClientMissedOneSession($client->preferred_name));
-            } elseif ($missedSessions == 2) {
-                Mail::to($client->email)->send(new ClientMissedTwoSessions($client->preferred_name));
-            } elseif ($missedSessions == 3) {
-                Mail::to($client->email)->send(new ClientMissedThreeSessions($client->preferred_name));
+
+                if ($missedSessions == 1) {
+                    Mail::to($client->email)->send(new ClientMissedOneSession($client->preferred_name));
+                } elseif ($missedSessions == 2) {
+                    Mail::to($client->email)->send(new ClientMissedTwoSessions($client->preferred_name));
+                } elseif ($missedSessions == 3) {
+                    Mail::to($client->email)->send(new ClientMissedThreeSessions($client->preferred_name));
+                }
             }
 
             return redirect()->back()->with('success', 'Session added successfully.');
