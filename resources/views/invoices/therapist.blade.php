@@ -68,15 +68,15 @@
                 <td>{{ $session['type'] ?? 'Individual Session' }}</td>
                 
                 <td>{{ $session['quantity'] }}</td>
-                <td>${{ number_format($session['total_session_cost'], 2) }}</td>
-                <td>${{ number_format($session['total_client_contribution'], 2) }}</td>
-                <td>${{ number_format($session['total_remaining_contribution'], 2) }}</td>
+                <td>{{ $currencySymbol }}{{ number_format($session['total_session_cost'], 2) }}</td>
+                <td>{{ $currencySymbol }}{{ number_format($session['total_client_contribution'], 2) }}</td>
+                <td>{{ $currencySymbol }}{{ number_format($session['total_remaining_contribution'], 2) }}</td>
             </tr>
             @php $grandTotal += $session['total_remaining_contribution']; @endphp
         @endforeach
         <tr>
             <td colspan="5" style="text-align:right;font-weight:bold;">Total</td>
-            <td style="font-weight:bold;">${{ number_format($grandTotal, 2) }}</td>
+            <td style="font-weight:bold;">{{ $currencySymbol }}{{ number_format($grandTotal, 2) }}</td>
         </tr>
         </tbody>
     </table>
