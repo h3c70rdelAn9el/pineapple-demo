@@ -224,6 +224,9 @@ class TherapistsController extends Controller
             'currency' => 'nullable|string|max:255',
             'client_extensions' => 'nullable|numeric',
 
+            // New field for invoice payee
+            'invoice_payee' => 'nullable|string|max:255',
+
             // 'gender' => $genderString
 
         ]);
@@ -234,6 +237,11 @@ class TherapistsController extends Controller
 
         $validatedData['gender'] = $genderString;
 
+        // If invoice_payee is not set, default to therapist's name
+        if (empty($validatedData['invoice_payee'])) {
+            $validatedData['invoice_payee'] = $user->name;
+        }
+
         // $user->currency = $request->currencyCode;
 
         if (! $user) {
@@ -243,7 +251,7 @@ class TherapistsController extends Controller
         // Check if address fields have changed before updating
         $addressFieldsChanged = $this->hasAddressChanged($user, $validatedData);
 
-        $user->update($validatedData);
+    $user->update($validatedData);
 
         // Send W9/W8BEN reminder email if address changed and user is not an admin
         if ($addressFieldsChanged && ! $user->isAdmin()) {
@@ -312,6 +320,8 @@ class TherapistsController extends Controller
             'invoiceNumber' => $invoiceNumber,
             'invoiceDate' => $invoiceDate,
             'period' => [$start->format('Y-m-d'), $end->format('Y-m-d')],
+            'currencySymbol' => $this->getCurrencySymbol($therapist->currency),
+            'invoicePayee' => $therapist->invoice_payee ?? $therapist->name,
         ]);
 
         $filename = 'Invoice_'.$therapist->id.'_'.$now->format('Ym').'.pdf';
@@ -371,5 +381,38 @@ class TherapistsController extends Controller
         }
 
         return false;
+    }
+
+    /**
+     * Get currency symbol from currency code.
+     */
+    private function getCurrencySymbol(?string $currencyCode): string
+    {
+        $currencySymbols = [
+            'USD' => '$',
+            'GBP' => '£',
+            'EUR' => '€',
+            'JPY' => '¥',
+            'AUD' => 'A$',
+            'CAD' => 'C$',
+            'CHF' => 'CHF',
+            'CNY' => '¥',
+            'SEK' => 'kr',
+            'NZD' => 'NZ$',
+            'MXN' => '$',
+            'SGD' => 'S$',
+            'HKD' => 'HK$',
+            'NOK' => 'kr',
+            'KRW' => '₩',
+            'TRY' => '₺',
+            'RUB' => '₽',
+            'INR' => '₹',
+            'BRL' => 'R$',
+            'ZAR' => 'R',
+            'PHP' => '₱',
+            'CZK' => 'Kč',
+        ];
+
+        return $currencySymbols[$currencyCode] ?? '$'; // Default to $ (USD)
     }
 }

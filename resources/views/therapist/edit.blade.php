@@ -1,3 +1,9 @@
+            <div>
+                <x-jet-label for="invoice_payee" value="{{ __('Invoice Payee (Name to appear on invoices)') }}" />
+                <x-jet-input id="invoice_payee" class="block w-full mt-1" type="text" name="invoice_payee"
+                    :value="old('invoice_payee', $therapist->invoice_payee ?? $therapist->name)" :placeholder="$therapist->invoice_payee ?? $therapist->name" autofocus />
+                <x-jet-input-error for="invoice_payee" class="mt-2" />
+            </div>
 @php
     $timeZonesJson = file_get_contents(resource_path('json/time_zones.json'));
     $timeZones = json_decode($timeZonesJson, true);
