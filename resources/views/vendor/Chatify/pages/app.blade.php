@@ -4,7 +4,7 @@
     {{-- ----------------------Users/Groups lists side---------------------- --}}
     <div class="messenger-listView {{ !!$id ? 'conversation-active' : '' }}">
         {{-- Header and search bar --}}
-        <div class="m-header md:mt-4 mt-2">
+        <div class="mt-2 m-header md:mt-4">
             <nav>
                 <a href="#"><i class="fas fa-inbox"></i> <span class="messenger-headTitle">MESSAGES</span> </a>
                 {{-- header buttons --}}
@@ -63,7 +63,7 @@
     {{-- ----------------------Messaging side---------------------- --}}
     <div class="messenger-messagingView">
         {{-- header title [conversation name] amd buttons --}}
-        <div class="m-header m-header-messaging -mt-2">
+        <div class="-mt-2 m-header m-header-messaging">
             <nav class="chatify-d-flex chatify-justify-content-between chatify-align-items-center">
                 {{-- header back button, avatar and user name --}}
                 <div class="chatify-d-flex chatify-justify-content-between chatify-align-items-center">
@@ -76,7 +76,7 @@
                 <nav class="m-header-right">
                     <a href="#" class="add-to-favorite"><i class="fas fa-star"></i></a>
                     <a href="{{ route('dashboard') }}"><i class="fas fa-home"></i></a>
-                    <a href="#" class="show-infoSide md:block hidden"><i class="fas fa-info-circle"></i></a>
+                    <a href="#" class="hidden show-infoSide md:block"><i class="fas fa-info-circle"></i></a>
                 </nav>
             </nav>
             {{-- Internet connection --}}
