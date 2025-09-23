@@ -3,11 +3,12 @@
 namespace App\Models;
 
 use Chatify\Traits\UUID;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class ChMessage extends Model
 {
-    use UUID;
+    use HasFactory, UUID;
 
     protected $fillable = [
         'from_id',

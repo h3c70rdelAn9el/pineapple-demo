@@ -254,6 +254,42 @@ class MessagesController extends Controller
     }
 
     /**
+     * Get contacts list with unread messages only
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function getUnreadContacts(Request $request)
+    {
+        // get all users that have unread messages sent to [Auth user]
+        $users = Message::join('users', 'ch_messages.from_id', '=', 'users.id')
+        ->where('ch_messages.to_id', Auth::user()->id)
+        ->where('ch_messages.seen', 0)
+        ->where('users.id','!=',Auth::user()->id)
+        ->select('users.*',DB::raw('MAX(ch_messages.created_at) max_created_at'))
+        ->orderBy('max_created_at', 'desc')
+        ->groupBy('users.id')
+        ->paginate($request->per_page ?? $this->perPage);
+
+        $usersList = $users->items();
+
+        if (count($usersList) > 0) {
+            $contacts = '';
+            foreach ($usersList as $user) {
+                $contacts .= Chatify::getContactItem($user);
+            }
+        } else {
+            $contacts = '<p class="message-hint center-el"><span>No unread messages</span></p>';
+        }
+
+        return Response::json([
+            'contacts' => $contacts,
+            'total' => $users->total() ?? 0,
+            'last_page' => $users->lastPage() ?? 1,
+        ], 200);
+    }
+
+    /**
      * Update user's list item data
      *
      * @param Request $request

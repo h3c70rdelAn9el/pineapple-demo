@@ -1247,6 +1247,88 @@ function setActiveStatus(status) {
 
 /**
  *-------------------------------------------------------------
+ * Get contacts with unread messages only
+ *-------------------------------------------------------------
+ */
+let unreadContactsPage = 1;
+let unreadContactsLoading = false;
+let noMoreUnreadContacts = false;
+let currentFilter = 'all'; // Track current filter state
+
+function setUnreadContactsLoading(loading = false) {
+  if (!loading) {
+    $(".listOfContacts").find(".loading-contacts").remove();
+  } else {
+    $(".listOfContacts").append(
+      `<div class="loading-contacts">${listItemLoading(4)}</div>`
+    );
+  }
+  unreadContactsLoading = loading;
+}
+
+function getUnreadContacts() {
+  if (!unreadContactsLoading && !noMoreUnreadContacts) {
+    setUnreadContactsLoading(true);
+    $.ajax({
+      url: "/messages/getUnreadContacts",
+      method: "GET",
+      data: { _token: csrfToken, page: unreadContactsPage },
+      dataType: "JSON",
+      success: (data) => {
+        setUnreadContactsLoading(false);
+        if (unreadContactsPage < 2) {
+          $(".listOfContacts").html(data.contacts);
+        } else {
+          $(".listOfContacts").append(data.contacts);
+        }
+        updateSelectedContact();
+        // update data-action required with [responsive design]
+        cssMediaQueries();
+        // Pagination lock & messages page
+        noMoreUnreadContacts = unreadContactsPage >= data?.last_page;
+        if (!noMoreUnreadContacts) unreadContactsPage += 1;
+      },
+      error: (error) => {
+        setUnreadContactsLoading(false);
+        console.error(error);
+      },
+    });
+  }
+}
+
+function resetContactsPagination() {
+  // Reset all contacts pagination
+  contactsPage = 1;
+  contactsLoading = false;
+  noMoreContacts = false;
+  
+  // Reset unread contacts pagination
+  unreadContactsPage = 1;
+  unreadContactsLoading = false;
+  noMoreUnreadContacts = false;
+}
+
+function switchContactsFilter(filter) {
+  currentFilter = filter;
+  resetContactsPagination();
+  
+  // Update button states
+  $('.filter-btn').removeClass('active');
+  $(`.filter-btn[data-filter="${filter}"]`).addClass('active');
+  
+  // Clear current contacts list
+  $(".listOfContacts").html('<div class="loading-contacts">' + listItemLoading(4) + '</div>');
+  
+  // Load appropriate contacts
+  if (filter === 'unread') {
+    getUnreadContacts();
+  } else {
+    getContacts();
+  }
+}
+
+/**
+ *-------------------------------------------------------------
  * On DOM ready
  *-------------------------------------------------------------
  */
@@ -1472,6 +1554,12 @@ $(document).ready(function () {
     }
   });
 
+  // Filter buttons click handlers
+  $("body").on("click", ".filter-btn", function () {
+    const filter = $(this).attr("data-filter");
+    switchContactsFilter(filter);
+  });
+
   // Delete Conversation button
   $(".messenger-infoView-btns .delete-conversation").on("click", function () {
     app_modal({
@@ -1599,7 +1687,11 @@ $(document).ready(function () {
   );
   //Contacts pagination
   actionOnScroll(".messenger-tab.users-tab", function () {
-    getContacts();
+    if (currentFilter === 'unread') {
+      getUnreadContacts();
+    } else {
+      getContacts();
+    }
   });
   //Search pagination
   actionOnScroll(".messenger-tab.search-tab", function () {

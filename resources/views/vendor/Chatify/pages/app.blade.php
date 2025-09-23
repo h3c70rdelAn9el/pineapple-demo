@@ -4,7 +4,7 @@
     {{-- ----------------------Users/Groups lists side---------------------- --}}
     <div class="messenger-listView {{ !!$id ? 'conversation-active' : '' }}">
         {{-- Header and search bar --}}
-        <div class="m-header md:mt-4 mt-2">
+        <div class="mt-2 m-header md:mt-4">
             <nav>
                 <a href="#"><i class="fas fa-inbox"></i> <span class="messenger-headTitle">MESSAGES</span> </a>
                 {{-- header buttons --}}
@@ -15,6 +15,17 @@
             </nav>
             {{-- Search input --}}
             <input type="text" class="messenger-search" placeholder="Search" />
+            {{-- Filter buttons --}}
+            <div class="messenger-filter-tabs">
+                <div class="filter-buttons">
+                    <button class="filter-btn active" data-filter="all">
+                        <i class="fas fa-comments"></i> All Messages
+                    </button>
+                    <button class="filter-btn" data-filter="unread">
+                        <i class="fas fa-envelope"></i> Unread Only
+                    </button>
+                </div>
+            </div>
             {{-- Tabs --}}
             {{-- <div class="messenger-listView-tabs">
                 <a href="#" class="active-tab" data-view="users">
@@ -52,7 +63,7 @@
     {{-- ----------------------Messaging side---------------------- --}}
     <div class="messenger-messagingView">
         {{-- header title [conversation name] amd buttons --}}
-        <div class="m-header m-header-messaging -mt-2">
+        <div class="-mt-2 m-header m-header-messaging">
             <nav class="chatify-d-flex chatify-justify-content-between chatify-align-items-center">
                 {{-- header back button, avatar and user name --}}
                 <div class="chatify-d-flex chatify-justify-content-between chatify-align-items-center">
@@ -65,7 +76,7 @@
                 <nav class="m-header-right">
                     <a href="#" class="add-to-favorite"><i class="fas fa-star"></i></a>
                     <a href="{{ route('dashboard') }}"><i class="fas fa-home"></i></a>
-                    <a href="#" class="show-infoSide md:block hidden"><i class="fas fa-info-circle"></i></a>
+                    <a href="#" class="hidden show-infoSide md:block"><i class="fas fa-info-circle"></i></a>
                 </nav>
             </nav>
             {{-- Internet connection --}}
@@ -120,6 +131,59 @@
 @media (max-width: 1060px) {
     .messenger-infoView {
         margin-top: 95px !important;
+    }
+}
+
+/* Unread Messages Filter Styles */
+.messenger-filter-tabs {
+    padding: 10px 15px;
+    margin-bottom: 10px;
+}
+
+.filter-buttons {
+    display: flex;
+    gap: 5px;
+}
+
+.filter-btn {
+    flex: 1;
+    padding: 8px 12px;
+    border: 1px solid #e0e0e0;
+    background-color: #f8f9fa;
+    color: #495057;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+}
+
+.filter-btn:hover {
+    background-color: #e9ecef;
+    border-color: #d0d3d6;
+}
+
+.filter-btn.active {
+    background-color: var(--primary-color, #2196F3);
+    color: white;
+    border-color: var(--primary-color, #2196F3);
+}
+
+.filter-btn i {
+    font-size: 10px;
+}
+
+@media (max-width: 480px) {
+    .filter-btn {
+        font-size: 10px;
+        padding: 6px 8px;
+    }
+    
+    .filter-btn i {
+        font-size: 9px;
     }
 }
 </style>
