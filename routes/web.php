@@ -164,3 +164,13 @@ Route::get('/preview-w9-email', function () {
 
     return (new \App\Mail\TherapistAddressUpdatedW9Reminder($user))->render();
 })->name('preview.w9.email');
+
+// Custom Chatify routes for unread messages filter
+Route::middleware([
+    'auth:sanctum',
+    config('jetstream.auth_session'),
+    'verified',
+])->group(function () {
+    Route::get('/messages/getUnreadContacts', [App\Http\Controllers\vendor\Chatify\MessagesController::class, 'getUnreadContacts'])
+        ->name('messages.unread.contacts');
+});
