@@ -847,54 +847,6 @@ function checkInternet(state, selector) {
 
 /**
  *-------------------------------------------------------------
- * Get contacts
- *-------------------------------------------------------------
- */
-let contactsPage = 1;
-let contactsLoading = false;
-let noMoreContacts = false;
-function setContactsLoading(loading = false) {
-  if (!loading) {
-    $(".listOfContacts").find(".loading-contacts").remove();
-  } else {
-    $(".listOfContacts").append(
-      `<div class="loading-contacts">${listItemLoading(4)}</div>`
-    );
-  }
-  contactsLoading = loading;
-}
-function getContacts() {
-  if (!contactsLoading && !noMoreContacts) {
-    setContactsLoading(true);
-    $.ajax({
-      url: url + "/getContacts",
-      method: "GET",
-      data: { _token: csrfToken, page: contactsPage },
-      dataType: "JSON",
-      success: (data) => {
-        setContactsLoading(false);
-        if (contactsPage < 2) {
-          $(".listOfContacts").html(data.contacts);
-        } else {
-          $(".listOfContacts").append(data.contacts);
-        }
-        updateSelectedContact();
-        // update data-action required with [responsive design]
-        cssMediaQueries();
-        // Pagination lock & messages page
-        noMoreContacts = contactsPage >= data?.last_page;
-        if (!noMoreContacts) contactsPage += 1;
-      },
-      error: (error) => {
-        setContactsLoading(false);
-        console.error(error);
-      },
-    });
-  }
-}
-
-/**
- *-------------------------------------------------------------
  * Update contact item
  *-------------------------------------------------------------
  */
@@ -1247,15 +1199,15 @@ function setActiveStatus(status) {
 
 /**
  *-------------------------------------------------------------
- * Get contacts with unread messages only
+ * Get contacts with filter support (all or unread)
  *-------------------------------------------------------------
  */
-let unreadContactsPage = 1;
-let unreadContactsLoading = false;
-let noMoreUnreadContacts = false;
+let contactsPage = 1;
+let contactsLoading = false;
+let noMoreContacts = false;
 let currentFilter = 'all'; // Track current filter state
 
-function setUnreadContactsLoading(loading = false) {
+function setContactsLoading(loading = false) {
   if (!loading) {
     $(".listOfContacts").find(".loading-contacts").remove();
   } else {
@@ -1263,20 +1215,27 @@ function setUnreadContactsLoading(loading = false) {
       `<div class="loading-contacts">${listItemLoading(4)}</div>`
     );
   }
-  unreadContactsLoading = loading;
+  contactsLoading = loading;
 }
 
-function getUnreadContacts() {
-  if (!unreadContactsLoading && !noMoreUnreadContacts) {
-    setUnreadContactsLoading(true);
+function getContacts(filter = null) {
+  // Use the provided filter or fall back to current filter
+  const activeFilter = filter || currentFilter;
+  
+  if (!contactsLoading && !noMoreContacts) {
+    setContactsLoading(true);
     $.ajax({
-      url: "/messages/getUnreadContacts",
+      url: url + "/getContacts",
       method: "GET",
-      data: { _token: csrfToken, page: unreadContactsPage },
+      data: { 
+        _token: csrfToken, 
+        page: contactsPage,
+        filter: activeFilter
+      },
       dataType: "JSON",
       success: (data) => {
-        setUnreadContactsLoading(false);
-        if (unreadContactsPage < 2) {
+        setContactsLoading(false);
+        if (contactsPage < 2) {
           $(".listOfContacts").html(data.contacts);
         } else {
           $(".listOfContacts").append(data.contacts);
@@ -1285,11 +1244,11 @@ function getUnreadContacts() {
         // update data-action required with [responsive design]
         cssMediaQueries();
         // Pagination lock & messages page
-        noMoreUnreadContacts = unreadContactsPage >= data?.last_page;
-        if (!noMoreUnreadContacts) unreadContactsPage += 1;
+        noMoreContacts = contactsPage >= data?.last_page;
+        if (!noMoreContacts) contactsPage += 1;
       },
       error: (error) => {
-        setUnreadContactsLoading(false);
+        setContactsLoading(false);
         console.error(error);
       },
     });
@@ -1297,15 +1256,10 @@ function getUnreadContacts() {
 }
 
 function resetContactsPagination() {
-  // Reset all contacts pagination
+  // Reset contacts pagination
   contactsPage = 1;
   contactsLoading = false;
   noMoreContacts = false;
-  
-  // Reset unread contacts pagination
-  unreadContactsPage = 1;
-  unreadContactsLoading = false;
-  noMoreUnreadContacts = false;
 }
 
 function switchContactsFilter(filter) {
@@ -1316,15 +1270,27 @@ function switchContactsFilter(filter) {
   $('.filter-btn').removeClass('active');
   $(`.filter-btn[data-filter="${filter}"]`).addClass('active');
   
+  // Update UI based on filter
+  const usersTab = $('.messenger-tab.users-tab');
+  if (filter === 'unread') {
+    // Add filter class to hide sections we don't want
+    usersTab.addClass('messenger-filter-unread');
+    
+    // Change the title for unread filter
+    usersTab.find('.messenger-title').last().find('span').text('Unread Messages');
+  } else {
+    // Remove filter class to show all sections
+    usersTab.removeClass('messenger-filter-unread');
+    
+    // Reset the title back to "All Messages"
+    usersTab.find('.messenger-title').last().find('span').text('All Messages');
+  }
+  
   // Clear current contacts list
   $(".listOfContacts").html('<div class="loading-contacts">' + listItemLoading(4) + '</div>');
   
-  // Load appropriate contacts
-  if (filter === 'unread') {
-    getUnreadContacts();
-  } else {
-    getContacts();
-  }
+  // Load contacts with the selected filter
+  getContacts(filter);
 }
 
 /**
@@ -1687,11 +1653,7 @@ $(document).ready(function () {
   );
   //Contacts pagination
   actionOnScroll(".messenger-tab.users-tab", function () {
-    if (currentFilter === 'unread') {
-      getUnreadContacts();
-    } else {
-      getContacts();
-    }
+    getContacts(currentFilter);
   });
   //Search pagination
   actionOnScroll(".messenger-tab.search-tab", function () {

@@ -72,7 +72,7 @@ class UnreadMessagesFilterTest extends TestCase
             'seen' => true,
         ]);
 
-        $response = $this->actingAs($user)->get('/messages/getUnreadContacts');
+        $response = $this->actingAs($user)->get('/messages/getContacts?filter=unread');
 
         $response->assertStatus(200);
         $response->assertJsonStructure([
@@ -99,7 +99,7 @@ class UnreadMessagesFilterTest extends TestCase
             'seen' => true,
         ]);
 
-        $response = $this->actingAs($user)->get('/messages/getUnreadContacts');
+        $response = $this->actingAs($user)->get('/messages/getContacts?filter=unread');
 
         $response->assertStatus(200);
         $this->assertEquals(0, $response->json('total'));
