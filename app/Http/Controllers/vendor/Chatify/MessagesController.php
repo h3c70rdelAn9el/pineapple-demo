@@ -220,57 +220,35 @@ class MessagesController extends Controller
      */
     public function getContacts(Request $request)
     {
-        // get all users that received/sent message from/to [Auth user]
-        $users = Message::join('users',  function ($join) {
-            $join->on('ch_messages.from_id', '=', 'users.id')
-                ->orOn('ch_messages.to_id', '=', 'users.id');
-        })
-        ->where(function ($q) {
-            $q->where('ch_messages.from_id', Auth::user()->id)
-            ->orWhere('ch_messages.to_id', Auth::user()->id);
-        })
-        ->where('users.id','!=',Auth::user()->id)
-        ->select('users.*',DB::raw('MAX(ch_messages.created_at) max_created_at'))
-        ->orderBy('max_created_at', 'desc')
-        ->groupBy('users.id')
-        ->paginate($request->per_page ?? $this->perPage);
-
-        $usersList = $users->items();
-
-        if (count($usersList) > 0) {
-            $contacts = '';
-            foreach ($usersList as $user) {
-                $contacts .= Chatify::getContactItem($user);
-            }
+        $filter = $request->get('filter', 'all');
+        
+        if ($filter === 'unread') {
+            // get all users that have unread messages sent to [Auth user]
+            $users = Message::join('users', 'ch_messages.from_id', '=', 'users.id')
+            ->where('ch_messages.to_id', Auth::user()->id)
+            ->where('ch_messages.seen', 0)
+            ->where('users.id','!=',Auth::user()->id)
+            ->select('users.*',DB::raw('MAX(ch_messages.created_at) max_created_at'))
+            ->orderBy('max_created_at', 'desc')
+            ->groupBy('users.id')
+            ->paginate($request->per_page ?? $this->perPage);
         } else {
-            $contacts = '<p class="message-hint center-el"><span>Your contact list is empty</span></p>';
+            // get all users that received/sent message from/to [Auth user]
+            $users = Message::join('users',  function ($join) {
+                $join->on('ch_messages.from_id', '=', 'users.id')
+                    ->orOn('ch_messages.to_id', '=', 'users.id');
+            })
+            ->where(function ($q) {
+                $q->where('ch_messages.from_id', Auth::user()->id)
+                ->orWhere('ch_messages.to_id', Auth::user()->id);
+            })
+            ->where('users.id','!=',Auth::user()->id)
+            ->select('users.*',DB::raw('MAX(ch_messages.created_at) max_created_at'))
+            ->orderBy('max_created_at', 'desc')
+            ->groupBy('users.id')
+            ->paginate($request->per_page ?? $this->perPage);
         }
 
-        return Response::json([
-            'contacts' => $contacts,
-            'total' => $users->total() ?? 0,
-            'last_page' => $users->lastPage() ?? 1,
-        ], 200);
-    }
-
-    /**
-     * Get contacts list with unread messages only
-     *
-     * @param Request $request
-     * @return JsonResponse
-     */
-    public function getUnreadContacts(Request $request)
-    {
-        // get all users that have unread messages sent to [Auth user]
-        $users = Message::join('users', 'ch_messages.from_id', '=', 'users.id')
-        ->where('ch_messages.to_id', Auth::user()->id)
-        ->where('ch_messages.seen', 0)
-        ->where('users.id','!=',Auth::user()->id)
-        ->select('users.*',DB::raw('MAX(ch_messages.created_at) max_created_at'))
-        ->orderBy('max_created_at', 'desc')
-        ->groupBy('users.id')
-        ->paginate($request->per_page ?? $this->perPage);
-
         $usersList = $users->items();
 
         if (count($usersList) > 0) {
@@ -279,7 +257,8 @@ class MessagesController extends Controller
                 $contacts .= Chatify::getContactItem($user);
             }
         } else {
-            $contacts = '<p class="message-hint center-el"><span>No unread messages</span></p>';
+            $emptyMessage = $filter === 'unread' ? 'No unread messages' : 'Your contact list is empty';
+            $contacts = '<p class="message-hint center-el"><span>' . $emptyMessage . '</span></p>';
         }
 
         return Response::json([

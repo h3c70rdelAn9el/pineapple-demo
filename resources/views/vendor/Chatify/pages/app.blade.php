@@ -43,8 +43,10 @@
                 <div class="messenger-favorites app-scroll-hidden"></div>
                </div>
                {{-- Saved Messages --}}
-               <p class="messenger-title"><span>Your Space</span></p>
-               {!! view('Chatify::layouts.listItem', ['get' => 'saved']) !!}
+               <div class="saved-messages-section">
+                   <p class="messenger-title"><span>Your Space</span></p>
+                   {!! view('Chatify::layouts.listItem', ['get' => 'saved']) !!}
+               </div>
                {{-- Contact --}}
                <p class="messenger-title"><span>All Messages</span></p>
                <div class="listOfContacts" style="width: 100%;height: calc(100% - 272px);position: relative;"></div>
@@ -138,6 +140,9 @@
 .messenger-filter-tabs {
     padding: 10px 15px;
     margin-bottom: 10px;
+    position: relative;
+    z-index: 10;
+    background: white;
 }
 
 .filter-buttons {
@@ -159,6 +164,8 @@
     align-items: center;
     justify-content: center;
     gap: 5px;
+    position: relative;
+    z-index: 11;
 }
 
 .filter-btn:hover {
@@ -174,6 +181,18 @@
 
 .filter-btn i {
     font-size: 10px;
+}
+
+/* Hide sections when showing unread only */
+.messenger-filter-unread .favorites-section,
+.messenger-filter-unread .saved-messages-section,
+.messenger-filter-unread .messenger-title {
+    display: none !important;
+}
+
+/* Adjust height calculation to account for filter buttons */
+.messenger-filter-unread .listOfContacts {
+    height: calc(100% - 50px) !important;
 }
 
 @media (max-width: 480px) {
