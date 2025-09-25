@@ -251,7 +251,7 @@ class TherapistsController extends Controller
         // Check if address fields have changed before updating
         $addressFieldsChanged = $this->hasAddressChanged($user, $validatedData);
 
-    $user->update($validatedData);
+        $user->update($validatedData);
 
         // Send W9/W8BEN reminder email if address changed and user is not an admin
         if ($addressFieldsChanged && ! $user->isAdmin()) {
@@ -280,34 +280,14 @@ class TherapistsController extends Controller
         $end = $now->copy()->subMonth()->endOfMonth();
 
         // Get sessions for the previous month
-        $sessions = TherapySession::where('user_id', $therapist->id)
+        $sessions = TherapySession::with('client')
+            ->where('user_id', $therapist->id)
             ->whereBetween('created_at', [$start, $end])
-            ->get()
-            ->groupBy('client_id');
+            ->orderBy('created_at')
+            ->get();
 
         if ($sessions->isEmpty()) {
             return redirect()->back()->with('error', 'No sessions found for last month for this therapist.');
-        }
-
-        // Prepare session summary per client
-        $sessionSummary = [];
-        foreach ($sessions as $clientId => $clientSessions) {
-            $client = $clientSessions->first()->client;
-
-            // Calculate totals for this client
-            $totalSessionCost = $clientSessions->sum('session_cost');
-            $totalClientContribution = $clientSessions->sum('client_contribution');
-            $totalRemainingContribution = $clientSessions->sum('remaining_client_contribution');
-
-            $sessionSummary[] = [
-                'client_id' => $clientId,
-                'client_code' => $client ? $client->client_code : null,
-                'quantity' => $clientSessions->count(),
-                'sessions' => $clientSessions,
-                'total_session_cost' => $totalSessionCost,
-                'total_client_contribution' => $totalClientContribution,
-                'total_remaining_contribution' => $totalRemainingContribution,
-            ];
         }
 
         $invoiceNumber = 'INV-'.$therapist->id.'-'.$now->format('Ym');
@@ -316,7 +296,7 @@ class TherapistsController extends Controller
         // Generate PDF
         $pdf = Pdf::loadView('invoices.therapist', [
             'therapist' => $therapist,
-            'sessionSummary' => $sessionSummary,
+            'sessions' => $sessions,
             'invoiceNumber' => $invoiceNumber,
             'invoiceDate' => $invoiceDate,
             'period' => [$start->format('Y-m-d'), $end->format('Y-m-d')],
