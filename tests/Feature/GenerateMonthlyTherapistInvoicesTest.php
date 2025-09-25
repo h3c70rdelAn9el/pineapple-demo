@@ -2,7 +2,6 @@
 
 namespace Tests\Feature;
 
-use App\Console\Commands\GenerateMonthlyTherapistInvoices;
 use App\Models\Client;
 use App\Models\TherapySession;
 use App\Models\User;
@@ -10,7 +9,6 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Support\Facades\Mail;
 use Tests\TestCase;
 
 class GenerateMonthlyTherapistInvoicesTest extends TestCase
@@ -25,7 +23,6 @@ class GenerateMonthlyTherapistInvoicesTest extends TestCase
             'admin' => false,
             'active_status' => 0,
             'account_name' => 'John Doe Therapy Services',
-            'bank_name' => 'Test Bank',
             'account_number' => '1234567890',
             'routing_number' => '123456789',
             'iban_swift_code' => 'TESTBANK123',
@@ -45,34 +42,24 @@ class GenerateMonthlyTherapistInvoicesTest extends TestCase
             'client_id' => $client->id,
             'session_cost' => 100.00,
             'client_contribution' => 20.00,
-            'remaining_client_contribution' => 80.00,
             'created_at' => $lastMonth,
         ]);
 
         // Test the PDF generation with banking details
-        $sessionSummary = [
-            [
-                'client_id' => $client->id,
-                'client_code' => $client->client_code,
-                'quantity' => 1,
-                'sessions' => collect([$session]),
-                'total_session_cost' => 100.00,
-                'total_client_contribution' => 20.00,
-                'total_remaining_contribution' => 80.00,
-            ]
-        ];
+        $sessions = collect([$session]);
 
-        $invoiceNumber = 'INV-' . $therapist->id . '-' . Carbon::now()->format('Ym');
+        $invoiceNumber = 'INV-'.$therapist->id.'-'.Carbon::now()->format('Ym');
         $invoiceDate = Carbon::now()->format('Y-m-d');
         $period = [$lastMonth->startOfMonth()->format('Y-m-d'), $lastMonth->endOfMonth()->format('Y-m-d')];
 
         // Generate the PDF and check its content
         $pdf = Pdf::loadView('invoices.therapist', [
             'therapist' => $therapist,
-            'sessionSummary' => $sessionSummary,
+            'sessions' => $sessions,
             'invoiceNumber' => $invoiceNumber,
             'invoiceDate' => $invoiceDate,
             'period' => $period,
+            'currencySymbol' => '$',
         ]);
 
         $pdfContent = $pdf->output();
@@ -84,16 +71,16 @@ class GenerateMonthlyTherapistInvoicesTest extends TestCase
         // Test the view directly to check banking details are included
         $view = view('invoices.therapist', [
             'therapist' => $therapist,
-            'sessionSummary' => $sessionSummary,
+            'sessions' => $sessions,
             'invoiceNumber' => $invoiceNumber,
             'invoiceDate' => $invoiceDate,
             'period' => $period,
+            'currencySymbol' => '$',
         ])->render();
 
         // Assert banking details are present in the view
         $this->assertStringContainsString('Banking Details for Payment', $view);
         $this->assertStringContainsString('John Doe Therapy Services', $view);
-        $this->assertStringContainsString('Test Bank', $view);
         $this->assertStringContainsString('1234567890', $view);
         $this->assertStringContainsString('123456789', $view);
         $this->assertStringContainsString('TESTBANK123', $view);
@@ -106,31 +93,41 @@ class GenerateMonthlyTherapistInvoicesTest extends TestCase
             'admin' => false,
             'active_status' => 0,
             'session_cost' => 100.00,
+            'account_name' => null,
+            'account_number' => null,
+            'routing_number' => null,
+            'iban_swift_code' => null,
             // No banking details set
         ]);
 
-        $sessionSummary = [
-            [
-                'client_id' => 1,
-                'client_code' => 'CLIENT001',
-                'quantity' => 1,
-                'total_session_cost' => 100.00,
-                'total_client_contribution' => 20.00,
-                'total_remaining_contribution' => 80.00,
-            ]
-        ];
+        // Create a client and session for the test
+        $client = Client::factory()->create([
+            'user_id' => $therapist->id,
+            'client_code' => 'CLIENT001',
+        ]);
 
-        $invoiceNumber = 'INV-' . $therapist->id . '-' . Carbon::now()->format('Ym');
+        $session = TherapySession::factory()->create([
+            'user_id' => $therapist->id,
+            'client_id' => $client->id,
+            'session_cost' => 100.00,
+            'client_contribution' => 20.00,
+            'created_at' => Carbon::now()->subMonth(),
+        ]);
+
+        $sessions = collect([$session]);
+
+        $invoiceNumber = 'INV-'.$therapist->id.'-'.Carbon::now()->format('Ym');
         $invoiceDate = Carbon::now()->format('Y-m-d');
         $period = [Carbon::now()->subMonth()->startOfMonth()->format('Y-m-d'), Carbon::now()->subMonth()->endOfMonth()->format('Y-m-d')];
 
         // Test the view to check missing banking details message
         $view = view('invoices.therapist', [
             'therapist' => $therapist,
-            'sessionSummary' => $sessionSummary,
+            'sessions' => $sessions,
             'invoiceNumber' => $invoiceNumber,
             'invoiceDate' => $invoiceDate,
             'period' => $period,
+            'currencySymbol' => '$',
         ])->render();
 
         // Assert the "no banking details" message is present
@@ -146,40 +143,140 @@ class GenerateMonthlyTherapistInvoicesTest extends TestCase
             'admin' => false,
             'active_status' => 0,
             'account_name' => 'John Doe Therapy Services',
-            'bank_name' => 'Test Bank',
             'session_cost' => 100.00,
+            'account_number' => null,
+            'routing_number' => null,
+            'iban_swift_code' => null,
             // Missing account_number, routing_number, iban_swift_code
         ]);
 
-        $sessionSummary = [
-            [
-                'client_id' => 1,
-                'client_code' => 'CLIENT001',
-                'quantity' => 1,
-                'total_session_cost' => 100.00,
-                'total_client_contribution' => 20.00,
-                'total_remaining_contribution' => 80.00,
-            ]
-        ];
+        // Create a client and session for the test
+        $client = Client::factory()->create([
+            'user_id' => $therapist->id,
+            'client_code' => 'CLIENT001',
+        ]);
 
-        $invoiceNumber = 'INV-' . $therapist->id . '-' . Carbon::now()->format('Ym');
+        $session = TherapySession::factory()->create([
+            'user_id' => $therapist->id,
+            'client_id' => $client->id,
+            'session_cost' => 100.00,
+            'client_contribution' => 20.00,
+            'created_at' => Carbon::now()->subMonth(),
+        ]);
+
+        $sessions = collect([$session]);
+
+        $invoiceNumber = 'INV-'.$therapist->id.'-'.Carbon::now()->format('Ym');
         $invoiceDate = Carbon::now()->format('Y-m-d');
         $period = [Carbon::now()->subMonth()->startOfMonth()->format('Y-m-d'), Carbon::now()->subMonth()->endOfMonth()->format('Y-m-d')];
 
         // Test the view to check partial banking details
         $view = view('invoices.therapist', [
             'therapist' => $therapist,
-            'sessionSummary' => $sessionSummary,
+            'sessions' => $sessions,
             'invoiceNumber' => $invoiceNumber,
             'invoiceDate' => $invoiceDate,
             'period' => $period,
+            'currencySymbol' => '$',
         ])->render();
 
         // Assert the partial banking details are shown
         $this->assertStringContainsString('Banking Details for Payment', $view);
         $this->assertStringContainsString('John Doe Therapy Services', $view);
-        $this->assertStringContainsString('Test Bank', $view);
         // Should not show the "not provided" message since some details exist
         $this->assertStringNotContainsString('Banking details not provided', $view);
+    }
+
+    public function test_invoice_template_displays_individual_sessions(): void
+    {
+        // Create a therapist
+        $therapist = User::factory()->create([
+            'admin' => false,
+            'active_status' => 1,
+            'account_name' => 'John Doe Therapy Services',
+            'account_number' => '1234567890',
+            'routing_number' => '123456789',
+            'iban_swift_code' => 'TESTBANK123',
+            'session_cost' => 100.00,
+            'currency' => 'USD',
+        ]);
+
+        // Create a client
+        $client = Client::factory()->create([
+            'user_id' => $therapist->id,
+            'client_code' => 'CLIENT001',
+        ]);
+
+        // Create another client
+        $client2 = Client::factory()->create([
+            'user_id' => $therapist->id,
+            'client_code' => 'CLIENT002',
+        ]);
+
+        // Create multiple therapy sessions
+        $lastMonth = Carbon::now()->subMonth();
+        $session1 = TherapySession::factory()->create([
+            'user_id' => $therapist->id,
+            'client_id' => $client->id,
+            'session_cost' => 100.00,
+            'client_contribution' => 20.00,
+            'created_at' => $lastMonth->copy()->day(5),
+        ]);
+
+        $session2 = TherapySession::factory()->create([
+            'user_id' => $therapist->id,
+            'client_id' => $client->id,
+            'session_cost' => 100.00,
+            'client_contribution' => 30.00,
+            'created_at' => $lastMonth->copy()->day(15),
+        ]);
+
+        $session3 = TherapySession::factory()->create([
+            'user_id' => $therapist->id,
+            'client_id' => $client2->id,
+            'session_cost' => 100.00,
+            'client_contribution' => 25.00,
+            'created_at' => $lastMonth->copy()->day(20),
+        ]);
+
+        $sessions = collect([$session1, $session2, $session3]);
+
+        $invoiceNumber = 'INV-'.$therapist->id.'-'.Carbon::now()->format('Ym');
+        $invoiceDate = Carbon::now()->format('Y-m-d');
+        $period = [$lastMonth->startOfMonth()->format('Y-m-d'), $lastMonth->endOfMonth()->format('Y-m-d')];
+
+        // Test the view to ensure individual sessions are displayed
+        $view = view('invoices.therapist', [
+            'therapist' => $therapist,
+            'sessions' => $sessions,
+            'invoiceNumber' => $invoiceNumber,
+            'invoiceDate' => $invoiceDate,
+            'period' => $period,
+            'currencySymbol' => '$',
+        ])->render();
+
+        // Assert that individual sessions are shown (not grouped)
+        $this->assertStringContainsString('CLIENT001', $view);
+        $this->assertStringContainsString('CLIENT002', $view);
+
+        // Should show each session individually with dates
+        $this->assertStringContainsString('2025-08-05', $view);
+        $this->assertStringContainsString('2025-08-15', $view);
+        $this->assertStringContainsString('2025-08-20', $view);
+
+        // Should show individual session costs, not quantities
+        $this->assertStringNotContainsString('Quantity', $view);
+        $this->assertStringContainsString('Date', $view);
+
+        // Should show individual contributions and costs
+        $this->assertStringContainsString('$20.00', $view); // session1 client_contribution
+        $this->assertStringContainsString('$30.00', $view); // session2 client_contribution
+        $this->assertStringContainsString('$25.00', $view); // session3 client_contribution
+        $this->assertStringContainsString('$80.00', $view); // session1 remaining (100-20)
+        $this->assertStringContainsString('$70.00', $view); // session2 remaining (100-30)
+        $this->assertStringContainsString('$75.00', $view); // session3 remaining (100-25)
+
+        // Total should be sum of all remaining contributions: 80 + 70 + 75 = 225
+        $this->assertStringContainsString('$225.00', $view);
     }
 }

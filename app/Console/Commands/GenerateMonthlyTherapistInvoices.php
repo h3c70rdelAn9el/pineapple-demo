@@ -28,51 +28,30 @@ class GenerateMonthlyTherapistInvoices extends Command
             })
             ->get();
 
-           
-
         foreach ($therapists as $therapist) {
             $this->info("Processing therapist ID {$therapist->id} - {$therapist->email}");
-            $sessions = TherapySession::where('user_id', $therapist->id)
+            $sessions = TherapySession::with('client')
+                ->where('user_id', $therapist->id)
                 ->whereBetween('created_at', [$start, $end])
-                ->get()
-                ->groupBy('client_id');
+                ->orderBy('created_at')
+                ->get();
 
-            // Prepare session summary per client
-            $sessionSummary = [];
-            foreach ($sessions as $clientId => $clientSessions) {
-                $client = $clientSessions->first()->client; // Assuming TherapySession has 'client' relationship
+            $this->info('Found '.count($sessions)." sessions for therapist ID {$therapist->id}");
 
-                // Calculate totals for this client
-                $totalSessionCost = $clientSessions->sum('session_cost');
-                $totalClientContribution = $clientSessions->sum('client_contribution');
-                $totalRemainingContribution = $clientSessions->sum('remaining_client_contribution');
-
-                $sessionSummary[] = [
-                    'client_id' => $clientId,
-                    'client_code' => $client ? $client->client_code : null,
-                    'quantity' => $clientSessions->count(),
-                    'sessions' => $clientSessions,
-                    'total_session_cost' => $totalSessionCost,
-                    'total_client_contribution' => $totalClientContribution,
-                    'total_remaining_contribution' => $totalRemainingContribution,
-                ];
+            if ($sessions->isEmpty()) {
+                continue;
             }
-
-
-            $this->info("Found " . count($sessionSummary) . " clients with sessions for therapist ID {$therapist->id}");
-
-            if (empty($sessionSummary)) continue;
-
 
             $invoiceNumber = 'INV-'.$therapist->id.'-'.$now->format('Ym');
             $invoiceDate = $now->format('Y-m-d');
 
             $pdf = Pdf::loadView('invoices.therapist', [
                 'therapist' => $therapist,
-                'sessionSummary' => $sessionSummary,
+                'sessions' => $sessions,
                 'invoiceNumber' => $invoiceNumber,
                 'invoiceDate' => $invoiceDate,
                 'period' => [$start->format('Y-m-d'), $end->format('Y-m-d')],
+                'currencySymbol' => $this->getCurrencySymbol($therapist->currency),
             ]);
 
             $filename = 'Invoice_'.$therapist->id.'_'.$now->format('Ym').'.pdf';
@@ -89,9 +68,39 @@ class GenerateMonthlyTherapistInvoices extends Command
             });
 
             $this->info("Invoice sent to therapist ID {$therapist->id} at {$therapist->email}");
-            
+
         }
 
         $this->info('Monthly therapist invoices generated and sent.');
+    }
+
+    private function getCurrencySymbol(?string $currencyCode): string
+    {
+        $currencySymbols = [
+            'USD' => '$',
+            'GBP' => '£',
+            'EUR' => '€',
+            'JPY' => '¥',
+            'AUD' => 'A$',
+            'CAD' => 'C$',
+            'CHF' => 'CHF',
+            'CNY' => '¥',
+            'SEK' => 'kr',
+            'NZD' => 'NZ$',
+            'MXN' => '$',
+            'SGD' => 'S$',
+            'HKD' => 'HK$',
+            'NOK' => 'kr',
+            'KRW' => '₩',
+            'TRY' => '₺',
+            'RUB' => '₽',
+            'INR' => '₹',
+            'BRL' => 'R$',
+            'ZAR' => 'R',
+            'PHP' => '₱',
+            'CZK' => 'Kč',
+        ];
+
+        return $currencySymbols[$currencyCode] ?? '$'; // Default to $ (USD)
     }
 }
