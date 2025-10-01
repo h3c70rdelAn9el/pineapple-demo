@@ -112,9 +112,20 @@
                             <p class="pl-2 text-xs font-light">{{ $form->region }}</p>
                         </div>
                         @endif
-                        <div class="flex flex-row">
+                        <div class="flex flex-row gap-2 items-center">
                             {{-- TODO: STYLE THIS --}}
-                            <a class="text-lg" href="{{ route('fileEdit', $form->id) }}">View</a>
+                            <a class="text-lg text-blue-600 hover:text-blue-800" href="{{ route('fileEdit', $form->id) }}">View</a>
+                            @if ($user->admin)
+                                <form action="{{ route('fileDelete', $form->id) }}" method="POST" 
+                                      onsubmit="return confirm('Are you sure you want to delete this document? This action cannot be undone.')"
+                                      class="inline">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="text-red-600 hover:text-red-800 text-sm font-medium">
+                                        Delete
+                                    </button>
+                                </form>
+                            @endif
                         </div>
                         <a href="{{ route('fileEdit', $form->id) }}">
                             <div class="items-center justify-center">
@@ -220,9 +231,20 @@
                         <p class="pl-2 text-xs font-light">{{ $form->region }}</p>
                     </div>
                     @endif
-                    <div class="flex flex-row">
+                    <div class="flex flex-row gap-2 items-center">
                         {{-- TODO: STYLE THIS --}}
-                        <a class="text-lg" href="{{ route('fileEdit', $form->id) }}">View</a>
+                        <a class="text-lg text-blue-600 hover:text-blue-800" href="{{ route('fileEdit', $form->id) }}">View</a>
+                        @if ($user->admin)
+                            <form action="{{ route('fileDelete', $form->id) }}" method="POST" 
+                                  onsubmit="return confirm('Are you sure you want to delete this document? This action cannot be undone.')"
+                                  class="inline">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="text-red-600 hover:text-red-800 text-sm font-medium">
+                                    Delete
+                                </button>
+                            </form>
+                        @endif
                     </div>
                     <a href="{{ route('fileEdit', $form->id) }}">
                         <div class="items-center justify-center">

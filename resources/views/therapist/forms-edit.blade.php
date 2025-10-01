@@ -22,12 +22,21 @@
             @endif
 
             @if ($user->admin == 1)
-                <div class="mt-4">
+                <div class="mt-4 flex gap-2">
                     <a class="text-xs button"
                         href="{{ $form->url() }}"
                         download>
                         Download
                     </a>
+                    <form action="{{ route('fileDelete', $form->id) }}" method="POST" 
+                          onsubmit="return confirm('Are you sure you want to delete this document? This action cannot be undone.')"
+                          class="inline">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="text-xs bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700">
+                            Delete Document
+                        </button>
+                    </form>
                 </div>
             @endif
         </div>
