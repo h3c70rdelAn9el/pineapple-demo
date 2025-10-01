@@ -282,7 +282,21 @@ class FileUploadController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $user = auth()->user();
+
+        // Only admins can delete documents
+        if (! $user->admin) {
+            return redirect()->back()->with('error', 'You are not authorized to delete documents.');
+        }
+
+        $fileUpload = FileUpload::findOrFail($id);
+        $therapistId = $fileUpload->user_id;
+
+        // Soft delete the file
+        $fileUpload->delete();
+
+        return redirect()->route('therapist.forms', ['therapist' => $therapistId])
+            ->with('success', 'Document deleted successfully.');
     }
 
     public function search(Request $request)

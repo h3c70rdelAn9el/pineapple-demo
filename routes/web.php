@@ -120,6 +120,12 @@ Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
     'verified',
+])->delete('/therapist/forms/{id}', [FileUploadController::class, 'destroy'])->name('fileDelete');
+
+Route::middleware([
+    'auth:sanctum',
+    config('jetstream.auth_session'),
+    'verified',
 ])->get('/therapists', [TherapistsController::class, 'index'])->name('therapists.index');
 
 Route::middleware([

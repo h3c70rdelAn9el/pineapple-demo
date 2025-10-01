@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Storage;
 use Laravel\Scout\Searchable;
@@ -16,6 +17,7 @@ class FileUpload extends Model
     use LogsActivity;
     use Notifiable;
     use Searchable;
+    use SoftDeletes;
 
     protected $fillable = [
         'user_id',
@@ -29,6 +31,8 @@ class FileUpload extends Model
         'file_title',
         'pinned',
     ];
+
+
 
     public function user()
     {
@@ -58,5 +62,6 @@ class FileUpload extends Model
 
     protected $casts = [
         'verified' => 'boolean',
+        'deleted_at' => 'datetime',
     ];
 }
