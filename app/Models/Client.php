@@ -32,6 +32,7 @@ class Client extends Model
         'additional_notes',
         'pronouns',
         'client_contribution',
+        'cost_per_session',
         // 'user_id',
         'email',
         'phone',
@@ -82,4 +83,19 @@ class Client extends Model
         'status' => 'active',
         'waitlist' => 'null',
     ];
+
+    /**
+     * Get the effective cost per session for this client.
+     * Returns the client's override value if set, otherwise the therapist's default value.
+     */
+    public function getEffectiveCostPerSession()
+    {
+        // If client has an override set, use that
+        if ($this->cost_per_session !== null) {
+            return $this->cost_per_session;
+        }
+
+        // Otherwise, use the therapist's default value (user_id = 0 means no therapist)
+        return ($this->user && $this->user_id > 0) ? $this->user->cost_per_session : null;
+    }
 }

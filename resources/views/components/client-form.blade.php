@@ -538,6 +538,16 @@
     <x-form_input id="client_contribution" name="client_contribution" type="number" required placeholder="xxx"
         inputmode="numeric" pattern="[0-9]*" />
 
+    {{-- cost_per_session - only show if client has a category --}}
+    <div id="cost_per_session_field" style="display: none;">
+        <x-form_label for="cost_per_session">
+            Cost Per Session Override
+        </x-form_label>
+        <x-form_input id="cost_per_session" name="cost_per_session" type="number" placeholder="Leave blank to use therapist's default"
+            inputmode="numeric" pattern="[0-9]*" />
+        <p class="text-sm text-gray-600 mt-1">Leave blank to use the therapist's default cost per session</p>
+    </div>
+
     <x-form_label for="max_sessions">Maximum Therapy Sessions:</x-form_label>
     <input class="w-16 p-1 mx-2 text-center bg-gray-100 border-blue-200 rounded-md ring-0" id="max_sessions"
         name="max_sessions" type="number" value="16">
@@ -713,6 +723,25 @@
             otherPossibleSupportInput.style.display = 'block';
         } else {
             otherPossibleSupportInput.style.display = 'none';
+        }
+    });
+
+    // Show/hide cost per session field when category is selected
+    document.getElementById('category').addEventListener('change', function() {
+        var costPerSessionField = document.getElementById('cost_per_session_field');
+        if (this.value && this.value.trim() !== '') {
+            costPerSessionField.style.display = 'block';
+        } else {
+            costPerSessionField.style.display = 'none';
+        }
+    });
+
+    // Check initial state on page load
+    document.addEventListener('DOMContentLoaded', function() {
+        var categorySelect = document.getElementById('category');
+        var costPerSessionField = document.getElementById('cost_per_session_field');
+        if (categorySelect.value && categorySelect.value.trim() !== '') {
+            costPerSessionField.style.display = 'block';
         }
     });
 </script>
