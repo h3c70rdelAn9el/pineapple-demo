@@ -351,6 +351,7 @@ class ClientController extends Controller
         // $c = new Client();
         $request->validate([
             'client_code' => 'required|unique:clients,client_code',
+            'cost_per_session' => 'nullable|numeric|min:0',
         ]);
         $client->client_code = $request->client_code;
         $client->legal_name = $request->legal_name;
@@ -376,6 +377,7 @@ class ClientController extends Controller
         $client->phone = $request->phone;
         $client->user_id = ($request->user_id == 'no_therapist') ? 0 : $request->user_id;
         $client->client_contribution = $request->client_contribution;
+        $client->cost_per_session = $request->cost_per_session;
         $client->gender = $genderString;
         $client->ethnic_group = $ethnicGroupString;
         $client->pronouns = $pronounsString ?? ' ';
@@ -458,6 +460,7 @@ class ClientController extends Controller
             'email' => 'nullable',
             'phone' => 'nullable',
             'client_contribution' => 'nullable',
+            'cost_per_session' => 'nullable|numeric|min:0',
             'user_id' => 'nullable',
             'gender' => 'nullable',
             'contact_method' => 'nullable',
@@ -496,6 +499,7 @@ class ClientController extends Controller
             'email' => $request->input('email'),
             'phone' => $request->input('phone'),
             'client_contribution' => $request->input('client_contribution'),
+            'cost_per_session' => $request->input('cost_per_session'),
             'user_id' => $request->input('user_id'),
             'gender' => $client->gender,
             'contact_method' => $client->contact_method,

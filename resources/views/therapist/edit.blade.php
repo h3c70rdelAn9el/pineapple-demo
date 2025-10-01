@@ -417,6 +417,14 @@
                         <x-jet-input-error for="session_cost" class="mt-2" />
                     </div>
 
+                    <div class="flex flex-col w-/12">
+                        <x-jet-label for="cost_per_session" value="{{ __('Cost Per Session') }}" />
+                        <x-jet-input id="cost_per_session" class="block w-full mt-1" type="number" step="1.00" max="500" name="cost_per_session"
+                            :value="old('cost_per_session', $therapist->cost_per_session)" :placeholder="$therapist->cost_per_session" />
+                        <x-jet-input-error for="cost_per_session" class="mt-2" />
+                        <p class="text-sm text-gray-600 mt-1">Default cost per session (can be overridden per client)</p>
+                    </div>
+
                     {{-- add the currency --}}
                     <div class="flex flex-col w-1/2">
                         <x-jet-label value="Currency" />

@@ -594,6 +594,19 @@
                 <x-jet-input-error class="mt-2" for="client_contribution" />
             </div>
 
+            {{-- Cost Per Session field - only show if client has a category --}}
+            @if($client->category)
+            <div class="col-span-6 mt-0 sm:col-span-4" id="cost_per_session_field_edit">
+                <x-jet-label for="cost_per_session" class="w-full"
+                    value="Cost Per Session Override:  previous: {{ $client->cost_per_session ?? 'Using therapist default' }}" />
+                <x-jet-input class="w-full mt-2 bg-gray-100 rounded-md" id="cost_per_session" type="number"
+                    value="{{ $client->cost_per_session }}" name="cost_per_session" min="0"
+                    step="1.00" autocomplete="off" />
+                <x-jet-input-error class="mt-2" for="cost_per_session" />
+                <p class="text-sm text-gray-600 mt-1">Leave blank to use the therapist's default cost per session</p>
+            </div>
+            @endif
+
             <div class="col-span-6 mt-4 sm:col-span-4">
                 <x-jet-label for="therapist" value="Therapist:  previous: {{ $therapist->name }}" />
                 <select class="w-full p-2 mt-2 capitalize bg-gray-100 border-blue-200 rounded-md peer ring-0"
@@ -813,6 +826,36 @@
             otherPossibleSupportInput.style.display = 'none';
         }
     });
+
+    // Show/hide cost per session field when category is changed in edit form
+    @if(!$client->category)
+    document.getElementById('category').addEventListener('change', function() {
+        var costPerSessionField = document.getElementById('cost_per_session_field_edit');
+        if (!costPerSessionField) {
+            // If field doesn't exist, we need to create it dynamically
+            var clientContributionDiv = document.querySelector('input[name="client_contribution"]').closest('.col-span-6');
+            if (this.value && this.value.trim() !== '') {
+                var newFieldHtml = `
+                    <div class="col-span-6 mt-0 sm:col-span-4" id="cost_per_session_field_edit">
+                        <label for="cost_per_session" class="block text-sm font-medium text-gray-700">
+                            Cost Per Session Override
+                        </label>
+                        <input class="w-full mt-2 bg-gray-100 rounded-md" id="cost_per_session" type="number"
+                            name="cost_per_session" min="0" step="1.00" autocomplete="off" />
+                        <p class="text-sm text-gray-600 mt-1">Leave blank to use the therapist's default cost per session</p>
+                    </div>
+                `;
+                clientContributionDiv.insertAdjacentHTML('afterend', newFieldHtml);
+            }
+        } else {
+            if (this.value && this.value.trim() !== '') {
+                costPerSessionField.style.display = 'block';
+            } else {
+                costPerSessionField.style.display = 'none';
+            }
+        }
+    });
+    @endif
 </script>
 
 

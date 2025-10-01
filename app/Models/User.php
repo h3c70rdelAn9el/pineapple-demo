@@ -55,6 +55,7 @@ class User extends Authenticatable
         'all_documents',
         'full',
         'session_cost',
+        'cost_per_session',
         'contact_for_promotionals',
         'number_of_potential_clients',
         'out_of_state_coaching',
