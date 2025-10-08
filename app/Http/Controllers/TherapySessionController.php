@@ -253,7 +253,14 @@ class TherapySessionController extends Controller
      */
     public function update(UpdateTherapySessionRequest $request, TherapySession $therapySession)
     {
-        //
+        $therapySession->update([
+            'session_cost' => $request->session_cost,
+            'client_contribution' => $request->client_contribution,
+            'remaining_client_contribution' => $request->remaining_client_contribution,
+        ]);
+
+        return redirect()->route('session.show', $therapySession->id)
+            ->with('success', 'Session amounts updated successfully.');
     }
 
     /**

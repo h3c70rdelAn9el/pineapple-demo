@@ -64,6 +64,7 @@ Route::middleware([
     // Route::post('/session/store', [TherapySessionController::class, 'store'])->name('session.store');
     Route::get('/session/{id}', [TherapySessionController::class, 'show'])->name('session.show');
     Route::get('sessions/index', [TherapySessionController::class, 'index'])->name('session.index');
+    Route::patch('/sessions/{therapySession}', [TherapySessionController::class, 'update'])->name('session.update');
     Route::delete('/sessions/{therapySession}', [TherapySessionController::class, 'destroy'])->name('session.destroy');
     Route::get('file-upload', [FileUploadController::class, 'index'])->name('fileUpload');
     Route::post('file-store/{id}', [FileUploadController::class, 'store'])->name('fileStore');
