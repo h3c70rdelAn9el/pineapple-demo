@@ -11,7 +11,7 @@
         </div>
         @foreach ([
         'Preferred Name' => $client->preferred_name,
-        'Therapist' => $client->user->name,
+        'Therapist' => $therapySession->therapist->name ?? 'N/A',
         'Session ID' => $therapySession->id,
         'Session Date' => date('F d, Y', strtotime($therapySession->created_at)),
         'Session Cost' => $therapySession->session_cost,
