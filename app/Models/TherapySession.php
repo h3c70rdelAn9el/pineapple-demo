@@ -14,7 +14,7 @@ class TherapySession extends Model
     use LogsActivity;
     use SoftDeletes;
 
-    protected $fillable = ['client_id', 'session_cost', 'client_contribution', 'created_at', 'attendance', 'notes'];
+    protected $fillable = ['client_id', 'session_cost', 'client_contribution', 'remaining_client_contribution', 'created_at', 'attendance', 'notes'];
 
     public function client()
     {
