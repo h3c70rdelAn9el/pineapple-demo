@@ -67,6 +67,19 @@
                     :placeholder="$therapist->email" autofocus />
                 <x-jet-input-error for="email" class="mt-2" />
             </div>
+
+            @if(auth()->user() && auth()->user()->admin == 1)
+                {{-- invoice_email - only visible to admins --}}
+                <div>
+                    <x-jet-label for="invoice_email" value="{{ __('Invoice Email (Admin Only)') }}" />
+                    <x-jet-input id="invoice_email" class="block w-full mt-1" type="email" name="invoice_email" 
+                        :value="old('invoice_email', $therapist->invoice_email)"
+                        :placeholder="$therapist->invoice_email ?? 'Leave blank to use regular email'" />
+                    <x-jet-input-error for="invoice_email" class="mt-2" />
+                    <p class="text-sm text-gray-600 mt-1">If set, invoices will be sent to this email instead of the therapist's regular email</p>
+                </div>
+            @endif
+
             {{-- gender --}}
             {{-- <div class="col-span-6 mt-0 sm:col-span-4">
                 <x-multi-select id="gender"

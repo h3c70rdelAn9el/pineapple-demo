@@ -227,6 +227,9 @@ class TherapistsController extends Controller
             // New field for invoice payee
             'invoice_payee' => 'nullable|string|max:255',
 
+            // New field for invoice email (admin only)
+            'invoice_email' => 'nullable|email|max:255',
+
             // 'gender' => $genderString
 
         ]);
@@ -306,19 +309,22 @@ class TherapistsController extends Controller
 
         $filename = 'Invoice_'.$therapist->id.'_'.$now->format('Ym').'.pdf';
 
-        // Send email to the current admin (who clicked the button)
+        // Determine which email to send to: invoice_email if set, otherwise therapist's email
+        $recipientEmail = $therapist->invoice_email ?? $therapist->email;
+
+        // Send email to the therapist (or their designated invoice email)
         try {
             Mail::send('emails.therapist_invoice', [
                 'therapist' => $therapist,
                 'invoiceNumber' => $invoiceNumber,
                 'invoiceDate' => $invoiceDate,
-            ], function ($message) use ($pdf, $filename, $user) {
-                $message->to($user->email)
+            ], function ($message) use ($pdf, $filename, $recipientEmail) {
+                $message->to($recipientEmail)
                     ->subject('Therapist Invoice - Last Month')
                     ->attachData($pdf->output(), $filename);
             });
 
-            return redirect()->back()->with('success', "Last month's invoice for {$therapist->name} has been sent to your email ({$user->email}).");
+            return redirect()->back()->with('success', "Last month's invoice for {$therapist->name} has been sent to {$recipientEmail}.");
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Failed to send invoice: '.$e->getMessage());
         }
