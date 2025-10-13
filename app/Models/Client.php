@@ -95,7 +95,7 @@ class Client extends Model
             return $this->cost_per_session;
         }
 
-        // Otherwise, use the therapist's default value (user_id = 0 means no therapist)
-        return ($this->user && $this->user_id > 0) ? $this->user->cost_per_session : null;
+        // Otherwise, use the therapist's default session_cost (user_id = 0 means no therapist)
+        return ($this->user && $this->user_id > 0) ? $this->user->session_cost : null;
     }
 }

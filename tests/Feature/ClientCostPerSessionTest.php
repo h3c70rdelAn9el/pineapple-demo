@@ -13,10 +13,10 @@ class ClientCostPerSessionTest extends TestCase
 
     public function test_client_can_have_cost_per_session_override(): void
     {
-        // Create a therapist with a default cost per session
+        // Create a therapist with a default session cost
         $therapist = User::factory()->create([
             'admin' => 0,
-            'cost_per_session' => 50.00,
+            'session_cost' => 50.00,
         ]);
 
         // Create a client with a category and cost per session override
@@ -32,10 +32,10 @@ class ClientCostPerSessionTest extends TestCase
 
     public function test_client_uses_therapist_default_when_no_override(): void
     {
-        // Create a therapist with a default cost per session
+        // Create a therapist with a default session cost
         $therapist = User::factory()->create([
             'admin' => 0,
-            'cost_per_session' => 50.00,
+            'session_cost' => 50.00,
         ]);
 
         // Create a client without cost per session override
@@ -45,7 +45,7 @@ class ClientCostPerSessionTest extends TestCase
             'cost_per_session' => null,
         ]);
 
-        // Test that the therapist's default is used
+        // Test that the therapist's default session cost is used
         $this->assertEquals(50.00, $client->getEffectiveCostPerSession());
     }
 

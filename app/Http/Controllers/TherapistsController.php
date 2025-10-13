@@ -218,7 +218,6 @@ class TherapistsController extends Controller
             'website' => 'nullable|boolean',
             'quickbooks' => 'nullable|string|max:255',
             'session_cost' => 'nullable|numeric|max:'.$max_session_cost,
-            'cost_per_session' => 'nullable|numeric|max:'.$max_session_cost,
             // 'client_extensions' => 'nullable|boolean',
             'notes' => 'nullable|string|max:255',
             'number_of_potential_clients' => 'nullable|numeric',
