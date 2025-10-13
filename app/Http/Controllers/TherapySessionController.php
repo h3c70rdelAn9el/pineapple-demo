@@ -104,13 +104,16 @@ class TherapySessionController extends Controller
             $therapist = User::find($user->id);
         }
 
-        if ($therapist->session_cost == null || $therapist->session_cost == 0) {
+        // Get the effective cost per session (uses client override if set, otherwise therapist default)
+        $effective_cost_per_session = $client->getEffectiveCostPerSession();
+
+        if ($effective_cost_per_session == null || $effective_cost_per_session == 0) {
             Session::flash('error', 'You have no session cost set. Please set it in your profile.');
 
             return redirect()->back();
         }
 
-        $therapist_session_cost = $therapist->session_cost;
+        $therapist_session_cost = $effective_cost_per_session;
 
         if ($client->therapySessions()->whereIn('attendance', ['attended', 'no-show'])->count() < $client->max_sessions) {
 
