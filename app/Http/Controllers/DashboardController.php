@@ -6,6 +6,7 @@ use App\Models\ChMessage as ChatMessage;
 use App\Models\Client;
 use App\Models\TherapySession;
 use App\Models\User;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
@@ -56,7 +57,7 @@ class DashboardController extends Controller
         $therapist = Client::find($user_id)?->therapist;
         $inactiveTherapists = User::where('admin', 0)->where('active_status', 1)->paginate(15, ['*'], 'inactiveTherapists');
         $activeTherapists = User::where('admin', 0)->where('active_status', 0)->paginate(15, ['*'], 'activeTherapists');
-        $allTherapists = User::where('admin', 0)->where('active_status', 0)->get();
+        $allTherapists = User::where('admin', 0)->get();
 
         $file = file_get_contents(storage_path('states.json'));
         $states = json_decode($file, true);
@@ -78,8 +79,16 @@ class DashboardController extends Controller
 
                 return $incomplete && ! $therapist->isAdmin();
             });
+
+            $completeTherapistsCollection = $allTherapists->filter(function ($therapist) {
+                $res = $therapist->isComplete();
+                $complete = $res['status'];
+
+                return $complete && ! $therapist->isAdmin();
+            });
         } else {
             $incompleteTherapists = collect();
+            $completeTherapistsCollection = collect();
         }
 
         $incompleteTherapist = false;
@@ -147,6 +156,26 @@ class DashboardController extends Controller
             })
             ->count();
 
+        $completeTherapistsCount = User::where('admin', 0)->get()
+            ->filter(function ($user) {
+                return $user->isComplete()['status'];
+            })
+            ->count();
+
+        // Paginate complete therapists
+        $completeTherapistsCollection = isset($completeTherapistsCollection) ? $completeTherapistsCollection : collect();
+        $currentPage = request()->get('complete_therapists', 1);
+        $perPage = 15;
+        $currentPageItems = $completeTherapistsCollection->slice(($currentPage - 1) * $perPage, $perPage)->values();
+
+        $completeTherapists = new LengthAwarePaginator(
+            $currentPageItems,
+            $completeTherapistsCollection->count(),
+            $perPage,
+            $currentPage,
+            ['path' => request()->url(), 'pageName' => 'complete_therapists']
+        );
+
         if ($user->admin) {
             return view('dashboard_admin', [
                 'user' => $user,
@@ -163,6 +192,7 @@ class DashboardController extends Controller
                 'inactiveTherapists' => $inactiveTherapists,
                 'activeTherapists' => $activeTherapists,
                 'incompleteTherapists' => $incompleteTherapists,
+                'completeTherapists' => $completeTherapists,
                 'incompleteTherapist' => $incompleteTherapist,
                 'totalSessionCost' => $totalSessionCost,
                 'totalClientContribution' => $totalClientContribution,
@@ -176,6 +206,7 @@ class DashboardController extends Controller
                 'recentActiveClients' => $recentActiveClients,
                 'unreadMessagesCount' => $unreadMessagesCount,
                 'incompleteTherapistsCount' => $incompleteTherapistsCount,
+                'completeTherapistsCount' => $completeTherapistsCount,
                 'unverifiedTherapist' => $unverifiedTherapist,
                 'unverifiedTherapistCount' => $unverifiedTherapistCount,
             ]);

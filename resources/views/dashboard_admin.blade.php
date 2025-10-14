@@ -90,6 +90,10 @@
                                 <p>Incomplete Profiles:</p>
                                 <p>{{ $incompleteTherapistsCount }}</p>
                             </div>
+                            <div class="flex justify-between text-green-600">
+                                <p><a href="#" id="complete-link" class="hover:underline" x-on:click="currentView = 'complete'">Complete Profiles:</a></p>
+                                <p>{{ $completeTherapistsCount }}</p>
+                            </div>
                         </div>
                     </x-slot>
                     <x-slot name="count">
@@ -136,6 +140,19 @@
                                     </div>
                                     <div>
                                         {{ $inactiveTherapists->links() }}
+                                    </div>
+                                </div>
+                                <div id="therapist-container" x-show="currentView === 'complete'" x-cloak>
+                                    <div>
+                                        {{ $completeTherapists->links() }}
+                                    </div>
+                                    <div class="overflow-y-auto h-96">
+                                        @foreach ($completeTherapists as $therapist)
+                                            @include('components.therapists-card', ['therapist' => $therapist])
+                                        @endforeach
+                                    </div>
+                                    <div>
+                                        {{ $completeTherapists->links() }}
                                     </div>
                                 </div>
                             </div>

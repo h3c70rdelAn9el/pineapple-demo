@@ -87,6 +87,29 @@ class TherapistsController extends Controller
             );
         }
 
+        // Filter complete therapists from all therapists
+        $completeTherapists = collect();
+        if ($alltherapists) {
+            $completeTherapistsData = $alltherapists->filter(function (User $therapist) {
+                $complete = $therapist->isComplete()['status'];
+
+                return $complete && ! $therapist->isAdmin();
+            });
+
+            // Convert to paginated collection
+            $currentPage = request()->get('complete_therapists', 1);
+            $perPage = 30;
+            $currentPageItems = $completeTherapistsData->slice(($currentPage - 1) * $perPage, $perPage)->values();
+
+            $completeTherapists = new LengthAwarePaginator(
+                $currentPageItems,
+                $completeTherapistsData->count(),
+                $perPage,
+                $currentPage,
+                ['path' => request()->url(), 'pageName' => 'complete_therapists']
+            );
+        }
+
         return view('therapist.index')->with([
             'therapists' => $therapists,
             'therapist' => $user,
@@ -94,6 +117,7 @@ class TherapistsController extends Controller
             'incompleteTherapists' => $incompleteTherapists,
             'activeTherapists' => $activeTherapists,
             'unverifiedTherapists' => $unverifiedTherapists,
+            'completeTherapists' => $completeTherapists,
         ]);
     }
 
