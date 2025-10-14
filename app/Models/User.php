@@ -35,6 +35,7 @@ class User extends Authenticatable
         'name',
         'invoice_payee',
         'email',
+        'invoice_email',
         'password',
         'license',
         'certificate',
