@@ -58,9 +58,9 @@ class SendTherapistInvoiceTest extends TestCase
         // Assert redirect back with success message
         $response->assertRedirect();
         $response->assertSessionHas('success');
-        // Updated to check for the therapist's email in the success message
+        // Check that the invoice was sent to the admin's email
         $this->assertStringContainsString('has been sent to', session('success'));
-        $this->assertStringContainsString($therapist->email, session('success'));
+        $this->assertStringContainsString($admin->email, session('success'));
     }
 
     public function test_non_admin_cannot_send_invoice(): void

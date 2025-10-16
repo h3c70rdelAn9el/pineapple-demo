@@ -13,7 +13,7 @@ class InvoiceEmailTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_invoice_sent_to_invoice_email_when_set(): void
+    public function test_invoice_sent_to_admin_email(): void
     {
         Mail::fake();
 
@@ -51,12 +51,12 @@ class InvoiceEmailTest extends TestCase
         $this->actingAs($admin);
         $response = $this->post(route('therapist.send-invoice', $therapist->id));
 
-        // Assert success message includes the invoice_email
+        // Assert success message includes the admin's email, not the therapist's invoice_email
         $response->assertSessionHas('success');
-        $this->assertStringContainsString('billing@example.com', session('success'));
+        $this->assertStringContainsString('admin@example.com', session('success'));
     }
 
-    public function test_invoice_sent_to_regular_email_when_invoice_email_not_set(): void
+    public function test_invoice_sent_to_admin_email_regardless_of_therapist_email(): void
     {
         Mail::fake();
 
@@ -94,9 +94,9 @@ class InvoiceEmailTest extends TestCase
         $this->actingAs($admin);
         $response = $this->post(route('therapist.send-invoice', $therapist->id));
 
-        // Assert success message includes the regular email
+        // Assert success message includes the admin's email, not the therapist's email
         $response->assertSessionHas('success');
-        $this->assertStringContainsString('therapist@example.com', session('success'));
+        $this->assertStringContainsString('admin@example.com', session('success'));
     }
 
     public function test_admin_can_update_invoice_email(): void
