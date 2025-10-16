@@ -333,22 +333,21 @@ class TherapistsController extends Controller
 
         $filename = 'Invoice_'.$therapist->id.'_'.$now->format('Ym').'.pdf';
 
-        // Determine which email to send to: invoice_email if set, otherwise therapist's email
-        $recipientEmail = $therapist->invoice_email ?? $therapist->email;
+        // Send email to the admin user
+        $adminEmail = $user->email;
 
-        // Send email to the therapist (or their designated invoice email)
         try {
             Mail::send('emails.therapist_invoice', [
                 'therapist' => $therapist,
                 'invoiceNumber' => $invoiceNumber,
                 'invoiceDate' => $invoiceDate,
-            ], function ($message) use ($pdf, $filename, $recipientEmail) {
-                $message->to($recipientEmail)
+            ], function ($message) use ($pdf, $filename, $adminEmail) {
+                $message->to($adminEmail)
                     ->subject('Therapist Invoice - Last Month')
                     ->attachData($pdf->output(), $filename);
             });
 
-            return redirect()->back()->with('success', "Last month's invoice for {$therapist->name} has been sent to {$recipientEmail}.");
+            return redirect()->back()->with('success', "Last month's invoice for {$therapist->name} has been sent to {$adminEmail}.");
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Failed to send invoice: '.$e->getMessage());
         }
