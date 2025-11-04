@@ -56,18 +56,21 @@ class GenerateMonthlyTherapistInvoices extends Command
 
             $filename = 'Invoice_'.$therapist->id.'_'.$now->format('Ym').'.pdf';
 
+            // Use invoice_email if set, otherwise fall back to regular email
+            $therapistEmail = $therapist->invoice_email ?? $therapist->email;
+
             Mail::send('emails.therapist_invoice', [
                 'therapist' => $therapist,
                 'invoiceNumber' => $invoiceNumber,
                 'invoiceDate' => $invoiceDate,
-            ], function ($message) use ($pdf, $filename, $therapist) {
+            ], function ($message) use ($pdf, $filename, $therapistEmail) {
                 $message->to('kellie@pineapplesupport.org')
-                    ->cc($therapist->email)
+                    ->cc($therapistEmail)
                     ->subject('Therapist Invoice')
                     ->attachData($pdf->output(), $filename);
             });
 
-            $this->info("Invoice sent to therapist ID {$therapist->id} at {$therapist->email}");
+            $this->info("Invoice sent to therapist ID {$therapist->id} at {$therapistEmail}");
 
         }
 
