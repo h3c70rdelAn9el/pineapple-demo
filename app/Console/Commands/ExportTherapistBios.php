@@ -142,28 +142,44 @@ class ExportTherapistBios extends Command
             $completePath = $filePath;
         }
 
-        // Try multiple storage locations
+        // Try multiple storage locations in order of likelihood
         $fullPath = null;
+        $attempts = [];
 
-        // First try Storage facade (storage/app/)
-        if (Storage::exists($completePath)) {
-            $fullPath = Storage::path($completePath);
-        }
-        // Then try public storage (storage/app/public/)
-        elseif (Storage::disk('public')->exists($completePath)) {
-            $fullPath = storage_path('app/public/'.$completePath);
-        }
-        // Finally try as absolute path from project root (for uploads/ in public directory)
-        elseif (file_exists(base_path($completePath))) {
-            $fullPath = base_path($completePath);
-        }
-        // Or try public_path for files in public directory
-        elseif (file_exists(public_path($completePath))) {
+        // First try public_path for files in public directory (most common for uploads/)
+        if (file_exists(public_path($completePath))) {
             $fullPath = public_path($completePath);
+            $attempts[] = 'public: found';
+        } else {
+            $attempts[] = 'public: '.public_path($completePath);
+        }
+
+        // Try base_path (project root)
+        if (! $fullPath && file_exists(base_path($completePath))) {
+            $fullPath = base_path($completePath);
+            $attempts[] = 'base: found';
+        } elseif (! $fullPath) {
+            $attempts[] = 'base: '.base_path($completePath);
+        }
+
+        // Try Storage facade (storage/app/)
+        if (! $fullPath && Storage::exists($completePath)) {
+            $fullPath = Storage::path($completePath);
+            $attempts[] = 'storage: found';
+        } elseif (! $fullPath) {
+            $attempts[] = 'storage: not found';
+        }
+
+        // Try public storage (storage/app/public/)
+        if (! $fullPath && Storage::disk('public')->exists($completePath)) {
+            $fullPath = storage_path('app/public/'.$completePath);
+            $attempts[] = 'public disk: found';
+        } elseif (! $fullPath) {
+            $attempts[] = 'public disk: not found';
         }
 
         if (! $fullPath || ! file_exists($fullPath)) {
-            return '[File not found: '.$completePath.']';
+            return '[File not found: '.$completePath.' | Tried: '.implode(', ', array_slice($attempts, 0, 2)).']';
         }
 
         // Use file_name to determine extension if provided, otherwise use complete path
