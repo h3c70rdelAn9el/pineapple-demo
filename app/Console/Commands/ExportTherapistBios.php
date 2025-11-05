@@ -76,7 +76,7 @@ class ExportTherapistBios extends Command
 
             if ($bioFile) {
                 $bioFilePath = $bioFile->file_path;
-                $bioText = $this->extractTextFromFile($bioFile->file_path);
+                $bioText = $this->extractTextFromFile($bioFile->file_path, $bioFile->file_name);
 
                 if (! str_contains($bioText, '[Error') && ! str_contains($bioText, '[File not found]')) {
                     $stats['with_bio']++;
@@ -132,14 +132,43 @@ class ExportTherapistBios extends Command
     /**
      * Extract text from PDF or Word document
      */
-    private function extractTextFromFile(string $filePath): string
+    private function extractTextFromFile(string $filePath, ?string $fileName = null): string
     {
-        if (! Storage::exists($filePath)) {
-            return '[File not found]';
+        // Combine file_path and file_name to get the complete path
+        // Ensure there's no double slash if filePath already ends with /
+        if ($fileName) {
+            $completePath = rtrim($filePath, '/').'/'.$fileName;
+        } else {
+            $completePath = $filePath;
         }
 
-        $fullPath = Storage::path($filePath);
-        $extension = strtolower(pathinfo($filePath, PATHINFO_EXTENSION));
+        // Try multiple storage locations
+        $fullPath = null;
+
+        // First try Storage facade (storage/app/)
+        if (Storage::exists($completePath)) {
+            $fullPath = Storage::path($completePath);
+        }
+        // Then try public storage (storage/app/public/)
+        elseif (Storage::disk('public')->exists($completePath)) {
+            $fullPath = storage_path('app/public/'.$completePath);
+        }
+        // Finally try as absolute path from project root (for uploads/ in public directory)
+        elseif (file_exists(base_path($completePath))) {
+            $fullPath = base_path($completePath);
+        }
+        // Or try public_path for files in public directory
+        elseif (file_exists(public_path($completePath))) {
+            $fullPath = public_path($completePath);
+        }
+
+        if (! $fullPath || ! file_exists($fullPath)) {
+            return '[File not found: '.$completePath.']';
+        }
+
+        // Use file_name to determine extension if provided, otherwise use complete path
+        $fileToCheck = $fileName ?: $completePath;
+        $extension = strtolower(pathinfo($fileToCheck, PATHINFO_EXTENSION));
 
         try {
             switch ($extension) {
@@ -149,7 +178,7 @@ class ExportTherapistBios extends Command
                 case 'docx':
                     return $this->extractTextFromWord($fullPath);
                 case 'txt':
-                    return Storage::get($filePath);
+                    return file_get_contents($fullPath);
                 default:
                     return "[Unsupported file format: {$extension}]";
             }
