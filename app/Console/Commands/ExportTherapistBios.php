@@ -135,69 +135,53 @@ class ExportTherapistBios extends Command
     private function extractTextFromFile(string $filePath, ?string $fileName = null): string
     {
         // Combine file_path and file_name to get the complete path
-        // Ensure there's no double slash if filePath already ends with /
         if ($fileName) {
             $completePath = rtrim($filePath, '/').'/'.$fileName;
         } else {
             $completePath = $filePath;
         }
 
-        // Try multiple storage locations in order of likelihood
-        $fullPath = null;
-        $attempts = [];
-
-        // First try public_path for files in public directory (most common for uploads/)
-        if (file_exists(public_path($completePath))) {
-            $fullPath = public_path($completePath);
-            $attempts[] = 'public: found';
-        } else {
-            $attempts[] = 'public: '.public_path($completePath);
-        }
-
-        // Try base_path (project root)
-        if (! $fullPath && file_exists(base_path($completePath))) {
-            $fullPath = base_path($completePath);
-            $attempts[] = 'base: found';
-        } elseif (! $fullPath) {
-            $attempts[] = 'base: '.base_path($completePath);
-        }
-
-        // Try Storage facade (storage/app/)
-        if (! $fullPath && Storage::exists($completePath)) {
-            $fullPath = Storage::path($completePath);
-            $attempts[] = 'storage: found';
-        } elseif (! $fullPath) {
-            $attempts[] = 'storage: not found';
-        }
-
-        // Try public storage (storage/app/public/)
-        if (! $fullPath && Storage::disk('public')->exists($completePath)) {
-            $fullPath = storage_path('app/public/'.$completePath);
-            $attempts[] = 'public disk: found';
-        } elseif (! $fullPath) {
-            $attempts[] = 'public disk: not found';
-        }
-
-        if (! $fullPath || ! file_exists($fullPath)) {
-            return '[File not found: '.$completePath.' | Tried: '.implode(', ', array_slice($attempts, 0, 2)).']';
+        // Check if file exists in Storage (works for S3, local, etc.)
+        if (! Storage::exists($completePath)) {
+            return '[File not found in storage: '.$completePath.']';
         }
 
         // Use file_name to determine extension if provided, otherwise use complete path
         $fileToCheck = $fileName ?: $completePath;
         $extension = strtolower(pathinfo($fileToCheck, PATHINFO_EXTENSION));
 
+        // For unsupported formats, return early
+        if (! in_array($extension, ['pdf', 'doc', 'docx', 'txt'])) {
+            return "[Unsupported file format: {$extension}]";
+        }
+
         try {
+            // Download file from storage to a temporary location
+            $tempPath = sys_get_temp_dir().'/'.uniqid('bio_export_').'.'.$extension;
+            $fileContents = Storage::get($completePath);
+            file_put_contents($tempPath, $fileContents);
+
+            // Extract text based on file type
+            $text = '';
             switch ($extension) {
                 case 'pdf':
-                    return $this->extractTextFromPdf($fullPath);
+                    $text = $this->extractTextFromPdf($tempPath);
+                    break;
                 case 'doc':
                 case 'docx':
-                    return $this->extractTextFromWord($fullPath);
+                    $text = $this->extractTextFromWord($tempPath);
+                    break;
                 case 'txt':
-                    return file_get_contents($fullPath);
-                default:
-                    return "[Unsupported file format: {$extension}]";
+                    $text = $fileContents;
+                    break;
             }
+
+            // Clean up temporary file
+            if (file_exists($tempPath)) {
+                unlink($tempPath);
+            }
+
+            return $text;
         } catch (\Exception $e) {
             return "[Error reading file: {$e->getMessage()}]";
         }
