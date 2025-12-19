@@ -63,6 +63,47 @@ class SendTherapistInvoiceTest extends TestCase
         $this->assertStringContainsString($admin->email, session('success'));
     }
 
+    public function test_admin_can_send_invoice_for_a_specific_month_to_themselves(): void
+    {
+        Mail::fake();
+
+        $admin = User::factory()->create([
+            'admin' => 1,
+            'email' => 'admin@test.com',
+        ]);
+
+        $therapist = User::factory()->create([
+            'admin' => 0,
+            'active_status' => 1,
+            'name' => 'Test Therapist',
+            'session_cost' => 100.00,
+        ]);
+
+        $client = Client::factory()->create([
+            'user_id' => $therapist->id,
+            'client_code' => 'CLIENT001',
+        ]);
+
+        $targetMonth = Carbon::now()->subMonths(2);
+        TherapySession::factory()->create([
+            'user_id' => $therapist->id,
+            'client_id' => $client->id,
+            'session_cost' => 100.00,
+            'client_contribution' => 20.00,
+            'remaining_client_contribution' => 80.00,
+            'created_at' => $targetMonth,
+        ]);
+
+        $response = $this->actingAs($admin)->post(route('therapist.send-invoice', $therapist->id), [
+            'month' => $targetMonth->format('Y-m'),
+        ]);
+
+        $response->assertRedirect();
+        $response->assertSessionHas('success');
+        $this->assertStringContainsString($targetMonth->format('F Y'), session('success'));
+        $this->assertStringContainsString($admin->email, session('success'));
+    }
+
     public function test_non_admin_cannot_send_invoice(): void
     {
         // Create a non-admin user

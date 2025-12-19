@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\SendTherapistInvoiceRequest;
 use App\Mail\TherapistAddressUpdatedW9Reminder;
 use App\Models\FileUpload;
 use App\Models\TherapySession;
@@ -288,14 +289,9 @@ class TherapistsController extends Controller
         return redirect()->back()->with('success', 'Profile updated!');
     }
 
-    public function sendLastMonthInvoice($id)
+    public function sendLastMonthInvoice(SendTherapistInvoiceRequest $request, $id)
     {
-        $user = auth()->user();
-
-        // Check if user is admin
-        if (! $user || $user->admin != 1) {
-            return redirect()->back()->with('error', 'You are not authorized to send invoices.');
-        }
+        $user = $request->user();
 
         $therapist = User::find($id);
         if (! $therapist) {
@@ -303,10 +299,21 @@ class TherapistsController extends Controller
         }
 
         $now = Carbon::now();
-        $start = $now->copy()->subMonth()->startOfMonth();
-        $end = $now->copy()->subMonth()->endOfMonth();
+        $month = $request->input('month');
+        $sendingSpecificMonth = ! empty($month);
 
-        // Get sessions for the previous month
+        if ($sendingSpecificMonth) {
+            $invoiceMonth = Carbon::createFromFormat('Y-m', $month)->startOfMonth();
+            $start = $invoiceMonth->copy()->startOfMonth();
+            $end = $invoiceMonth->copy()->endOfMonth();
+            $periodLabel = $invoiceMonth->format('F Y');
+        } else {
+            $start = $now->copy()->subMonth()->startOfMonth();
+            $end = $now->copy()->subMonth()->endOfMonth();
+            $invoiceMonth = $start->copy();
+            $periodLabel = "last month's";
+        }
+
         $sessions = TherapySession::with('client')
             ->where('user_id', $therapist->id)
             ->whereBetween('created_at', [$start, $end])
@@ -314,13 +321,16 @@ class TherapistsController extends Controller
             ->get();
 
         if ($sessions->isEmpty()) {
+            if ($sendingSpecificMonth) {
+                return redirect()->back()->with('error', "No sessions found for {$periodLabel} for this therapist.");
+            }
+
             return redirect()->back()->with('error', 'No sessions found for last month for this therapist.');
         }
 
-        $invoiceNumber = 'INV-'.$therapist->id.'-'.$now->format('Ym');
+        $invoiceNumber = 'INV-'.$therapist->id.'-'.$invoiceMonth->format('Ym');
         $invoiceDate = $now->format('Y-m-d');
 
-        // Generate PDF
         $pdf = Pdf::loadView('invoices.therapist', [
             'therapist' => $therapist,
             'sessions' => $sessions,
@@ -331,9 +341,7 @@ class TherapistsController extends Controller
             'invoicePayee' => $therapist->invoice_payee ?? $therapist->name,
         ]);
 
-        $filename = 'Invoice_'.$therapist->id.'_'.$now->format('Ym').'.pdf';
-
-        // Send email to the admin user
+        $filename = 'Invoice_'.$therapist->id.'_'.$invoiceMonth->format('Ym').'.pdf';
         $adminEmail = $user->email;
 
         try {
@@ -341,11 +349,17 @@ class TherapistsController extends Controller
                 'therapist' => $therapist,
                 'invoiceNumber' => $invoiceNumber,
                 'invoiceDate' => $invoiceDate,
-            ], function ($message) use ($pdf, $filename, $adminEmail) {
+            ], function ($message) use ($pdf, $filename, $adminEmail, $sendingSpecificMonth, $periodLabel) {
+                $subject = $sendingSpecificMonth ? "Therapist Invoice - {$periodLabel}" : 'Therapist Invoice - Last Month';
+
                 $message->to($adminEmail)
-                    ->subject('Therapist Invoice - Last Month')
+                    ->subject($subject)
                     ->attachData($pdf->output(), $filename);
             });
+
+            if ($sendingSpecificMonth) {
+                return redirect()->back()->with('success', "Invoice for {$periodLabel} for {$therapist->name} has been sent to {$adminEmail}.");
+            }
 
             return redirect()->back()->with('success', "Last month's invoice for {$therapist->name} has been sent to {$adminEmail}.");
         } catch (\Exception $e) {

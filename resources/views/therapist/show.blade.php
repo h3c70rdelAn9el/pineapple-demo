@@ -56,11 +56,18 @@
                         </div>
                         @if (auth()->user()->admin == 1)
                             <div class="flex flex-row justify-end gap-2">
-                                <form action="{{ route('therapist.send-invoice', $therapist->id) }}" method="POST" 
-                                      onsubmit="return confirm('Are you sure you want to send the last month\'s invoice for {{ $therapist->name }} to your email?');">
+                                <form action="{{ route('therapist.send-invoice', $therapist->id) }}" method="POST"
+                                      class="flex items-center gap-2"
+                                      onsubmit="return confirm('Are you sure you want to send the invoice for the selected month for {{ $therapist->name }} to your email?');">
                                     @csrf
+                                    <input
+                                        type="month"
+                                        name="month"
+                                        value="{{ now()->subMonth()->format('Y-m') }}"
+                                        class="px-2 py-2 text-sm border border-gray-300 rounded"
+                                    />
                                     <button type="submit" class="px-4 py-2 text-sm text-white bg-green-600 rounded hover:bg-green-700">
-                                        Send Last Month Invoice
+                                        Send Invoice
                                     </button>
                                 </form>
                                 <a class="mt-1 button"
