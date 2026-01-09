@@ -375,7 +375,7 @@ class ClientController extends Controller
         // $c->pronouns = $request->pronouns;
         $client->email = $request->email;
         $client->phone = $request->phone;
-        $client->user_id = ($request->user_id == 'no_therapist' || empty($request->user_id)) ? null : $request->user_id;
+        $client->user_id = ($request->user_id == 'no_therapist' || empty($request->user_id)) ? 200 : $request->user_id;
         $client->client_contribution = $request->client_contribution;
         $client->cost_per_session = $request->cost_per_session;
         $client->gender = $genderString;
@@ -391,7 +391,7 @@ class ClientController extends Controller
         $client->category = $request->input('category');
         $client->has_been_contacted = $request->has('has_been_contacted') ? 1 : 0;
 
-        if ($request->user_id) {
+        if ($request->user_id && $request->user_id != 'no_therapist' && ! empty($request->user_id)) {
 
             $therapist = User::find($request->user_id);
             if ($therapist) {
