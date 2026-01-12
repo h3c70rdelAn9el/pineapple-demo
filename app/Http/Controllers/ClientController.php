@@ -500,7 +500,7 @@ class ClientController extends Controller
             'phone' => $request->input('phone'),
             'client_contribution' => $request->input('client_contribution'),
             'cost_per_session' => $request->input('cost_per_session'),
-            'user_id' => $request->input('user_id'),
+            'user_id' => ($request->input('user_id') == 'no_therapist' || empty($request->input('user_id'))) ? 200 : $request->input('user_id'),
             'gender' => $client->gender,
             'contact_method' => $client->contact_method,
             'max_sessions' => $request->input('max_sessions'),
@@ -529,10 +529,22 @@ class ClientController extends Controller
 
         // notify the therapists of the change
         if ((int) $request->user_id !== (int) $oldTherapist) {
-            $newTherapist = User::find($request->user_id);
-            $newTherapist->notify(new NewClientNotification);
-            $previousTherapist = User::find($oldTherapist);
-            $previousTherapist->notify(new ClientRemovedNotification($client->preferred_name));
+            // Only notify if the new therapist is not the "No Therapist" placeholder (ID 200)
+            if ($request->user_id && $request->user_id != 200) {
+                $newTherapist = User::find($request->user_id);
+                if ($newTherapist) {
+                    $newTherapist->notify(new NewClientNotification);
+                }
+            }
+
+            // Only notify if the previous therapist is not the "No Therapist" placeholder (ID 200)
+            if ($oldTherapist && $oldTherapist != 200) {
+                $previousTherapist = User::find($oldTherapist);
+                if ($previousTherapist) {
+                    $previousTherapist->notify(new ClientRemovedNotification($client->preferred_name));
+                }
+            }
+
             // if number of sessions was less than 2 and now is greater than 3 send the connected to therapist email to the client
             // this may be better to check if the old therapist user id was 'no state' which is like id 234 or something and that the new therapist is not that
             if ($oldTherapist == 200 || $oldTherapist == 0) {
@@ -568,7 +580,12 @@ class ClientController extends Controller
         foreach ($adminUsers as $adminUser) {
             $adminUser->notify(new SessionsAssignedNotification($client, $sessionCount));
             if ($status === 'inactive') {
-                $therapistName = $client->therapist->preferred_name ?? ' ';
+                // Only get therapist name if the client has a valid therapist (not the placeholder ID 200)
+                if ($client->user_id && $client->user_id != 200) {
+                    $therapistName = $client->therapist->preferred_name ?? 'No Therapist';
+                } else {
+                    $therapistName = 'No Therapist';
+                }
                 $adminUser->notify(new ClientMadeInactiveNotification($client, $therapistName));
             }
         }
