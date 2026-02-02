@@ -33,13 +33,14 @@
                 <!-- Filter Section -->
                 <div class="mb-6 overflow-hidden bg-white shadow-xl sm:rounded-lg">
                     <div class="p-6">
-                        <form method="GET" action="{{ route('admin.stats') }}" class="flex flex-wrap items-end gap-4">
+                        <form method="GET" action="{{ route('admin.stats') }}" id="stats-filter-form" class="flex flex-wrap items-end gap-4">
                             <!-- Year Filter -->
                             <div class="flex-1 min-w-[200px]">
                                 <label for="year" class="block mb-2 text-sm font-medium text-gray-700">
                                     Year
                                 </label>
                                 <select name="year" id="year" 
+                                        onchange="document.getElementById('stats-filter-form').submit()"
                                         class="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                                     @foreach($availableYears as $availableYear)
                                         <option value="{{ $availableYear }}" {{ $year == $availableYear ? 'selected' : '' }}>
@@ -55,6 +56,7 @@
                                     Month (Optional)
                                 </label>
                                 <select name="month" id="month" 
+                                        onchange="document.getElementById('stats-filter-form').submit()"
                                         class="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                                     <option value="">All Months</option>
                                     <option value="1" {{ $month == 1 ? 'selected' : '' }}>January</option>
@@ -72,7 +74,7 @@
                                 </select>
                             </div>
 
-                            <!-- Submit Button -->
+                            <!-- Submit Button (optional - form auto-submits on change) -->
                             <div>
                                 <button type="submit" 
                                         class="px-6 py-2 text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
