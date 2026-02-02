@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\StatsController;
 use App\Http\Controllers\AdminBroadcastController;
 use App\Http\Controllers\AdminEmailController;
 use App\Http\Controllers\ClientController;
@@ -154,6 +155,15 @@ Route::middleware([
     Route::get('/admin/broadcast-message', [AdminBroadcastController::class, 'index'])->name('admin.broadcast-message');
     Route::post('/admin/broadcast-message/send', [AdminBroadcastController::class, 'send'])->name('admin.broadcast-message.send');
     Route::get('/admin/broadcast-history', [AdminBroadcastController::class, 'history'])->name('admin.broadcast-history');
+});
+
+// Admin stats routes
+Route::middleware([
+    'auth:sanctum',
+    config('jetstream.auth_session'),
+    'verified',
+])->group(function () {
+    Route::get('/admin/stats', [StatsController::class, 'index'])->name('admin.stats');
 });
 
 // Email preview route (for development/testing)
