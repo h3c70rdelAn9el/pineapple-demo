@@ -14,15 +14,15 @@
         
         <!-- Flag Filter Section -->
         <div class="container px-4 mx-auto mt-4 md:w-2/3">
-            <div class="p-4 mb-4 bg-white rounded-lg shadow-sm dark:bg-gray-800">
-                <h3 class="mb-3 text-lg font-semibold text-gray-800 dark:text-gray-200">Filter by Flag</h3>
+            <div class="p-4 mb-4 bg-white border border-gray-200 rounded-lg shadow-sm">
+                <h3 class="mb-3 text-lg font-semibold text-gray-800">Filter by Flag</h3>
                 <form method="GET" action="{{ route('therapists.index') }}" class="flex flex-col gap-3 md:flex-row md:items-end">
                     <div class="flex-1">
-                        <label for="flag_filter" class="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">Select Flag:</label>
+                        <label for="flag_filter" class="block mb-1 text-sm font-medium text-gray-700">Select Flag:</label>
                         <select 
                             name="flag_filter" 
                             id="flag_filter" 
-                            class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+                            class="w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                         >
                             <option value="">-- Choose a flag --</option>
                             <option value="out_of_state_coaching" {{ request('flag_filter') === 'out_of_state_coaching' ? 'selected' : '' }}>Out of State Coaching</option>
@@ -43,7 +43,7 @@
                         @if(request('flag_filter'))
                             <a 
                                 href="{{ route('therapists.index') }}" 
-                                class="px-4 py-2 text-gray-700 bg-gray-200 rounded-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 dark:bg-gray-600 dark:text-gray-200 dark:hover:bg-gray-500"
+                                class="px-4 py-2 text-gray-700 bg-gray-200 rounded-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
                             >
                                 Clear
                             </a>
