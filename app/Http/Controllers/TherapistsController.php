@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Mail;
 
 class TherapistsController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $user = auth()->user();
 
@@ -40,6 +40,37 @@ class TherapistsController extends Controller
             ->where('active_status', 0)
             ->orderBy(DB::raw('COALESCE(preferred_name, name)'))
             ->paginate(30, ['*'], 'inactive_therapists');
+
+        // Flag-based filtering
+        $flagFilteredTherapists = collect();
+        $selectedFlag = $request->get('flag_filter');
+        if ($selectedFlag && $alltherapists) {
+            $flagFilteredData = $alltherapists->filter(function (User $therapist) use ($selectedFlag) {
+                // Handle different flag types
+                $value = $therapist->{$selectedFlag};
+
+                // For string fields like out_of_state_coaching that store "1" or "0"
+                if (in_array($selectedFlag, ['out_of_state_coaching'])) {
+                    return $value == 1 || $value === '1';
+                }
+
+                // For boolean fields
+                return (bool) $value === true;
+            });
+
+            // Convert to paginated collection
+            $currentPage = $request->get('flag_therapists', 1);
+            $perPage = 30;
+            $currentPageItems = $flagFilteredData->slice(($currentPage - 1) * $perPage, $perPage)->values();
+
+            $flagFilteredTherapists = new LengthAwarePaginator(
+                $currentPageItems,
+                $flagFilteredData->count(),
+                $perPage,
+                $currentPage,
+                ['path' => $request->url(), 'pageName' => 'flag_therapists', 'query' => ['flag_filter' => $selectedFlag]]
+            );
+        }
 
         // Filter incomplete therapists from all therapists
         $incompleteTherapists = collect();
@@ -119,6 +150,8 @@ class TherapistsController extends Controller
             'activeTherapists' => $activeTherapists,
             'unverifiedTherapists' => $unverifiedTherapists,
             'completeTherapists' => $completeTherapists,
+            'flagFilteredTherapists' => $flagFilteredTherapists,
+            'selectedFlag' => $selectedFlag,
         ]);
     }
 
