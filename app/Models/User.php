@@ -86,6 +86,7 @@ class User extends Authenticatable
         'id_uploaded',
         'W9_or_WBEN_uploaded',
         'license_uploaded',
+        'insurance_uploaded',
         'headshot_uploaded',
         'bio_uploaded',
     ];
