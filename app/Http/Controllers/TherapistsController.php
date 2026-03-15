@@ -158,10 +158,10 @@ class TherapistsController extends Controller
     public function show($id)
     {
         $user = auth()->user();
-        $therapist = User::find($id);
+        $therapist = User::findOrFail($id);
         $clients = $therapist->clients()->get();
         // $clients = $therapist->clients()->orderBy('preferred_name', 'asc')->get();
-        $therapySessions = TherapySession::where('client_id', '=', $therapist->id)->get();
+        $therapySessions = TherapySession::where('user_id', '=', $therapist->id)->get();
         $file_name = FileUpload::find($id);
 
         $totalSessionCost = number_format($therapist->sum('session_cost'), 2, '.', '');
@@ -275,7 +275,7 @@ class TherapistsController extends Controller
             'all_documents' => 'nullable|string|max:255',
             'website' => 'nullable|boolean',
             'quickbooks' => 'nullable|string|max:255',
-            'session_cost' => 'nullable|numeric|max:'.$max_session_cost,
+            'session_cost' => 'nullable|numeric|max:' . $max_session_cost,
             // 'client_extensions' => 'nullable|boolean',
             'notes' => 'nullable|string|max:255',
             'number_of_potential_clients' => 'nullable|numeric',
@@ -361,7 +361,7 @@ class TherapistsController extends Controller
             return redirect()->back()->with('error', 'No sessions found for last month for this therapist.');
         }
 
-        $invoiceNumber = 'INV-'.$therapist->id.'-'.$invoiceMonth->format('Ym');
+        $invoiceNumber = 'INV-' . $therapist->id . '-' . $invoiceMonth->format('Ym');
         $invoiceDate = $now->format('Y-m-d');
 
         $pdf = Pdf::loadView('invoices.therapist', [
@@ -374,7 +374,7 @@ class TherapistsController extends Controller
             'invoicePayee' => $therapist->invoice_payee ?? $therapist->name,
         ]);
 
-        $filename = 'Invoice_'.$therapist->id.'_'.$invoiceMonth->format('Ym').'.pdf';
+        $filename = 'Invoice_' . $therapist->id . '_' . $invoiceMonth->format('Ym') . '.pdf';
         $adminEmail = $user->email;
 
         try {
@@ -396,7 +396,7 @@ class TherapistsController extends Controller
 
             return redirect()->back()->with('success', "Last month's invoice for {$therapist->name} has been sent to {$adminEmail}.");
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Failed to send invoice: '.$e->getMessage());
+            return redirect()->back()->with('error', 'Failed to send invoice: ' . $e->getMessage());
         }
     }
 
