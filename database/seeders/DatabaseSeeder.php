@@ -39,6 +39,9 @@ class DatabaseSeeder extends Seeder
             ]
         );
 
+        // Seed demo sessions for niles@example.com
+        $this->call(NilesDemoSessionsSeeder::class);
+
         User::updateOrCreate(
             ['email' => 'daffy@example.com'],
             [

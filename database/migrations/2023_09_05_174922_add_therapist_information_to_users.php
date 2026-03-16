@@ -22,7 +22,7 @@ return new class extends Migration
             $table->boolean('contract_signed')->default(false)->nullable();
             $table->string('all_documents')->nullable();
             $table->boolean('full')->default(false)->nullable();
-            $table->unsignedDecimal('session_cost', 10, 2)->nullable();
+            $table->decimal('session_cost', 10, 2)->unsigned()->nullable();
             $table->boolean('contact_for_promotionals')->default(false)->nullable();
         });
     }
