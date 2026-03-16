@@ -1,20 +1,7 @@
 import type { NextConfig } from "next";
 
-const laravelUrl = process.env.LARAVEL_URL || "http://localhost:8000";
-
-const nextConfig: NextConfig = {
-  async rewrites() {
-    return [
-      {
-        source: "/sanctum/:path*",
-        destination: `${laravelUrl}/sanctum/:path*`,
-      },
-      {
-        source: "/api/:path*",
-        destination: `${laravelUrl}/api/:path*`,
-      },
-    ];
-  },
-};
+// nginx on la-pina.test routes /api/* and /sanctum/* to Laravel PHP,
+// and everything else to this Next.js dev server on port 3000.
+const nextConfig: NextConfig = {};
 
 export default nextConfig;
