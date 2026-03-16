@@ -8,7 +8,6 @@ use App\Http\Controllers\Api\StatsController;
 use App\Http\Controllers\Api\TherapistController;
 use App\Http\Controllers\Api\TherapySessionController;
 use App\Http\Controllers\Api\UserController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,6 +17,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 // Auth routes (Sanctum SPA)
+Route::post('/register', [AuthController::class, 'register'])
+    ->middleware('web');
 Route::post('/login', [AuthController::class, 'login'])
     ->middleware('web');
 Route::post('/logout', [AuthController::class, 'logout'])

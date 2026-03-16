@@ -18,6 +18,12 @@ interface AuthContextType {
         password: string,
         remember?: boolean,
     ) => Promise<void>;
+    register: (
+        name: string,
+        email: string,
+        password: string,
+        passwordConfirmation: string,
+    ) => Promise<void>;
     logout: () => Promise<void>;
     refresh: () => Promise<void>;
 }
@@ -51,13 +57,31 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         setUser(res.data.user);
     };
 
+    const register = async (
+        name: string,
+        email: string,
+        password: string,
+        passwordConfirmation: string,
+    ): Promise<void> => {
+        await getCsrfCookie();
+        const res = await api.post("/api/register", {
+            name,
+            email,
+            password,
+            password_confirmation: passwordConfirmation,
+        });
+        setUser(res.data.user);
+    };
+
     const logout = async (): Promise<void> => {
         await api.post("/api/logout");
         setUser(null);
     };
 
     return (
-        <AuthContext.Provider value={{ user, loading, login, logout, refresh }}>
+        <AuthContext.Provider
+            value={{ user, loading, login, register, logout, refresh }}
+        >
             {children}
         </AuthContext.Provider>
     );

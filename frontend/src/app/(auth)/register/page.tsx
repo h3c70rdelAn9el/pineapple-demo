@@ -7,28 +7,46 @@ import { useAuth } from "@/providers/AuthProvider";
 import Button from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
 
-export default function LoginPage() {
+export default function RegisterPage() {
+    const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [remember, setRemember] = useState(false);
+    const [passwordConfirmation, setPasswordConfirmation] = useState("");
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState(false);
-    const { login } = useAuth();
+    const { register } = useAuth();
     const router = useRouter();
 
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
         setError(null);
+
+        if (password !== passwordConfirmation) {
+            setError("Passwords do not match.");
+            return;
+        }
+
         setLoading(true);
         try {
-            await login(email, password, remember);
+            await register(name, email, password, passwordConfirmation);
             router.push("/dashboard");
         } catch (err: unknown) {
-            const message =
-                (err as { response?: { data?: { message?: string } } })
-                    ?.response?.data?.message ??
-                "Login failed. Please check your credentials.";
-            setError(message);
+            const data = (
+                err as {
+                    response?: {
+                        data?: {
+                            errors?: Record<string, string[]>;
+                            message?: string;
+                        };
+                    };
+                }
+            )?.response?.data;
+            if (data?.errors) {
+                const firstError = Object.values(data.errors)[0]?.[0];
+                setError(firstError ?? "Registration failed.");
+            } else {
+                setError(data?.message ?? "Registration failed.");
+            }
         } finally {
             setLoading(false);
         }
@@ -39,7 +57,7 @@ export default function LoginPage() {
             <div className="text-center mb-8">
                 <h1 className="text-3xl font-bold text-indigo-700">🍍</h1>
                 <h2 className="mt-2 text-2xl font-bold text-gray-900">
-                    Sign in to your account
+                    Create an account
                 </h2>
             </div>
 
@@ -52,6 +70,16 @@ export default function LoginPage() {
                         {error}
                     </div>
                 )}
+
+                <Input
+                    id="name"
+                    type="text"
+                    label="Full name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    autoComplete="name"
+                    required
+                />
 
                 <Input
                     id="email"
@@ -69,42 +97,36 @@ export default function LoginPage() {
                     label="Password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    autoComplete="current-password"
+                    autoComplete="new-password"
                     required
                 />
 
-                <div className="flex items-center">
-                    <input
-                        id="remember"
-                        type="checkbox"
-                        checked={remember}
-                        onChange={(e) => setRemember(e.target.checked)}
-                        className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                    />
-                    <label
-                        htmlFor="remember"
-                        className="ml-2 text-sm text-gray-600"
-                    >
-                        Remember me
-                    </label>
-                </div>
+                <Input
+                    id="password_confirmation"
+                    type="password"
+                    label="Confirm password"
+                    value={passwordConfirmation}
+                    onChange={(e) => setPasswordConfirmation(e.target.value)}
+                    autoComplete="new-password"
+                    required
+                />
 
                 <Button
                     type="submit"
                     loading={loading}
                     className="w-full justify-center"
                 >
-                    Sign in
+                    Create account
                 </Button>
             </form>
 
             <p className="mt-4 text-center text-sm text-gray-600">
-                Don&apos;t have an account?{" "}
+                Already have an account?{" "}
                 <Link
-                    href="/register"
+                    href="/login"
                     className="font-medium text-indigo-600 hover:text-indigo-500"
                 >
-                    Create one
+                    Sign in
                 </Link>
             </p>
         </div>
