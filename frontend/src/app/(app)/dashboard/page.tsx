@@ -1,6 +1,7 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
+import Link from "next/link";
 import api from "@/lib/api";
 import { DashboardData } from "@/types";
 import Spinner from "@/components/ui/Spinner";
@@ -24,29 +25,33 @@ function StatCard({
     value,
     sub,
     color = "indigo",
+    href,
 }: {
     label: string;
     value: string | number;
     sub?: string;
     color?: string;
+    href?: string;
 }) {
     const colors: Record<string, string> = {
-        indigo: "bg-indigo-50 text-indigo-700",
-        green: "bg-green-50 text-green-700",
-        red: "bg-red-50 text-red-700",
-        yellow: "bg-yellow-50 text-yellow-700",
+        indigo: "from-indigo-500 to-indigo-600",
+        green: "from-emerald-500 to-emerald-600",
+        red: "from-rose-500 to-rose-600",
+        yellow: "from-amber-400 to-amber-500",
     };
-    return (
-        <div className="bg-white rounded-lg border border-gray-200 p-5 shadow-sm">
-            <p className="text-sm font-medium text-gray-500">{label}</p>
-            <p
-                className={`mt-1 text-3xl font-bold ${colors[color] ?? colors.indigo}`}
-            >
-                {value}
-            </p>
-            {sub && <p className="mt-1 text-xs text-gray-400">{sub}</p>}
+    const card = (
+        <div
+            className={`relative flex flex-col justify-between h-32 rounded-xl bg-gradient-to-br ${colors[color] ?? colors.indigo} p-5 shadow-md text-white${href ? " hover:shadow-lg hover:scale-[1.02] transition-all duration-200" : ""}`}
+        >
+            <p className="text-sm font-medium text-white/80">{label}</p>
+            <p className="text-4xl font-bold tracking-tight">{value}</p>
+            {sub && <p className="text-xs text-white/60">{sub}</p>}
         </div>
     );
+    if (href) {
+        return <Link href={href}>{card}</Link>;
+    }
+    return card;
 }
 
 const CHART_COLORS = ["#4f46e5", "#22c55e", "#ef4444", "#f59e0b", "#8b5cf6"];
@@ -165,11 +170,13 @@ function AdminDashboard({ data }: { data: DashboardData }) {
                     label="Total Clients"
                     value={data.totalClientCount ?? 0}
                     color="indigo"
+                    href="/clients"
                 />
                 <StatCard
                     label="Total Therapists"
                     value={data.therapists?.total ?? 0}
                     color="green"
+                    href="/therapists"
                 />
                 <StatCard
                     label="Unread Messages"
@@ -181,6 +188,7 @@ function AdminDashboard({ data }: { data: DashboardData }) {
                     value={`${data.totalSessionCost ? Math.round(((data.totalClientContribution ?? 0) / data.totalSessionCost) * 100) : 0}%`}
                     sub="Contribution ratio"
                     color="red"
+                    href="/sessions"
                 />
             </div>
 
@@ -243,30 +251,32 @@ function AdminDashboard({ data }: { data: DashboardData }) {
                     ) : (
                         <ul className="divide-y divide-gray-100">
                             {data.recentActiveClients?.map((client) => (
-                                <li
-                                    key={client.id}
-                                    className="px-4 py-3 flex items-center justify-between"
-                                >
-                                    <div>
-                                        <p className="text-sm font-medium text-gray-900">
-                                            {client.preferred_name ??
-                                                client.legal_name}
-                                        </p>
-                                        <p className="text-xs text-gray-500">
-                                            {client.client_code}
-                                        </p>
-                                    </div>
-                                    <Badge
-                                        variant={
-                                            client.status === 0
-                                                ? "green"
-                                                : "red"
-                                        }
+                                <li key={client.id}>
+                                    <Link
+                                        href={`/clients/${client.id}`}
+                                        className="px-4 py-3 flex items-center justify-between hover:bg-gray-50 transition-colors"
                                     >
-                                        {client.status === 0
-                                            ? "Active"
-                                            : "Inactive"}
-                                    </Badge>
+                                        <div>
+                                            <p className="text-sm font-medium text-gray-900">
+                                                {client.preferred_name ??
+                                                    client.legal_name}
+                                            </p>
+                                            <p className="text-xs text-gray-500">
+                                                {client.client_code}
+                                            </p>
+                                        </div>
+                                        <Badge
+                                            variant={
+                                                client.status === 0
+                                                    ? "green"
+                                                    : "red"
+                                            }
+                                        >
+                                            {client.status === 0
+                                                ? "Active"
+                                                : "Inactive"}
+                                        </Badge>
+                                    </Link>
                                 </li>
                             ))}
                         </ul>
@@ -291,13 +301,20 @@ function TherapistDashboard({ data }: { data: DashboardData }) {
                     label="Your Clients"
                     value={data.clients?.total ?? 0}
                     color="indigo"
+                    href="/clients"
                 />
                 <StatCard
                     label="Total Sessions"
                     value={totalSessions}
                     color="green"
+                    href="/sessions"
                 />
-                <StatCard label="No-Shows" value={noShowSessions} color="red" />
+                <StatCard
+                    label="No-Shows"
+                    value={noShowSessions}
+                    color="red"
+                    href="/sessions"
+                />
                 <StatCard
                     label="Unread Messages"
                     value={data.unreadMessagesCount ?? 0}
@@ -352,30 +369,32 @@ function TherapistDashboard({ data }: { data: DashboardData }) {
                         ) : (
                             <ul className="divide-y divide-gray-100">
                                 {data.clients?.data?.map((client) => (
-                                    <li
-                                        key={client.id}
-                                        className="px-4 py-3 flex items-center justify-between"
-                                    >
-                                        <div>
-                                            <p className="text-sm font-medium text-gray-900">
-                                                {client.preferred_name ??
-                                                    client.legal_name}
-                                            </p>
-                                            <p className="text-xs text-gray-500">
-                                                {client.client_code}
-                                            </p>
-                                        </div>
-                                        <Badge
-                                            variant={
-                                                client.status === 0
-                                                    ? "green"
-                                                    : "red"
-                                            }
+                                    <li key={client.id}>
+                                        <Link
+                                            href={`/clients/${client.id}`}
+                                            className="px-4 py-3 flex items-center justify-between hover:bg-gray-50 transition-colors"
                                         >
-                                            {client.status === 0
-                                                ? "Active"
-                                                : "Inactive"}
-                                        </Badge>
+                                            <div>
+                                                <p className="text-sm font-medium text-gray-900">
+                                                    {client.preferred_name ??
+                                                        client.legal_name}
+                                                </p>
+                                                <p className="text-xs text-gray-500">
+                                                    {client.client_code}
+                                                </p>
+                                            </div>
+                                            <Badge
+                                                variant={
+                                                    client.status === 0
+                                                        ? "green"
+                                                        : "red"
+                                                }
+                                            >
+                                                {client.status === 0
+                                                    ? "Active"
+                                                    : "Inactive"}
+                                            </Badge>
+                                        </Link>
                                     </li>
                                 ))}
                             </ul>
