@@ -85,6 +85,7 @@ export default function SessionsPage() {
         { key: "special", label: "Special" },
     ];
 
+    const isAdmin = user && (user.admin === true || user.admin === 1);
     return (
         <div className="space-y-6">
             <div className="flex items-center justify-between">
@@ -99,17 +100,17 @@ export default function SessionsPage() {
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     <StatCard
                         label="All Sessions"
-                        value={data.sessions?.total ?? 0}
+                        value={isAdmin ? data.allTherapySessions?.total ?? 0 : data.sessions?.total ?? 0}
                         color="indigo"
                     />
                     <StatCard
                         label="No-Shows"
-                        value={data.missedSessions?.total ?? 0}
+                        value={isAdmin ? data.allMissedSessions?.total ?? 0 : data.missedSessions?.total ?? 0}
                         color="red"
                     />
                     <StatCard
                         label="Special Sessions"
-                        value={data.specialSessions?.total ?? 0}
+                        value={isAdmin ? data.allSpecialSessions?.total ?? 0 : data.specialSessions?.total ?? 0}
                         color="purple"
                     />
                 </div>
