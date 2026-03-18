@@ -43,7 +43,7 @@ function DonutChart({ data }: { data: { name: string; value: number }[] }) {
                         />
                     ))}
                 </Pie>
-                <Tooltip formatter={(v: number) => v.toLocaleString()} />
+                <Tooltip formatter={(v) => (v as number).toLocaleString()} />
                 <Legend iconType="circle" iconSize={10} />
             </PieChart>
         </ResponsiveContainer>
@@ -72,7 +72,9 @@ function FinancialsChart({
                     tickFormatter={(v) => `$${(v / 1000).toFixed(0)}k`}
                     tick={{ fontSize: 11 }}
                 />
-                <Tooltip formatter={(v: number) => `$${v.toLocaleString()}`} />
+                <Tooltip
+                    formatter={(v) => `$${(v as number).toLocaleString()}`}
+                />
                 <Bar dataKey="value" radius={[4, 4, 0, 0]}>
                     <Cell fill="#22c55e" />
                     <Cell fill="#4f46e5" />
@@ -84,6 +86,7 @@ function FinancialsChart({
 
 export default function DashboardPage() {
     const { user } = useAuth();
+    console.log("DashboardPage user:", user);
 
     const { data, isLoading, isError } = useQuery<DashboardData>({
         queryKey: ["dashboard"],
