@@ -6,6 +6,7 @@ import api from "@/lib/api";
 import { DashboardData } from "@/types";
 import Spinner from "@/components/ui/Spinner";
 import Badge from "@/components/ui/Badge";
+import StatCard from "@/components/ui/StatCard";
 import { useAuth } from "@/providers/AuthProvider";
 import {
     ResponsiveContainer,
@@ -19,40 +20,6 @@ import {
     XAxis,
     YAxis,
 } from "recharts";
-
-function StatCard({
-    label,
-    value,
-    sub,
-    color = "indigo",
-    href,
-}: {
-    label: string;
-    value: string | number;
-    sub?: string;
-    color?: string;
-    href?: string;
-}) {
-    const colors: Record<string, string> = {
-        indigo: "from-indigo-500 to-indigo-600",
-        green: "from-emerald-500 to-emerald-600",
-        red: "from-rose-500 to-rose-600",
-        yellow: "from-amber-400 to-amber-500",
-    };
-    const card = (
-        <div
-            className={`relative flex flex-col justify-between h-32 rounded-xl bg-gradient-to-br ${colors[color] ?? colors.indigo} p-5 shadow-md text-white${href ? " hover:shadow-lg hover:scale-[1.02] transition-all duration-200" : ""}`}
-        >
-            <p className="text-sm font-medium text-white/80">{label}</p>
-            <p className="text-4xl font-bold tracking-tight">{value}</p>
-            {sub && <p className="text-xs text-white/60">{sub}</p>}
-        </div>
-    );
-    if (href) {
-        return <Link href={href}>{card}</Link>;
-    }
-    return card;
-}
 
 const CHART_COLORS = ["#4f46e5", "#22c55e", "#ef4444", "#f59e0b", "#8b5cf6"];
 

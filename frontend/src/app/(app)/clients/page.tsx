@@ -9,6 +9,7 @@ import Spinner from "@/components/ui/Spinner";
 import Badge from "@/components/ui/Badge";
 import Button from "@/components/ui/Button";
 import Modal from "@/components/ui/Modal";
+import StatCard from "@/components/ui/StatCard";
 
 type Tab = "all" | "inactive" | "waitlist" | "special";
 
@@ -86,24 +87,22 @@ export default function ClientsPage() {
             {/* Stats row */}
             {data && (
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                    <div className="bg-white rounded-lg border border-gray-200 p-4 text-center shadow-sm">
-                        <p className="text-2xl font-bold text-indigo-600">
-                            {data.clients?.total ?? 0}
-                        </p>
-                        <p className="text-xs text-gray-500 mt-1">Total</p>
-                    </div>
-                    <div className="bg-white rounded-lg border border-gray-200 p-4 text-center shadow-sm">
-                        <p className="text-2xl font-bold text-green-600">
-                            {data.attendedSessions ?? 0}
-                        </p>
-                        <p className="text-xs text-gray-500 mt-1">Attended</p>
-                    </div>
-                    <div className="bg-white rounded-lg border border-gray-200 p-4 text-center shadow-sm">
-                        <p className="text-2xl font-bold text-red-600">
-                            {data.missedSessions ?? 0}
-                        </p>
-                        <p className="text-xs text-gray-500 mt-1">No-Shows</p>
-                    </div>
+                    <StatCard
+                        label="Total Clients"
+                        value={data.clients?.total ?? 0}
+                        color="indigo"
+                        href="/clients"
+                    />
+                    <StatCard
+                        label="Sessions Attended"
+                        value={data.attendedSessions ?? 0}
+                        color="green"
+                    />
+                    <StatCard
+                        label="No-Shows"
+                        value={data.missedSessions ?? 0}
+                        color="red"
+                    />
                 </div>
             )}
 

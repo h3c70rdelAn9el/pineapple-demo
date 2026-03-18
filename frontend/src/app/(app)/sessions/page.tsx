@@ -9,6 +9,7 @@ import Spinner from "@/components/ui/Spinner";
 import Badge from "@/components/ui/Badge";
 import Button from "@/components/ui/Button";
 import Modal from "@/components/ui/Modal";
+import StatCard from "@/components/ui/StatCard";
 
 type Tab = "all" | "missed" | "special";
 
@@ -75,6 +76,27 @@ export default function SessionsPage() {
                     <Button size="sm">+ New Session</Button>
                 </Link>
             </div>
+
+            {/* Stats row */}
+            {data && (
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <StatCard
+                        label="All Sessions"
+                        value={data.sessions?.total ?? 0}
+                        color="indigo"
+                    />
+                    <StatCard
+                        label="No-Shows"
+                        value={data.missedSessions?.total ?? 0}
+                        color="red"
+                    />
+                    <StatCard
+                        label="Special Sessions"
+                        value={data.specialSessions?.total ?? 0}
+                        color="purple"
+                    />
+                </div>
+            )}
 
             {/* Tabs */}
             <div className="border-b border-gray-200">

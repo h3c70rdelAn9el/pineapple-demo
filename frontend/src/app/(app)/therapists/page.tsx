@@ -9,6 +9,7 @@ import Spinner from "@/components/ui/Spinner";
 import Badge from "@/components/ui/Badge";
 import Button from "@/components/ui/Button";
 import Modal from "@/components/ui/Modal";
+import StatCard from "@/components/ui/StatCard";
 
 type Tab = "all" | "active" | "inactive";
 
@@ -55,6 +56,27 @@ export default function TherapistsPage() {
             <div className="flex items-center justify-between">
                 <h1 className="text-2xl font-bold text-gray-900">Therapists</h1>
             </div>
+
+            {/* Stats row */}
+            {data && (
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <StatCard
+                        label="Total Therapists"
+                        value={data.therapists?.total ?? 0}
+                        color="indigo"
+                    />
+                    <StatCard
+                        label="Active"
+                        value={data.activeTherapists?.total ?? 0}
+                        color="green"
+                    />
+                    <StatCard
+                        label="Inactive"
+                        value={data.inactiveTherapists?.total ?? 0}
+                        color="red"
+                    />
+                </div>
+            )}
 
             {/* Tabs */}
             <div className="border-b border-gray-200">
