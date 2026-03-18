@@ -6,6 +6,18 @@ import { DashboardData } from "@/types";
 import Spinner from "@/components/ui/Spinner";
 import Badge from "@/components/ui/Badge";
 import { useAuth } from "@/providers/AuthProvider";
+import {
+    ResponsiveContainer,
+    PieChart,
+    Pie,
+    Cell,
+    Tooltip,
+    Legend,
+    BarChart,
+    Bar,
+    XAxis,
+    YAxis,
+} from "recharts";
 
 function StatCard({
     label,
@@ -34,6 +46,61 @@ function StatCard({
             </p>
             {sub && <p className="mt-1 text-xs text-gray-400">{sub}</p>}
         </div>
+    );
+}
+
+const CHART_COLORS = ["#4f46e5", "#22c55e", "#ef4444", "#f59e0b", "#8b5cf6"];
+
+function DonutChart({ data }: { data: { name: string; value: number }[] }) {
+    return (
+        <ResponsiveContainer width="100%" height={200}>
+            <PieChart>
+                <Pie
+                    data={data}
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={55}
+                    outerRadius={80}
+                    paddingAngle={3}
+                    dataKey="value"
+                >
+                    {data.map((_, i) => (
+                        <Cell key={i} fill={CHART_COLORS[i % CHART_COLORS.length]} />
+                    ))}
+                </Pie>
+                <Tooltip formatter={(v: number) => v.toLocaleString()} />
+                <Legend iconType="circle" iconSize={10} />
+            </PieChart>
+        </ResponsiveContainer>
+    );
+}
+
+function FinancialsChart({
+    sessionCost,
+    clientContribution,
+}: {
+    sessionCost: number;
+    clientContribution: number;
+}) {
+    const data = [
+        { name: "Session Cost", value: sessionCost },
+        { name: "Client Contribs", value: clientContribution },
+    ];
+    return (
+        <ResponsiveContainer width="100%" height={200}>
+            <BarChart data={data} margin={{ top: 5, right: 10, left: 30, bottom: 5 }}>
+                <XAxis dataKey="name" tick={{ fontSize: 12 }} />
+                <YAxis
+                    tickFormatter={(v) => `$${(v / 1000).toFixed(0)}k`}
+                    tick={{ fontSize: 11 }}
+                />
+                <Tooltip formatter={(v: number) => `$${v.toLocaleString()}`} />
+                <Bar dataKey="value" radius={[4, 4, 0, 0]}>
+                    <Cell fill="#22c55e" />
+                    <Cell fill="#4f46e5" />
+                </Bar>
+            </BarChart>
+        </ResponsiveContainer>
     );
 }
 
@@ -112,6 +179,15 @@ function AdminDashboard({ data }: { data: DashboardData }) {
                         color="yellow"
                     />
                 </div>
+                <div className="mt-4 bg-white rounded-lg border border-gray-200 p-5 shadow-sm">
+                    <p className="text-sm font-medium text-gray-500 mb-1">Client Distribution</p>
+                    <DonutChart
+                        data={[
+                            { name: "Active", value: data.activeClients?.length ?? 0 },
+                            { name: "Inactive", value: data.inactiveClients?.length ?? 0 },
+                        ]}
+                    />
+                </div>
             </section>
 
             <section>
@@ -135,6 +211,15 @@ function AdminDashboard({ data }: { data: DashboardData }) {
                         color="red"
                     />
                 </div>
+                <div className="mt-4 bg-white rounded-lg border border-gray-200 p-5 shadow-sm">
+                    <p className="text-sm font-medium text-gray-500 mb-1">Profile Completeness</p>
+                    <DonutChart
+                        data={[
+                            { name: "Complete", value: data.completeTherapistsCount ?? 0 },
+                            { name: "Incomplete", value: data.incompleteTherapistsCount ?? 0 },
+                        ]}
+                    />
+                </div>
             </section>
 
             <section>
@@ -151,6 +236,13 @@ function AdminDashboard({ data }: { data: DashboardData }) {
                         label="Total Client Contributions"
                         value={`$${(data.totalClientContribution ?? 0).toLocaleString()}`}
                         color="indigo"
+                    />
+                </div>
+                <div className="mt-4 bg-white rounded-lg border border-gray-200 p-5 shadow-sm">
+                    <p className="text-sm font-medium text-gray-500 mb-1">Cost vs Contributions</p>
+                    <FinancialsChart
+                        sessionCost={data.totalSessionCost ?? 0}
+                        clientContribution={data.totalClientContribution ?? 0}
                     />
                 </div>
             </section>
@@ -230,6 +322,18 @@ function TherapistDashboard({ data }: { data: DashboardData }) {
                         color="red"
                     />
                 </div>
+                {totalSessions > 0 && (
+                    <div className="mt-4 bg-white rounded-lg border border-gray-200 p-5 shadow-sm">
+                        <p className="text-sm font-medium text-gray-500 mb-1">Session Attendance</p>
+                        <DonutChart
+                            data={[
+                                { name: "Attended", value: data.therapySessions?.filter(s => s.attendance === "attended").length ?? 0 },
+                                { name: "No-Show", value: data.therapySessions?.filter(s => s.attendance === "no-show").length ?? 0 },
+                                { name: "Missed", value: data.therapySessions?.filter(s => s.attendance === "missed").length ?? 0 },
+                            ].filter(d => d.value > 0)}
+                        />
+                    </div>
+                )}
             </section>
 
             <section>
