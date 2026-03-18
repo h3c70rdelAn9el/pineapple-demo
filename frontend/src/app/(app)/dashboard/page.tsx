@@ -159,24 +159,35 @@ export default function DashboardPage() {
 function AdminDashboard({ data }: { data: DashboardData }) {
     return (
         <div className="space-y-8">
-            <section>
-                <h2 className="text-lg font-semibold text-gray-700 mb-4">
-                    Overview
-                </h2>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <StatCard
-                        label="Total Clients"
-                        value={data.totalClientCount ?? 0}
-                        color="indigo"
-                    />
-                    <StatCard
-                        label="Unread Messages"
-                        value={data.unreadMessagesCount ?? 0}
-                        color="yellow"
-                    />
-                </div>
-                <div className="mt-4 bg-white rounded-lg border border-gray-200 p-5 shadow-sm">
-                    <p className="text-sm font-medium text-gray-500 mb-1">
+            {/* Stat cards row */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <StatCard
+                    label="Total Clients"
+                    value={data.totalClientCount ?? 0}
+                    color="indigo"
+                />
+                <StatCard
+                    label="Total Therapists"
+                    value={data.therapists?.total ?? 0}
+                    color="green"
+                />
+                <StatCard
+                    label="Unread Messages"
+                    value={data.unreadMessagesCount ?? 0}
+                    color="yellow"
+                />
+                <StatCard
+                    label="No-Show Rate"
+                    value={`${data.totalSessionCost ? Math.round(((data.totalClientContribution ?? 0) / data.totalSessionCost) * 100) : 0}%`}
+                    sub="Contribution ratio"
+                    color="red"
+                />
+            </div>
+
+            {/* Charts grid - side by side on desktop */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div className="bg-white rounded-lg border border-gray-200 p-5 shadow-sm">
+                    <p className="text-sm font-medium text-gray-500 mb-3">
                         Client Distribution
                     </p>
                     <DonutChart
@@ -192,21 +203,8 @@ function AdminDashboard({ data }: { data: DashboardData }) {
                         ]}
                     />
                 </div>
-            </section>
-
-            <section>
-                <h2 className="text-lg font-semibold text-gray-700 mb-4">
-                    Therapists
-                </h2>
-                <div className="grid grid-cols-1 gap-4">
-                    <StatCard
-                        label="Total Therapists"
-                        value={data.therapists?.total ?? 0}
-                        color="indigo"
-                    />
-                </div>
-                <div className="mt-4 bg-white rounded-lg border border-gray-200 p-5 shadow-sm">
-                    <p className="text-sm font-medium text-gray-500 mb-1">
+                <div className="bg-white rounded-lg border border-gray-200 p-5 shadow-sm">
+                    <p className="text-sm font-medium text-gray-500 mb-3">
                         Profile Completeness
                     </p>
                     <DonutChart
@@ -222,14 +220,8 @@ function AdminDashboard({ data }: { data: DashboardData }) {
                         ]}
                     />
                 </div>
-            </section>
-
-            <section>
-                <h2 className="text-lg font-semibold text-gray-700 mb-4">
-                    Financials
-                </h2>
-                <div className="mt-4 bg-white rounded-lg border border-gray-200 p-5 shadow-sm">
-                    <p className="text-sm font-medium text-gray-500 mb-1">
+                <div className="bg-white rounded-lg border border-gray-200 p-5 shadow-sm">
+                    <p className="text-sm font-medium text-gray-500 mb-3">
                         Cost vs Contributions
                     </p>
                     <FinancialsChart
@@ -237,7 +229,7 @@ function AdminDashboard({ data }: { data: DashboardData }) {
                         clientContribution={data.totalClientContribution ?? 0}
                     />
                 </div>
-            </section>
+            </div>
 
             <section>
                 <h2 className="text-lg font-semibold text-gray-700 mb-4">
@@ -293,25 +285,31 @@ function TherapistDashboard({ data }: { data: DashboardData }) {
 
     return (
         <div className="space-y-8">
-            <section>
-                <h2 className="text-lg font-semibold text-gray-700 mb-4">
-                    Your Overview
-                </h2>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <StatCard
-                        label="Your Clients"
-                        value={data.clients?.total ?? 0}
-                        color="indigo"
-                    />
-                    <StatCard
-                        label="Total Sessions"
-                        value={totalSessions}
-                        color="green"
-                    />
-                </div>
+            {/* Stat cards row */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <StatCard
+                    label="Your Clients"
+                    value={data.clients?.total ?? 0}
+                    color="indigo"
+                />
+                <StatCard
+                    label="Total Sessions"
+                    value={totalSessions}
+                    color="green"
+                />
+                <StatCard label="No-Shows" value={noShowSessions} color="red" />
+                <StatCard
+                    label="Unread Messages"
+                    value={data.unreadMessagesCount ?? 0}
+                    color="yellow"
+                />
+            </div>
+
+            {/* Chart + client list side by side on desktop */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {totalSessions > 0 && (
-                    <div className="mt-4 bg-white rounded-lg border border-gray-200 p-5 shadow-sm">
-                        <p className="text-sm font-medium text-gray-500 mb-1">
+                    <div className="bg-white rounded-lg border border-gray-200 p-5 shadow-sm">
+                        <p className="text-sm font-medium text-gray-500 mb-3">
                             Session Attendance
                         </p>
                         <DonutChart
@@ -341,50 +339,50 @@ function TherapistDashboard({ data }: { data: DashboardData }) {
                         />
                     </div>
                 )}
-            </section>
 
-            <section>
-                <h2 className="text-lg font-semibold text-gray-700 mb-4">
-                    Your Clients
-                </h2>
-                <div className="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden">
-                    {(data.clients?.data?.length ?? 0) === 0 ? (
-                        <p className="p-4 text-sm text-gray-500">
-                            No clients assigned yet.
-                        </p>
-                    ) : (
-                        <ul className="divide-y divide-gray-100">
-                            {data.clients?.data?.map((client) => (
-                                <li
-                                    key={client.id}
-                                    className="px-4 py-3 flex items-center justify-between"
-                                >
-                                    <div>
-                                        <p className="text-sm font-medium text-gray-900">
-                                            {client.preferred_name ??
-                                                client.legal_name}
-                                        </p>
-                                        <p className="text-xs text-gray-500">
-                                            {client.client_code}
-                                        </p>
-                                    </div>
-                                    <Badge
-                                        variant={
-                                            client.status === 0
-                                                ? "green"
-                                                : "red"
-                                        }
+                <div>
+                    <h2 className="text-lg font-semibold text-gray-700 mb-4">
+                        Your Clients
+                    </h2>
+                    <div className="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden">
+                        {(data.clients?.data?.length ?? 0) === 0 ? (
+                            <p className="p-4 text-sm text-gray-500">
+                                No clients assigned yet.
+                            </p>
+                        ) : (
+                            <ul className="divide-y divide-gray-100">
+                                {data.clients?.data?.map((client) => (
+                                    <li
+                                        key={client.id}
+                                        className="px-4 py-3 flex items-center justify-between"
                                     >
-                                        {client.status === 0
-                                            ? "Active"
-                                            : "Inactive"}
-                                    </Badge>
-                                </li>
-                            ))}
-                        </ul>
-                    )}
+                                        <div>
+                                            <p className="text-sm font-medium text-gray-900">
+                                                {client.preferred_name ??
+                                                    client.legal_name}
+                                            </p>
+                                            <p className="text-xs text-gray-500">
+                                                {client.client_code}
+                                            </p>
+                                        </div>
+                                        <Badge
+                                            variant={
+                                                client.status === 0
+                                                    ? "green"
+                                                    : "red"
+                                            }
+                                        >
+                                            {client.status === 0
+                                                ? "Active"
+                                                : "Inactive"}
+                                        </Badge>
+                                    </li>
+                                ))}
+                            </ul>
+                        )}
+                    </div>
                 </div>
-            </section>
+            </div>
         </div>
     );
 }
