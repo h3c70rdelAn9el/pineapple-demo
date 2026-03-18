@@ -65,7 +65,10 @@ function DonutChart({ data }: { data: { name: string; value: number }[] }) {
                     dataKey="value"
                 >
                     {data.map((_, i) => (
-                        <Cell key={i} fill={CHART_COLORS[i % CHART_COLORS.length]} />
+                        <Cell
+                            key={i}
+                            fill={CHART_COLORS[i % CHART_COLORS.length]}
+                        />
                     ))}
                 </Pie>
                 <Tooltip formatter={(v: number) => v.toLocaleString()} />
@@ -88,7 +91,10 @@ function FinancialsChart({
     ];
     return (
         <ResponsiveContainer width="100%" height={200}>
-            <BarChart data={data} margin={{ top: 5, right: 10, left: 30, bottom: 5 }}>
+            <BarChart
+                data={data}
+                margin={{ top: 5, right: 10, left: 30, bottom: 5 }}
+            >
                 <XAxis dataKey="name" tick={{ fontSize: 12 }} />
                 <YAxis
                     tickFormatter={(v) => `$${(v / 1000).toFixed(0)}k`}
@@ -157,21 +163,11 @@ function AdminDashboard({ data }: { data: DashboardData }) {
                 <h2 className="text-lg font-semibold text-gray-700 mb-4">
                     Overview
                 </h2>
-                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <StatCard
                         label="Total Clients"
                         value={data.totalClientCount ?? 0}
                         color="indigo"
-                    />
-                    <StatCard
-                        label="Active Clients"
-                        value={data.activeClients?.length ?? 0}
-                        color="green"
-                    />
-                    <StatCard
-                        label="Inactive Clients"
-                        value={data.inactiveClients?.length ?? 0}
-                        color="red"
                     />
                     <StatCard
                         label="Unread Messages"
@@ -180,11 +176,19 @@ function AdminDashboard({ data }: { data: DashboardData }) {
                     />
                 </div>
                 <div className="mt-4 bg-white rounded-lg border border-gray-200 p-5 shadow-sm">
-                    <p className="text-sm font-medium text-gray-500 mb-1">Client Distribution</p>
+                    <p className="text-sm font-medium text-gray-500 mb-1">
+                        Client Distribution
+                    </p>
                     <DonutChart
                         data={[
-                            { name: "Active", value: data.activeClients?.length ?? 0 },
-                            { name: "Inactive", value: data.inactiveClients?.length ?? 0 },
+                            {
+                                name: "Active",
+                                value: data.activeClients?.length ?? 0,
+                            },
+                            {
+                                name: "Inactive",
+                                value: data.inactiveClients?.length ?? 0,
+                            },
                         ]}
                     />
                 </div>
@@ -194,29 +198,27 @@ function AdminDashboard({ data }: { data: DashboardData }) {
                 <h2 className="text-lg font-semibold text-gray-700 mb-4">
                     Therapists
                 </h2>
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 gap-4">
                     <StatCard
                         label="Total Therapists"
                         value={data.therapists?.total ?? 0}
                         color="indigo"
                     />
-                    <StatCard
-                        label="Complete Profiles"
-                        value={data.completeTherapistsCount ?? 0}
-                        color="green"
-                    />
-                    <StatCard
-                        label="Incomplete Profiles"
-                        value={data.incompleteTherapistsCount ?? 0}
-                        color="red"
-                    />
                 </div>
                 <div className="mt-4 bg-white rounded-lg border border-gray-200 p-5 shadow-sm">
-                    <p className="text-sm font-medium text-gray-500 mb-1">Profile Completeness</p>
+                    <p className="text-sm font-medium text-gray-500 mb-1">
+                        Profile Completeness
+                    </p>
                     <DonutChart
                         data={[
-                            { name: "Complete", value: data.completeTherapistsCount ?? 0 },
-                            { name: "Incomplete", value: data.incompleteTherapistsCount ?? 0 },
+                            {
+                                name: "Complete",
+                                value: data.completeTherapistsCount ?? 0,
+                            },
+                            {
+                                name: "Incomplete",
+                                value: data.incompleteTherapistsCount ?? 0,
+                            },
                         ]}
                     />
                 </div>
@@ -226,20 +228,10 @@ function AdminDashboard({ data }: { data: DashboardData }) {
                 <h2 className="text-lg font-semibold text-gray-700 mb-4">
                     Financials
                 </h2>
-                <div className="grid grid-cols-2 sm:grid-cols-2 gap-4">
-                    <StatCard
-                        label="Total Session Cost"
-                        value={`$${(data.totalSessionCost ?? 0).toLocaleString()}`}
-                        color="green"
-                    />
-                    <StatCard
-                        label="Total Client Contributions"
-                        value={`$${(data.totalClientContribution ?? 0).toLocaleString()}`}
-                        color="indigo"
-                    />
-                </div>
                 <div className="mt-4 bg-white rounded-lg border border-gray-200 p-5 shadow-sm">
-                    <p className="text-sm font-medium text-gray-500 mb-1">Cost vs Contributions</p>
+                    <p className="text-sm font-medium text-gray-500 mb-1">
+                        Cost vs Contributions
+                    </p>
                     <FinancialsChart
                         sessionCost={data.totalSessionCost ?? 0}
                         clientContribution={data.totalClientContribution ?? 0}
@@ -305,7 +297,7 @@ function TherapistDashboard({ data }: { data: DashboardData }) {
                 <h2 className="text-lg font-semibold text-gray-700 mb-4">
                     Your Overview
                 </h2>
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <StatCard
                         label="Your Clients"
                         value={data.clients?.total ?? 0}
@@ -316,21 +308,36 @@ function TherapistDashboard({ data }: { data: DashboardData }) {
                         value={totalSessions}
                         color="green"
                     />
-                    <StatCard
-                        label="No-Show Sessions"
-                        value={noShowSessions}
-                        color="red"
-                    />
                 </div>
                 {totalSessions > 0 && (
                     <div className="mt-4 bg-white rounded-lg border border-gray-200 p-5 shadow-sm">
-                        <p className="text-sm font-medium text-gray-500 mb-1">Session Attendance</p>
+                        <p className="text-sm font-medium text-gray-500 mb-1">
+                            Session Attendance
+                        </p>
                         <DonutChart
                             data={[
-                                { name: "Attended", value: data.therapySessions?.filter(s => s.attendance === "attended").length ?? 0 },
-                                { name: "No-Show", value: data.therapySessions?.filter(s => s.attendance === "no-show").length ?? 0 },
-                                { name: "Missed", value: data.therapySessions?.filter(s => s.attendance === "missed").length ?? 0 },
-                            ].filter(d => d.value > 0)}
+                                {
+                                    name: "Attended",
+                                    value:
+                                        data.therapySessions?.filter(
+                                            (s) => s.attendance === "attended",
+                                        ).length ?? 0,
+                                },
+                                {
+                                    name: "No-Show",
+                                    value:
+                                        data.therapySessions?.filter(
+                                            (s) => s.attendance === "no-show",
+                                        ).length ?? 0,
+                                },
+                                {
+                                    name: "Missed",
+                                    value:
+                                        data.therapySessions?.filter(
+                                            (s) => s.attendance === "missed",
+                                        ).length ?? 0,
+                                },
+                            ].filter((d) => d.value > 0)}
                         />
                     </div>
                 )}

@@ -85,7 +85,7 @@ export default function ClientsPage() {
 
             {/* Stats row */}
             {data && (
-                <div className="grid grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     <div className="bg-white rounded-lg border border-gray-200 p-4 text-center shadow-sm">
                         <p className="text-2xl font-bold text-indigo-600">
                             {data.clients?.total ?? 0}
@@ -139,7 +139,7 @@ export default function ClientsPage() {
             )}
 
             {!isLoading && !isError && (
-                <div className="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden">
+                <div className="bg-white rounded-lg border border-gray-200 shadow-sm overflow-x-auto">
                     <table className="min-w-full divide-y divide-gray-200">
                         <thead className="bg-gray-50">
                             <tr>
