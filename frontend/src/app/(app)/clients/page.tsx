@@ -10,10 +10,12 @@ import Badge from "@/components/ui/Badge";
 import Button from "@/components/ui/Button";
 import Modal from "@/components/ui/Modal";
 import StatCard from "@/components/ui/StatCard";
+import { useAuth } from "@/providers/AuthProvider";
 
 type Tab = "all" | "inactive" | "waitlist" | "special";
 
 export default function ClientsPage() {
+    const { user } = useAuth();
     const [tab, setTab] = useState<Tab>("all");
     const [sort, setSort] = useState("client_code");
     const [direction, setDirection] = useState<"asc" | "desc">("asc");
@@ -49,15 +51,30 @@ export default function ClientsPage() {
         if (!data) {
             return [];
         }
-        switch (tab) {
-            case "inactive":
-                return data.inactiveClients?.data ?? [];
-            case "waitlist":
-                return data.waitlistClients?.data ?? [];
-            case "special":
-                return data.specialSessionsClients?.data ?? [];
-            default:
-                return data.clients?.data ?? [];
+        // If admin, use allClients for "all" tab and all* for others
+        const isAdmin = user && (user.admin === true || user.admin === 1);
+        if (isAdmin) {
+            switch (tab) {
+                case "inactive":
+                    return data.allInactiveClients?.data ?? [];
+                case "waitlist":
+                    return data.allWaitlistClients?.data ?? [];
+                case "special":
+                    return data.allSpecialSessionClients?.data ?? [];
+                default:
+                    return data.allClients?.data ?? [];
+            }
+        } else {
+            switch (tab) {
+                case "inactive":
+                    return data.inactiveClients?.data ?? [];
+                case "waitlist":
+                    return data.waitlistClients?.data ?? [];
+                case "special":
+                    return data.specialSessionsClients?.data ?? [];
+                default:
+                    return data.clients?.data ?? [];
+            }
         }
     };
 
@@ -75,6 +92,7 @@ export default function ClientsPage() {
             </span>
         ) : null;
 
+    const isAdmin = user && (user.admin === true || user.admin === 1);
     return (
         <div className="space-y-6">
             <div className="flex items-center justify-between">
@@ -89,18 +107,30 @@ export default function ClientsPage() {
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     <StatCard
                         label="Total Clients"
-                        value={data.clients?.total ?? 0}
+                        value={
+                            isAdmin
+                                ? (data.allClients?.total ?? 0)
+                                : (data.clients?.total ?? 0)
+                        }
                         color="indigo"
                         href="/clients"
                     />
                     <StatCard
                         label="Sessions Attended"
-                        value={data.attendedSessions ?? 0}
+                        value={
+                            isAdmin
+                                ? (data.allAttendedSessions ?? 0)
+                                : (data.attendedSessions ?? 0)
+                        }
                         color="green"
                     />
                     <StatCard
                         label="No-Shows"
-                        value={data.missedSessions ?? 0}
+                        value={
+                            isAdmin
+                                ? (data.allMissedSessions ?? 0)
+                                : (data.missedSessions ?? 0)
+                        }
                         color="red"
                     />
                 </div>

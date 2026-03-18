@@ -42,7 +42,12 @@ class DashboardController extends Controller
 
         $inactiveTherapists = User::where('admin', 0)->where('active_status', 1)->paginate(15, ['*'], 'inactiveTherapists');
         $activeTherapists = User::where('admin', 0)->where('active_status', 0)->paginate(15, ['*'], 'activeTherapists');
-        $allTherapists = User::where('admin', 0)->get();
+        $allTherapists = User::where('admin', 0)->get(); // This returns User models
+
+        // Ensure $allTherapists is a collection of User models (defensive, in case of future changes)
+        $allTherapists = $allTherapists->map(function ($t) {
+            return $t instanceof \App\Models\User ? $t : User::find($t->id);
+        });
 
         $categories = $this->getCategories();
 
@@ -52,12 +57,12 @@ class DashboardController extends Controller
 
         $unreadMessagesCount = ChatMessage::where('to_id', $user->id)->where('seen', 0)->count();
 
-        $incompleteTherapists = $allTherapists->filter(fn ($t) => !$t->isComplete()['status'] && !$t->isAdmin());
-        $completeTherapistsCollection = $allTherapists->filter(fn ($t) => $t->isComplete()['status'] && !$t->isAdmin());
+        $incompleteTherapists = $allTherapists->filter(fn($t) => !$t->isComplete()['status'] && !$t->isAdmin());
+        $completeTherapistsCollection = $allTherapists->filter(fn($t) => $t->isComplete()['status'] && !$t->isAdmin());
 
         $incompleteTherapistsCount = $incompleteTherapists->count();
         $completeTherapistsCount = $completeTherapistsCollection->count();
-        $unverifiedTherapistCount = $allTherapists->filter(fn ($u) => !$u->isVerified()['status'])->count();
+        $unverifiedTherapistCount = $allTherapists->filter(fn($u) => !$u->isVerified()['status'])->count();
 
         $totalSessionCost = TherapySession::sum('session_cost');
         $totalClientContribution = Client::sum('client_contribution');

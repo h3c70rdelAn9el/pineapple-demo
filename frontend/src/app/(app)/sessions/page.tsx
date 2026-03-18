@@ -10,10 +10,12 @@ import Badge from "@/components/ui/Badge";
 import Button from "@/components/ui/Button";
 import Modal from "@/components/ui/Modal";
 import StatCard from "@/components/ui/StatCard";
+import { useAuth } from "@/providers/AuthProvider";
 
 type Tab = "all" | "missed" | "special";
 
 export default function SessionsPage() {
+    const { user } = useAuth();
     const [tab, setTab] = useState<Tab>("all");
     const [deletingId, setDeletingId] = useState<number | null>(null);
     const queryClient = useQueryClient();
@@ -22,6 +24,9 @@ export default function SessionsPage() {
         sessions: PaginatedResponse<TherapySession>;
         missedSessions: PaginatedResponse<TherapySession>;
         specialSessions: PaginatedResponse<TherapySession>;
+        allTherapySessions?: PaginatedResponse<TherapySession>;
+        allMissedSessions?: PaginatedResponse<TherapySession>;
+        allSpecialSessions?: PaginatedResponse<TherapySession>;
     }>({
         queryKey: ["sessions"],
         queryFn: () => api.get("/api/sessions").then((r) => r.data),
@@ -39,13 +44,25 @@ export default function SessionsPage() {
         if (!data) {
             return [];
         }
-        switch (tab) {
-            case "missed":
-                return data.missedSessions?.data ?? [];
-            case "special":
-                return data.specialSessions?.data ?? [];
-            default:
-                return data.sessions?.data ?? [];
+        const isAdmin = user && (user.admin === true || user.admin === 1);
+        if (isAdmin) {
+            switch (tab) {
+                case "missed":
+                    return data.allMissedSessions?.data ?? [];
+                case "special":
+                    return data.allSpecialSessions?.data ?? [];
+                default:
+                    return data.allTherapySessions?.data ?? [];
+            }
+        } else {
+            switch (tab) {
+                case "missed":
+                    return data.missedSessions?.data ?? [];
+                case "special":
+                    return data.specialSessions?.data ?? [];
+                default:
+                    return data.sessions?.data ?? [];
+            }
         }
     };
 

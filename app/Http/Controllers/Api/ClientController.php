@@ -60,6 +60,14 @@ class ClientController extends Controller
         $missedSessions = TherapySession::whereIn('client_id', $clients->pluck('id'))
             ->where('attendance', 'no-show')->count();
 
+        // For admins, calculate global attended/missed session counts
+        $allAttendedSessions = null;
+        $allMissedSessions = null;
+        if ($user->admin) {
+            $allAttendedSessions = TherapySession::where('attendance', 'attended')->count();
+            $allMissedSessions = TherapySession::where('attendance', 'no-show')->count();
+        }
+
         $categories = Client::$categories;
         $clientsByCategory = [];
         foreach ($categories as $category) {
@@ -81,6 +89,8 @@ class ClientController extends Controller
             'therapySessions' => $therapySessions,
             'attendedSessions' => $attendedSessions,
             'missedSessions' => $missedSessions,
+            'allAttendedSessions' => $allAttendedSessions,
+            'allMissedSessions' => $allMissedSessions,
             'clientsByCategory' => $clientsByCategory,
             'sortBy' => $sortBy,
             'sortDirection' => $sortDirection,
@@ -287,7 +297,7 @@ class ClientController extends Controller
             return $selected ?? '';
         }
         if (in_array('Other', $selected) && $other) {
-            return implode(', ', array_map(fn ($v) => $v == 'Other' ? $other : $v, $selected));
+            return implode(', ', array_map(fn($v) => $v == 'Other' ? $other : $v, $selected));
         }
 
         return implode(', ', $selected);
