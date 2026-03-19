@@ -97,6 +97,7 @@ if (USE_MOCKS) {
         return {};
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     api.defaults.adapter = (config: any) => {
         const url = typeof config.url === "string" ? config.url : "";
         const method = (config.method ?? "get").toLowerCase();
