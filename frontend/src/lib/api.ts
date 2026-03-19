@@ -27,141 +27,89 @@ const api = axios.create({
 
 // ─── Mock Interceptor ───────────────────────────────────────────────
 if (USE_MOCKS) {
-    api.interceptors.request.use((config) => {
-        const url = config.url ?? "";
-        const method = (config.method ?? "get").toLowerCase();
-
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        let mockResponse: any = null;
-
-        // Skip CSRF cookie requests
-        if (url.includes("/sanctum/csrf-cookie")) {
-            mockResponse = {};
-        }
+    // Override the adapter so requests never hit the network.
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    function getMockResponse(url: string, method: string, data?: string): any {
+        // CSRF
+        if (url.includes("/sanctum/csrf-cookie")) return {};
         // Auth
-        else if (url.includes("/api/user")) {
-            mockResponse = therapists[0];
-        }
+        if (url.includes("/api/user")) return therapists[0];
         // Dashboard
-        else if (url.includes("/api/dashboard")) {
-            mockResponse = getDashboardData();
-        }
+        if (url.includes("/api/dashboard")) return getDashboardData();
         // Admin stats
-        else if (url.includes("/api/admin/stats")) {
-            mockResponse = getAdminStats();
-        }
-        // Admin email (POST — just return success)
-        else if (
-            url.includes("/api/admin/email-therapists") &&
-            method === "post"
-        ) {
-            mockResponse = { message: "Emails sent successfully." };
-        }
+        if (url.includes("/api/admin/stats")) return getAdminStats();
+        // Admin email
+        if (url.includes("/api/admin/email-therapists") && method === "post")
+            return { message: "Emails sent successfully." };
         // Sessions CRUD
-        else if (/\/api\/sessions\/(\d+)/.test(url)) {
+        if (/\/api\/sessions\/(\d+)/.test(url)) {
             const id = Number(url.match(/\/api\/sessions\/(\d+)/)?.[1]);
-            if (method === "delete") {
-                mockResponse = { message: "Session deleted." };
-            } else if (method === "patch" || method === "put") {
-                mockResponse = getSession(id);
-            } else {
-                mockResponse = getSession(id);
-            }
-        } else if (url.includes("/api/sessions") && method === "post") {
-            mockResponse = {
+            if (method === "delete") return { message: "Session deleted." };
+            return getSession(id);
+        }
+        if (url.includes("/api/sessions") && method === "post")
+            return {
                 session: {
                     id: 99,
-                    ...JSON.parse(config.data ?? "{}"),
+                    ...JSON.parse(data ?? "{}"),
                     created_at: new Date().toISOString(),
                     updated_at: new Date().toISOString(),
                 },
             };
-        } else if (url.includes("/api/sessions")) {
-            mockResponse = getSessionsData();
-        }
-        // Clients create (GET for form options)
-        else if (url.includes("/api/clients/create")) {
-            mockResponse = getClientsCreateData();
-        }
+        if (url.includes("/api/sessions")) return getSessionsData();
+        // Clients create options
+        if (url.includes("/api/clients/create")) return getClientsCreateData();
         // Clients CRUD
-        else if (/\/api\/clients\/(\d+)/.test(url)) {
+        if (/\/api\/clients\/(\d+)/.test(url)) {
             const id = Number(url.match(/\/api\/clients\/(\d+)/)?.[1]);
-            if (method === "delete") {
-                mockResponse = { message: "Client deleted." };
-            } else if (method === "put") {
-                mockResponse = getClient(id);
-            } else {
-                mockResponse = getClient(id);
-            }
-        } else if (url.includes("/api/clients") && method === "post") {
-            mockResponse = {
+            if (method === "delete") return { message: "Client deleted." };
+            return getClient(id);
+        }
+        if (url.includes("/api/clients") && method === "post")
+            return {
                 client: {
                     id: 99,
-                    ...JSON.parse(config.data ?? "{}"),
+                    ...JSON.parse(data ?? "{}"),
                     created_at: new Date().toISOString(),
                     updated_at: new Date().toISOString(),
                 },
             };
-        } else if (url.includes("/api/clients")) {
-            mockResponse = getClientsData();
-        }
+        if (url.includes("/api/clients")) return getClientsData();
         // Therapists CRUD
-        else if (/\/api\/therapists\/(\d+)\/send-invoice/.test(url)) {
-            mockResponse = { message: "Invoice sent." };
-        } else if (/\/api\/therapists\/(\d+)\/edit/.test(url)) {
+        if (/\/api\/therapists\/(\d+)\/send-invoice/.test(url))
+            return { message: "Invoice sent." };
+        if (/\/api\/therapists\/(\d+)\/edit/.test(url)) {
             const id = Number(url.match(/\/api\/therapists\/(\d+)/)?.[1]);
-            mockResponse = getTherapist(id);
-        } else if (/\/api\/therapists\/(\d+)/.test(url)) {
+            return getTherapist(id);
+        }
+        if (/\/api\/therapists\/(\d+)/.test(url)) {
             const id = Number(url.match(/\/api\/therapists\/(\d+)/)?.[1]);
-            if (method === "delete") {
-                mockResponse = { message: "Therapist deleted." };
-            } else if (method === "put") {
-                mockResponse = getTherapist(id);
-            } else {
-                mockResponse = getTherapist(id);
-            }
-        } else if (url.includes("/api/therapists")) {
-            mockResponse = getTherapistsData();
+            if (method === "delete") return { message: "Therapist deleted." };
+            return getTherapist(id);
         }
-        // Login/register/logout (no-op)
-        else if (url.includes("/api/login") || url.includes("/api/register")) {
-            mockResponse = { user: therapists[0] };
-        } else if (url.includes("/api/logout")) {
-            mockResponse = { message: "Logged out." };
-        }
+        if (url.includes("/api/therapists")) return getTherapistsData();
+        // Login/register/logout
+        if (url.includes("/api/login") || url.includes("/api/register"))
+            return { user: therapists[0] };
+        if (url.includes("/api/logout")) return { message: "Logged out." };
         // Profile
-        else if (url.includes("/api/profile")) {
-            mockResponse = therapists[0];
-        }
+        if (url.includes("/api/profile")) return therapists[0];
+        return {};
+    }
 
-        if (mockResponse !== null) {
-            const error = new axios.Cancel("mock");
-            // Attach mock data to the cancel so we can intercept it
-            (error as any).__mockData = mockResponse;
-            throw error;
-        }
-
-        return config;
-    });
-
-    api.interceptors.response.use(
-        (response) => response,
-        (error) => {
-            if (
-                axios.isCancel(error) &&
-                (error as any).__mockData !== undefined
-            ) {
-                return Promise.resolve({
-                    data: (error as any).__mockData,
-                    status: 200,
-                    statusText: "OK (mock)",
-                    headers: {},
-                    config: {} as any,
-                });
-            }
-            return Promise.reject(error);
-        },
-    );
+    api.defaults.adapter = (config: any) => {
+        const url = typeof config.url === "string" ? config.url : "";
+        const method = (config.method ?? "get").toLowerCase();
+        const body = typeof config.data === "string" ? config.data : undefined;
+        const mockData = getMockResponse(url, method, body);
+        return Promise.resolve({
+            data: mockData,
+            status: 200,
+            statusText: "OK (mock)",
+            headers: {},
+            config,
+        });
+    };
 }
 
 export async function getCsrfCookie(): Promise<void> {
