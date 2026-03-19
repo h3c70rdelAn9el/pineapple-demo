@@ -22,7 +22,8 @@ export default function TherapistShowPage({
 
     const { data, isLoading, isError } = useQuery<{ therapist: User }>({
         queryKey: ["therapist", id],
-        queryFn: () => api.get(TherapistActions.show.url(id)).then((r) => r.data),
+        queryFn: () =>
+            api.get(TherapistActions.show.url(id)).then((r) => r.data),
     });
 
     const invoiceMutation = useMutation({

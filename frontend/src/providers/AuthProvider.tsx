@@ -54,7 +54,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         remember = false,
     ): Promise<void> => {
         await getCsrfCookie();
-        const res = await api.post(AuthActions.login.url(), { email, password, remember });
+        const res = await api.post(AuthActions.login.url(), {
+            email,
+            password,
+            remember,
+        });
         setUser(res.data.user);
     };
 
