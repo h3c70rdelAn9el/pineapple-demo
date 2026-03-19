@@ -150,6 +150,7 @@ function AdminDashboard({ data }: { data: DashboardData }) {
                                 value: data.inactiveClients?.length ?? 0,
                             },
                         ]}
+                        colors={["#22c55e", "#ef4444"]} // green, red
                     />
                 </div>
                 <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-700 p-5 shadow-sm">
@@ -167,6 +168,7 @@ function AdminDashboard({ data }: { data: DashboardData }) {
                                 value: data.incompleteTherapistsCount ?? 0,
                             },
                         ]}
+                        colors={["#22c55e", "#f59e0b"]} // green, orange
                     />
                 </div>
                 <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-700 p-5 shadow-sm">
