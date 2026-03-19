@@ -13,6 +13,15 @@ import Modal from "@/components/ui/Modal";
 import DataTable from "@/components/ui/DataTable";
 import PageTabs from "@/components/ui/PageTabs";
 import DonutChart from "@/components/ui/DonutChart";
+import {
+    ResponsiveContainer,
+    BarChart,
+    Bar,
+    XAxis,
+    YAxis,
+    Tooltip,
+    Cell,
+} from "recharts";
 
 type Tab = "all" | "active" | "inactive";
 
@@ -109,6 +118,7 @@ export default function TherapistsPage() {
                         </p>
                         <DonutChart
                             height={200}
+                            colors={["#22c55e", "#ef4444"]}
                             data={[
                                 {
                                     name: "Active",
@@ -125,25 +135,65 @@ export default function TherapistsPage() {
                         <p className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-3">
                             Profile Health
                         </p>
-                        <DonutChart
-                            height={200}
-                            data={[
+                        {(() => {
+                            const profileData = [
                                 {
                                     name: "Complete",
                                     value: data.completeTherapists?.total ?? 0,
+                                    fill: "#22c55e",
                                 },
                                 {
                                     name: "Incomplete",
                                     value:
                                         data.incompleteTherapists?.total ?? 0,
+                                    fill: "#f59e0b",
                                 },
                                 {
                                     name: "Unverified",
                                     value:
                                         data.unverifiedTherapists?.total ?? 0,
+                                    fill: "#ef4444",
                                 },
-                            ]}
-                        />
+                            ];
+                            return (
+                                <ResponsiveContainer width="100%" height={200}>
+                                    <BarChart
+                                        data={profileData}
+                                        margin={{
+                                            top: 8,
+                                            right: 8,
+                                            left: -20,
+                                            bottom: 0,
+                                        }}
+                                    >
+                                        <XAxis
+                                            dataKey="name"
+                                            tick={{ fontSize: 12 }}
+                                        />
+                                        <YAxis
+                                            allowDecimals={false}
+                                            tick={{ fontSize: 12 }}
+                                        />
+                                        <Tooltip
+                                            formatter={(v) =>
+                                                (v as number).toLocaleString()
+                                            }
+                                        />
+                                        <Bar
+                                            dataKey="value"
+                                            radius={[4, 4, 0, 0]}
+                                        >
+                                            {profileData.map((entry, i) => (
+                                                <Cell
+                                                    key={i}
+                                                    fill={entry.fill}
+                                                />
+                                            ))}
+                                        </Bar>
+                                    </BarChart>
+                                </ResponsiveContainer>
+                            );
+                        })()}
                     </div>
                 </div>
             )}
