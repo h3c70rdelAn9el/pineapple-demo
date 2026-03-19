@@ -32,8 +32,18 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | null>(null);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-    const [user, setUser] = useState<User | null>(null);
-    const [loading, setLoading] = useState(true);
+    // BYPASS: skip auth check for local development
+    const [user, setUser] = useState<User | null>({
+        id: 1,
+        name: "Daffy Duck",
+        email: "daffy@example.com",
+        preferred_name: null,
+        admin: true,
+        active_status: 1,
+        created_at: "",
+        updated_at: "",
+    });
+    const [loading, setLoading] = useState(false);
 
     const refresh = useCallback(async () => {
         try {
@@ -45,7 +55,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }, []);
 
     useEffect(() => {
-        refresh().finally(() => setLoading(false));
+        // BYPASS: skipping auth refresh
+        // refresh().finally(() => setLoading(false));
     }, [refresh]);
 
     const login = async (
