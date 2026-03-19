@@ -68,7 +68,15 @@ export default function SessionShowPage({
         );
     }
 
-    const { session } = data;
+    // Support both { session } and { therapySession } API responses
+    const session = data.session || data.therapySession;
+    if (!session) {
+        return (
+            <div className="rounded-md bg-red-50 p-4 text-red-700 text-sm">
+                Session not found.
+            </div>
+        );
+    }
 
     const attendanceBadge = (attendance: TherapySession["attendance"]) => {
         switch (attendance) {

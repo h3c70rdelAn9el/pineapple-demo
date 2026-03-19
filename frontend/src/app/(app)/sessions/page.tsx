@@ -100,17 +100,29 @@ export default function SessionsPage() {
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     <StatCard
                         label="All Sessions"
-                        value={isAdmin ? data.allTherapySessions?.total ?? 0 : data.sessions?.total ?? 0}
+                        value={
+                            isAdmin
+                                ? (data.allTherapySessions?.total ?? 0)
+                                : (data.sessions?.total ?? 0)
+                        }
                         color="indigo"
                     />
                     <StatCard
                         label="No-Shows"
-                        value={isAdmin ? data.allMissedSessions?.total ?? 0 : data.missedSessions?.total ?? 0}
+                        value={
+                            isAdmin
+                                ? (data.allMissedSessions?.total ?? 0)
+                                : (data.missedSessions?.total ?? 0)
+                        }
                         color="red"
                     />
                     <StatCard
                         label="Special Sessions"
-                        value={isAdmin ? data.allSpecialSessions?.total ?? 0 : data.specialSessions?.total ?? 0}
+                        value={
+                            isAdmin
+                                ? (data.allSpecialSessions?.total ?? 0)
+                                : (data.specialSessions?.total ?? 0)
+                        }
                         color="purple"
                     />
                 </div>
