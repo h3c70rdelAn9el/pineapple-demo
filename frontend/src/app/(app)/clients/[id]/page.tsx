@@ -211,6 +211,9 @@ export default function ClientShowPage({
                                     <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase hidden sm:table-cell">
                                         Notes
                                     </th>
+                                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">
+                                        Actions
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-gray-100">
@@ -250,6 +253,32 @@ export default function ClientShowPage({
                                         </td>
                                         <td className="px-4 py-3 text-sm text-gray-500 dark:text-gray-400 hidden sm:table-cell">
                                             {session.notes ?? "—"}
+                                        </td>
+                                        <td className="px-4 py-3 text-right">
+                                            <div className="flex justify-end gap-2">
+                                                <Link
+                                                    href={`/sessions/${session.id}`}
+                                                    className="text-xs text-indigo-600 hover:text-indigo-900 font-medium"
+                                                >
+                                                    View
+                                                </Link>
+                                                <Link
+                                                    href={`/sessions/${session.id}/edit`}
+                                                    className="text-xs text-blue-600 hover:text-blue-900 font-medium"
+                                                >
+                                                    Edit
+                                                </Link>
+                                                <button
+                                                    onClick={() =>
+                                                        alert(
+                                                            "Delete not yet implemented",
+                                                        )
+                                                    }
+                                                    className="text-xs text-red-500 hover:text-red-700 font-medium"
+                                                >
+                                                    Delete
+                                                </button>
+                                            </div>
                                         </td>
                                     </tr>
                                 ))}
