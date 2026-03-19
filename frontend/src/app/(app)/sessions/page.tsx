@@ -10,6 +10,8 @@ import Badge from "@/components/ui/Badge";
 import Button from "@/components/ui/Button";
 import Modal from "@/components/ui/Modal";
 import StatCard from "@/components/ui/StatCard";
+import DataTable from "@/components/ui/DataTable";
+import PageTabs from "@/components/ui/PageTabs";
 import { useAuth } from "@/providers/AuthProvider";
 
 type Tab = "all" | "missed" | "special";
@@ -89,7 +91,7 @@ export default function SessionsPage() {
     return (
         <div className="space-y-6">
             <div className="flex items-center justify-between">
-                <h1 className="text-2xl font-bold text-gray-900">Sessions</h1>
+                <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Sessions</h1>
                 <Link href="/sessions/create">
                     <Button size="sm">+ New Session</Button>
                 </Link>
@@ -129,23 +131,7 @@ export default function SessionsPage() {
             )}
 
             {/* Tabs */}
-            <div className="border-b border-gray-200">
-                <nav className="flex space-x-4 -mb-px">
-                    {tabs.map((t) => (
-                        <button
-                            key={t.key}
-                            onClick={() => setTab(t.key)}
-                            className={`py-2 px-1 border-b-2 text-sm font-medium transition-colors ${
-                                tab === t.key
-                                    ? "border-indigo-500 text-indigo-600"
-                                    : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
-                            }`}
-                        >
-                            {t.label}
-                        </button>
-                    ))}
-                </nav>
-            </div>
+            <PageTabs tabs={tabs} activeTab={tab} onChange={setTab} />
 
             {isLoading && (
                 <div className="flex justify-center py-16">
@@ -160,63 +146,43 @@ export default function SessionsPage() {
             )}
 
             {!isLoading && !isError && (
-                <div className="bg-white rounded-lg border border-gray-200 shadow-sm overflow-x-auto">
-                    <table className="min-w-full divide-y divide-gray-200">
-                        <thead className="bg-gray-50">
-                            <tr>
-                                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Client
-                                </th>
-                                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hidden sm:table-cell">
-                                    Date
-                                </th>
-                                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Attendance
-                                </th>
-                                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hidden sm:table-cell">
-                                    Cost
-                                </th>
-                                <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Actions
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody className="divide-y divide-gray-100">
-                            {tabSessions().length === 0 && (
-                                <tr>
-                                    <td
-                                        colSpan={5}
-                                        className="px-4 py-8 text-center text-sm text-gray-400"
-                                    >
-                                        No sessions found.
-                                    </td>
-                                </tr>
-                            )}
-                            {tabSessions().map((session) => (
+                <DataTable
+                    colSpan={5}
+                    isEmpty={tabSessions().length === 0}
+                    emptyMessage="No sessions found."
+                    columns={[
+                        { label: "Client" },
+                        { label: "Date", className: "hidden sm:table-cell" },
+                        { label: "Attendance" },
+                        { label: "Cost", className: "hidden sm:table-cell" },
+                        { label: "Actions", className: "text-right" },
+                    ]}
+                >
+                    {tabSessions().map((session) => (
                                 <tr
                                     key={session.id}
-                                    className="hover:bg-gray-50 transition-colors"
+                                    className="hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
                                 >
                                     <td className="px-4 py-3">
                                         {session.client ? (
                                             <div>
-                                                <p className="text-sm font-medium text-gray-900">
+                                                <p className="text-sm font-medium text-gray-900 dark:text-white">
                                                     {session.client
                                                         .preferred_name ??
                                                         session.client
                                                             .legal_name}
                                                 </p>
-                                                <p className="text-xs text-gray-400">
+                                                <p className="text-xs text-gray-400 dark:text-gray-500">
                                                     {session.client.client_code}
                                                 </p>
                                             </div>
                                         ) : (
-                                            <span className="text-sm text-gray-400">
+                                            <span className="text-sm text-gray-400 dark:text-gray-500">
                                                 Client #{session.client_id}
                                             </span>
                                         )}
                                     </td>
-                                    <td className="px-4 py-3 text-sm text-gray-500 hidden sm:table-cell">
+                                    <td className="px-4 py-3 text-sm text-gray-500 dark:text-gray-400 hidden sm:table-cell">
                                         {session.session_date
                                             ? new Date(
                                                   session.session_date,
@@ -237,7 +203,7 @@ export default function SessionsPage() {
                                             )}
                                         </div>
                                     </td>
-                                    <td className="px-4 py-3 text-sm text-gray-500 hidden sm:table-cell">
+                                    <td className="px-4 py-3 text-sm text-gray-500 dark:text-gray-400 hidden sm:table-cell">
                                         {session.session_cost != null
                                             ? `$${session.session_cost}`
                                             : "—"}
@@ -262,9 +228,7 @@ export default function SessionsPage() {
                                     </td>
                                 </tr>
                             ))}
-                        </tbody>
-                    </table>
-                </div>
+                </DataTable>
             )}
 
             <Modal
@@ -291,7 +255,7 @@ export default function SessionsPage() {
                     </>
                 }
             >
-                <p className="text-sm text-gray-600">
+                <p className="text-sm text-gray-600 dark:text-gray-400">
                     Are you sure you want to delete this session? This action
                     cannot be undone.
                 </p>

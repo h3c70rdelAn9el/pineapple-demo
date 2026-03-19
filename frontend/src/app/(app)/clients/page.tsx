@@ -10,6 +10,8 @@ import Badge from "@/components/ui/Badge";
 import Button from "@/components/ui/Button";
 import Modal from "@/components/ui/Modal";
 import StatCard from "@/components/ui/StatCard";
+import DataTable from "@/components/ui/DataTable";
+import PageTabs from "@/components/ui/PageTabs";
 import { useAuth } from "@/providers/AuthProvider";
 
 type Tab = "all" | "inactive" | "waitlist" | "special";
@@ -96,7 +98,7 @@ export default function ClientsPage() {
     return (
         <div className="space-y-6">
             <div className="flex items-center justify-between">
-                <h1 className="text-2xl font-bold text-gray-900">Clients</h1>
+                <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Clients</h1>
                 <Link href="/clients/create">
                     <Button size="sm">+ New Client</Button>
                 </Link>
@@ -137,23 +139,7 @@ export default function ClientsPage() {
             )}
 
             {/* Tabs */}
-            <div className="border-b border-gray-200">
-                <nav className="flex space-x-4 -mb-px">
-                    {tabs.map((t) => (
-                        <button
-                            key={t.key}
-                            onClick={() => setTab(t.key)}
-                            className={`py-2 px-1 border-b-2 text-sm font-medium transition-colors ${
-                                tab === t.key
-                                    ? "border-indigo-500 text-indigo-600"
-                                    : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
-                            }`}
-                        >
-                            {t.label}
-                        </button>
-                    ))}
-                </nav>
-            </div>
+            <PageTabs tabs={tabs} activeTab={tab} onChange={setTab} />
 
             {isLoading && (
                 <div className="flex justify-center py-16">
@@ -168,67 +154,38 @@ export default function ClientsPage() {
             )}
 
             {!isLoading && !isError && (
-                <div className="bg-white rounded-lg border border-gray-200 shadow-sm overflow-x-auto">
-                    <table className="min-w-full divide-y divide-gray-200">
-                        <thead className="bg-gray-50">
-                            <tr>
-                                <th
-                                    className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:text-gray-700"
-                                    onClick={() => handleSort("client_code")}
-                                >
-                                    Code <SortIcon field="client_code" />
-                                </th>
-                                <th
-                                    className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:text-gray-700"
-                                    onClick={() => handleSort("legal_name")}
-                                >
-                                    Name <SortIcon field="legal_name" />
-                                </th>
-                                <th
-                                    className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:text-gray-700 hidden sm:table-cell"
-                                    onClick={() => handleSort("email")}
-                                >
-                                    Email <SortIcon field="email" />
-                                </th>
-                                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Status
-                                </th>
-                                <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Actions
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody className="divide-y divide-gray-100">
-                            {tabClients().length === 0 && (
-                                <tr>
-                                    <td
-                                        colSpan={5}
-                                        className="px-4 py-8 text-center text-sm text-gray-400"
-                                    >
-                                        No clients found.
-                                    </td>
-                                </tr>
-                            )}
-                            {tabClients().map((client) => (
+                <DataTable
+                    colSpan={5}
+                    isEmpty={tabClients().length === 0}
+                    emptyMessage="No clients found."
+                    columns={[
+                        { label: <><span>Code</span><SortIcon field="client_code" /></>, onClick: () => handleSort("client_code") },
+                        { label: <><span>Name</span><SortIcon field="legal_name" /></>, onClick: () => handleSort("legal_name") },
+                        { label: <><span>Email</span><SortIcon field="email" /></>, onClick: () => handleSort("email"), className: "hidden sm:table-cell" },
+                        { label: "Status" },
+                        { label: "Actions", className: "text-right" },
+                    ]}
+                >
+                    {tabClients().map((client) => (
                                 <tr
                                     key={client.id}
-                                    className="hover:bg-gray-50 transition-colors"
+                                    className="hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
                                 >
-                                    <td className="px-4 py-3 text-sm font-mono text-gray-600">
+                                    <td className="px-4 py-3 text-sm font-mono text-gray-600 dark:text-gray-400">
                                         {client.client_code}
                                     </td>
                                     <td className="px-4 py-3">
-                                        <p className="text-sm font-medium text-gray-900">
+                                        <p className="text-sm font-medium text-gray-900 dark:text-white">
                                             {client.preferred_name ??
                                                 client.legal_name}
                                         </p>
                                         {client.preferred_name && (
-                                            <p className="text-xs text-gray-400">
+                                            <p className="text-xs text-gray-400 dark:text-gray-500">
                                                 {client.legal_name}
                                             </p>
                                         )}
                                     </td>
-                                    <td className="px-4 py-3 text-sm text-gray-500 hidden sm:table-cell">
+                                    <td className="px-4 py-3 text-sm text-gray-500 dark:text-gray-400 hidden sm:table-cell">
                                         {client.email ?? "—"}
                                     </td>
                                     <td className="px-4 py-3">
@@ -282,9 +239,7 @@ export default function ClientsPage() {
                                     </td>
                                 </tr>
                             ))}
-                        </tbody>
-                    </table>
-                </div>
+                </DataTable>
             )}
 
             {/* Delete confirmation modal */}

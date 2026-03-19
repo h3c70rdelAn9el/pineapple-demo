@@ -164,7 +164,7 @@ export default function Sidebar() {
                     <span className="text-2xl">🍍</span>
                     {!collapsed && (
                         <span className="text-lg font-bold text-gray-900 dark:text-white whitespace-nowrap">
-                            Therapy Practice
+                            Pineapple
                         </span>
                     )}
                 </Link>
@@ -232,52 +232,61 @@ export default function Sidebar() {
                 })}
             </nav>
 
-            {/* Dark mode toggle */}
+            {/* Dark mode slider toggle */}
             <div className="px-3 pb-2">
-                <button
-                    onClick={toggleTheme}
+                <label
+                    className={`flex items-center gap-3 w-full cursor-pointer select-none ${collapsed ? "justify-center" : ""}`}
                     title={
                         isDark ? "Switch to light mode" : "Switch to dark mode"
                     }
-                    className={`flex items-center gap-3 w-full px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-150 text-gray-600 hover:bg-gray-50 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-gray-800 dark:hover:text-white ${
-                        collapsed ? "justify-center" : ""
-                    }`}
                 >
-                    <span className="text-gray-400 dark:text-gray-500">
-                        {isDark ? (
-                            <svg
-                                className="h-5 w-5"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                                strokeWidth={1.5}
-                            >
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z"
-                                />
-                            </svg>
-                        ) : (
-                            <svg
-                                className="h-5 w-5"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                                strokeWidth={1.5}
-                            >
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z"
-                                />
-                            </svg>
-                        )}
+                    <span className="relative inline-block w-10 h-6 align-middle">
+                        <input
+                            type="checkbox"
+                            checked={isDark}
+                            onChange={toggleTheme}
+                            className="sr-only peer"
+                            aria-label="Toggle dark mode"
+                        />
+                        <span className="block w-10 h-6 rounded-full bg-gray-200 dark:bg-gray-700 peer-focus:ring-2 peer-focus:ring-indigo-400 transition-colors duration-200"></span>
+                        <span className="absolute left-0 top-0 w-6 h-6 bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-600 rounded-full shadow transform transition-transform duration-200 peer-checked:translate-x-4 flex items-center justify-center">
+                            {isDark ? (
+                                <svg
+                                    className="h-4 w-4 text-yellow-300"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                    strokeWidth={1.5}
+                                >
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z"
+                                    />
+                                </svg>
+                            ) : (
+                                <svg
+                                    className="h-4 w-4 text-yellow-400"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                    strokeWidth={1.5}
+                                >
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z"
+                                    />
+                                </svg>
+                            )}
+                        </span>
                     </span>
                     {!collapsed && (
-                        <span>{isDark ? "Light mode" : "Dark mode"}</span>
+                        <span className="ml-2 text-sm text-gray-600 dark:text-gray-300 font-medium">
+                            {isDark ? "" : ""}
+                        </span>
                     )}
-                </button>
+                </label>
             </div>
 
             {/* User section */}

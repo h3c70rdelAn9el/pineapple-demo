@@ -114,10 +114,10 @@ export default function DashboardPage() {
     return (
         <div className="space-y-8">
             <div>
-                <h1 className="text-2xl font-bold text-gray-900">
+                <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
                     Welcome back, {user?.preferred_name ?? user?.name} 👋
                 </h1>
-                <p className="text-sm text-gray-500 mt-1">
+                <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
                     {isAdmin ? "Admin overview" : "Your practice overview"}
                 </p>
             </div>
@@ -164,8 +164,8 @@ function AdminDashboard({ data }: { data: DashboardData }) {
 
             {/* Charts grid - side by side on desktop */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <div className="bg-white rounded-lg border border-gray-200 p-5 shadow-sm">
-                    <p className="text-sm font-medium text-gray-500 mb-3">
+                <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-700 p-5 shadow-sm">
+                    <p className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-3">
                         Client Distribution
                     </p>
                     <DonutChart
@@ -181,8 +181,8 @@ function AdminDashboard({ data }: { data: DashboardData }) {
                         ]}
                     />
                 </div>
-                <div className="bg-white rounded-lg border border-gray-200 p-5 shadow-sm">
-                    <p className="text-sm font-medium text-gray-500 mb-3">
+                <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-700 p-5 shadow-sm">
+                    <p className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-3">
                         Profile Completeness
                     </p>
                     <DonutChart
@@ -198,8 +198,8 @@ function AdminDashboard({ data }: { data: DashboardData }) {
                         ]}
                     />
                 </div>
-                <div className="bg-white rounded-lg border border-gray-200 p-5 shadow-sm">
-                    <p className="text-sm font-medium text-gray-500 mb-3">
+                <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-700 p-5 shadow-sm">
+                    <p className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-3">
                         Cost vs Contributions
                     </p>
                     <FinancialsChart
@@ -210,28 +210,28 @@ function AdminDashboard({ data }: { data: DashboardData }) {
             </div>
 
             <section>
-                <h2 className="text-lg font-semibold text-gray-700 mb-4">
+                <h2 className="text-lg font-semibold text-gray-700 dark:text-gray-200 mb-4">
                     Recent Active Clients
                 </h2>
-                <div className="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden">
+                <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm overflow-hidden">
                     {(data.recentActiveClients?.length ?? 0) === 0 ? (
-                        <p className="p-4 text-sm text-gray-500">
+                        <p className="p-4 text-sm text-gray-500 dark:text-gray-400">
                             No recent clients.
                         </p>
                     ) : (
-                        <ul className="divide-y divide-gray-100">
+                        <ul className="divide-y divide-gray-100 dark:divide-gray-800">
                             {data.recentActiveClients?.map((client) => (
                                 <li key={client.id}>
                                     <Link
                                         href={`/clients/${client.id}`}
-                                        className="px-4 py-3 flex items-center justify-between hover:bg-gray-50 transition-colors"
+                                        className="px-4 py-3 flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
                                     >
                                         <div>
-                                            <p className="text-sm font-medium text-gray-900">
+                                            <p className="text-sm font-medium text-gray-900 dark:text-white">
                                                 {client.preferred_name ??
                                                     client.legal_name}
                                             </p>
-                                            <p className="text-xs text-gray-500">
+                                            <p className="text-xs text-gray-500 dark:text-gray-400">
                                                 {client.client_code}
                                             </p>
                                         </div>
@@ -295,8 +295,8 @@ function TherapistDashboard({ data }: { data: DashboardData }) {
             {/* Chart + client list side by side on desktop */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {totalSessions > 0 && (
-                    <div className="bg-white rounded-lg border border-gray-200 p-5 shadow-sm">
-                        <p className="text-sm font-medium text-gray-500 mb-3">
+                    <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-700 p-5 shadow-sm">
+                        <p className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-3">
                             Session Attendance
                         </p>
                         <DonutChart
@@ -328,28 +328,28 @@ function TherapistDashboard({ data }: { data: DashboardData }) {
                 )}
 
                 <div>
-                    <h2 className="text-lg font-semibold text-gray-700 mb-4">
+                    <h2 className="text-lg font-semibold text-gray-700 dark:text-gray-200 mb-4">
                         Your Clients
                     </h2>
-                    <div className="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden">
+                    <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm overflow-hidden">
                         {(data.clients?.data?.length ?? 0) === 0 ? (
-                            <p className="p-4 text-sm text-gray-500">
+                            <p className="p-4 text-sm text-gray-500 dark:text-gray-400">
                                 No clients assigned yet.
                             </p>
                         ) : (
-                            <ul className="divide-y divide-gray-100">
+                            <ul className="divide-y divide-gray-100 dark:divide-gray-800">
                                 {data.clients?.data?.map((client) => (
                                     <li key={client.id}>
                                         <Link
                                             href={`/clients/${client.id}`}
-                                            className="px-4 py-3 flex items-center justify-between hover:bg-gray-50 transition-colors"
+                                            className="px-4 py-3 flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
                                         >
                                             <div>
-                                                <p className="text-sm font-medium text-gray-900">
+                                                <p className="text-sm font-medium text-gray-900 dark:text-white">
                                                     {client.preferred_name ??
                                                         client.legal_name}
                                                 </p>
-                                                <p className="text-xs text-gray-500">
+                                                <p className="text-xs text-gray-500 dark:text-gray-400">
                                                     {client.client_code}
                                                 </p>
                                             </div>

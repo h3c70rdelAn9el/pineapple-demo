@@ -10,6 +10,8 @@ import Badge from "@/components/ui/Badge";
 import Button from "@/components/ui/Button";
 import Modal from "@/components/ui/Modal";
 import StatCard from "@/components/ui/StatCard";
+import DataTable from "@/components/ui/DataTable";
+import PageTabs from "@/components/ui/PageTabs";
 
 type Tab = "all" | "active" | "inactive";
 
@@ -54,7 +56,9 @@ export default function TherapistsPage() {
     return (
         <div className="space-y-6">
             <div className="flex items-center justify-between">
-                <h1 className="text-2xl font-bold text-gray-900">Therapists</h1>
+                <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+                    Therapists
+                </h1>
             </div>
 
             {/* Stats row */}
@@ -79,34 +83,20 @@ export default function TherapistsPage() {
             )}
 
             {/* Tabs */}
-            <div className="border-b border-gray-200">
-                <nav className="flex space-x-4 -mb-px">
-                    {tabs.map((t) => (
-                        <button
-                            key={t.key}
-                            onClick={() => setTab(t.key)}
-                            className={`py-2 px-1 border-b-2 text-sm font-medium transition-colors ${
-                                tab === t.key
-                                    ? "border-indigo-500 text-indigo-600"
-                                    : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
-                            }`}
-                        >
-                            {t.label}
-                            {data && (
-                                <span className="ml-1.5 text-xs text-gray-400">
-                                    (
-                                    {t.key === "all"
-                                        ? data.therapists?.total
-                                        : t.key === "active"
-                                          ? data.activeTherapists?.total
-                                          : data.inactiveTherapists?.total}
-                                    )
-                                </span>
-                            )}
-                        </button>
-                    ))}
-                </nav>
-            </div>
+            <PageTabs
+                tabs={tabs.map((t) => ({
+                    ...t,
+                    count: data
+                        ? t.key === "all"
+                            ? data.therapists?.total
+                            : t.key === "active"
+                              ? data.activeTherapists?.total
+                              : data.inactiveTherapists?.total
+                        : undefined,
+                }))}
+                activeTab={tab}
+                onChange={setTab}
+            />
 
             {isLoading && (
                 <div className="flex justify-center py-16">
@@ -121,96 +111,75 @@ export default function TherapistsPage() {
             )}
 
             {!isLoading && !isError && (
-                <div className="bg-white rounded-lg border border-gray-200 shadow-sm overflow-x-auto">
-                    <table className="min-w-full divide-y divide-gray-200">
-                        <thead className="bg-gray-50">
-                            <tr>
-                                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Name
-                                </th>
-                                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hidden sm:table-cell">
-                                    Email
-                                </th>
-                                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Status
-                                </th>
-                                <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Actions
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody className="divide-y divide-gray-100">
-                            {tabData().length === 0 && (
-                                <tr>
-                                    <td
-                                        colSpan={4}
-                                        className="px-4 py-8 text-center text-sm text-gray-400"
-                                    >
-                                        No therapists found.
-                                    </td>
-                                </tr>
-                            )}
-                            {tabData().map((therapist) => (
-                                <tr
-                                    key={therapist.id}
-                                    className="hover:bg-gray-50 transition-colors"
+                <DataTable
+                    colSpan={4}
+                    isEmpty={tabData().length === 0}
+                    emptyMessage="No therapists found."
+                    columns={[
+                        { label: "Name" },
+                        { label: "Email", className: "hidden sm:table-cell" },
+                        { label: "Status" },
+                        { label: "Actions", className: "text-right" },
+                    ]}
+                >
+                    {tabData().map((therapist) => (
+                        <tr
+                            key={therapist.id}
+                            className="hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+                        >
+                            <td className="px-4 py-3">
+                                <p className="text-sm font-medium text-gray-900 dark:text-white">
+                                    {therapist.preferred_name ?? therapist.name}
+                                </p>
+                                {therapist.preferred_name && (
+                                    <p className="text-xs text-gray-400 dark:text-gray-500">
+                                        {therapist.name}
+                                    </p>
+                                )}
+                            </td>
+                            <td className="px-4 py-3 text-sm text-gray-500 dark:text-gray-400 hidden sm:table-cell">
+                                {therapist.email}
+                            </td>
+                            <td className="px-4 py-3">
+                                <Badge
+                                    variant={
+                                        therapist.active_status === 0
+                                            ? "green"
+                                            : "red"
+                                    }
                                 >
-                                    <td className="px-4 py-3">
-                                        <p className="text-sm font-medium text-gray-900">
-                                            {therapist.preferred_name ??
-                                                therapist.name}
-                                        </p>
-                                        {therapist.preferred_name && (
-                                            <p className="text-xs text-gray-400">
-                                                {therapist.name}
-                                            </p>
-                                        )}
-                                    </td>
-                                    <td className="px-4 py-3 text-sm text-gray-500 hidden sm:table-cell">
-                                        {therapist.email}
-                                    </td>
-                                    <td className="px-4 py-3">
-                                        <Badge
-                                            variant={
-                                                therapist.active_status === 0
-                                                    ? "green"
-                                                    : "red"
-                                            }
-                                        >
-                                            {therapist.active_status === 0
-                                                ? "Active"
-                                                : "Inactive"}
-                                        </Badge>
-                                    </td>
-                                    <td className="px-4 py-3 text-right">
-                                        <div className="flex justify-end gap-2">
-                                            <Link
-                                                href={`/therapists/${therapist.id}`}
-                                                className="text-xs text-indigo-600 hover:text-indigo-900 font-medium"
-                                            >
-                                                View
-                                            </Link>
-                                            <Link
-                                                href={`/therapists/${therapist.id}/edit`}
-                                                className="text-xs text-gray-600 hover:text-gray-900 font-medium"
-                                            >
-                                                Edit
-                                            </Link>
-                                            <button
-                                                onClick={() =>
-                                                    setDeletingId(therapist.id)
-                                                }
-                                                className="text-xs text-red-500 hover:text-red-700 font-medium"
-                                            >
-                                                Delete
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
+                                    {therapist.active_status === 0
+                                        ? "Active"
+                                        : "Inactive"}
+                                </Badge>
+                            </td>
+                            <td className="px-4 py-3 text-right">
+                                <div className="flex justify-end gap-2">
+                                    <Link
+                                        href={`/therapists/${therapist.id}`}
+                                        className="text-xs text-indigo-600 hover:text-indigo-900 font-medium"
+                                    >
+                                        View
+                                    </Link>
+                                    <Link
+                                        href={`/therapists/${therapist.id}/edit`}
+                                        className="text-xs text-gray-600 hover:text-gray-900 font-medium"
+                                    >
+                                        Edit
+                                    </Link>
+                                    <button
+                                        onClick={() =>
+                                            setDeletingId(therapist.id)
+                                        }
+                                        className="text-xs text-red-500 hover:text-red-700 font-medium"
+                                    >
+                                        Delete
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    ))}
+                </DataTable>
             )}
 
             <Modal
@@ -237,7 +206,7 @@ export default function TherapistsPage() {
                     </>
                 }
             >
-                <p className="text-sm text-gray-600">
+                <p className="text-sm text-gray-600 dark:text-gray-400">
                     Are you sure you want to delete this therapist? This action
                     cannot be undone.
                 </p>
