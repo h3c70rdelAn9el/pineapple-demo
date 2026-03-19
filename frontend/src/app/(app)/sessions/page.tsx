@@ -13,6 +13,7 @@ import Modal from "@/components/ui/Modal";
 import StatCard from "@/components/ui/StatCard";
 import DataTable from "@/components/ui/DataTable";
 import PageTabs from "@/components/ui/PageTabs";
+import DonutChart from "@/components/ui/DonutChart";
 import { useAuth } from "@/providers/AuthProvider";
 
 type Tab = "all" | "missed" | "special";
@@ -153,37 +154,66 @@ export default function SessionsPage() {
             </div>
 
             {/* Stats row */}
-            {data && (
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                    <StatCard
-                        label="All Sessions"
-                        value={
-                            isAdmin
-                                ? (data.allTherapySessions?.total ?? 0)
-                                : (data.sessions?.total ?? 0)
-                        }
-                        color="indigo"
-                    />
-                    <StatCard
-                        label="No-Shows"
-                        value={
-                            isAdmin
-                                ? (data.allMissedSessions?.total ?? 0)
-                                : (data.missedSessions?.total ?? 0)
-                        }
-                        color="red"
-                    />
-                    <StatCard
-                        label="Special Sessions"
-                        value={
-                            isAdmin
-                                ? (data.allSpecialSessions?.total ?? 0)
-                                : (data.specialSessions?.total ?? 0)
-                        }
-                        color="purple"
-                    />
-                </div>
-            )}
+            {data &&
+                (() => {
+                    const allTotal = isAdmin
+                        ? (data.allTherapySessions?.total ?? 0)
+                        : (data.sessions?.total ?? 0);
+                    const noShowTotal = isAdmin
+                        ? (data.allMissedSessions?.total ?? 0)
+                        : (data.missedSessions?.total ?? 0);
+                    const specialTotal = isAdmin
+                        ? (data.allSpecialSessions?.total ?? 0)
+                        : (data.specialSessions?.total ?? 0);
+                    const allRows = isAdmin
+                        ? (data.allTherapySessions?.data ?? [])
+                        : (data.sessions?.data ?? []);
+                    const attended = allRows.filter(
+                        (s) => s.attendance === "attended",
+                    ).length;
+                    const noShow = allRows.filter(
+                        (s) => s.attendance === "no-show",
+                    ).length;
+                    const missed = allRows.filter(
+                        (s) => s.attendance === "missed",
+                    ).length;
+                    const pending = allRows.filter((s) => !s.attendance).length;
+                    return (
+                        <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
+                            <div className="lg:col-span-3 grid grid-cols-1 sm:grid-cols-3 gap-4">
+                                <StatCard
+                                    label="All Sessions"
+                                    value={allTotal}
+                                    color="indigo"
+                                />
+                                <StatCard
+                                    label="No-Shows"
+                                    value={noShowTotal}
+                                    color="red"
+                                />
+                                <StatCard
+                                    label="Special Sessions"
+                                    value={specialTotal}
+                                    color="purple"
+                                />
+                            </div>
+                            <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-700 p-4 shadow-sm">
+                                <p className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">
+                                    Attendance Breakdown
+                                </p>
+                                <DonutChart
+                                    height={160}
+                                    data={[
+                                        { name: "Attended", value: attended },
+                                        { name: "No-Show", value: noShow },
+                                        { name: "Missed", value: missed },
+                                        { name: "Pending", value: pending },
+                                    ]}
+                                />
+                            </div>
+                        </div>
+                    );
+                })()}
 
             {/* Tabs */}
             <PageTabs tabs={tabs} activeTab={tab} onChange={setTab} />

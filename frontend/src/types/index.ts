@@ -101,6 +101,9 @@ export interface ClientsData {
     therapySessions: TherapySession[];
     attendedSessions: number;
     missedSessions: number;
+    allAttendedSessions?: number;
+    allMissedSessions?: number;
+    clientsByCategory?: Record<string, PaginatedResponse<Client>>;
     sortBy: string;
     sortDirection: "asc" | "desc";
 }
@@ -109,4 +112,7 @@ export interface TherapistsData {
     therapists: PaginatedResponse<User>;
     activeTherapists: PaginatedResponse<User>;
     inactiveTherapists: PaginatedResponse<User>;
+    completeTherapists: PaginatedResponse<User>;
+    incompleteTherapists: PaginatedResponse<User>;
+    unverifiedTherapists: PaginatedResponse<User>;
 }

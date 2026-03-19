@@ -10,9 +10,9 @@ import Spinner from "@/components/ui/Spinner";
 import Badge from "@/components/ui/Badge";
 import Button from "@/components/ui/Button";
 import Modal from "@/components/ui/Modal";
-import StatCard from "@/components/ui/StatCard";
 import DataTable from "@/components/ui/DataTable";
 import PageTabs from "@/components/ui/PageTabs";
+import DonutChart from "@/components/ui/DonutChart";
 
 type Tab = "all" | "active" | "inactive";
 
@@ -100,24 +100,49 @@ export default function TherapistsPage() {
                 </h1>
             </div>
 
-            {/* Stats row */}
+            {/* Charts row */}
             {data && (
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                    <StatCard
-                        label="Total Therapists"
-                        value={data.therapists?.total ?? 0}
-                        color="indigo"
-                    />
-                    <StatCard
-                        label="Active"
-                        value={data.activeTherapists?.total ?? 0}
-                        color="green"
-                    />
-                    <StatCard
-                        label="Inactive"
-                        value={data.inactiveTherapists?.total ?? 0}
-                        color="red"
-                    />
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-700 p-5 shadow-sm">
+                        <p className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-3">
+                            Active vs Inactive
+                        </p>
+                        <DonutChart
+                            height={200}
+                            data={[
+                                {
+                                    name: "Active",
+                                    value: data.activeTherapists?.total ?? 0,
+                                },
+                                {
+                                    name: "Inactive",
+                                    value: data.inactiveTherapists?.total ?? 0,
+                                },
+                            ]}
+                        />
+                    </div>
+                    <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-700 p-5 shadow-sm">
+                        <p className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-3">
+                            Profile Health
+                        </p>
+                        <DonutChart
+                            height={200}
+                            data={[
+                                {
+                                    name: "Complete",
+                                    value: data.completeTherapists?.total ?? 0,
+                                },
+                                {
+                                    name: "Incomplete",
+                                    value: data.incompleteTherapists?.total ?? 0,
+                                },
+                                {
+                                    name: "Unverified",
+                                    value: data.unverifiedTherapists?.total ?? 0,
+                                },
+                            ]}
+                        />
+                    </div>
                 </div>
             )}
 

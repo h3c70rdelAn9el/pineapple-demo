@@ -101,38 +101,81 @@ export default function ClientsPage() {
             </div>
 
             {/* Stats row */}
-            {data && (
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                    <StatCard
-                        label="Total Clients"
-                        value={
-                            isAdmin
-                                ? (data.allClients?.total ?? 0)
-                                : (data.clients?.total ?? 0)
-                        }
-                        color="indigo"
-                        href="/clients"
-                    />
-                    <StatCard
-                        label="Sessions Attended"
-                        value={
-                            isAdmin
-                                ? (data.allAttendedSessions ?? 0)
-                                : (data.attendedSessions ?? 0)
-                        }
-                        color="green"
-                    />
-                    <StatCard
-                        label="No-Shows"
-                        value={
-                            isAdmin
-                                ? (data.allMissedSessions ?? 0)
-                                : (data.missedSessions ?? 0)
-                        }
-                        color="red"
-                    />
-                </div>
-            )}
+            {data &&
+                (() => {
+                    const total = isAdmin
+                        ? (data.allClients?.total ?? 0)
+                        : (data.clients?.total ?? 0);
+                    return (
+                        <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
+                            <div className="lg:col-span-3 grid grid-cols-1 sm:grid-cols-3 gap-4">
+                                <StatCard
+                                    label="Total Clients"
+                                    value={total}
+                                    color="indigo"
+                                    href="/clients"
+                                />
+                                <StatCard
+                                    label="Sessions Attended"
+                                    value={
+                                        isAdmin
+                                            ? (data.allAttendedSessions ?? 0)
+                                            : (data.attendedSessions ?? 0)
+                                    }
+                                    color="green"
+                                />
+                                <StatCard
+                                    label="No-Shows"
+                                    value={
+                                        isAdmin
+                                            ? (data.allMissedSessions ?? 0)
+                                            : (data.missedSessions ?? 0)
+                                    }
+                                    color="red"
+                                />
+                            </div>
+                            <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-700 p-4 shadow-sm">
+                                <p className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-2">
+                                    Attendance Rate
+                                </p>
+                                {(() => {
+                                    const attended = isAdmin
+                                        ? (data.allAttendedSessions ?? 0)
+                                        : (data.attendedSessions ?? 0);
+                                    const noShows = isAdmin
+                                        ? (data.allMissedSessions ?? 0)
+                                        : (data.missedSessions ?? 0);
+                                    const total = attended + noShows;
+                                    const rate =
+                                        total > 0
+                                            ? Math.round(
+                                                  (attended / total) * 100,
+                                              )
+                                            : 0;
+                                    return (
+                                        <div className="flex flex-col items-center justify-center h-32 gap-1">
+                                            <span className="text-4xl font-bold text-gray-900 dark:text-white">
+                                                {rate}%
+                                            </span>
+                                            <span className="text-xs text-gray-500 dark:text-gray-400">
+                                                {attended} attended · {noShows}{" "}
+                                                no-shows
+                                            </span>
+                                            <div className="w-full mt-2 bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                                                <div
+                                                    className="h-2 rounded-full bg-green-500"
+                                                    style={{
+                                                        width: `${rate}%`,
+                                                    }}
+                                                />
+                                            </div>
+                                        </div>
+                                    );
+                                })()}
+                            </div>
+                        </div>
+                    );
+                })()}
 
             {/* Tabs */}
             <PageTabs tabs={tabs} activeTab={tab} onChange={setTab} />
