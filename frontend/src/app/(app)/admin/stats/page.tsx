@@ -94,20 +94,20 @@ export default function AdminStatsPage() {
 
     return (
         <div className="space-y-8">
-            <h1 className="text-2xl font-bold text-gray-900">Admin Stats</h1>
+            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Admin Stats</h1>
 
             {statGroups.map((group) => (
                 <section key={group.title}>
-                    <h2 className="text-lg font-semibold text-gray-700 mb-3">
+                    <h2 className="text-lg font-semibold text-gray-700 dark:text-gray-200 mb-3">
                         {group.title}
                     </h2>
                     <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                         {group.stats.map((stat) => (
                             <div
                                 key={stat.label}
-                                className="bg-white rounded-lg border border-gray-200 shadow-sm p-4"
+                                className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm p-4"
                             >
-                                <p className="text-xs text-gray-500">
+                                <p className="text-xs text-gray-500 dark:text-gray-400">
                                     {stat.label}
                                 </p>
                                 <p
