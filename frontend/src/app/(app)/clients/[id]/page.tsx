@@ -217,9 +217,9 @@ export default function ClientShowPage({
                                 {attendedSessions.map((session) => (
                                     <tr
                                         key={session.id}
-                                        className="hover:bg-gray-50"
+                                        className="hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer dark:text-white"
                                     >
-                                        <td className="px-4 py-3 text-sm text-gray-600">
+                                        <td className="px-4 py-3 text-sm text-gray-600 dark:text-gray-300">
                                             {session.session_date
                                                 ? new Date(
                                                       session.session_date,
@@ -243,12 +243,12 @@ export default function ClientShowPage({
                                                 {session.attendance ?? "—"}
                                             </Badge>
                                         </td>
-                                        <td className="px-4 py-3 text-sm text-gray-600">
+                                        <td className="px-4 py-3 text-sm text-gray-600 dark:text-gray-300">
                                             {session.session_cost != null
                                                 ? `$${session.session_cost}`
                                                 : "—"}
                                         </td>
-                                        <td className="px-4 py-3 text-sm text-gray-500 hidden sm:table-cell">
+                                        <td className="px-4 py-3 text-sm text-gray-500 dark:text-gray-400 hidden sm:table-cell">
                                             {session.notes ?? "—"}
                                         </td>
                                     </tr>
