@@ -92,7 +92,7 @@ export default function TherapistShowPage({
                 </div>
             )}
 
-            <div className="bg-white rounded-lg border border-gray-200 shadow-sm p-6">
+            <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm p-6">
                 <div className="flex items-start justify-between mb-4">
                     <div />
                     <Badge
@@ -106,63 +106,65 @@ export default function TherapistShowPage({
 
                 <dl className="grid grid-cols-2 gap-4">
                     <div>
-                        <dt className="text-xs font-medium text-gray-500">
+                        <dt className="text-xs font-medium text-gray-500 dark:text-gray-400">
                             Name
                         </dt>
-                        <dd className="text-sm text-gray-900 mt-0.5">
+                        <dd className="text-sm text-gray-900 dark:text-gray-100 mt-0.5">
                             {therapist.preferred_name ?? therapist.name}
                         </dd>
                     </div>
                     <div>
-                        <dt className="text-xs font-medium text-gray-500">
+                        <dt className="text-xs font-medium text-gray-500 dark:text-gray-400">
                             Legal Name
                         </dt>
-                        <dd className="text-sm text-gray-900 mt-0.5">
+                        <dd className="text-sm text-gray-900 dark:text-gray-100 mt-0.5">
                             {therapist.name}
                         </dd>
                     </div>
                     <div>
-                        <dt className="text-xs font-medium text-gray-500">
+                        <dt className="text-xs font-medium text-gray-500 dark:text-gray-400">
                             Email
                         </dt>
-                        <dd className="text-sm text-gray-900 mt-0.5">
+                        <dd className="text-sm text-gray-900 dark:text-gray-100 mt-0.5">
                             {therapist.email}
                         </dd>
                     </div>
                     <div>
-                        <dt className="text-xs font-medium text-gray-500">
+                        <dt className="text-xs font-medium text-gray-500 dark:text-gray-400">
                             Phone
                         </dt>
-                        <dd className="text-sm text-gray-900 mt-0.5">
+                        <dd className="text-sm text-gray-900 dark:text-gray-100 mt-0.5">
                             {therapist.phone ?? "—"}
                         </dd>
                     </div>
                     <div>
-                        <dt className="text-xs font-medium text-gray-500">
+                        <dt className="text-xs font-medium text-gray-500 dark:text-gray-400">
                             City / State
                         </dt>
-                        <dd className="text-sm text-gray-900 mt-0.5">
+                        <dd className="text-sm text-gray-900 dark:text-gray-100 mt-0.5">
                             {[therapist.city, therapist.state]
                                 .filter(Boolean)
                                 .join(", ") || "—"}
                         </dd>
                     </div>
                     <div>
-                        <dt className="text-xs font-medium text-gray-500">
+                        <dt className="text-xs font-medium text-gray-500 dark:text-gray-400">
                             Gender
                         </dt>
-                        <dd className="text-sm text-gray-900 mt-0.5">
+                        <dd className="text-sm text-gray-900 dark:text-gray-100 mt-0.5">
                             {therapist.gender ?? "—"}
                         </dd>
                     </div>
                 </dl>
 
                 {therapist.bio && (
-                    <div className="mt-4 pt-4 border-t border-gray-100">
-                        <dt className="text-xs font-medium text-gray-500 mb-1">
+                    <div className="mt-4 pt-4 border-t border-gray-100 dark:border-gray-800">
+                        <dt className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">
                             Bio
                         </dt>
-                        <p className="text-sm text-gray-700">{therapist.bio}</p>
+                        <p className="text-sm text-gray-700 dark:text-gray-200">
+                            {therapist.bio}
+                        </p>
                     </div>
                 )}
             </div>

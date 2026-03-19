@@ -116,11 +116,11 @@ export default function SessionShowPage({
                 <div className="flex items-center gap-4">
                     <Link
                         href="/sessions"
-                        className="text-sm text-gray-500 hover:text-gray-700"
+                        className="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
                     >
                         ← Sessions
                     </Link>
-                    <h1 className="text-2xl font-bold text-gray-900">
+                    <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
                         Session #{session.id}
                     </h1>
                 </div>
@@ -144,15 +144,15 @@ export default function SessionShowPage({
                         e.preventDefault();
                         updateMutation.mutate(form);
                     }}
-                    className="bg-white rounded-lg border border-gray-200 shadow-sm p-6 space-y-4"
+                    className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm p-6 space-y-4"
                 >
-                    <h2 className="text-base font-semibold text-gray-700">
+                    <h2 className="text-base font-semibold text-gray-700 dark:text-gray-200">
                         Edit Session
                     </h2>
 
                     <div className="grid grid-cols-2 gap-4">
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">
+                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                                 Attendance
                             </label>
                             <select
@@ -166,7 +166,7 @@ export default function SessionShowPage({
                                             },
                                     )
                                 }
-                                className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                className="block w-full rounded-md border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                             >
                                 <option value="attended">Attended</option>
                                 <option value="no-show">No-show</option>
@@ -174,7 +174,7 @@ export default function SessionShowPage({
                             </select>
                         </div>
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">
+                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                                 Date
                             </label>
                             <input
@@ -189,13 +189,13 @@ export default function SessionShowPage({
                                             },
                                     )
                                 }
-                                className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                className="block w-full rounded-md border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                             />
                         </div>
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                             Session Cost ($)
                         </label>
                         <input
@@ -211,12 +211,12 @@ export default function SessionShowPage({
                                         },
                                 )
                             }
-                            className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                            className="block w-full rounded-md border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                         />
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                             Notes
                         </label>
                         <textarea
@@ -227,7 +227,7 @@ export default function SessionShowPage({
                                 )
                             }
                             rows={3}
-                            className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                            className="block w-full rounded-md border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                         />
                     </div>
 
@@ -248,17 +248,17 @@ export default function SessionShowPage({
                     </div>
                 </form>
             ) : (
-                <div className="bg-white rounded-lg border border-gray-200 shadow-sm p-6">
+                <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm p-6">
                     <dl className="grid grid-cols-2 gap-4">
                         <div>
-                            <dt className="text-xs font-medium text-gray-500">
+                            <dt className="text-xs font-medium text-gray-500 dark:text-gray-400">
                                 Client
                             </dt>
-                            <dd className="text-sm text-gray-900 mt-0.5">
+                            <dd className="text-sm text-gray-900 dark:text-gray-100 mt-0.5">
                                 {session.client ? (
                                     <Link
                                         href={`/clients/${session.client_id}`}
-                                        className="text-indigo-600 hover:underline"
+                                        className="text-indigo-600 dark:text-indigo-400 hover:underline"
                                     >
                                         {session.client.preferred_name ??
                                             session.client.legal_name}
@@ -269,7 +269,7 @@ export default function SessionShowPage({
                             </dd>
                         </div>
                         <div>
-                            <dt className="text-xs font-medium text-gray-500">
+                            <dt className="text-xs font-medium text-gray-500 dark:text-gray-400">
                                 Attendance
                             </dt>
                             <dd className="mt-0.5">
@@ -277,10 +277,10 @@ export default function SessionShowPage({
                             </dd>
                         </div>
                         <div>
-                            <dt className="text-xs font-medium text-gray-500">
+                            <dt className="text-xs font-medium text-gray-500 dark:text-gray-400">
                                 Date
                             </dt>
-                            <dd className="text-sm text-gray-900 mt-0.5">
+                            <dd className="text-sm text-gray-900 dark:text-gray-100 mt-0.5">
                                 {session.session_date
                                     ? new Date(
                                           session.session_date,
@@ -291,20 +291,20 @@ export default function SessionShowPage({
                             </dd>
                         </div>
                         <div>
-                            <dt className="text-xs font-medium text-gray-500">
+                            <dt className="text-xs font-medium text-gray-500 dark:text-gray-400">
                                 Cost
                             </dt>
-                            <dd className="text-sm text-gray-900 mt-0.5">
+                            <dd className="text-sm text-gray-900 dark:text-gray-100 mt-0.5">
                                 {session.session_cost != null
                                     ? `$${session.session_cost}`
                                     : "—"}
                             </dd>
                         </div>
                         <div>
-                            <dt className="text-xs font-medium text-gray-500">
+                            <dt className="text-xs font-medium text-gray-500 dark:text-gray-400">
                                 Special
                             </dt>
-                            <dd className="text-sm text-gray-900 mt-0.5">
+                            <dd className="text-sm text-gray-900 dark:text-gray-100 mt-0.5">
                                 {session.special === 1 ? (
                                     <Badge variant="blue">Yes</Badge>
                                 ) : (
@@ -314,11 +314,11 @@ export default function SessionShowPage({
                         </div>
                     </dl>
                     {session.notes && (
-                        <div className="mt-4 pt-4 border-t border-gray-100">
-                            <dt className="text-xs font-medium text-gray-500 mb-1">
+                        <div className="mt-4 pt-4 border-t border-gray-100 dark:border-gray-800">
+                            <dt className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">
                                 Notes
                             </dt>
-                            <p className="text-sm text-gray-700">
+                            <p className="text-sm text-gray-700 dark:text-gray-200">
                                 {session.notes}
                             </p>
                         </div>

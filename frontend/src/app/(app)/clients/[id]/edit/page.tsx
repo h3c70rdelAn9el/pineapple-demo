@@ -95,11 +95,11 @@ export default function EditClientPage({
             <div className="flex items-center gap-4">
                 <Link
                     href={`/clients/${id}`}
-                    className="text-sm text-gray-500 hover:text-gray-700"
+                    className="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
                 >
                     ← Client
                 </Link>
-                <h1 className="text-2xl font-bold text-gray-900">
+                <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
                     Edit Client
                 </h1>
             </div>
@@ -112,7 +112,7 @@ export default function EditClientPage({
 
             <form
                 onSubmit={handleSubmit}
-                className="bg-white rounded-lg border border-gray-200 shadow-sm p-6 space-y-5"
+                className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm p-6 space-y-5"
             >
                 <div className="grid grid-cols-2 gap-4">
                     <Input
@@ -165,7 +165,7 @@ export default function EditClientPage({
                 <div>
                     <label
                         htmlFor="user_id"
-                        className="block text-sm font-medium text-gray-700 mb-1"
+                        className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
                     >
                         Assigned Therapist
                     </label>
@@ -173,7 +173,7 @@ export default function EditClientPage({
                         id="user_id"
                         value={form.user_id ?? ""}
                         onChange={set("user_id")}
-                        className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                        className="block w-full rounded-md border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                     >
                         <option value="">No therapist</option>
                         {therapists.map((t) => (
@@ -188,7 +188,7 @@ export default function EditClientPage({
                     <div>
                         <label
                             htmlFor="category"
-                            className="block text-sm font-medium text-gray-700 mb-1"
+                            className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
                         >
                             Category
                         </label>
@@ -196,7 +196,7 @@ export default function EditClientPage({
                             id="category"
                             value={form.category ?? ""}
                             onChange={set("category")}
-                            className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                            className="block w-full rounded-md border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                         >
                             <option value="">None</option>
                             {categories.map((c) => (
@@ -209,7 +209,7 @@ export default function EditClientPage({
                     <div>
                         <label
                             htmlFor="status"
-                            className="block text-sm font-medium text-gray-700 mb-1"
+                            className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
                         >
                             Status
                         </label>
@@ -217,7 +217,7 @@ export default function EditClientPage({
                             id="status"
                             value={form.status?.toString() ?? "0"}
                             onChange={set("status")}
-                            className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                            className="block w-full rounded-md border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                         >
                             <option value="0">Active</option>
                             <option value="1">Inactive</option>
@@ -228,7 +228,7 @@ export default function EditClientPage({
                 <div>
                     <label
                         htmlFor="notes"
-                        className="block text-sm font-medium text-gray-700 mb-1"
+                        className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
                     >
                         Notes
                     </label>
@@ -237,7 +237,7 @@ export default function EditClientPage({
                         value={form.notes ?? ""}
                         onChange={set("notes")}
                         rows={3}
-                        className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                        className="block w-full rounded-md border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                     />
                 </div>
 

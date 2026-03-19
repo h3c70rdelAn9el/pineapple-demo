@@ -134,8 +134,9 @@ export default function AdminStatsPage() {
         {
             title: "Sessions",
             color: "blue",
-            bg: "bg-blue-50 dark:bg-blue-950/30 border-blue-100 dark:border-blue-900",
-            text: "text-blue-600 dark:text-blue-400",
+            // Use a much darker background and lighter text in dark mode for sessions
+            bg: "bg-blue-50 dark:bg-gray-900 border-blue-100 dark:border-blue-800",
+            text: "text-blue-600 dark:text-white",
             stats: [
                 { label: "Total", value: s.totalSessions },
                 { label: "Attended", value: s.attendedSessions },
