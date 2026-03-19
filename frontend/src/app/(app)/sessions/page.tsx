@@ -1,4 +1,5 @@
-"use client";
+import "./recharts-tooltip.css";
+("use client");
 
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
@@ -237,6 +238,7 @@ export default function SessionsPage() {
                                             tick={{ fontSize: 12 }}
                                         />
                                         <Tooltip
+                                            cursor={false}
                                             formatter={(v) =>
                                                 (v as number).toLocaleString()
                                             }

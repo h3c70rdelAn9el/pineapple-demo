@@ -184,6 +184,7 @@ export default function ClientsPage() {
                                             tick={{ fontSize: 12 }}
                                         />
                                         <Tooltip
+                                            cursor={false}
                                             formatter={(v) =>
                                                 (v as number).toLocaleString()
                                             }

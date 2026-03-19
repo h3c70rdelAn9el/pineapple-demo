@@ -43,6 +43,7 @@ function FinancialsChart({
                     tick={{ fontSize: 11 }}
                 />
                 <Tooltip
+                    cursor={false}
                     formatter={(v) => `$${(v as number).toLocaleString()}`}
                 />
                 <Bar dataKey="value" radius={[4, 4, 0, 0]}>
@@ -171,7 +172,7 @@ function AdminDashboard({ data }: { data: DashboardData }) {
                         colors={["#22c55e", "#f59e0b"]} // green, orange
                     />
                 </div>
-                <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-700 p-5 shadow-sm">
+                <div className="bg-white dark:bg-gray-900 rounded-lg border dark:border-gray-700 shadow-sm">
                     <p className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-3">
                         Cost vs Contributions
                     </p>

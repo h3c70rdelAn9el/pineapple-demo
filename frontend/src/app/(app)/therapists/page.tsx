@@ -175,6 +175,7 @@ export default function TherapistsPage() {
                                             tick={{ fontSize: 12 }}
                                         />
                                         <Tooltip
+                                            cursor={false}
                                             formatter={(v) =>
                                                 (v as number).toLocaleString()
                                             }

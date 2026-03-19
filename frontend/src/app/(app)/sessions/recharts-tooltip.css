@@ -1,0 +1,26 @@
+/* Custom recharts tooltip styling for dark mode and padding fix */
+.recharts-default-tooltip {
+    background-color: #fff;
+    color: #111827;
+    border-radius: 0.5rem;
+    border: 1px solid #e5e7eb;
+    font-size: 1rem;
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.08);
+    padding: 0.5rem 0.75rem;
+}
+.dark .recharts-default-tooltip {
+    background-color: #1a1a23;
+    color: #f3f4f6;
+    border: 1px solid #374151;
+}
+.recharts-tooltip-label {
+    font-weight: 500;
+    margin-bottom: 0.25rem;
+}
+.recharts-tooltip-item-list {
+    margin: 0;
+    padding: 0;
+}
+.recharts-tooltip-item {
+    padding: 0.125rem 0;
+}

@@ -236,7 +236,7 @@ export default function AdminStatsPage() {
                                     allowDecimals={false}
                                 />
                                 <Tooltip
-                                    cursor={{ fill: "#f3f4f6" }}
+                                    cursor={false}
                                     contentStyle={{
                                         borderRadius: "8px",
                                         border: "1px solid #e5e7eb",
