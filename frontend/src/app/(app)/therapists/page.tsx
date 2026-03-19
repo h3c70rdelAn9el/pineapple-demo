@@ -134,11 +134,13 @@ export default function TherapistsPage() {
                                 },
                                 {
                                     name: "Incomplete",
-                                    value: data.incompleteTherapists?.total ?? 0,
+                                    value:
+                                        data.incompleteTherapists?.total ?? 0,
                                 },
                                 {
                                     name: "Unverified",
-                                    value: data.unverifiedTherapists?.total ?? 0,
+                                    value:
+                                        data.unverifiedTherapists?.total ?? 0,
                                 },
                             ]}
                         />

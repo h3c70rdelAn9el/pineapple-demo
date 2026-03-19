@@ -10,10 +10,18 @@ import Spinner from "@/components/ui/Spinner";
 import Badge from "@/components/ui/Badge";
 import Button from "@/components/ui/Button";
 import Modal from "@/components/ui/Modal";
-import StatCard from "@/components/ui/StatCard";
 import DataTable from "@/components/ui/DataTable";
 import PageTabs from "@/components/ui/PageTabs";
 import DonutChart from "@/components/ui/DonutChart";
+import {
+    ResponsiveContainer,
+    BarChart,
+    Bar,
+    XAxis,
+    YAxis,
+    Tooltip,
+    Cell,
+} from "recharts";
 import { useAuth } from "@/providers/AuthProvider";
 
 type Tab = "all" | "missed" | "special";
@@ -153,7 +161,7 @@ export default function SessionsPage() {
                 </Link>
             </div>
 
-            {/* Stats row */}
+            {/* Charts row */}
             {data &&
                 (() => {
                     const allTotal = isAdmin
@@ -178,31 +186,26 @@ export default function SessionsPage() {
                         (s) => s.attendance === "missed",
                     ).length;
                     const pending = allRows.filter((s) => !s.attendance).length;
+                    const volumeData = [
+                        { name: "All", value: allTotal },
+                        { name: "Special", value: specialTotal },
+                        { name: "No-Shows", value: noShowTotal },
+                    ];
+                    const VOLUME_COLORS = ["#4f46e5", "#8b5cf6", "#ef4444"];
                     return (
-                        <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
-                            <div className="lg:col-span-3 grid grid-cols-1 sm:grid-cols-3 gap-4">
-                                <StatCard
-                                    label="All Sessions"
-                                    value={allTotal}
-                                    color="indigo"
-                                />
-                                <StatCard
-                                    label="No-Shows"
-                                    value={noShowTotal}
-                                    color="red"
-                                />
-                                <StatCard
-                                    label="Special Sessions"
-                                    value={specialTotal}
-                                    color="purple"
-                                />
-                            </div>
-                            <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-700 p-4 shadow-sm">
-                                <p className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-700 p-5 shadow-sm">
+                                <p className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-3">
                                     Attendance Breakdown
                                 </p>
                                 <DonutChart
-                                    height={160}
+                                    height={200}
+                                    colors={[
+                                        "#22c55e",
+                                        "#ef4444",
+                                        "#f59e0b",
+                                        "#9ca3af",
+                                    ]}
                                     data={[
                                         { name: "Attended", value: attended },
                                         { name: "No-Show", value: noShow },
@@ -210,6 +213,47 @@ export default function SessionsPage() {
                                         { name: "Pending", value: pending },
                                     ]}
                                 />
+                            </div>
+                            <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-700 p-5 shadow-sm">
+                                <p className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-3">
+                                    Session Volume
+                                </p>
+                                <ResponsiveContainer width="100%" height={200}>
+                                    <BarChart
+                                        data={volumeData}
+                                        margin={{
+                                            top: 8,
+                                            right: 8,
+                                            left: -20,
+                                            bottom: 0,
+                                        }}
+                                    >
+                                        <XAxis
+                                            dataKey="name"
+                                            tick={{ fontSize: 12 }}
+                                        />
+                                        <YAxis
+                                            allowDecimals={false}
+                                            tick={{ fontSize: 12 }}
+                                        />
+                                        <Tooltip
+                                            formatter={(v) =>
+                                                (v as number).toLocaleString()
+                                            }
+                                        />
+                                        <Bar
+                                            dataKey="value"
+                                            radius={[4, 4, 0, 0]}
+                                        >
+                                            {volumeData.map((_, i) => (
+                                                <Cell
+                                                    key={i}
+                                                    fill={VOLUME_COLORS[i]}
+                                                />
+                                            ))}
+                                        </Bar>
+                                    </BarChart>
+                                </ResponsiveContainer>
                             </div>
                         </div>
                     );

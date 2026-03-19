@@ -21,9 +21,15 @@ const CHART_COLORS = [
 interface DonutChartProps {
     data: { name: string; value: number }[];
     height?: number;
+    colors?: string[];
 }
 
-export default function DonutChart({ data, height = 200 }: DonutChartProps) {
+export default function DonutChart({
+    data,
+    height = 200,
+    colors,
+}: DonutChartProps) {
+    const palette = colors ?? CHART_COLORS;
     const filtered = data.filter((d) => d.value > 0);
 
     if (filtered.length === 0) {
@@ -50,10 +56,7 @@ export default function DonutChart({ data, height = 200 }: DonutChartProps) {
                     dataKey="value"
                 >
                     {filtered.map((_, i) => (
-                        <Cell
-                            key={i}
-                            fill={CHART_COLORS[i % CHART_COLORS.length]}
-                        />
+                        <Cell key={i} fill={palette[i % palette.length]} />
                     ))}
                 </Pie>
                 <Tooltip formatter={(v) => (v as number).toLocaleString()} />

@@ -10,9 +10,18 @@ import Spinner from "@/components/ui/Spinner";
 import Badge from "@/components/ui/Badge";
 import Button from "@/components/ui/Button";
 import Modal from "@/components/ui/Modal";
-import StatCard from "@/components/ui/StatCard";
 import DataTable from "@/components/ui/DataTable";
 import PageTabs from "@/components/ui/PageTabs";
+import DonutChart from "@/components/ui/DonutChart";
+import {
+    ResponsiveContainer,
+    BarChart,
+    Bar,
+    XAxis,
+    YAxis,
+    Tooltip,
+    Cell,
+} from "recharts";
 import { useAuth } from "@/providers/AuthProvider";
 
 type Tab = "all" | "inactive" | "waitlist" | "special";
@@ -100,78 +109,98 @@ export default function ClientsPage() {
                 </Link>
             </div>
 
-            {/* Stats row */}
+            {/* Charts row */}
             {data &&
                 (() => {
                     const total = isAdmin
                         ? (data.allClients?.total ?? 0)
                         : (data.clients?.total ?? 0);
+                    const inactive = isAdmin
+                        ? (data.allInactiveClients?.total ?? 0)
+                        : (data.inactiveClients?.total ?? 0);
+                    const waitlist = isAdmin
+                        ? (data.allWaitlistClients?.total ?? 0)
+                        : (data.waitlistClients?.total ?? 0);
+                    const special = isAdmin
+                        ? (data.allSpecialSessionClients?.total ?? 0)
+                        : (data.specialSessionsClients?.total ?? 0);
+                    const active = Math.max(
+                        0,
+                        total - inactive - waitlist - special,
+                    );
+                    const attended = isAdmin
+                        ? (data.allAttendedSessions ?? 0)
+                        : (data.attendedSessions ?? 0);
+                    const noShows = isAdmin
+                        ? (data.allMissedSessions ?? 0)
+                        : (data.missedSessions ?? 0);
+                    const attendanceData = [
+                        { name: "Attended", value: attended },
+                        { name: "No-Shows", value: noShows },
+                    ];
+                    const ATTENDANCE_COLORS = ["#22c55e", "#ef4444"];
                     return (
-                        <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
-                            <div className="lg:col-span-3 grid grid-cols-1 sm:grid-cols-3 gap-4">
-                                <StatCard
-                                    label="Total Clients"
-                                    value={total}
-                                    color="indigo"
-                                    href="/clients"
-                                />
-                                <StatCard
-                                    label="Sessions Attended"
-                                    value={
-                                        isAdmin
-                                            ? (data.allAttendedSessions ?? 0)
-                                            : (data.attendedSessions ?? 0)
-                                    }
-                                    color="green"
-                                />
-                                <StatCard
-                                    label="No-Shows"
-                                    value={
-                                        isAdmin
-                                            ? (data.allMissedSessions ?? 0)
-                                            : (data.missedSessions ?? 0)
-                                    }
-                                    color="red"
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-700 p-5 shadow-sm">
+                                <p className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-3">
+                                    Client Distribution
+                                </p>
+                                <DonutChart
+                                    height={200}
+                                    colors={[
+                                        "#22c55e",
+                                        "#ef4444",
+                                        "#f59e0b",
+                                        "#8b5cf6",
+                                    ]}
+                                    data={[
+                                        { name: "Active", value: active },
+                                        { name: "Inactive", value: inactive },
+                                        { name: "Waitlist", value: waitlist },
+                                        { name: "Special", value: special },
+                                    ]}
                                 />
                             </div>
-                            <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-700 p-4 shadow-sm">
-                                <p className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-2">
-                                    Attendance Rate
+                            <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-700 p-5 shadow-sm">
+                                <p className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-3">
+                                    Session Attendance
                                 </p>
-                                {(() => {
-                                    const attended = isAdmin
-                                        ? (data.allAttendedSessions ?? 0)
-                                        : (data.attendedSessions ?? 0);
-                                    const noShows = isAdmin
-                                        ? (data.allMissedSessions ?? 0)
-                                        : (data.missedSessions ?? 0);
-                                    const total = attended + noShows;
-                                    const rate =
-                                        total > 0
-                                            ? Math.round(
-                                                  (attended / total) * 100,
-                                              )
-                                            : 0;
-                                    return (
-                                        <div className="flex flex-col items-center justify-center h-32 gap-1">
-                                            <span className="text-4xl font-bold text-gray-900 dark:text-white">
-                                                {rate}%
-                                            </span>
-                                            <span className="text-xs text-gray-500 dark:text-gray-400">
-                                                {attended} attended · {noShows}{" "}
-                                                no-shows
-                                            </span>
-                                            <div className="w-full mt-2 bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                                                <div
-                                                    className="h-2 rounded-full bg-green-500"
-                                                    style={{
-                                                        width: `${rate}%`,
-                                                    }}
+                                <ResponsiveContainer width="100%" height={200}>
+                                    <BarChart
+                                        data={attendanceData}
+                                        margin={{
+                                            top: 8,
+                                            right: 8,
+                                            left: -20,
+                                            bottom: 0,
+                                        }}
+                                    >
+                                        <XAxis
+                                            dataKey="name"
+                                            tick={{ fontSize: 12 }}
+                                        />
+                                        <YAxis
+                                            allowDecimals={false}
+                                            tick={{ fontSize: 12 }}
+                                        />
+                                        <Tooltip
+                                            formatter={(v) =>
+                                                (v as number).toLocaleString()
+                                            }
+                                        />
+                                        <Bar
+                                            dataKey="value"
+                                            radius={[4, 4, 0, 0]}
+                                        >
+                                            {attendanceData.map((_, i) => (
+                                                <Cell
+                                                    key={i}
+                                                    fill={ATTENDANCE_COLORS[i]}
                                                 />
-                                            </div>
-                                        </div>
-                                    );
-                                })()}
+                                            ))}
+                                        </Bar>
+                                    </BarChart>
+                                </ResponsiveContainer>
                             </div>
                         </div>
                     );
