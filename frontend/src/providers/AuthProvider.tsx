@@ -8,6 +8,7 @@ import {
     useCallback,
 } from "react";
 import api, { getCsrfCookie } from "@/lib/api";
+import * as AuthActions from "@/actions/App/Http/Controllers/Api/AuthController";
 import { User } from "@/types";
 
 interface AuthContextType {
@@ -36,7 +37,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     const refresh = useCallback(async () => {
         try {
-            const res = await api.get("/api/user");
+            const res = await api.get(AuthActions.user.url());
             setUser(res.data);
         } catch {
             setUser(null);
@@ -53,7 +54,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         remember = false,
     ): Promise<void> => {
         await getCsrfCookie();
-        const res = await api.post("/api/login", { email, password, remember });
+        const res = await api.post(AuthActions.login.url(), { email, password, remember });
         setUser(res.data.user);
     };
 
@@ -64,7 +65,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         passwordConfirmation: string,
     ): Promise<void> => {
         await getCsrfCookie();
-        const res = await api.post("/api/register", {
+        const res = await api.post(AuthActions.register.url(), {
             name,
             email,
             password,
@@ -74,7 +75,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     };
 
     const logout = async (): Promise<void> => {
-        await api.post("/api/logout");
+        await api.post(AuthActions.logout.url());
         setUser(null);
     };
 

@@ -2,6 +2,7 @@
 
 import { useQuery } from "@tanstack/react-query";
 import api from "@/lib/api";
+import * as StatsActions from "@/actions/App/Http/Controllers/Api/StatsController";
 import Spinner from "@/components/ui/Spinner";
 
 export default function AdminStatsPage() {
@@ -20,7 +21,7 @@ export default function AdminStatsPage() {
         newClientsThisMonth: number;
     }>({
         queryKey: ["admin-stats"],
-        queryFn: () => api.get("/api/admin/stats").then((r) => r.data),
+        queryFn: () => api.get(StatsActions.index.url()).then((r) => r.data),
     });
 
     if (isLoading) {

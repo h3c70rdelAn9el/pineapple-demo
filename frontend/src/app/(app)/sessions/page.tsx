@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
 import api from "@/lib/api";
+import * as SessionActions from "@/actions/App/Http/Controllers/Api/TherapySessionController";
 import { PaginatedResponse, TherapySession } from "@/types";
 import Spinner from "@/components/ui/Spinner";
 import Badge from "@/components/ui/Badge";
@@ -33,11 +34,11 @@ export default function SessionsPage() {
         allSpecialSessions?: PaginatedResponse<TherapySession>;
     }>({
         queryKey: ["sessions"],
-        queryFn: () => api.get("/api/sessions").then((r) => r.data),
+        queryFn: () => api.get(SessionActions.index.url()).then((r) => r.data),
     });
 
     const deleteMutation = useMutation({
-        mutationFn: (id: number) => api.delete(`/api/sessions/${id}`),
+        mutationFn: (id: number) => api.delete(SessionActions.destroy.url(id)),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["sessions"] });
             setDeletingId(null);

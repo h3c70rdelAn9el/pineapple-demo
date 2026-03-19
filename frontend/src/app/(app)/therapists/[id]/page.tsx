@@ -4,6 +4,7 @@ import { useQuery, useMutation } from "@tanstack/react-query";
 import Link from "next/link";
 import { use, useState } from "react";
 import api from "@/lib/api";
+import * as TherapistActions from "@/actions/App/Http/Controllers/Api/TherapistController";
 import { User } from "@/types";
 import Spinner from "@/components/ui/Spinner";
 import Badge from "@/components/ui/Badge";
@@ -21,12 +22,12 @@ export default function TherapistShowPage({
 
     const { data, isLoading, isError } = useQuery<{ therapist: User }>({
         queryKey: ["therapist", id],
-        queryFn: () => api.get(`/api/therapists/${id}`).then((r) => r.data),
+        queryFn: () => api.get(TherapistActions.show.url(id)).then((r) => r.data),
     });
 
     const invoiceMutation = useMutation({
         mutationFn: () =>
-            api.post(`/api/therapists/${id}/send-invoice`, {
+            api.post(TherapistActions.sendInvoice.url(id), {
                 invoice_date: new Date().toISOString().split("T")[0],
             }),
         onSuccess: () => {

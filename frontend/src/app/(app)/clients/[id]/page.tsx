@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { use } from "react";
 import api from "@/lib/api";
+import * as ClientActions from "@/actions/App/Http/Controllers/Api/ClientController";
 import { Client, TherapySession } from "@/types";
 import Spinner from "@/components/ui/Spinner";
 import Badge from "@/components/ui/Badge";
@@ -22,7 +23,7 @@ export default function ClientShowPage({
         attendedSessions: TherapySession[];
     }>({
         queryKey: ["client", id],
-        queryFn: () => api.get(`/api/clients/${id}`).then((r) => r.data),
+        queryFn: () => api.get(ClientActions.show.url(id)).then((r) => r.data),
     });
 
     if (isLoading) {

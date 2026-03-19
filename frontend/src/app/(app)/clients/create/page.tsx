@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import Link from "next/link";
 import api from "@/lib/api";
+import * as ClientActions from "@/actions/App/Http/Controllers/Api/ClientController";
 import Button from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
 import Spinner from "@/components/ui/Spinner";
@@ -45,11 +46,12 @@ export default function CreateClientPage() {
 
     const { data: createData, isLoading: loadingForm } = useQuery({
         queryKey: ["clients-create"],
-        queryFn: () => api.get("/api/clients/create").then((r) => r.data),
+        queryFn: () => api.get(ClientActions.create.url()).then((r) => r.data),
     });
 
     const createMutation = useMutation({
-        mutationFn: (data: CreateFormData) => api.post("/api/clients", data),
+        mutationFn: (data: CreateFormData) =>
+            api.post(ClientActions.store.url(), data),
         onSuccess: () => router.push("/clients"),
         onError: (err: {
             response?: {

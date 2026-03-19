@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
 import api from "@/lib/api";
+import * as TherapistActions from "@/actions/App/Http/Controllers/Api/TherapistController";
 import { TherapistsData, User } from "@/types";
 import Spinner from "@/components/ui/Spinner";
 import Badge from "@/components/ui/Badge";
@@ -24,11 +25,13 @@ export default function TherapistsPage() {
 
     const { data, isLoading, isError } = useQuery<TherapistsData>({
         queryKey: ["therapists"],
-        queryFn: () => api.get("/api/therapists").then((r) => r.data),
+        queryFn: () =>
+            api.get(TherapistActions.index.url()).then((r) => r.data),
     });
 
     const deleteMutation = useMutation({
-        mutationFn: (id: number) => api.delete(`/api/therapists/${id}`),
+        mutationFn: (id: number) =>
+            api.delete(TherapistActions.destroy.url(id)),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["therapists"] });
             setDeletingId(null);

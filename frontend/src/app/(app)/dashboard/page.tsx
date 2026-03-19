@@ -3,6 +3,7 @@
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import api from "@/lib/api";
+import * as DashboardActions from "@/actions/App/Http/Controllers/Api/DashboardController";
 import { DashboardData } from "@/types";
 import Spinner from "@/components/ui/Spinner";
 import Badge from "@/components/ui/Badge";
@@ -90,7 +91,8 @@ export default function DashboardPage() {
 
     const { data, isLoading, isError } = useQuery<DashboardData>({
         queryKey: ["dashboard"],
-        queryFn: () => api.get("/api/dashboard").then((r) => r.data),
+        queryFn: () =>
+            api.get(DashboardActions.index.url()).then((r) => r.data),
     });
 
     if (isLoading) {

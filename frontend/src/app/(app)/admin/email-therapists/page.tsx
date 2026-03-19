@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import api from "@/lib/api";
+import * as AdminEmailActions from "@/actions/App/Http/Controllers/Api/AdminEmailController";
 import Button from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
 
@@ -16,7 +17,7 @@ export default function EmailTherapistsPage() {
 
     const sendMutation = useMutation({
         mutationFn: (data: typeof form) =>
-            api.post("/api/admin/email-therapists", data),
+            api.post(AdminEmailActions.send.url(), data),
         onSuccess: () => {
             setSuccess(true);
             setForm({ subject: "", message: "" });

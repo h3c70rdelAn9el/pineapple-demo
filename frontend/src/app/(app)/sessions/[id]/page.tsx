@@ -5,6 +5,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
 import { use } from "react";
 import api from "@/lib/api";
+import * as SessionActions from "@/actions/App/Http/Controllers/Api/TherapySessionController";
 import { TherapySession } from "@/types";
 import Spinner from "@/components/ui/Spinner";
 import Badge from "@/components/ui/Badge";
@@ -25,9 +26,12 @@ export default function SessionShowPage({
         session_date: string;
     } | null>(null);
 
-    const { data, isLoading, isError } = useQuery<{ session?: TherapySession; therapySession?: TherapySession }>({
+    const { data, isLoading, isError } = useQuery<{
+        session?: TherapySession;
+        therapySession?: TherapySession;
+    }>({
         queryKey: ["session", id],
-        queryFn: () => api.get(`/api/sessions/${id}`).then((r) => r.data),
+        queryFn: () => api.get(SessionActions.show.url(id)).then((r) => r.data),
         select: (d) => {
             const s = d.session || d.therapySession;
             if (!form && s) {
@@ -45,7 +49,7 @@ export default function SessionShowPage({
 
     const updateMutation = useMutation({
         mutationFn: (payload: typeof form) =>
-            api.patch(`/api/sessions/${id}`, payload),
+            api.patch(SessionActions.update.url(Number(id)), payload),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["session", id] });
             setEditing(false);
@@ -99,7 +103,9 @@ export default function SessionShowPage({
                 session_cost: session.session_cost?.toString() ?? "",
                 notes: session.notes ?? "",
                 session_date:
-                    session.session_date ?? session.created_at?.split("T")[0] ?? "",
+                    session.session_date ??
+                    session.created_at?.split("T")[0] ??
+                    "",
             });
         }
     };

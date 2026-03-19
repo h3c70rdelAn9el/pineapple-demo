@@ -6,6 +6,8 @@ import { useQuery, useMutation } from "@tanstack/react-query";
 import Link from "next/link";
 import { Suspense } from "react";
 import api from "@/lib/api";
+import * as ClientActions from "@/actions/App/Http/Controllers/Api/ClientController";
+import * as SessionActions from "@/actions/App/Http/Controllers/Api/TherapySessionController";
 import Button from "@/components/ui/Button";
 import Spinner from "@/components/ui/Spinner";
 import { Client, User } from "@/types";
@@ -39,12 +41,13 @@ function CreateSessionForm() {
         queryKey: ["sessions-create"],
         queryFn: () =>
             api
-                .get("/api/clients", { params: { per_page: 100 } })
+                .get(ClientActions.index.url(), { params: { per_page: 100 } })
                 .then((r) => r.data),
     });
 
     const createMutation = useMutation({
-        mutationFn: (data: SessionFormData) => api.post("/api/sessions", data),
+        mutationFn: (data: SessionFormData) =>
+            api.post(SessionActions.store.url(), data),
         onSuccess: () => router.push("/sessions"),
         onError: (err: {
             response?: {

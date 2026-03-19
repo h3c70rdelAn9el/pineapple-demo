@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
 import api from "@/lib/api";
+import * as ClientActions from "@/actions/App/Http/Controllers/Api/ClientController";
 import { ClientsData, Client } from "@/types";
 import Spinner from "@/components/ui/Spinner";
 import Badge from "@/components/ui/Badge";
@@ -28,12 +29,12 @@ export default function ClientsPage() {
         queryKey: ["clients", sort, direction],
         queryFn: () =>
             api
-                .get("/api/clients", { params: { sort, direction } })
+                .get(ClientActions.index.url(), { params: { sort, direction } })
                 .then((r) => r.data),
     });
 
     const deleteMutation = useMutation({
-        mutationFn: (id: number) => api.delete(`/api/clients/${id}`),
+        mutationFn: (id: number) => api.delete(ClientActions.destroy.url(id)),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["clients"] });
             setDeletingId(null);
@@ -91,7 +92,9 @@ export default function ClientsPage() {
     return (
         <div className="space-y-6">
             <div className="flex items-center justify-between">
-                <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Clients</h1>
+                <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+                    Clients
+                </h1>
                 <Link href="/clients/create">
                     <Button size="sm">+ New Client</Button>
                 </Link>
@@ -157,84 +160,81 @@ export default function ClientsPage() {
                     columns={[
                         { label: "Code", sortKey: "client_code" },
                         { label: "Name", sortKey: "legal_name" },
-                        { label: "Email", sortKey: "email", className: "hidden sm:table-cell" },
+                        {
+                            label: "Email",
+                            sortKey: "email",
+                            className: "hidden sm:table-cell",
+                        },
                         { label: "Status" },
                         { label: "Actions", className: "text-right" },
                     ]}
                 >
                     {tabClients().map((client) => (
-                                <tr
-                                    key={client.id}
-                                    className="hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
-                                >
-                                    <td className="px-4 py-3 text-sm font-mono text-gray-600 dark:text-gray-400">
-                                        {client.client_code}
-                                    </td>
-                                    <td className="px-4 py-3">
-                                        <p className="text-sm font-medium text-gray-900 dark:text-white">
-                                            {client.preferred_name ??
-                                                client.legal_name}
-                                        </p>
-                                        {client.preferred_name && (
-                                            <p className="text-xs text-gray-400 dark:text-gray-500">
-                                                {client.legal_name}
-                                            </p>
-                                        )}
-                                    </td>
-                                    <td className="px-4 py-3 text-sm text-gray-500 dark:text-gray-400 hidden sm:table-cell">
-                                        {client.email ?? "—"}
-                                    </td>
-                                    <td className="px-4 py-3">
-                                        <div className="flex flex-wrap gap-1">
-                                            <Badge
-                                                variant={
-                                                    client.status === 0
-                                                        ? "green"
-                                                        : "red"
-                                                }
-                                            >
-                                                {client.status === 0
-                                                    ? "Active"
-                                                    : "Inactive"}
-                                            </Badge>
-                                            {client.waitlist === 1 && (
-                                                <Badge variant="yellow">
-                                                    Waitlist
-                                                </Badge>
-                                            )}
-                                            {client.special_sessions > 0 && (
-                                                <Badge variant="blue">
-                                                    Special
-                                                </Badge>
-                                            )}
-                                        </div>
-                                    </td>
-                                    <td className="px-4 py-3 text-right">
-                                        <div className="flex justify-end gap-2">
-                                            <Link
-                                                href={`/clients/${client.id}`}
-                                                className="text-xs text-indigo-600 hover:text-indigo-900 font-medium"
-                                            >
-                                                View
-                                            </Link>
-                                            <Link
-                                                href={`/clients/${client.id}/edit`}
-                                                className="text-xs text-gray-600 hover:text-gray-900 font-medium"
-                                            >
-                                                Edit
-                                            </Link>
-                                            <button
-                                                onClick={() =>
-                                                    setDeletingId(client.id)
-                                                }
-                                                className="text-xs text-red-500 hover:text-red-700 font-medium"
-                                            >
-                                                Delete
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                            ))}
+                        <tr
+                            key={client.id}
+                            className="hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+                        >
+                            <td className="px-4 py-3 text-sm font-mono text-gray-600 dark:text-gray-400">
+                                {client.client_code}
+                            </td>
+                            <td className="px-4 py-3">
+                                <p className="text-sm font-medium text-gray-900 dark:text-white">
+                                    {client.preferred_name ?? client.legal_name}
+                                </p>
+                                {client.preferred_name && (
+                                    <p className="text-xs text-gray-400 dark:text-gray-500">
+                                        {client.legal_name}
+                                    </p>
+                                )}
+                            </td>
+                            <td className="px-4 py-3 text-sm text-gray-500 dark:text-gray-400 hidden sm:table-cell">
+                                {client.email ?? "—"}
+                            </td>
+                            <td className="px-4 py-3">
+                                <div className="flex flex-wrap gap-1">
+                                    <Badge
+                                        variant={
+                                            client.status === 0
+                                                ? "green"
+                                                : "red"
+                                        }
+                                    >
+                                        {client.status === 0
+                                            ? "Active"
+                                            : "Inactive"}
+                                    </Badge>
+                                    {client.waitlist === 1 && (
+                                        <Badge variant="yellow">Waitlist</Badge>
+                                    )}
+                                    {client.special_sessions > 0 && (
+                                        <Badge variant="blue">Special</Badge>
+                                    )}
+                                </div>
+                            </td>
+                            <td className="px-4 py-3 text-right">
+                                <div className="flex justify-end gap-2">
+                                    <Link
+                                        href={`/clients/${client.id}`}
+                                        className="text-xs text-indigo-600 hover:text-indigo-900 font-medium"
+                                    >
+                                        View
+                                    </Link>
+                                    <Link
+                                        href={`/clients/${client.id}/edit`}
+                                        className="text-xs text-gray-600 hover:text-gray-900 font-medium"
+                                    >
+                                        Edit
+                                    </Link>
+                                    <button
+                                        onClick={() => setDeletingId(client.id)}
+                                        className="text-xs text-red-500 hover:text-red-700 font-medium"
+                                    >
+                                        Delete
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    ))}
                 </DataTable>
             )}
 

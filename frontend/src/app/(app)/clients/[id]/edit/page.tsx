@@ -6,6 +6,7 @@ import { useQuery, useMutation } from "@tanstack/react-query";
 import Link from "next/link";
 import { use } from "react";
 import api from "@/lib/api";
+import * as ClientActions from "@/actions/App/Http/Controllers/Api/ClientController";
 import Button from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
 import Spinner from "@/components/ui/Spinner";
@@ -27,12 +28,12 @@ export default function EditClientPage({
         therapists: User[];
     }>({
         queryKey: ["client-edit", id],
-        queryFn: () => api.get(`/api/clients/${id}`).then((r) => r.data),
+        queryFn: () => api.get(ClientActions.show.url(id)).then((r) => r.data),
     });
 
     const { data: createData } = useQuery({
         queryKey: ["clients-create"],
-        queryFn: () => api.get("/api/clients/create").then((r) => r.data),
+        queryFn: () => api.get(ClientActions.create.url()).then((r) => r.data),
     });
 
     useEffect(() => {
@@ -46,7 +47,8 @@ export default function EditClientPage({
     }, [clientData]);
 
     const updateMutation = useMutation({
-        mutationFn: (data: ClientForm) => api.put(`/api/clients/${id}`, data),
+        mutationFn: (data: ClientForm) =>
+            api.put(ClientActions.update.url(Number(id)), data),
         onSuccess: () => router.push(`/clients/${id}`),
         onError: (err: {
             response?: {

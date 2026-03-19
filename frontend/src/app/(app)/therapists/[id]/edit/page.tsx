@@ -6,6 +6,7 @@ import { useQuery, useMutation } from "@tanstack/react-query";
 import Link from "next/link";
 import { use } from "react";
 import api from "@/lib/api";
+import * as TherapistActions from "@/actions/App/Http/Controllers/Api/TherapistController";
 import Button from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
 import Spinner from "@/components/ui/Spinner";
@@ -24,7 +25,7 @@ export default function EditTherapistPage({
     const { data, isLoading } = useQuery<{ therapist: User }>({
         queryKey: ["therapist-edit", id],
         queryFn: () =>
-            api.get(`/api/therapists/${id}/edit`).then((r) => r.data),
+            api.get(TherapistActions.edit.url(id)).then((r) => r.data),
     });
 
     useEffect(() => {
@@ -35,7 +36,7 @@ export default function EditTherapistPage({
 
     const updateMutation = useMutation({
         mutationFn: (payload: Partial<User>) =>
-            api.put(`/api/therapists/${id}`, payload),
+            api.put(TherapistActions.update.url(id), payload),
         onSuccess: () => router.push(`/therapists/${id}`),
         onError: (err: {
             response?: {
