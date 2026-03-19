@@ -25,18 +25,18 @@ export default function SessionShowPage({
         session_date: string;
     } | null>(null);
 
-    const { data, isLoading, isError } = useQuery<{ session: TherapySession }>({
+    const { data, isLoading, isError } = useQuery<{ session?: TherapySession; therapySession?: TherapySession }>({
         queryKey: ["session", id],
         queryFn: () => api.get(`/api/sessions/${id}`).then((r) => r.data),
         select: (d) => {
-            if (!form && d.session) {
+            const s = d.session || d.therapySession;
+            if (!form && s) {
                 setForm({
-                    attendance: d.session.attendance ?? "attended",
-                    session_cost: d.session.session_cost?.toString() ?? "",
-                    notes: d.session.notes ?? "",
+                    attendance: s.attendance ?? "attended",
+                    session_cost: s.session_cost?.toString() ?? "",
+                    notes: s.notes ?? "",
                     session_date:
-                        d.session.session_date ??
-                        d.session.created_at.split("T")[0],
+                        s.session_date ?? s.created_at?.split("T")[0] ?? "",
                 });
             }
             return d;
@@ -91,6 +91,19 @@ export default function SessionShowPage({
         }
     };
 
+    // Helper to initialize form if needed
+    const ensureForm = () => {
+        if (!form && session) {
+            setForm({
+                attendance: session.attendance ?? "attended",
+                session_cost: session.session_cost?.toString() ?? "",
+                notes: session.notes ?? "",
+                session_date:
+                    session.session_date ?? session.created_at?.split("T")[0] ?? "",
+            });
+        }
+    };
+
     return (
         <div className="max-w-2xl mx-auto space-y-6">
             <div className="flex items-center justify-between">
@@ -109,7 +122,10 @@ export default function SessionShowPage({
                     <Button
                         variant="secondary"
                         size="sm"
-                        onClick={() => setEditing(true)}
+                        onClick={() => {
+                            ensureForm();
+                            setEditing(true);
+                        }}
                     >
                         Edit
                     </Button>
