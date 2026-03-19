@@ -67,12 +67,12 @@ export default function ClientShowPage({
         <div className="max-w-3xl mx-auto space-y-6">
             <div className="flex items-center justify-between">
                 <div className="flex items-center gap-4">
-                    <Link
+                    {/* <Link
                         href="/clients"
                         className="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
                     >
                         0 Clients
-                    </Link>
+                    </Link> */}
                     <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
                         {client.preferred_name ?? client.legal_name}
                     </h1>
@@ -116,7 +116,16 @@ export default function ClientShowPage({
                             Email
                         </dt>
                         <dd className="text-sm text-gray-900 dark:text-gray-100 mt-0.5">
-                            {client.email ?? "—"}
+                            {client.email ? (
+                                <a
+                                    href={`mailto:${client.email}`}
+                                    className="text-indigo-600 hover:text-indigo-900 underline"
+                                >
+                                    {client.email}
+                                </a>
+                            ) : (
+                                "—"
+                            )}
                         </dd>
                     </div>
                     <div>
@@ -150,10 +159,16 @@ export default function ClientShowPage({
                             Therapist
                         </dt>
                         <dd className="text-sm text-gray-900 dark:text-gray-100 mt-0.5">
-                            {client.user
-                                ? (client.user.preferred_name ??
-                                  client.user.name)
-                                : "Unassigned"}
+                            {client.user ? (
+                                <Link
+                                    href={`/therapists/${client.user.id}`}
+                                    className="text-indigo-600 hover:text-indigo-900 underline"
+                                >
+                                    {client.user.preferred_name ?? client.user.name}
+                                </Link>
+                            ) : (
+                                "Unassigned"
+                            )}
                         </dd>
                     </div>
                     <div>
