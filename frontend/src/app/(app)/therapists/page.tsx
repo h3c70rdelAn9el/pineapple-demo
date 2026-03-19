@@ -17,6 +17,8 @@ type Tab = "all" | "active" | "inactive";
 
 export default function TherapistsPage() {
     const [tab, setTab] = useState<Tab>("all");
+    const [sort, setSort] = useState("name");
+    const [direction, setDirection] = useState<"asc" | "desc">("asc");
     const [deletingId, setDeletingId] = useState<number | null>(null);
     const queryClient = useQueryClient();
 
@@ -45,6 +47,40 @@ export default function TherapistsPage() {
             default:
                 return data.therapists?.data ?? [];
         }
+    };
+
+    const handleSort = (field: string) => {
+        if (sort === field) {
+            setDirection(direction === "asc" ? "desc" : "asc");
+        } else {
+            setSort(field);
+            setDirection("asc");
+        }
+    };
+
+    const sortedData = (): User[] => {
+        const rows = tabData();
+        return [...rows].sort((a, b) => {
+            let aVal: string = "";
+            let bVal: string = "";
+            switch (sort) {
+                case "name":
+                    aVal = (a.preferred_name ?? a.name).toLowerCase();
+                    bVal = (b.preferred_name ?? b.name).toLowerCase();
+                    break;
+                case "email":
+                    aVal = a.email.toLowerCase();
+                    bVal = b.email.toLowerCase();
+                    break;
+            }
+            if (aVal < bVal) {
+                return direction === "asc" ? -1 : 1;
+            }
+            if (aVal > bVal) {
+                return direction === "asc" ? 1 : -1;
+            }
+            return 0;
+        });
     };
 
     const tabs: { key: Tab; label: string }[] = [
@@ -115,14 +151,21 @@ export default function TherapistsPage() {
                     colSpan={4}
                     isEmpty={tabData().length === 0}
                     emptyMessage="No therapists found."
+                    sort={sort}
+                    direction={direction}
+                    onSort={handleSort}
                     columns={[
-                        { label: "Name" },
-                        { label: "Email", className: "hidden sm:table-cell" },
+                        { label: "Name", sortKey: "name" },
+                        {
+                            label: "Email",
+                            sortKey: "email",
+                            className: "hidden sm:table-cell",
+                        },
                         { label: "Status" },
                         { label: "Actions", className: "text-right" },
                     ]}
                 >
-                    {tabData().map((therapist) => (
+                    {sortedData().map((therapist) => (
                         <tr
                             key={therapist.id}
                             className="hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"

@@ -87,13 +87,6 @@ export default function ClientsPage() {
         { key: "special", label: "Special Sessions" },
     ];
 
-    const SortIcon = ({ field }: { field: string }) =>
-        sort === field ? (
-            <span className="ml-1 text-indigo-500">
-                {direction === "asc" ? "↑" : "↓"}
-            </span>
-        ) : null;
-
     const isAdmin = user && (user.admin === true || user.admin === 1);
     return (
         <div className="space-y-6">
@@ -158,10 +151,13 @@ export default function ClientsPage() {
                     colSpan={5}
                     isEmpty={tabClients().length === 0}
                     emptyMessage="No clients found."
+                    sort={sort}
+                    direction={direction}
+                    onSort={handleSort}
                     columns={[
-                        { label: <><span>Code</span><SortIcon field="client_code" /></>, onClick: () => handleSort("client_code") },
-                        { label: <><span>Name</span><SortIcon field="legal_name" /></>, onClick: () => handleSort("legal_name") },
-                        { label: <><span>Email</span><SortIcon field="email" /></>, onClick: () => handleSort("email"), className: "hidden sm:table-cell" },
+                        { label: "Code", sortKey: "client_code" },
+                        { label: "Name", sortKey: "legal_name" },
+                        { label: "Email", sortKey: "email", className: "hidden sm:table-cell" },
                         { label: "Status" },
                         { label: "Actions", className: "text-right" },
                     ]}

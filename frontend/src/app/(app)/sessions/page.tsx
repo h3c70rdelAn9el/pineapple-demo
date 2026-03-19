@@ -19,6 +19,8 @@ type Tab = "all" | "missed" | "special";
 export default function SessionsPage() {
     const { user } = useAuth();
     const [tab, setTab] = useState<Tab>("all");
+    const [sort, setSort] = useState("session_date");
+    const [direction, setDirection] = useState<"asc" | "desc">("desc");
     const [deletingId, setDeletingId] = useState<number | null>(null);
     const queryClient = useQueryClient();
 
@@ -68,6 +70,56 @@ export default function SessionsPage() {
         }
     };
 
+    const handleSort = (field: string) => {
+        if (sort === field) {
+            setDirection(direction === "asc" ? "desc" : "asc");
+        } else {
+            setSort(field);
+            setDirection("asc");
+        }
+    };
+
+    const sortedSessions = (): TherapySession[] => {
+        const rows = tabSessions();
+        return [...rows].sort((a, b) => {
+            let aVal: string | number = "";
+            let bVal: string | number = "";
+            switch (sort) {
+                case "client_name":
+                    aVal = (
+                        a.client?.preferred_name ??
+                        a.client?.legal_name ??
+                        ""
+                    ).toLowerCase();
+                    bVal = (
+                        b.client?.preferred_name ??
+                        b.client?.legal_name ??
+                        ""
+                    ).toLowerCase();
+                    break;
+                case "session_date":
+                    aVal = a.session_date ?? a.created_at;
+                    bVal = b.session_date ?? b.created_at;
+                    break;
+                case "attendance":
+                    aVal = a.attendance ?? "";
+                    bVal = b.attendance ?? "";
+                    break;
+                case "session_cost":
+                    aVal = a.session_cost ?? -1;
+                    bVal = b.session_cost ?? -1;
+                    break;
+            }
+            if (aVal < bVal) {
+                return direction === "asc" ? -1 : 1;
+            }
+            if (aVal > bVal) {
+                return direction === "asc" ? 1 : -1;
+            }
+            return 0;
+        });
+    };
+
     const attendanceBadge = (attendance: TherapySession["attendance"]) => {
         switch (attendance) {
             case "attended":
@@ -91,7 +143,9 @@ export default function SessionsPage() {
     return (
         <div className="space-y-6">
             <div className="flex items-center justify-between">
-                <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Sessions</h1>
+                <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+                    Sessions
+                </h1>
                 <Link href="/sessions/create">
                     <Button size="sm">+ New Session</Button>
                 </Link>
@@ -150,84 +204,89 @@ export default function SessionsPage() {
                     colSpan={5}
                     isEmpty={tabSessions().length === 0}
                     emptyMessage="No sessions found."
+                    sort={sort}
+                    direction={direction}
+                    onSort={handleSort}
                     columns={[
-                        { label: "Client" },
-                        { label: "Date", className: "hidden sm:table-cell" },
-                        { label: "Attendance" },
-                        { label: "Cost", className: "hidden sm:table-cell" },
+                        { label: "Client", sortKey: "client_name" },
+                        {
+                            label: "Date",
+                            sortKey: "session_date",
+                            className: "hidden sm:table-cell",
+                        },
+                        { label: "Attendance", sortKey: "attendance" },
+                        {
+                            label: "Cost",
+                            sortKey: "session_cost",
+                            className: "hidden sm:table-cell",
+                        },
                         { label: "Actions", className: "text-right" },
                     ]}
                 >
-                    {tabSessions().map((session) => (
-                                <tr
-                                    key={session.id}
-                                    className="hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
-                                >
-                                    <td className="px-4 py-3">
-                                        {session.client ? (
-                                            <div>
-                                                <p className="text-sm font-medium text-gray-900 dark:text-white">
-                                                    {session.client
-                                                        .preferred_name ??
-                                                        session.client
-                                                            .legal_name}
-                                                </p>
-                                                <p className="text-xs text-gray-400 dark:text-gray-500">
-                                                    {session.client.client_code}
-                                                </p>
-                                            </div>
-                                        ) : (
-                                            <span className="text-sm text-gray-400 dark:text-gray-500">
-                                                Client #{session.client_id}
-                                            </span>
-                                        )}
-                                    </td>
-                                    <td className="px-4 py-3 text-sm text-gray-500 dark:text-gray-400 hidden sm:table-cell">
-                                        {session.session_date
-                                            ? new Date(
-                                                  session.session_date,
-                                              ).toLocaleDateString()
-                                            : new Date(
-                                                  session.created_at,
-                                              ).toLocaleDateString()}
-                                    </td>
-                                    <td className="px-4 py-3">
-                                        <div className="flex items-center gap-1">
-                                            {attendanceBadge(
-                                                session.attendance,
-                                            )}
-                                            {session.special === 1 && (
-                                                <Badge variant="blue">
-                                                    Special
-                                                </Badge>
-                                            )}
-                                        </div>
-                                    </td>
-                                    <td className="px-4 py-3 text-sm text-gray-500 dark:text-gray-400 hidden sm:table-cell">
-                                        {session.session_cost != null
-                                            ? `$${session.session_cost}`
-                                            : "—"}
-                                    </td>
-                                    <td className="px-4 py-3 text-right">
-                                        <div className="flex justify-end gap-2">
-                                            <Link
-                                                href={`/sessions/${session.id}`}
-                                                className="text-xs text-indigo-600 hover:text-indigo-900 font-medium"
-                                            >
-                                                View
-                                            </Link>
-                                            <button
-                                                onClick={() =>
-                                                    setDeletingId(session.id)
-                                                }
-                                                className="text-xs text-red-500 hover:text-red-700 font-medium"
-                                            >
-                                                Delete
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                            ))}
+                    {sortedSessions().map((session) => (
+                        <tr
+                            key={session.id}
+                            className="hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+                        >
+                            <td className="px-4 py-3">
+                                {session.client ? (
+                                    <div>
+                                        <p className="text-sm font-medium text-gray-900 dark:text-white">
+                                            {session.client.preferred_name ??
+                                                session.client.legal_name}
+                                        </p>
+                                        <p className="text-xs text-gray-400 dark:text-gray-500">
+                                            {session.client.client_code}
+                                        </p>
+                                    </div>
+                                ) : (
+                                    <span className="text-sm text-gray-400 dark:text-gray-500">
+                                        Client #{session.client_id}
+                                    </span>
+                                )}
+                            </td>
+                            <td className="px-4 py-3 text-sm text-gray-500 dark:text-gray-400 hidden sm:table-cell">
+                                {session.session_date
+                                    ? new Date(
+                                          session.session_date,
+                                      ).toLocaleDateString()
+                                    : new Date(
+                                          session.created_at,
+                                      ).toLocaleDateString()}
+                            </td>
+                            <td className="px-4 py-3">
+                                <div className="flex items-center gap-1">
+                                    {attendanceBadge(session.attendance)}
+                                    {session.special === 1 && (
+                                        <Badge variant="blue">Special</Badge>
+                                    )}
+                                </div>
+                            </td>
+                            <td className="px-4 py-3 text-sm text-gray-500 dark:text-gray-400 hidden sm:table-cell">
+                                {session.session_cost != null
+                                    ? `$${session.session_cost}`
+                                    : "—"}
+                            </td>
+                            <td className="px-4 py-3 text-right">
+                                <div className="flex justify-end gap-2">
+                                    <Link
+                                        href={`/sessions/${session.id}`}
+                                        className="text-xs text-indigo-600 hover:text-indigo-900 font-medium"
+                                    >
+                                        View
+                                    </Link>
+                                    <button
+                                        onClick={() =>
+                                            setDeletingId(session.id)
+                                        }
+                                        className="text-xs text-red-500 hover:text-red-700 font-medium"
+                                    >
+                                        Delete
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    ))}
                 </DataTable>
             )}
 
