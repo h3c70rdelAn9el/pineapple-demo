@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useAuth } from "@/providers/AuthProvider";
 import { useSidebar } from "@/providers/SidebarProvider";
+import { useTheme } from "@/providers/ThemeProvider";
 import Spinner from "@/components/ui/Spinner";
 
 const navLinks = [
@@ -134,6 +135,7 @@ export default function Sidebar() {
     const { user, logout } = useAuth();
     const pathname = usePathname();
     const { collapsed, setCollapsed, mobileOpen, setMobileOpen } = useSidebar();
+    const { isDark, toggleTheme } = useTheme();
     const [loggingOut, setLoggingOut] = useState(false);
 
     const isAdmin = Boolean(user?.admin);
@@ -157,11 +159,11 @@ export default function Sidebar() {
     const sidebarContent = (
         <div className="flex flex-col h-full">
             {/* Logo */}
-            <div className="flex items-center justify-between h-16 px-4 border-b border-gray-200">
+            <div className="flex items-center justify-between h-16 px-4 border-b border-gray-200 dark:border-gray-700">
                 <Link href="/dashboard" className="flex items-center gap-2">
                     <span className="text-2xl">🍍</span>
                     {!collapsed && (
-                        <span className="text-lg font-bold text-gray-900 whitespace-nowrap">
+                        <span className="text-lg font-bold text-gray-900 dark:text-white whitespace-nowrap">
                             Therapy Practice
                         </span>
                     )}
@@ -169,7 +171,7 @@ export default function Sidebar() {
                 {/* Desktop collapse toggle */}
                 <button
                     onClick={() => setCollapsed(!collapsed)}
-                    className="hidden lg:flex items-center justify-center h-7 w-7 rounded-md text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-colors"
+                    className="hidden lg:flex items-center justify-center h-7 w-7 rounded-md text-gray-400 hover:text-gray-600 hover:bg-gray-100 dark:hover:text-gray-300 dark:hover:bg-gray-800 transition-colors"
                     aria-label={
                         collapsed ? "Expand sidebar" : "Collapse sidebar"
                     }
@@ -211,15 +213,15 @@ export default function Sidebar() {
                             title={collapsed ? link.label : undefined}
                             className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-150 ${
                                 isActive
-                                    ? "bg-indigo-50 text-indigo-700"
-                                    : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+                                    ? "bg-indigo-50 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-400"
+                                    : "text-gray-600 hover:bg-gray-50 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-gray-800 dark:hover:text-white"
                             } ${collapsed ? "justify-center" : ""}`}
                         >
                             <span
                                 className={
                                     isActive
-                                        ? "text-indigo-600"
-                                        : "text-gray-400"
+                                        ? "text-indigo-600 dark:text-indigo-400"
+                                        : "text-gray-400 dark:text-gray-500"
                                 }
                             >
                                 {link.icon}
@@ -230,14 +232,62 @@ export default function Sidebar() {
                 })}
             </nav>
 
+            {/* Dark mode toggle */}
+            <div className="px-3 pb-2">
+                <button
+                    onClick={toggleTheme}
+                    title={
+                        isDark ? "Switch to light mode" : "Switch to dark mode"
+                    }
+                    className={`flex items-center gap-3 w-full px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-150 text-gray-600 hover:bg-gray-50 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-gray-800 dark:hover:text-white ${
+                        collapsed ? "justify-center" : ""
+                    }`}
+                >
+                    <span className="text-gray-400 dark:text-gray-500">
+                        {isDark ? (
+                            <svg
+                                className="h-5 w-5"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                                strokeWidth={1.5}
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z"
+                                />
+                            </svg>
+                        ) : (
+                            <svg
+                                className="h-5 w-5"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                                strokeWidth={1.5}
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z"
+                                />
+                            </svg>
+                        )}
+                    </span>
+                    {!collapsed && (
+                        <span>{isDark ? "Light mode" : "Dark mode"}</span>
+                    )}
+                </button>
+            </div>
+
             {/* User section */}
-            <div className="border-t border-gray-200 p-3">
+            <div className="border-t border-gray-200 dark:border-gray-700 p-3">
                 {collapsed ? (
                     <button
                         onClick={handleLogout}
                         disabled={loggingOut}
                         title="Sign out"
-                        className="flex items-center justify-center w-full p-2 rounded-lg text-gray-400 hover:text-red-600 hover:bg-red-50 transition-colors disabled:opacity-50"
+                        className="flex items-center justify-center w-full p-2 rounded-lg text-gray-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors disabled:opacity-50"
                     >
                         {loggingOut ? (
                             <Spinner className="h-5 w-5" />
@@ -259,25 +309,25 @@ export default function Sidebar() {
                     </button>
                 ) : (
                     <div className="flex items-center gap-3 px-2">
-                        <div className="flex-shrink-0 h-8 w-8 rounded-full bg-indigo-100 flex items-center justify-center">
-                            <span className="text-sm font-semibold text-indigo-700">
+                        <div className="flex-shrink-0 h-8 w-8 rounded-full bg-indigo-100 dark:bg-indigo-900 flex items-center justify-center">
+                            <span className="text-sm font-semibold text-indigo-700 dark:text-indigo-300">
                                 {(user?.preferred_name ?? user?.name ?? "?")
                                     .charAt(0)
                                     .toUpperCase()}
                             </span>
                         </div>
                         <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-gray-900 truncate">
+                            <p className="text-sm font-medium text-gray-900 dark:text-white truncate">
                                 {user?.preferred_name ?? user?.name}
                             </p>
-                            <p className="text-xs text-gray-500 truncate">
+                            <p className="text-xs text-gray-500 dark:text-gray-400 truncate">
                                 {user?.email}
                             </p>
                         </div>
                         <button
                             onClick={handleLogout}
                             disabled={loggingOut}
-                            className="flex-shrink-0 p-1.5 rounded-md text-gray-400 hover:text-red-600 hover:bg-red-50 transition-colors disabled:opacity-50"
+                            className="flex-shrink-0 p-1.5 rounded-md text-gray-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors disabled:opacity-50"
                             title="Sign out"
                         >
                             {loggingOut ? (
@@ -337,7 +387,7 @@ export default function Sidebar() {
 
             {/* Mobile sidebar */}
             <aside
-                className={`fixed inset-y-0 left-0 z-50 w-64 bg-white border-r border-gray-200 transform transition-transform duration-200 ease-in-out lg:hidden ${
+                className={`fixed inset-y-0 left-0 z-50 w-64 bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-700 transform transition-transform duration-200 ease-in-out lg:hidden ${
                     mobileOpen ? "translate-x-0" : "-translate-x-full"
                 }`}
             >
@@ -365,7 +415,7 @@ export default function Sidebar() {
 
             {/* Desktop sidebar */}
             <aside
-                className={`hidden lg:flex lg:flex-col lg:fixed lg:inset-y-0 bg-white border-r border-gray-200 transition-all duration-200 ${
+                className={`hidden lg:flex lg:flex-col lg:fixed lg:inset-y-0 bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-700 transition-all duration-200 ${
                     collapsed ? "lg:w-[68px]" : "lg:w-64"
                 }`}
             >

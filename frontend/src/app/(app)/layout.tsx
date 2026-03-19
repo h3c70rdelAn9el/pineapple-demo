@@ -11,7 +11,7 @@ function AppContent({ children }: { children: React.ReactNode }) {
     const { collapsed } = useSidebar();
 
     return (
-        <div className="min-h-screen bg-gray-50">
+        <div className="min-h-screen bg-gray-50 dark:bg-gray-950">
             <Sidebar />
             <main
                 className={`min-h-screen transition-all duration-200 ${collapsed ? "lg:pl-[68px]" : "lg:pl-64"}`}
